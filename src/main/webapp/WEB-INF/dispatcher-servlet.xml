@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+    <context:component-scan base-package="controller,dao,config"   />
+    <mvc:annotation-driven/>
+    <context:property-placeholder properties-ref="configProperties" />
+
+    <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location">
+            <value>/WEB-INF/localConfig.properties</value>
+            <!--<value>/WEB-INF/liveConfig.properties</value>-->
+        </property>
+    </bean>
+
+    <!-- ******************** Hibernate Session,Entity, *********************************** -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="annotatedClasses">
+            <list>
+               <value>entity.Category</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.connection.url">${jdbc.url}</prop>
+                <prop key="hibernate.connection.username">${jdbc.username}</prop>
+                <prop key="hibernate.connection.password" >${jdbc.password}</prop>
+                <prop key="hibernate.connection.driver_class">${jdbc.driverClassName}</prop>
+                <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.dialect">${jdbc.dialect}</prop>
+                <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
+                <prop key="hibernate.search.default.directory_provider">filesystem</prop>
+                <prop key="hibernate.search.default.indexBase">${hibernate.indexBase}</prop> <!--Must create dir var/lucene-->
+            </props>
+        </property>
+    </bean>
+
+
+</beans>
