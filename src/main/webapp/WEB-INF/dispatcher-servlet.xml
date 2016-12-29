@@ -8,7 +8,7 @@
        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
-    <context:component-scan base-package="controller,dao,config"   />
+    <context:component-scan base-package="controller,dao,utility"   />
     <mvc:annotation-driven/>
     <context:property-placeholder properties-ref="configProperties" />
 
@@ -19,8 +19,14 @@
         </property>
     </bean>
 
-    <!-- ******************** Hibernate Session,Entity, *********************************** -->
+    <!-- ******************** Utility BEAN *********************************** -->
+    <bean id="_velocityTemplatePath" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="${velocity.resource.path}" />
+    </bean>
+
+    <!-- ******************** Hibernate Session Bean *********************************** -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+                <!-- *********** Hibernate Entity *********** -->
         <property name="annotatedClasses">
             <list>
                <value>entity.Category</value>
@@ -39,6 +45,24 @@
                 <prop key="hibernate.search.default.indexBase">${hibernate.indexBase}</prop> <!--Must create dir var/lucene-->
             </props>
         </property>
+    </bean>
+
+    <!--<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/view/"/>
+    </bean>
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".vm"/>
+    </bean>-->
+
+
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+        <!--<bean id="viewResolver"  class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">-->
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/view/" />
+        <property name="suffix" value=".jsp" />
     </bean>
 
 

@@ -11,17 +11,11 @@ public class IfaceTest {
 
 
     public static void main(String[] args) {
-        IfaceB b = new A();
-        IfaceA a = new A();
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            out.println(objectMapper.writerWithType(IfaceA.class).writeValueAsString(a));
-            out.println(objectMapper.writeValueAsString(b));
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        String  a = "asd3/api/api asd1";
+        if(a.contains("/ap1/")){
+            out.println("ASD");
         }
-
+        out.println("ASD1");
     }
 
 }

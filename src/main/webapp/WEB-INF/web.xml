@@ -36,12 +36,12 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
-    <!--<error-page>-->
-        <!--<error-code>404</error-code>-->
-        <!--<location>/WEB-INF/view/public/404.jsp</location>-->
-    <!--</error-page>-->
+ <!--   <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/view/error/404.jsp</location>
+    </error-page>-->
 </web-app>
 
