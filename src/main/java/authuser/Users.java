@@ -4,9 +4,18 @@ package authuser;
  * Created by mi on 12/27/16.
  */
 public class Users {
+    private int id;
     private String email;
     private String password;
     private String role;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;
@@ -35,7 +44,8 @@ public class Users {
     @Override
     public String toString() {
         return "Users{" +
-                "email='" + email + '\'' +
+                "id=" + id +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
                 '}';

@@ -8,8 +8,9 @@
        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 
-    <context:component-scan base-package="controller,dao,utility"   />
     <mvc:annotation-driven/>
+    <context:component-scan base-package="controller,dao,utility"   />
+
     <context:property-placeholder properties-ref="configProperties" />
 
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
