@@ -1,4 +1,4 @@
-package controller.app.viewservice;
+package controller.web.viewservice;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,11 +12,13 @@ import java.util.List;
 @Controller
 public class JustTestController {
 
-    @RequestMapping(value = "/",method = RequestMethod.GET)
+    @RequestMapping(value = "/test",method = RequestMethod.GET)
     public ModelAndView getData(){
          List<String> list=getList();
-         ModelAndView model=new ModelAndView("index");
-         model.addObject("lists",list);
+         //ModelAndView model=new ModelAndView("index");
+         ModelAndView model=new ModelAndView("web-admin/layouts/header");
+
+        model.addObject("lists",list);
 
          return model;
 
