@@ -42,9 +42,6 @@ public class ServiceResponse {
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
                     this.setValidationError(fieldError.getField(), fieldError.getDefaultMessage());
-                    System.out.println(fieldError.getField());
-                    System.out.println(fieldError.getCode());
-                    System.out.println(fieldError.getRejectedValue());
                 }
 
                 if(object instanceof ObjectError) {
