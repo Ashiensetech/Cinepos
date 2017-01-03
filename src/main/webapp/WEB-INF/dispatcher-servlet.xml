@@ -13,6 +13,9 @@
 
     <context:property-placeholder properties-ref="configProperties" />
 
+    <mvc:resources mapping="/admin-resources/**" location="/WEB-INF/admin-resources/"
+                   cache-period="31556926"/>
+
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location">
             <value>/WEB-INF/localConfig.properties</value>
@@ -24,6 +27,7 @@
     <bean id="_velocityTemplatePath" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="${velocity.resource.path}" />
     </bean>
+
 
     <!-- ******************** Hibernate Session Bean *********************************** -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">

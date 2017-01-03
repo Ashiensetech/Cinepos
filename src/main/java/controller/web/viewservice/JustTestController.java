@@ -16,7 +16,7 @@ public class JustTestController {
     public ModelAndView getData(){
          List<String> list=getList();
          //ModelAndView model=new ModelAndView("index");
-         ModelAndView model=new ModelAndView("web-admin/layouts/header");
+         ModelAndView model=new ModelAndView("web-admin/test/index");
 
         model.addObject("lists",list);
 
