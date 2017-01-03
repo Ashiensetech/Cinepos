@@ -2,3 +2,4 @@
 cinepos.iml
 target
 cineposadminhtml
+src/main/java/resources/hibernate.cfg.xml

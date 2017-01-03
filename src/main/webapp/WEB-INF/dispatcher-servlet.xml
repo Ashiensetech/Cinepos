@@ -35,6 +35,9 @@
         <property name="annotatedClasses">
             <list>
                <value>entity.Category</value>
+                <value>entity.UserRole</value>
+                <value>entity.UserInf</value>
+                <value>entity.AuthCredential</value>
             </list>
         </property>
         <property name="hibernateProperties">
