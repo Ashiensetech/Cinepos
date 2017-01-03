@@ -5,20 +5,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-@Controller
-@RequestMapping(value = "terminal")
-public class AdminTerminalController {
 
+/**
+ * Created by Sarwar on 1/3/2017.
+ */
+@Controller
+@RequestMapping(value = "distributor")
+public class AdminDistributorController {
     @RequestMapping(value = "index",method = RequestMethod.GET)
-    public  ModelAndView index(){
-        ModelAndView modelAndView=new ModelAndView("web-admin/terminals/index");
-        return modelAndView;
+    public ModelAndView index(){
+     ModelAndView modelAndView=new ModelAndView("web-admin/distributors/index");
+     return modelAndView;
     }
     @RequestMapping(value = "create",method = RequestMethod.GET)
     public ModelAndView create(){
-        ModelAndView modelAndView=new ModelAndView("web-admin/terminals/create");
+        ModelAndView modelAndView= new ModelAndView("web-admin/distributors/create");
         return modelAndView;
     }
-
 
 }
