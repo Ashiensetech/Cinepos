@@ -15,7 +15,7 @@ public class JustTestController {
     @RequestMapping(value = "/test",method = RequestMethod.GET)
     public ModelAndView getData(){
          List<String> list=getList();
-         //ModelAndView model=new ModelAndView("index");
+         //ModelAndView model=new ModelAndView("testing/index");
          ModelAndView model=new ModelAndView("web-admin/test/index");
 
         model.addObject("lists",list);
