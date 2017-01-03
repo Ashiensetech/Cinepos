@@ -177,7 +177,7 @@
 <script src="<c:url value="/admin-resources/metisMenu/metisMenu.min.js">"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="<c:url value="../dist/js/sb-admin-2.js">"></script>
+<script src="../dist/js/sb-admin-2.js"></script>
 
 <!-- Include Date Range Picker -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
