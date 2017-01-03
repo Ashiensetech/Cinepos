@@ -88,7 +88,51 @@
 
 <jsp:directive.include file="../layouts/footer.jsp" />
 
-<!-- Date picker -->
+<script>
+  BASEURL = "http://localhost:9090";
+  var firstName ="";
+  var lastName="";
+  var email="";
+  var phone="";
+  var address="";
+  var gender="";
+  var status="";
+  var userName="";
+  var password="";
+  $.ajax({
+    url: BASEURL+'/api/admin/user/create',
+    type: 'POST',
+    data: {
+      firstName:firstName,
+      lastName:lastName,
+      email:email,
+      phone:phone,
+      address:address,
+      gender:gender,
+      status:status,
+      userName:userName,
+      password:password
+    },
+    success: function(data){
+      console.log(data);
+      if(data.responseStat.status == true){
+        $("#alertMsg").html(data.responseStat.msg).fadeIn(500).delay(2000).fadeOut(500,function(){
+          var url =BASEURL+"/home";
+          var prevUrl = "";
+          prevUrl = location.search.split('r=')[1];
+          url=(prevUrl!=undefined)? decodeURIComponent( prevUrl):url;
+          window.location.href = url;
+        });
+      }else{
+        $("#alertMsg").html(data.responseStat.msg).fadeIn(500).delay(3000).fadeOut(500,function(){
+          $("#signBtn").removeAttr("disabled","disabled");
+        });
+      }
+      $("#signInProgressImg").hide();
+
+    }
+  });
+</script>
 </body>
 
 </html>

@@ -24,7 +24,7 @@ public class AuthCredential {
     private UserInf userInf;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role",referencedColumnName = "id", nullable = true)
+    @JoinColumn(name = "role_id",referencedColumnName = "id", nullable = true)
     private UserRole userRole;
 
     @Basic
@@ -48,8 +48,8 @@ public class AuthCredential {
     private boolean changedDefultPassword;
 
     @Basic
-    @Column(name = "created_date")
-    private Timestamp createdDate;
+    @Column(name = "created_at")
+    private Timestamp createdAt;
 
 
     public int getId() {
@@ -93,13 +93,6 @@ public class AuthCredential {
     }
 
 
-    public Timestamp getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
-    }
 
 
     public UserRole getUserRole() {
@@ -134,6 +127,14 @@ public class AuthCredential {
         this.changedDefultPassword = changedDefultPassword;
     }
 
+    public Timestamp getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "AuthCredential{" +
@@ -146,7 +147,7 @@ public class AuthCredential {
                 ", isActivated=" + isActivated +
                 ", isEmailConfirmed=" + isEmailConfirmed +
                 ", changedDefultPassword=" + changedDefultPassword +
-                ", createdDate=" + createdDate +
+                ", createdAt=" + createdAt +
                 '}';
     }
 
@@ -166,7 +167,7 @@ public class AuthCredential {
         if (userRole != null ? !userRole.equals(that.userRole) : that.userRole != null) return false;
         if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
-        return !(createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null);
+        return !(createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null);
 
     }
 
@@ -181,7 +182,7 @@ public class AuthCredential {
         result = 31 * result + (isActivated ? 1 : 0);
         result = 31 * result + (isEmailConfirmed ? 1 : 0);
         result = 31 * result + (changedDefultPassword ? 1 : 0);
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }
 }

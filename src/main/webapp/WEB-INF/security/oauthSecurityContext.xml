@@ -23,13 +23,13 @@
     </sec:http>
 
     <sec:http auto-config="true" pattern="/api/admin/**"
-          create-session="always"
-              use-expressions="true"
-              entry-point-ref="adminRestEndPoint" >
-        <sec:intercept-url pattern="/api/admin/**"
-                       access="hasRole('ROLE_ADMIN')"  />
+          create-session="always"  >
+        <!--entry-point-ref="adminRestEndPoint"-->
+        <sec:intercept-url pattern="/api/admin/**" />
 
-        <sec:form-login authentication-failure-handler-ref="adminHttpServiceHandler" />
+        <!--access="ROLE_ADMIN"-->
+
+        <!--<sec:form-login authentication-failure-handler-ref="adminHttpServiceHandler" />-->
     </sec:http>
     <bean id="adminRestEndPoint"
                 class="http_security_handler.AdminRestAuthenticationEntryPoint" />
@@ -57,7 +57,7 @@
       access-decision-manager-ref="accessDecisionManager"
       xmlns="http://www.springframework.org/schema/security">
     <anonymous enabled="false"/>
-    <intercept-url pattern="/api/**"
+    <intercept-url pattern="/api/auth/**"
                    access="ROLE_USER"/>
     <custom-filter ref="resourceServerFilter"
                    before="PRE_AUTH_FILTER"/>

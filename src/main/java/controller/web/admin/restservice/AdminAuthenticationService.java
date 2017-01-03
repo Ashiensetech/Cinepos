@@ -55,11 +55,13 @@ public class AdminAuthenticationService {
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(auth);
 
-            HttpSession session = request.getSession(true);
-            session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+
 
             if(auth.isAuthenticated()){
-                ResponseEntity.status(HttpStatus.UNAUTHORIZED).body((CustomUserDetails)auth.getPrincipal());
+                HttpSession session = request.getSession(true);
+                session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+
+                return ResponseEntity.status(HttpStatus.OK).body((CustomUserDetails)auth.getPrincipal());
             }
         } catch (Exception e) {
 

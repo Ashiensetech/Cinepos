@@ -37,8 +37,8 @@ public class UserInf {
 
 
     @Basic
-    @Column(name = "sex")
-    private String sex;
+    @Column(name = "gender")
+    private String gender;
 
     @Basic
     @Column(name = "status")
@@ -46,19 +46,14 @@ public class UserInf {
 
     @Basic
     @Column(name = "created_at")
-    private Integer createdAt;
+    private Timestamp createdAt;
 
-    @Basic
-    @Column(name = "updated_at")
-    private Integer updatedAt;
 
     @Basic
     @Column(name = "created_by")
-    private Timestamp createdBy;
+    private Integer createdBy;
 
-    @Basic
-    @Column(name = "updated_by")
-    private Timestamp updatedBy;
+
 
 
     public int getId() {
@@ -112,12 +107,12 @@ public class UserInf {
         this.address = address;
     }
 
-    public String getSex() {
-        return sex;
+    public String getGender() {
+        return gender;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
 
@@ -130,37 +125,20 @@ public class UserInf {
     }
 
 
-    public Integer getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Integer createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
-
-    public Integer getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Integer updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Timestamp getCreatedBy() {
+    public Integer getCreatedBy() {
         return createdBy;
     }
 
-    public void setCreatedBy(Timestamp createdBy) {
+    public void setCreatedBy(Integer createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public Timestamp getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(Timestamp updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     @Override
@@ -176,14 +154,11 @@ public class UserInf {
         if (email != null ? !email.equals(userInf.email) : userInf.email != null) return false;
         if (phone != null ? !phone.equals(userInf.phone) : userInf.phone != null) return false;
         if (address != null ? !address.equals(userInf.address) : userInf.address != null) return false;
-        if (sex != null ? !sex.equals(userInf.sex) : userInf.sex != null) return false;
+        if (gender != null ? !gender.equals(userInf.gender) : userInf.gender != null) return false;
         if (status != null ? !status.equals(userInf.status) : userInf.status != null) return false;
         if (createdAt != null ? !createdAt.equals(userInf.createdAt) : userInf.createdAt != null) return false;
-        if (updatedAt != null ? !updatedAt.equals(userInf.updatedAt) : userInf.updatedAt != null) return false;
-        if (createdBy != null ? !createdBy.equals(userInf.createdBy) : userInf.createdBy != null) return false;
-        if (updatedBy != null ? !updatedBy.equals(userInf.updatedBy) : userInf.updatedBy != null) return false;
+        return !(createdBy != null ? !createdBy.equals(userInf.createdBy) : userInf.createdBy != null);
 
-        return true;
     }
 
     @Override
@@ -194,12 +169,10 @@ public class UserInf {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
-        result = 31 * result + (updatedBy != null ? updatedBy.hashCode() : 0);
         return result;
     }
 }

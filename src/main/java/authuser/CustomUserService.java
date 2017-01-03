@@ -11,10 +11,10 @@ public class CustomUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         System.out.println("at loadUserByUsername");
-        if(!s.equals("user")) throw new UsernameNotFoundException("Not important");
+        if(!s.equals("admin@admin.com")) throw new UsernameNotFoundException("Not important");
         CustomUserDetails customUserDetails = new CustomUserDetails();
         customUserDetails.setId(10);
-        customUserDetails.setEmail("user");
+        customUserDetails.setEmail("admin@admin.com");
         customUserDetails.setPassword("$2a$08$UlxPkBEnN//UXi72l8pi5u33k/OmtDd9oWW5fsq8CRYg6C9zYba02");
         customUserDetails.setRole("ADMIN");
         System.out.println(customUserDetails);

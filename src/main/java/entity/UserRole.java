@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * Created by mi on 1/3/17.
  */
 @Entity
-@Table(name = "admin_role")
+@Table(name = "user_role")
 public class UserRole {
     @Id
     @Column(name = "id")
@@ -30,17 +30,12 @@ public class UserRole {
     @Column(name = "created_by")
     private Integer createdBy;
 
-    @Basic
-    @Column(name = "updated_by")
-    private Integer updatedBy;
 
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    @Basic
-    @Column(name = "updated_at")
-    private Timestamp updatedAt;
+
 
 
     public int getId() {
@@ -88,30 +83,12 @@ public class UserRole {
     }
 
 
-    public Integer getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(Integer updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-
     public Timestamp getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -127,11 +104,8 @@ public class UserRole {
             return false;
         if (group != null ? !group.equals(userRole.group) : userRole.group != null) return false;
         if (createdBy != null ? !createdBy.equals(userRole.createdBy) : userRole.createdBy != null) return false;
-        if (updatedBy != null ? !updatedBy.equals(userRole.updatedBy) : userRole.updatedBy != null) return false;
-        if (createdAt != null ? !createdAt.equals(userRole.createdAt) : userRole.createdAt != null) return false;
-        if (updatedAt != null ? !updatedAt.equals(userRole.updatedAt) : userRole.updatedAt != null) return false;
+        return !(createdAt != null ? !createdAt.equals(userRole.createdAt) : userRole.createdAt != null);
 
-        return true;
     }
 
     @Override
@@ -141,9 +115,19 @@ public class UserRole {
         result = 31 * result + (displayName != null ? displayName.hashCode() : 0);
         result = 31 * result + (group != null ? group.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
-        result = 31 * result + (updatedBy != null ? updatedBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserRole{" +
+                "id=" + id +
+                ", roleName='" + roleName + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", group='" + group + '\'' +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }
