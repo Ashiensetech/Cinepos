@@ -19,7 +19,7 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceResponse {
 
-    Map<String,String> formError;
+    private Map<String,String> formError;
     private ServiceResponse() {
         formError = new HashMap<String, String>();
     }
@@ -35,12 +35,16 @@ public class ServiceResponse {
     }
     public void bindValidationError(BindingResult result){
         if(result.hasErrors()) {
+
             for (ObjectError object : result.getAllErrors()) {
 
 
                 if(object instanceof FieldError) {
                     FieldError fieldError = (FieldError) object;
-                    this.setValidationError(fieldError.getField(),fieldError.getCode());
+                    this.setValidationError(fieldError.getField(), fieldError.getDefaultMessage());
+                    System.out.println(fieldError.getField());
+                    System.out.println(fieldError.getCode());
+                    System.out.println(fieldError.getRejectedValue());
                 }
 
                 if(object instanceof ObjectError) {
@@ -53,6 +57,11 @@ public class ServiceResponse {
             }
         }
     }
+
+    public Map<String, String> getFormError() {
+        return formError;
+    }
+
     public void setValidationError(String params, String msg){
      this.formError.put(params,msg);
     }
