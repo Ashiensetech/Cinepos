@@ -11,25 +11,31 @@
        http://www.springframework.org/schema/security/oauth2
        http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd">
 
-    <http auto-config="true" pattern="/admin/**"
-          create-session="always"
-          xmlns="http://www.springframework.org/schema/security">
-        <intercept-url pattern="/admin/**"
-                       access="ROLE_ADMIN"/>
+    <bean id="ep403" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
 
-        <form-login login-page='/login.html'
-                    authentication-failure-url="/login.html?error=true"
-                    authentication-success-handler-ref="adminHttpControllerHandler"
-                />
-    </http>
-    <http auto-config="true" pattern="/api/admin/**"
-          create-session="always"
-          xmlns="http://www.springframework.org/schema/security">
-        <intercept-url pattern="/api/admin/**"
-                       access="ROLE_USER"/>
+    <sec:http auto-config="true"
+              pattern="/admin/**"
+              create-session="always"
+              >
+        <sec:intercept-url pattern="/admin/**"
+                           access="ROLE_ADMIN"  />
+        <sec:form-login login-page="/admin-authentication"/>
+    </sec:http>
 
-        <form-login authentication-failure-handler-ref="adminHttpServiceHandler" />
-    </http>
+    <sec:http auto-config="true" pattern="/api/admin/**"
+          create-session="always"
+              use-expressions="true"
+              entry-point-ref="adminRestEndPoint" >
+        <sec:intercept-url pattern="/api/admin/**"
+                       access="hasRole('ROLE_ADMIN')"  />
+
+        <sec:form-login authentication-failure-handler-ref="adminHttpServiceHandler" />
+    </sec:http>
+    <bean id="adminRestEndPoint"
+                class="http_security_handler.AdminRestAuthenticationEntryPoint" />
+
+    <bean id="myFailureHandler" class=
+            "org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler"/>
     <bean id="adminHttpControllerHandler" class="http_security_handler.AdminHttpControllerHandler" />
     <bean id="adminHttpServiceHandler" class="http_security_handler.AdminHttpServiceHandler" />
 

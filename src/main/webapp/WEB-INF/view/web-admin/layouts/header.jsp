@@ -16,20 +16,20 @@
 
     <title>Cinepos</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="<c:url value="/admin-resources/bootstrap/css/bootstrap.min.css">" rel="stylesheet">
+    !-- Bootstrap Core CSS -->
+    <link href="<c:url value="/admin-resources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
 
     <!-- MetisMenu CSS -->
-    <link href="<c:url value="/admin-resources/metisMenu/metisMenu.min.css">" rel="stylesheet">
+    <link href="<c:url value="/admin-resources/metisMenu/metisMenu.min.css" /> " rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="<c:url value="/admin-resources/dist/css/sb-admin-2.css">" rel="stylesheet">
+    <link href="<c:url value="/admin-resources/dist/css/sb-admin-2.css" /> " rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:300,400,600,700,900" rel="stylesheet">
-    <link href="<c:url value="/admin-resources/font-awesome/css/font-awesome.min.css">" rel="stylesheet" type="text/css">
-
+    <link href="<c:url value="/admin-resources/font-awesome/css/font-awesome.min.css" />" rel="stylesheet" type="text/css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -168,6 +168,7 @@
 <!-- /#wrapper -->
 
 <!-- jQuery -->
+<%--
 <script src="<c:url value="/admin-resources/jquery/jquery.min.js">"></script>
 
 <!-- Bootstrap Core JavaScript -->
@@ -177,7 +178,12 @@
 <script src="<c:url value="/admin-resources/metisMenu/metisMenu.min.js">"></script>
 
 <!-- Custom Theme JavaScript -->
+<<<<<<< HEAD
 <script src="../dist/js/sb-admin-2.js"></script>
+=======
+<script src="<c:url value="../dist/js/sb-admin-2.js">"></script>
+--%>
+>>>>>>> 3232dec16c4a99a91f79f0135aff21615f9d3a6d
 
 <!-- Include Date Range Picker -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
@@ -199,4 +205,3 @@
 </body>
 
 </html>
-
