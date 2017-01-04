@@ -56,6 +56,7 @@
                                         <td>${distributorValue.description}</td>
                                         <td>
                                             <button type="" class="btn btn-primary"  data-toggle="modal" data-target="#editDistributor">Edit</button>
+                                            <button type="" class="btn ${distributorValue.status?"btn-info":"btn-warning"}" data-distributor-id="${distributorValue.id}"  data-toggle="modal" data-target="#statusDistributor">${distributorValue.status?"Enable":"Disable"}</button>
                                         </td>
                                     </tr>
                                 </d:forEach>

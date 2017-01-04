@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public class DistributorDao extends BaseDao{
 
+
+
     public List<Distributor> getAll(){
         Session session=this.sessionFactory.openSession();
 

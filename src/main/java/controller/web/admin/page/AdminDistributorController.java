@@ -29,7 +29,7 @@ public class AdminDistributorController {
     }
     @RequestMapping(value = "create",method = RequestMethod.GET)
     public ModelAndView create(){
-        ModelAndView modelAndView= new ModelAndView("web-admin/distributors/create");
+        ModelAndView modelAndView= new ModelAndView("web-admin/distributors/create-distributor");
         return modelAndView;
     }
 

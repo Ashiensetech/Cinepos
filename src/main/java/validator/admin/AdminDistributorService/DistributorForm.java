@@ -17,7 +17,7 @@ public class DistributorForm {
    private String phone;
 
     @NotBlank(message = "Address are required")
-   private String Address;
+   private String address;
 
     @NotBlank(message = "Description are required")
     private String description;

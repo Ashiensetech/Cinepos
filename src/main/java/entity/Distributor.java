@@ -38,6 +38,10 @@ public class Distributor {
     private String description;
 
     @Basic
+    @Column(name = "status")
+    private boolean status;
+
+    @Basic
     @Column(name = "created_by",nullable = true)
     private int createdBy;
 
@@ -107,6 +111,14 @@ public class Distributor {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public int getCreatedBy() {
