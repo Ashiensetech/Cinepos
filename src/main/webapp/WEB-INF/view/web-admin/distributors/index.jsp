@@ -24,59 +24,42 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add admin</h1>
+                    <h1 class="page-header">Distributor List</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
-                <div class="col-lg-6">
-                    <form>
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input class="form-control">
-                            <p class="help-block error">Validation Error</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Last Name</label>
-                            <input class="form-control">
-                            <p class="help-block error">Validation Error</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input class="form-control">
-                            <p class="help-block error">Validation Error</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Phone number</label>
-                            <input class="form-control">
-                            <p class="help-block error">Validation Error</p>
-                        </div>
-                        <div class="form-group">
-                            <label>Sex</label>
-                            <select class="form-control">
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Date of Birth</label>
-                            <div class='input-group date'>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                <input type='text' class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Select Role</label>
-                            <select class="form-control">
-                                <option>Admin</option>
-                                <option>Super Admin</option>
-                            </select>
-                        </div>
-                        <br>
-                        <button class="btn btn-primary">Create Admin</button>
-                    </form>
+                <div class="col-lg-12">
+                    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email1</th>
+                            <th>Email 2</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Desc</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="odd gradeC">
+                            <td>Trident</td>
+                            <td>demo@admin.com</td>
+                            <td>demo@admin2.com</td>
+                            <td>+880145754</td>
+                            <td>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, augue et euismod tristique, felis diam aliquam velit, eget egestas felis elit sed augue.
+                            </td>
+                            <td>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, augue et euismod tristique, felis diam aliquam velit, eget egestas felis elit sed augue.
+                            </td>
+                            <td>
+                                <button type="" class="btn btn-primary"  data-toggle="modal" data-target="#editDistributor">Edit</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -24,6 +24,7 @@ public class AdminDistributorController {
          List<Distributor> distributorList=distributorDao.getAll();
          ModelAndView modelAndView=new ModelAndView("web-admin/distributors/index");
          modelAndView.addObject("distributor",distributorList);
+         System.out.print(distributorList);
      return modelAndView;
     }
     @RequestMapping(value = "create",method = RequestMethod.GET)
