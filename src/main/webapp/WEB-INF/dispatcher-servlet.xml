@@ -46,6 +46,7 @@
                 <value>entity.UserRole</value>
                 <value>entity.UserInf</value>
                 <value>entity.AuthCredential</value>
+                <value>entity.Distributor</value>
             </list>
         </property>
         <property name="hibernateProperties">
