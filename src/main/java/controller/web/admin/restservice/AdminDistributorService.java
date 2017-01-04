@@ -24,6 +24,8 @@ public class AdminDistributorService {
     @RequestMapping(value = "create",method = RequestMethod.POST)
     public ResponseEntity<?> create (@Valid DistributorForm distributorForm, BindingResult result, HttpServletRequest request){
          String errorMsg="Something Wrong";
+         System.out.println(distributorForm);
+
          try{
              ServiceResponse serviceResponse=ServiceResponse.getInstance();
              serviceResponse.bindValidationError(result);
