@@ -19,7 +19,7 @@
               >
         <sec:intercept-url pattern="/admin/**"
                            access="ROLE_ADMIN"  />
-        <sec:form-login login-page="/admin-authentication"/>
+        <sec:form-login login-page="/admin-login/auth"/>
     </sec:http>
 
     <sec:http auto-config="true" pattern="/api/admin/**"

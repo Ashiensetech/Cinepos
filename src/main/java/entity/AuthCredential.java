@@ -1,5 +1,7 @@
 package entity;
 
+import entity.iface.AppCredential;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -8,7 +10,34 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "auth_credential")
-public class AuthCredential {
+public class AuthCredential implements AppCredential {
+
+    public AuthCredential() {
+    }
+
+    public AuthCredential(int id,
+                          boolean isAdmin,
+                          UserInf userInf,
+                          UserRole userRole,
+                          String userName,
+                          String password,
+                          boolean isActivated,
+                          boolean isEmailConfirmed,
+                          boolean changedDefaultPassword,
+                          Integer createdBy,
+                          Timestamp createdAt) {
+        this.id = id;
+        this.isAdmin = isAdmin;
+        this.userInf = userInf;
+        this.userRole = userRole;
+        this.userName = userName;
+        this.password = password;
+        this.isActivated = isActivated;
+        this.isEmailConfirmed = isEmailConfirmed;
+        this.changedDefaultPassword = changedDefaultPassword;
+        this.createdBy = createdBy;
+        this.createdAt = createdAt;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +74,11 @@ public class AuthCredential {
 
     @Basic
     @Column(name = "changed_defult_password")
-    private boolean changedDefultPassword;
+    private boolean changedDefaultPassword;
+
+    @Basic
+    @Column(name = "created_by")
+    private Integer createdBy;
 
     @Basic
     @Column(name = "created_at")
@@ -60,7 +93,7 @@ public class AuthCredential {
         this.id = id;
     }
 
-    public boolean isAdmin() {
+    public boolean getIsAdmin() {
         return isAdmin;
     }
 
@@ -84,7 +117,7 @@ public class AuthCredential {
         this.userName = userName;
     }
 
-    public boolean isEmailConfirmed() {
+    public boolean getIsEmailConfirmed() {
         return isEmailConfirmed;
     }
 
@@ -119,36 +152,26 @@ public class AuthCredential {
         this.isActivated = isActivated;
     }
 
-    public boolean getChangedDefultPassword() {
-        return changedDefultPassword;
+    public boolean getChangedDefaultPassword() {
+        return changedDefaultPassword;
     }
 
-    public void setChangedDefultPassword(boolean changedDefultPassword) {
-        this.changedDefultPassword = changedDefultPassword;
+    public void setChangedDefaultPassword(boolean changedDefultPassword) {
+        this.changedDefaultPassword = changedDefultPassword;
+    }
+    public Integer getCreatedBy() {
+        return createdBy;
     }
 
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
+    }
     public Timestamp getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
-    }
-
-    @Override
-    public String toString() {
-        return "AuthCredential{" +
-                "id=" + id +
-                ", isAdmin=" + isAdmin +
-                ", userInf=" + userInf +
-                ", userRole=" + userRole +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", isActivated=" + isActivated +
-                ", isEmailConfirmed=" + isEmailConfirmed +
-                ", changedDefultPassword=" + changedDefultPassword +
-                ", createdAt=" + createdAt +
-                '}';
     }
 
     @Override
@@ -162,11 +185,12 @@ public class AuthCredential {
         if (isAdmin != that.isAdmin) return false;
         if (isActivated != that.isActivated) return false;
         if (isEmailConfirmed != that.isEmailConfirmed) return false;
-        if (changedDefultPassword != that.changedDefultPassword) return false;
+        if (changedDefaultPassword != that.changedDefaultPassword) return false;
         if (userInf != null ? !userInf.equals(that.userInf) : that.userInf != null) return false;
         if (userRole != null ? !userRole.equals(that.userRole) : that.userRole != null) return false;
         if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
         if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
         return !(createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null);
 
     }
@@ -181,8 +205,26 @@ public class AuthCredential {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (isActivated ? 1 : 0);
         result = 31 * result + (isEmailConfirmed ? 1 : 0);
-        result = 31 * result + (changedDefultPassword ? 1 : 0);
+        result = 31 * result + (changedDefaultPassword ? 1 : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AuthCredential{" +
+                "id=" + id +
+                ", getIsAdmin=" + isAdmin +
+                ", userInf=" + userInf +
+                ", userRole=" + userRole +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", isActivated=" + isActivated +
+                ", getIsEmailConfirmed=" + isEmailConfirmed +
+                ", changedDefaultPassword=" + changedDefaultPassword +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

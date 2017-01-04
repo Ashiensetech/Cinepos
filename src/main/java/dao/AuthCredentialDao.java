@@ -3,6 +3,7 @@ package dao;
 
 import entity.AuthCredential;
 import entity.Category;
+import entity.UserRole;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,6 +37,37 @@ public class AuthCredentialDao extends BaseDao {
         }finally {
             if(session!=null)session.close();
         }
+    }
+    public AuthCredential getById(int id){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            return (AuthCredential)session.createQuery("FROM AuthCredential where id = :id").setParameter("id", id).uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+    }
+    public AuthCredential getByUserName(String userName){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            return (AuthCredential)session.createQuery("FROM AuthCredential where userName = :userName")
+                    .setParameter("userName", userName)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
     }
 
 }

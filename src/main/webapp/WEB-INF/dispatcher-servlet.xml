@@ -9,7 +9,7 @@
 
 
     <mvc:annotation-driven/>
-    <context:component-scan base-package="controller,dao,utility"   />
+    <context:component-scan base-package="controller,dao,utility,validator,authuser"   />
 
     <context:property-placeholder properties-ref="configProperties" />
 
@@ -18,11 +18,19 @@
 
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location">
-            <value>/WEB-INF/localConfig.properties</value>
-            <!--<value>/WEB-INF/liveConfig.properties</value>-->
+            <value>/WEB-INF/resource-config/localConfig.properties</value>
+            <!--<value>/WEB-INF/resource-config/liveConfig.properties</value>-->
         </property>
     </bean>
 
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>/WEB-INF/resource-config/uriConfig</value>
+            </list>
+        </property>
+    </bean>
     <!-- ******************** Utility BEAN *********************************** -->
     <bean id="_velocityTemplatePath" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="${velocity.resource.path}" />

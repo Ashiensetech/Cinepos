@@ -10,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
@@ -21,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * Created by mi on 1/2/17.
@@ -41,21 +41,18 @@ public class AdminAuthenticationService {
             ServiceResponse serviceResponse = ServiceResponse.getInstance();
             serviceResponse.bindValidationError(result);
             if(serviceResponse.hasErrors()){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(serviceResponse.getFormError());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMsg);
             }
 
-            String username=loginForm.getEmail();
+            String username=loginForm.getUserName();
             String password=loginForm.getPassword();
 
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
             System.out.println("token "+token);
             token.setDetails(new WebAuthenticationDetails(request));
-
             Authentication auth = authenticationManager.authenticate(token);
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(auth);
-
-
 
             if(auth.isAuthenticated()){
                 HttpSession session = request.getSession(true);
@@ -64,16 +61,16 @@ public class AdminAuthenticationService {
                 return ResponseEntity.status(HttpStatus.OK).body((CustomUserDetails)auth.getPrincipal());
             }
         } catch (Exception e) {
-
+            System.out.println(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.OK).body(ServiceResponse.getMsg(errorMsg));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ServiceResponse.getMsg(errorMsg));
     }
     @RequestMapping(value = "/admin/do-logout", method = RequestMethod.POST)
-    public CustomUserDetails logout(HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<Map<String,String>> logout(HttpServletRequest request, HttpServletResponse response) {
 
         HttpSession session = request.getSession();
         session.setAttribute("SPRING_SECURITY_CONTEXT", null);
-        return new CustomUserDetails();
+        return ResponseEntity.ok(ServiceResponse.getMsg("Logout"));
     }
 
 

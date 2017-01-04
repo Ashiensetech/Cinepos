@@ -8,19 +8,18 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class LoginForm {
 
-    @NotBlank
-    @Email(message = "Not a valid email")
-    private String email;
+    @NotBlank(message = "User name can not be empty")
+    private String userName;
 
     @NotBlank(message = "Password can not be empty")
     private String password;
 
-    public String getEmail() {
-        return email;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getPassword() {

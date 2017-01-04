@@ -1,11 +1,11 @@
 package controller.web.admin.restservice;
 
+import controller.web.admin.AdminUriPreFix;
 import dao.AuthCredentialDao;
 import dao.UserInfDao;
 import dao.UserRoleDao;
 import entity.AuthCredential;
 import entity.UserInf;
-import entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
 import validator.admin.AdminUserService.CreateAdminUserForm;
+import validator.admin.AdminUserService.CreateAdminUserValidator;
 
 import javax.validation.Valid;
 
@@ -22,7 +23,7 @@ import javax.validation.Valid;
  * Created by mi on 1/3/17.
  */
 @RestController
-@RequestMapping(AdminApiPreFix.authUriPrefix+"/user")
+@RequestMapping(AdminUriPreFix.apiUriPrefix +"/user")
 public class AdminUserService {
     @Autowired
     UserInfDao userInfDao;
@@ -33,8 +34,12 @@ public class AdminUserService {
     @Autowired
     UserRoleDao userRoleDao;
 
-    @RequestMapping(value = "/create",method = RequestMethod.GET)
-    public ResponseEntity<?> create(@Valid CreateAdminUserForm createAdminUserForm,BindingResult result){
+    @Autowired
+    CreateAdminUserValidator createAdminUserValidator;
+
+    //@JsonView(AppCredential.class)
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
+    public ResponseEntity<?> createUser(@Valid CreateAdminUserForm createAdminUserForm,BindingResult result){
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
         serviceResponse.bindValidationError(result);
 
@@ -42,6 +47,13 @@ public class AdminUserService {
             return ResponseEntity.status(HttpStatus.OK).body(serviceResponse.getFormError());
         }
 
+        createAdminUserValidator.validate(createAdminUserForm, result);
+
+        serviceResponse.bindValidationError(result);
+
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.OK).body(serviceResponse.getFormError());
+        }
 //        userRoleDao.getById();
 
 
@@ -65,11 +77,12 @@ public class AdminUserService {
         authCredential.setUserRole(userRoleDao.getById(1));
         authCredential.setIsAdmin(true);
         authCredential.setIsActivated(true);
-        authCredential.setChangedDefultPassword(false);
+        authCredential.setChangedDefaultPassword(false);
         authCredential.setUserInf(userInf);
+        authCredential.setCreatedBy(1);
         authCredentialDao.insert(authCredential);
 
-        return ResponseEntity.status(HttpStatus.OK).body(authCredential);
+        return ResponseEntity.status(HttpStatus.OK).body(authCredentialDao.getById(authCredential.getId()));
 
     }
 }
