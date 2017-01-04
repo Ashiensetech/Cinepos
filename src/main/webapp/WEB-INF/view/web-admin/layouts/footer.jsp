@@ -10,8 +10,14 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="<c:url value="/admin-resources/metisMenu/metisMenu.min.js"/>"></script>
 
+<script src="<c:url value="/admin-resources/datatables/js/jquery.dataTables.min.js"/>"></script>
+<script src="<c:url value="/admin-resources/datatables-plugins/dataTables.bootstrap.min.js"/>"></script>
+<script src="<c:url value="/admin-resources/datatables-responsive/dataTables.responsive.js"/>"></script>
+
+
+
 <!-- Custom Theme JavaScript -->
-<script src="<c:url value="/admin-resources//dist/js/sb-admin-2.js"/>"></script>
+<script src="<c:url value="/admin-resources/dist/js/sb-admin-2.js"/>"></script>
 
 <!-- Include Date Range Picker -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
@@ -25,7 +31,13 @@
             container: container,
             todayHighlight: true,
             autoclose: true,
-        })
+        });
+    });
+
+    $(document).ready(function() {
+        $('#dataTables').DataTable({
+            responsive: true
+        });
     });
 
 

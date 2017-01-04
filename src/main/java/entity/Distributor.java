@@ -38,11 +38,11 @@ public class Distributor {
     private String description;
 
     @Basic
-    @Column(name = "created_by")
+    @Column(name = "created_by",nullable = true)
     private int createdBy;
 
     @Basic
-    @Column(name = "updated_by")
+    @Column(name = "updated_by",nullable = true)
     private int updatedBy;
 
     @Basic
@@ -50,7 +50,7 @@ public class Distributor {
     private Timestamp createdAt;
 
     @Basic
-    @Column(name = "updated_at")
+    @Column(name = "updated_at",nullable = true)
     private Timestamp updatedAt;
 
     public int getId() {
