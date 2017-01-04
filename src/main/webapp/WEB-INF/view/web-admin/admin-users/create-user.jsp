@@ -47,6 +47,11 @@
               <p class="help-block error">Validation Error</p>
             </div>
             <div class="form-group">
+              <label>Address</label>
+              <textarea class="form-control" id="address" ></textarea>
+              <p class="help-block error">Validation Error</p>
+            </div>
+            <div class="form-group">
               <label>Email</label>
               <input class="form-control" id="email" >
               <p class="help-block error">Validation Error</p>
@@ -56,6 +61,11 @@
             <div class="form-group">
               <label>User name</label>
               <input class="form-control" id="userName" >
+              <p class="help-block error">Validation Error</p>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input class="form-control" id="password" type="password" >
               <p class="help-block error">Validation Error</p>
             </div>
             <div class="form-group">
@@ -70,22 +80,22 @@
               <div class='input-group date'>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                <input type='text' class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
+                <input id="dob" type='text' class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
 
               </div>
             </div>
             <div class="form-group">
               <label>Select Role</label>
               <select class="form-control" id="roleId" >
-                <d:foreach item="${userRoles}" >
-
-                </d:foreach>
-                <option>Admin</option>
-                <option>Super Admin</option>
+                <d:forEach var="userRole" items="${userRoles}" >
+                    <option value="${userRole.id}">${userRole.displayName}</option>
+                </d:forEach>
               </select>
+              <p class="help-block error-form" id="errorMsg_url"></p>
+
             </div>
             <br>
-            <button class="btn btn-primary">Create Admin</button>
+            <button class="btn btn-primary" onclick="return submitUserData()">Create Admin</button>
           </form>
         </div>
       </div>
@@ -111,6 +121,7 @@
     var userName=$("#userName").val();
     var password=$("#password").val();
     var roleId = $("#roleId").val();
+    var dob = $("#dob").val();
     $.ajax({
       url: '/api/admin/user/create',
       type: 'POST',
@@ -124,7 +135,8 @@
         status:status,
         userName:userName,
         password:password,
-        roleId: roleId
+        roleId: roleId,
+        dob:dob
       },
       success: function(data){
         console.log(data);
@@ -145,6 +157,7 @@
 
       }
     });
+    return false;
   }
 </script>
 </body>

@@ -16,6 +16,9 @@
 <!-- Include Date Range Picker -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 
+<%--Developer Custom Js--%>
+<script type="text/javascript" src="/resource/js/helper/ErrorMessaging.js"></script>
+
 <script>
     $(document).ready(function(){
         var date_input=$('input[name="date"]'); //our date input has the name "date"
@@ -34,15 +37,6 @@
         $.ajax({
             url: '/auth/admin/do-logout',
             type: 'GET',
-            data: {
-                userName: userName,
-                password: password
-            },statusCode: {
-                401: function (response) {
-                    console.log("unauthorized");
-                    console.log(response);
-                }
-            },
             success: function (data) {
                 console.log("SUCCESS");
                 console.log(data);

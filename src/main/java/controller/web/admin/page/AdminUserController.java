@@ -24,7 +24,7 @@ public class AdminUserController {
     @RequestMapping("/create")
     public ModelAndView createAdminUserPage(Authentication authentication){
         ModelAndView mav = new ModelAndView("web-admin/admin-users/create-user");
-        List<UserRole> userRoles = userRoleDao.getAll();
+        List<UserRole> userRoles = userRoleDao.getAllAdminstrative();
         mav.addObject("userRoles",userRoles);
         return mav;
     }

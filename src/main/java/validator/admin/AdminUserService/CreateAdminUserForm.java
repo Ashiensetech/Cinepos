@@ -23,6 +23,9 @@ public class CreateAdminUserForm {
     @Email(message = "Email is not valid")
     private String  email;
 
+    @NotBlank(message = "Date of birth required")
+    private String dob;
+
     @NotBlank(message = "Phone required")
     private String phone;
 
@@ -31,9 +34,6 @@ public class CreateAdminUserForm {
 
     @NotBlank(message = "Gender required")
     private String gender;
-
-    @NotBlank(message = "Status required")
-    private String status;
 
     @NotBlank(message = "User name required")
     private String  userName;
@@ -68,6 +68,14 @@ public class CreateAdminUserForm {
         this.email = email;
     }
 
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -92,13 +100,6 @@ public class CreateAdminUserForm {
         this.gender = gender;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public String getUserName() {
         return userName;
@@ -133,7 +134,6 @@ public class CreateAdminUserForm {
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
                 ", gender='" + gender + '\'' +
-                ", status='" + status + '\'' +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
                 '}';

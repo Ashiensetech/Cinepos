@@ -34,12 +34,28 @@ public class UserRoleDao extends BaseDao {
         return null;
     }
 
+
     public List<UserRole> getAll(){
         Session session = null;
 
         try{
             session = this.sessionFactory.openSession();
             return session.createQuery("FROM UserRole ").list();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<>();
+    }
+    public List<UserRole> getAllAdminstrative(){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            return session.createQuery("FROM UserRole where group in :group")
+                    .setParameter("group",new ArrayList<String>(){{add("ADMINSTRATIVE");add("SALES_USER");}}).list();
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();
