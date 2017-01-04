@@ -45,7 +45,7 @@ public class AdminUserService {
         serviceResponse.bindValidationError(result);
 
         if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.OK).body(serviceResponse.getFormError());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
         }
 
         createAdminUserValidator.validate(createAdminUserForm, result);
@@ -53,7 +53,7 @@ public class AdminUserService {
         serviceResponse.bindValidationError(result);
 
         if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.OK).body(serviceResponse.getFormError());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
         }
 //        userRoleDao.getById();
 

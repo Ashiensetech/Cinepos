@@ -91,7 +91,7 @@
                     <option value="${userRole.id}">${userRole.displayName}</option>
                 </d:forEach>
               </select>
-              <p class="help-block error-form" id="errorMsg_url"></p>
+              <p class="help-block error-form" id="errorMsg_roleId"></p>
 
             </div>
             <br>
@@ -137,8 +137,16 @@
         password:password,
         roleId: roleId,
         dob:dob
-      },
-      success: function(data){
+      },statusCode: {
+        401: function (response) {
+          console.log("unauthorized");
+          console.log(response);
+        },
+        400: function (response) {
+          console.log(response);
+          BindErrorsWithHtml(,response);
+        }
+      },success: function(data){
         console.log(data);
         if(data.responseStat.status == true){
           $("#alertMsg").html(data.responseStat.msg).fadeIn(500).delay(2000).fadeOut(500,function(){

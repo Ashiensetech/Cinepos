@@ -15,7 +15,8 @@
 
     <mvc:resources mapping="/admin-resources/**" location="/WEB-INF/admin-resources/"
                    cache-period="31556926"/>
-
+    <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"
+                   cache-period="31556926"/>
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location">
             <value>/WEB-INF/resource-config/localConfig.properties</value>

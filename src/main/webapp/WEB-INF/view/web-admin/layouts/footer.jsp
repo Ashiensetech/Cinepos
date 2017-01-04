@@ -23,7 +23,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 
 <%--Developer Custom Js--%>
-<script type="text/javascript" src="/resource/js/helper/ErrorMessaging.js"></script>
+<script type="text/javascript" src="<c:url value="/resources/js/helper/ErrorMessaging.js"/>"></script>
 
 <script>
     $(document).ready(function(){
