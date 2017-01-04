@@ -8,11 +8,12 @@
                 <a href="#">Admin<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="create.html">Create Admin</a>
+                        <a href="/admin/user/all">All Admin</a>
                     </li>
                     <li>
-                        <a href="edit.html">Edit Admin</a>
+                        <a href="/admin/user/create">Create Admin</a>
                     </li>
+
                 </ul>
                 <!-- /.nav-second-level -->
             </li>

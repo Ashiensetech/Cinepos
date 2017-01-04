@@ -6,4 +6,4 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="TEXT/HTML; ISO-8859-1/json" language="java" %>
-  <h3>Page not found <b>"MORON"</b> !!! </h3>
+  <h3>Page not found !!! </h3>

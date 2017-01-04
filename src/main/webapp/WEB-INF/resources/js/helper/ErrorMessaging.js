@@ -98,3 +98,13 @@ function requiredValidation(preFix){
     });
     return flag;
 }
+function enableDisableFormElement(formId,elemType,enable){
+
+    $("#"+formId).find(elemType.join(",")).each(function(){
+            if(enable){
+                $(this).removeAttr("disabled");
+            }else{
+                $(this).attr("disabled","disabled");
+            }
+    });
+}

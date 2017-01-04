@@ -58,6 +58,6 @@
         return false;
     }
 
-    var BASEURL = "<spring:message code="base.uri" />";
+    var BASEURL = "<c:message code="base.uri" />";
 </script>
 
