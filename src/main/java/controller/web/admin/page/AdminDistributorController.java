@@ -23,7 +23,7 @@ public class AdminDistributorController {
     public ModelAndView index(){
          List<Distributor> distributorList=distributorDao.getAll();
          ModelAndView modelAndView=new ModelAndView("web-admin/distributors/index");
-         modelAndView.addObject("distributor",distributorList);
+         modelAndView.addObject("distributors",distributorList);
          System.out.print(distributorList);
      return modelAndView;
     }

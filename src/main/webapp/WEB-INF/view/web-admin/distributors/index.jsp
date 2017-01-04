@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="d" %>
+<%@ taglib  uri="http://java.sun.com/jsp/jstl/core" prefix="d" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
@@ -43,21 +43,28 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="odd gradeC">
-                            <td>Trident</td>
-                            <td>demo@admin.com</td>
-                            <td>demo@admin2.com</td>
-                            <td>+880145754</td>
-                            <td>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, augue et euismod tristique, felis diam aliquam velit, eget egestas felis elit sed augue.
-                            </td>
-                            <td>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam tincidunt, augue et euismod tristique, felis diam aliquam velit, eget egestas felis elit sed augue.
-                            </td>
-                            <td>
-                                <button type="" class="btn btn-primary"  data-toggle="modal" data-target="#editDistributor">Edit</button>
-                            </td>
-                        </tr>
+
+                        <d:choose>
+                            <d:when test="${not empty distributors}">
+                                <d:forEach var="distributorValue" items="${distributors}">
+                                    <tr class="odd gradeC">
+                                        <td>${distributorValue.name}</td>
+                                        <td>${distributorValue.primaryEmail}</td>
+                                        <td>${distributorValue.secondaryEmail}</td>
+                                        <td>${distributorValue.phone}</td>
+                                        <td>${distributorValue.address}</td>
+                                        <td>${distributorValue.description}</td>
+                                        <td>
+                                            <button type="" class="btn btn-primary"  data-toggle="modal" data-target="#editDistributor">Edit</button>
+                                        </td>
+                                    </tr>
+                                </d:forEach>
+                            </d:when>
+                            <d:otherwise>
+                                 <p>Distributor's Empty</p>
+                            </d:otherwise>
+                        </d:choose>
+
                         </tbody>
                     </table>
                 </div>
