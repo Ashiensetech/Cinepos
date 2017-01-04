@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!-- /#wrapper -->
 
 <!-- jQuery -->
@@ -25,6 +26,32 @@
             todayHighlight: true,
             autoclose: true,
         })
-    })
+    });
+
+
+    function doLogout(){
+
+        $.ajax({
+            url: '/auth/admin/do-logout',
+            type: 'GET',
+            data: {
+                userName: userName,
+                password: password
+            },statusCode: {
+                401: function (response) {
+                    console.log("unauthorized");
+                    console.log(response);
+                }
+            },
+            success: function (data) {
+                console.log("SUCCESS");
+                console.log(data);
+                window.location = "/admin/user/create";
+            }
+        });
+        return false;
+    }
+
+    var BASEURL = "<spring:message code="base.uri" />";
 </script>
 

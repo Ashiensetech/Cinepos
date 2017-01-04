@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+    <title>Cinepos</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<c:url value="/admin-resources/bootstrap/css/bootstrap.min.css" />" rel="stylesheet">
@@ -58,7 +58,7 @@
                                     </label>
                                 </div>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <a href="javascript:void(0)" class="btn btn-primary btn-block">Login</a>
+                                <input type="submit" href="javascript:void(0)" class="btn btn-primary btn-block" value="Login" />
                             </fieldset>
                         </form>
                     </div>
@@ -79,6 +79,7 @@
     <!-- Custom Theme JavaScript -->
     <script src="<c:url value="/admin-resources/dist/js/sb-admin-2.js" />"></script>
     <script>
+        var BASEURL = "<spring:message code="base.uri" />";
         function doLogin(){
             var userName = $('#username').val();
             var password = $('#password').val();
@@ -105,5 +106,5 @@
         }
     </script>
 </body>
-<spring:message code="base.uri" />
+
 </html>

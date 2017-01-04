@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="d" %>
+<%@ taglib prefix="d" uri="http://java.sun.com/jsp/jstl/core"  %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
@@ -33,27 +33,34 @@
           <form>
             <div class="form-group">
               <label>First Name</label>
-              <input class="form-control">
+              <input class="form-control" id="firstName">
               <p class="help-block error">Validation Error</p>
             </div>
             <div class="form-group">
               <label>Last Name</label>
-              <input class="form-control">
-              <p class="help-block error">Validation Error</p>
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input class="form-control">
+              <input class="form-control"  id="lastName" >
               <p class="help-block error">Validation Error</p>
             </div>
             <div class="form-group">
               <label>Phone number</label>
-              <input class="form-control">
+              <input class="form-control" id="phone" >
+              <p class="help-block error">Validation Error</p>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input class="form-control" id="email" >
+              <p class="help-block error">Validation Error</p>
+            </div>
+
+
+            <div class="form-group">
+              <label>User name</label>
+              <input class="form-control" id="userName" >
               <p class="help-block error">Validation Error</p>
             </div>
             <div class="form-group">
               <label>Sex</label>
-              <select class="form-control">
+              <select class="form-control" id="gender" >
                 <option>Male</option>
                 <option>Female</option>
               </select>
@@ -69,7 +76,10 @@
             </div>
             <div class="form-group">
               <label>Select Role</label>
-              <select class="form-control">
+              <select class="form-control" id="roleId" >
+                <d:foreach item="${userRoles}" >
+
+                </d:foreach>
                 <option>Admin</option>
                 <option>Super Admin</option>
               </select>
@@ -89,49 +99,53 @@
 <jsp:directive.include file="../layouts/footer.jsp" />
 
 <script>
-  BASEURL = "http://localhost:9090";
-  var firstName ="";
-  var lastName="";
-  var email="";
-  var phone="";
-  var address="";
-  var gender="";
-  var status="";
-  var userName="";
-  var password="";
-  $.ajax({
-    url: BASEURL+'/api/admin/user/create',
-    type: 'POST',
-    data: {
-      firstName:firstName,
-      lastName:lastName,
-      email:email,
-      phone:phone,
-      address:address,
-      gender:gender,
-      status:status,
-      userName:userName,
-      password:password
-    },
-    success: function(data){
-      console.log(data);
-      if(data.responseStat.status == true){
-        $("#alertMsg").html(data.responseStat.msg).fadeIn(500).delay(2000).fadeOut(500,function(){
-          var url =BASEURL+"/home";
-          var prevUrl = "";
-          prevUrl = location.search.split('r=')[1];
-          url=(prevUrl!=undefined)? decodeURIComponent( prevUrl):url;
-          window.location.href = url;
-        });
-      }else{
-        $("#alertMsg").html(data.responseStat.msg).fadeIn(500).delay(3000).fadeOut(500,function(){
-          $("#signBtn").removeAttr("disabled","disabled");
-        });
-      }
-      $("#signInProgressImg").hide();
+  function submitUserData(){
 
-    }
-  });
+    var firstName =$("#firstName").val();
+    var lastName=$("#lastName").val();
+    var email=$("#email").val();
+    var phone=$("#phone").val();
+    var address=$("#address").val();
+    var gender=$("#gender").val();
+    var status=$("#status").val();
+    var userName=$("#userName").val();
+    var password=$("#password").val();
+    var roleId = $("#roleId").val();
+    $.ajax({
+      url: '/api/admin/user/create',
+      type: 'POST',
+      data: {
+        firstName:firstName,
+        lastName:lastName,
+        email:email,
+        phone:phone,
+        address:address,
+        gender:gender,
+        status:status,
+        userName:userName,
+        password:password,
+        roleId: roleId
+      },
+      success: function(data){
+        console.log(data);
+        if(data.responseStat.status == true){
+          $("#alertMsg").html(data.responseStat.msg).fadeIn(500).delay(2000).fadeOut(500,function(){
+            var url =BASEURL+"/home";
+            var prevUrl = "";
+            prevUrl = location.search.split('r=')[1];
+            url=(prevUrl!=undefined)? decodeURIComponent( prevUrl):url;
+            window.location.href = url;
+          });
+        }else{
+          $("#alertMsg").html(data.responseStat.msg).fadeIn(500).delay(3000).fadeOut(500,function(){
+            $("#signBtn").removeAttr("disabled","disabled");
+          });
+        }
+        $("#signInProgressImg").hide();
+
+      }
+    });
+  }
 </script>
 </body>
 

@@ -65,7 +65,7 @@ public class AdminAuthenticationService {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ServiceResponse.getMsg(errorMsg));
     }
-    @RequestMapping(value = "/admin/do-logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/do-logout", method = RequestMethod.GET)
     public ResponseEntity<Map<String,String>> logout(HttpServletRequest request, HttpServletResponse response) {
 
         HttpSession session = request.getSession();
