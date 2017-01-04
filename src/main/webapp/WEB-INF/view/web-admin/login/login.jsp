@@ -1,5 +1,5 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="d" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,7 +44,7 @@
                         <h3 class="panel-title">Please Sign In</h3>
                     </div>
                     <div class="panel-body">
-                        <form role="form" onsubmit="return doLogin()">
+                        <form role="form" onsubmit="return doLogin()" id="loginForm">
                             <fieldset>
                                 <div class="form-group">
                                     <input class="form-control" placeholder="User name" id="username" type="text" autofocus>
@@ -52,13 +52,15 @@
                                 <div class="form-group">
                                     <input class="form-control" placeholder="Password" id="password" type="password" value="">
                                 </div>
-                                <div class="checkbox">
+                                <%--<div class="checkbox">
                                     <label>
                                         <input name="remember" type="checkbox" value="Remember Me">Remember Me
                                     </label>
-                                </div>
+                                </div>--%>
                                 <!-- Change this to a button or input when using this as a form -->
-                                <input type="submit" href="javascript:void(0)" class="btn btn-primary btn-block" value="Login" />
+                                <input id="loginSubmit" type="submit" href="javascript:void(0)" class="btn btn-primary btn-block" value="Login" />
+                                <p class="help-block" id="progressStatus"></p>
+                                <p class="help-block error" id="loginError"></p>
                             </fieldset>
                         </form>
                     </div>
@@ -78,14 +80,23 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="<c:url value="/admin-resources/dist/js/sb-admin-2.js" />"></script>
+
+    <%--Developer Custom Js--%>
+    <script type="text/javascript" src="<c:url value="/resources/js/helper/ErrorMessaging.js"/>"></script>
     <script>
-        var BASEURL = "<spring:message code="base.uri" />";
+        var BASEURL = "<c:message code="base.uri" />";
         function doLogin(){
+            $("#loginError").html("").hide();
+            $("#progressStatus").html("Processing...").show();
+            $("#loginSubmit").attr("disabled","disabled");
             var userName = $('#username').val();
             var password = $('#password').val();
+
+            enableDisableFormElement("loginForm",["input"],false);
+
 //          console.log(email, password);
             $.ajax({
-                url: '/auth/admin/do-auth',
+                url: BASEURL+'/auth/admin/do-auth',
                 type: 'POST',
                 data: {
                     userName: userName,
@@ -94,12 +105,18 @@
                     401: function (response) {
                         console.log("unauthorized");
                         console.log(response);
+                        $("#loginError").html(response.responseJSON.msg).show();
+                        $("#loginSubmit").removeAttr("disabled");
+                        $("#progressStatus").hide().html();
+                        enableDisableFormElement("loginForm",["input"],true);
                     }
                 },
                 success: function (data) {
                     console.log("SUCCESS");
-                    console.log(data);
-                    window.location = "/admin/user/create";
+                    $("#progressStatus").html("Login Success");
+                    $("#loginSubmit").removeAttr("disabled");
+                    enableDisableFormElement("loginForm",["input"],true);
+                    window.location = BASEURL+"/admin/user/all";
                 }
             });
             return false;

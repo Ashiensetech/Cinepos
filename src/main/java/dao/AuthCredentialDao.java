@@ -69,5 +69,19 @@ public class AuthCredentialDao extends BaseDao {
         }
         return null;
     }
+    public List<AuthCredential> getAllAdminUser(){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            return session.createQuery("FROM AuthCredential where isAdmin = true order by id desc ").list();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<>();
+    }
 
 }

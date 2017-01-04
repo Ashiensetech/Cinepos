@@ -19,9 +19,9 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServiceResponse {
 
-    private Map<String,String> formError;
+    private List<Map<String,String>> formError;
     private ServiceResponse() {
-        formError = new HashMap<String, String>();
+        formError = new ArrayList<>();
     }
     public static ServiceResponse getInstance(){
         return new ServiceResponse();
@@ -56,11 +56,14 @@ public class ServiceResponse {
         }
     }
 
-    public Map<String, String> getFormError() {
+    public List<Map<String, String>> getFormError() {
         return formError;
     }
 
     public void setValidationError(String params, String msg){
-     this.formError.put(params,msg);
+        Map<String,String> errorObj = new HashMap<>();
+        errorObj.put("params",params);
+        errorObj.put("msg",msg);
+     this.formError.add(errorObj);
     }
 }

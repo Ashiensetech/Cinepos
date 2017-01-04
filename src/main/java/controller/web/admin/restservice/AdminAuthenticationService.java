@@ -36,7 +36,7 @@ public class AdminAuthenticationService {
 
     @RequestMapping(value = "/admin/do-auth", method = RequestMethod.POST)
     public ResponseEntity<?> login(@Valid LoginForm loginForm, BindingResult result,HttpServletRequest request) {
-        String errorMsg = "Email or password is wrong";
+        String errorMsg = "Username or password is wrong";
         try {
             ServiceResponse serviceResponse = ServiceResponse.getInstance();
             serviceResponse.bindValidationError(result);

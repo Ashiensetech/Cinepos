@@ -13,12 +13,14 @@ import javax.validation.constraints.NotNull;
  */
 public class CreateAdminUserForm {
 
+    @Length(max = 50,message = "First name is too large")
     @NotBlank(message = "First name required")
     private String firstName;
-
+    @Length(max = 50,message = "Last name is too large")
     @NotBlank(message = "Last name required")
     private String  lastName;
 
+    @Length(max = 30,message = "Email is too large")
     @NotBlank(message = "Email required")
     @Email(message = "Email is not valid")
     private String  email;
@@ -26,6 +28,7 @@ public class CreateAdminUserForm {
     @NotBlank(message = "Date of birth required")
     private String dob;
 
+    @Length(max = 30,message = "Phone is too large")
     @NotBlank(message = "Phone required")
     private String phone;
 
@@ -35,10 +38,12 @@ public class CreateAdminUserForm {
     @NotBlank(message = "Gender required")
     private String gender;
 
+    @Length(max = 30,message = "User is too large")
     @NotBlank(message = "User name required")
     private String  userName;
 
-    @NotBlank @Length(min = 6,message = "At least 6 character")
+    @NotBlank(message = "Password name required")
+    @Length(min = 6,message = "At least 6 character")
     private String  password;
 
     @NotNull
