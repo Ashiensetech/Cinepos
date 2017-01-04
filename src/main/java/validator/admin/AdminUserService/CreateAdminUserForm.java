@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.context.ApplicationContext;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by mi on 1/3/17.
@@ -40,7 +41,7 @@ public class CreateAdminUserForm {
     @NotBlank @Length(min = 6,message = "At least 6 character")
     private String  password;
 
-    @NotBlank
+    @NotNull
     private Integer roleId;
 
     public String getFirstName() {
