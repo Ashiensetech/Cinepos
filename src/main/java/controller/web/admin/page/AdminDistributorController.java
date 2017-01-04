@@ -1,20 +1,29 @@
 package controller.web.admin.page;
 
+import dao.DistributorDao;
+import entity.Distributor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Created by Sarwar on 1/3/2017.
- */
+
 @Controller
 @RequestMapping(value = "distributor")
 public class AdminDistributorController {
+    @Autowired
+    DistributorDao distributorDao;
     @RequestMapping(value = "index",method = RequestMethod.GET)
     public ModelAndView index(){
-     ModelAndView modelAndView=new ModelAndView("web-admin/distributors/index");
+         List<Distributor> distributorList=distributorDao.getAll();
+         ModelAndView modelAndView=new ModelAndView("web-admin/distributors/index");
+         modelAndView.addObject("distributor",distributorList);
      return modelAndView;
     }
     @RequestMapping(value = "create",method = RequestMethod.GET)
