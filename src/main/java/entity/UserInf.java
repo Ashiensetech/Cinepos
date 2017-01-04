@@ -1,6 +1,7 @@
 package entity;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -26,6 +27,9 @@ public class UserInf {
     @Column(name = "email")
     private String email;
 
+    @Basic
+    @Column(name = "dob")
+    private Date dob;
 
     @Basic
     @Column(name = "phone")
@@ -90,6 +94,14 @@ public class UserInf {
         this.email = email;
     }
 
+    public Date getDob() {
+        return dob;
+    }
+
+    public void setDob(Date dob) {
+        this.dob = dob;
+    }
+
     public String getPhone() {
         return phone;
     }
@@ -152,6 +164,7 @@ public class UserInf {
         if (firstName != null ? !firstName.equals(userInf.firstName) : userInf.firstName != null) return false;
         if (lastName != null ? !lastName.equals(userInf.lastName) : userInf.lastName != null) return false;
         if (email != null ? !email.equals(userInf.email) : userInf.email != null) return false;
+        if (dob != null ? !dob.equals(userInf.dob) : userInf.dob != null) return false;
         if (phone != null ? !phone.equals(userInf.phone) : userInf.phone != null) return false;
         if (address != null ? !address.equals(userInf.address) : userInf.address != null) return false;
         if (gender != null ? !gender.equals(userInf.gender) : userInf.gender != null) return false;
@@ -167,6 +180,7 @@ public class UserInf {
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (dob != null ? dob.hashCode() : 0);
         result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (gender != null ? gender.hashCode() : 0);
@@ -174,5 +188,22 @@ public class UserInf {
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "UserInf{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", dob=" + dob +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", gender='" + gender + '\'' +
+                ", status='" + status + '\'' +
+                ", createdAt=" + createdAt +
+                ", createdBy=" + createdBy +
+                '}';
     }
 }

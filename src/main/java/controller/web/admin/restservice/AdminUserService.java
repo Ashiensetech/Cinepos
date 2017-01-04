@@ -6,6 +6,7 @@ import dao.UserInfDao;
 import dao.UserRoleDao;
 import entity.AuthCredential;
 import entity.UserInf;
+import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class AdminUserService {
         serviceResponse.bindValidationError(result);
 
         if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.OK).body(serviceResponse.getFormError());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
         }
 
         createAdminUserValidator.validate(createAdminUserForm, result);
@@ -52,7 +53,7 @@ public class AdminUserService {
         serviceResponse.bindValidationError(result);
 
         if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.OK).body(serviceResponse.getFormError());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
         }
 //        userRoleDao.getById();
 
@@ -66,6 +67,7 @@ public class AdminUserService {
         userInf.setPhone(createAdminUserForm.getFirstName());
         userInf.setGender(createAdminUserForm.getGender());
         userInf.setAddress(createAdminUserForm.getAddress());
+        userInf.setDob(DateHelper.getStringToDate(createAdminUserForm.getDob(),"mm/dd/yyyy"));
         userInf.setStatus("1");
         userInf.setCreatedBy(1);
 
