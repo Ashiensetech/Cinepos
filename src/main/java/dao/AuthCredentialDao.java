@@ -38,6 +38,21 @@ public class AuthCredentialDao extends BaseDao {
             if(session!=null)session.close();
         }
     }
+    public void update(AuthCredential authCredential){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(authCredential);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
     public AuthCredential getById(int id){
         Session session = null;
 
@@ -68,6 +83,44 @@ public class AuthCredentialDao extends BaseDao {
             if(session!=null)session.close();
         }
         return null;
+    }
+    public boolean isUserNameUsedByOthers(int id,String userName){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            AuthCredential authCredential =  (AuthCredential)session.createQuery("FROM AuthCredential where userName = :userName and id != :id")
+                    .setParameter("userName", userName)
+                    .setParameter("id", id)
+                    .setMaxResults(1)
+                    .uniqueResult();
+            return (authCredential!=null);
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return false;
+    }
+    public boolean isEmailUsedByOthers(int id,String email){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            AuthCredential authCredential =  (AuthCredential)session.createQuery("FROM AuthCredential where userInf.email = :email and id != :id")
+                    .setParameter("email", email)
+                    .setParameter("id", id)
+                    .setMaxResults(1)
+                    .uniqueResult();
+            return (authCredential!=null);
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return false;
     }
     public List<AuthCredential> getAllAdminUser(){
         Session session = null;

@@ -1,4 +1,4 @@
-package validator.admin.AdminUserService;
+package validator.admin.AdminUserService.createUser;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 
 /**
  * Created by mi on 1/3/17.
@@ -48,6 +49,8 @@ public class CreateAdminUserForm {
 
     @NotNull
     private Integer roleId;
+
+    private java.sql.Date  dobDate;
 
     public String getFirstName() {
         return firstName;
@@ -128,6 +131,14 @@ public class CreateAdminUserForm {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    public Date getDobDate() {
+        return dobDate;
+    }
+
+    public void setDobDate(Date dobDate) {
+        this.dobDate = dobDate;
     }
 
     @Override

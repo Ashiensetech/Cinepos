@@ -71,16 +71,11 @@ public class DateHelper {
         return null;
 
     }
-    public static java.sql.Date getStringToDate(String strDate,String format){
+    public static java.sql.Date getStringToDate(String strDate,String format)throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        try {
-            Date date = dateFormat.parse(strDate);
+        Date date = dateFormat.parse(strDate);
 
-            return  new java.sql.Date(date.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return  new java.sql.Date(date.getTime());
 
     }
     public static Timestamp getSQLDateToTimeStamp(Date date){

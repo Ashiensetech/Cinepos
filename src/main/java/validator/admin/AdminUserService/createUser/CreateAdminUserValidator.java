@@ -1,14 +1,17 @@
-package validator.admin.AdminUserService;
+package validator.admin.AdminUserService.createUser;
 
 import dao.AuthCredentialDao;
 import dao.UserInfDao;
 import dao.UserRoleDao;
 import entity.AuthCredential;
 import entity.UserRole;
+import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
+import java.text.ParseException;
 
 /**
  * Created by mi on 1/4/17.
@@ -42,6 +45,12 @@ public class CreateAdminUserValidator implements Validator {
                 String fullName = authCredential.getUserInf().getFirstName()+" "+authCredential.getUserInf().getLastName();
                 errors.rejectValue("email", "Email name already been used by "+fullName);
             }
+        }
+
+        try {
+            createAdminUserForm.setDobDate(DateHelper.getStringToDate(createAdminUserForm.getDob(), "mm/dd/yyyy"));
+        } catch (ParseException e) {
+            errors.rejectValue("dob", "Date of birth format miss matched");
         }
 
 

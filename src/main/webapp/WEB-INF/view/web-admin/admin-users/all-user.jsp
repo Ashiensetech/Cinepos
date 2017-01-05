@@ -57,7 +57,9 @@
                     <td>${adminUser.userName}</td>
                     <td>${adminUser.userInf.email} </td>
                     <td>${adminUser.userRole.displayName}</td>
-                    <td><a href="<c:message code="base.uri" />/admin/user/edit/${adminUser.id}" type="button" class="btn btn-outline btn-primary" target="_blank">Edit</a></td>
+                    <td><a href="<c:message code="base.uri" />/admin/user/edit/${adminUser.id}"
+                           type="button"
+                           class="btn btn-outline btn-primary" >Edit</a></td>
                   </tr>
                 </d:forEach>
 

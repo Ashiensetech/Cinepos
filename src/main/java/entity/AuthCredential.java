@@ -48,7 +48,7 @@ public class AuthCredential implements AppCredential {
     @Column(name = "is_admin")
     private boolean isAdmin;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_inf_id", referencedColumnName = "id", nullable = true)
     private UserInf userInf;
 

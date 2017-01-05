@@ -24,13 +24,15 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
-          <h1 class="page-header">Add admin</h1>
+          <h1 class="page-header">Update admin</h1>
         </div>
         <!-- /.col-lg-12 -->
       </div>
       <div class="row">
         <div class="col-lg-6">
           <form>
+
+            <input type="hidden" class="form-control" id="authCredentialId" value="${adminUser.id}">
             <div class="form-group">
               <label>First Name</label>
               <input class="form-control" id="firstName" value="${adminUser.userInf.firstName}">
@@ -104,7 +106,7 @@
 
             </div>
             <br>
-            <button class="btn btn-primary" onclick="return submitUserData()">Create Admin</button>
+            <button class="btn btn-primary" onclick="return updateUserData()">Update Admin</button>
           </form>
         </div>
       </div>
@@ -118,8 +120,9 @@
 <jsp:directive.include file="../layouts/footer.jsp" />
 
 <script>
-  function submitUserData(){
+  function updateUserData(){
 
+    var id =$("#authCredentialId").val();
     var firstName =$("#firstName").val();
     var lastName=$("#lastName").val();
     var email=$("#email").val();
@@ -132,7 +135,7 @@
     var roleId = $("#roleId").val();
     var dob = $("#dob").val();
     $.ajax({
-      url: BASEURL+'/api/admin/user/create',
+      url: BASEURL+'/api/admin/user/edit/'+id,
       type: 'POST',
       data: {
         firstName:firstName,
