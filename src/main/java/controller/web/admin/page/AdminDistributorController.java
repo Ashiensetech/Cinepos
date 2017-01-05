@@ -22,7 +22,7 @@ public class AdminDistributorController {
     @RequestMapping(value = "index",method = RequestMethod.GET)
     public ModelAndView index(){
          List<Distributor> distributorList=distributorDao.getAll();
-         ModelAndView modelAndView=new ModelAndView("web-admin/distributors/index");
+         ModelAndView modelAndView=new ModelAndView("web-admin/distributors/all-distributor");
          modelAndView.addObject("distributors",distributorList);
          System.out.print(distributorList);
      return modelAndView;

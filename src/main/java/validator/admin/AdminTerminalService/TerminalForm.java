@@ -15,4 +15,12 @@ public class TerminalForm {
     @NotBlank @Min(value = 5,message = "Terminal type are required")
     private String type;
 
+    @Override
+    public String toString() {
+        return "TerminalForm{" +
+                "name='" + name + '\'' +
+                ", ipAddress='" + ipAddress + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }
