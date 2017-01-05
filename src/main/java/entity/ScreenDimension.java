@@ -9,14 +9,25 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "screen_dimension")
 public class ScreenDimension {
-    private int id;
-    private String name;
-    private String status;
-    private Integer createdBy;
-    private Timestamp createdAt;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    private int id;
+
+    @Basic
+    @Column(name = "name")
+    private String name;
+
+    @Basic
+    @Column(name = "created_by")
+    private Integer createdBy;
+
+    @Basic
+    @Column(name = "created_at")
+    private Timestamp createdAt;
+
+
     public int getId() {
         return id;
     }
@@ -25,8 +36,6 @@ public class ScreenDimension {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -35,18 +44,6 @@ public class ScreenDimension {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "status")
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    @Basic
-    @Column(name = "created_by")
     public Integer getCreatedBy() {
         return createdBy;
     }
@@ -55,8 +52,6 @@ public class ScreenDimension {
         this.createdBy = createdBy;
     }
 
-    @Basic
-    @Column(name = "created_at")
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -74,7 +69,6 @@ public class ScreenDimension {
 
         if (id != that.id) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (status != null ? !status.equals(that.status) : that.status != null) return false;
         if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
 
@@ -85,7 +79,6 @@ public class ScreenDimension {
     public int hashCode() {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;

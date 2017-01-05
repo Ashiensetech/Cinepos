@@ -18,4 +18,5 @@ class BaseDao {
         System.out.println(" ***** **** *** ** * SessionFactory Is Created * ** *** **** *****");
         this.sessionFactory = sessionFactory;
     }
+
 }

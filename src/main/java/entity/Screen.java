@@ -8,22 +8,54 @@ import java.sql.Timestamp;
  * Created by mi on 1/5/17.
  */
 @Entity
-@Table(name = "screen", schema = "", catalog = "cinepos")
+@Table(name = "screen", schema = "")
 public class Screen {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
-    private String screenName;
+    @Basic
+    @Column(name = "name")
+    private String name;
+
+    @Basic
+    @Column(name = "no_of_seat")
     private int noOfSeat;
-    private String screenType;
-    private byte active;
-    private int rowNumber;
-    private int columnNumber;
-    private Time opening;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "screen_dimension_id",referencedColumnName = "id")
+    private ScreenDimension screenDimension;
+
+    @Basic
+    @Column(name = "active")
+    private boolean active;
+
+    @Basic
+    @Column(name = "row_count")
+    private int rowCount;
+
+
+    @Basic
+    @Column(name = "column_count")
+    private int columnCount;
+
+    @Basic
+    @Column(name = "opening_time")
+    private Time openingTime;
+
+    @Basic
+    @Column(name = "closing_time")
     private Time closingTime;
+
+    @Basic
+    @Column(name = "created_by")
     private Integer createdBy;
+
+    @Basic
+    @Column(name = "created_at")
     private Timestamp createdAt;
 
-    @Id
-    @Column(name = "id")
+
     public int getId() {
         return id;
     }
@@ -32,18 +64,15 @@ public class Screen {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "screen_name")
-    public String getScreenName() {
-        return screenName;
+
+    public String getName() {
+        return name;
     }
 
-    public void setScreenName(String screenName) {
-        this.screenName = screenName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Basic
-    @Column(name = "no_of_seat")
     public int getNoOfSeat() {
         return noOfSeat;
     }
@@ -52,58 +81,48 @@ public class Screen {
         this.noOfSeat = noOfSeat;
     }
 
-    @Basic
-    @Column(name = "screen_type")
-    public String getScreenType() {
-        return screenType;
+
+    public ScreenDimension getScreenDimension() {
+        return screenDimension;
     }
 
-    public void setScreenType(String screenType) {
-        this.screenType = screenType;
+    public void setScreenDimension(ScreenDimension screenDimension) {
+        this.screenDimension = screenDimension;
     }
 
-    @Basic
-    @Column(name = "active")
-    public byte getActive() {
+
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(byte active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
-    @Basic
-    @Column(name = "row_number")
-    public int getRowNumber() {
-        return rowNumber;
+    public int getRowCount() {
+        return rowCount;
     }
 
-    public void setRowNumber(int rowNumber) {
-        this.rowNumber = rowNumber;
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
     }
 
-    @Basic
-    @Column(name = "column_number")
-    public int getColumnNumber() {
-        return columnNumber;
+    public int getColumnCount() {
+        return columnCount;
     }
 
-    public void setColumnNumber(int columnNumber) {
-        this.columnNumber = columnNumber;
+    public void setColumnCount(int columnCount) {
+        this.columnCount = columnCount;
     }
 
-    @Basic
-    @Column(name = "opening")
-    public Time getOpening() {
-        return opening;
+    public Time getOpeningTime() {
+        return openingTime;
     }
 
-    public void setOpening(Time opening) {
-        this.opening = opening;
+    public void setOpeningTime(Time openingTime) {
+        this.openingTime = openingTime;
     }
 
-    @Basic
-    @Column(name = "closing_time")
     public Time getClosingTime() {
         return closingTime;
     }
@@ -112,8 +131,7 @@ public class Screen {
         this.closingTime = closingTime;
     }
 
-    @Basic
-    @Column(name = "created_by")
+
     public Integer getCreatedBy() {
         return createdBy;
     }
@@ -122,8 +140,7 @@ public class Screen {
         this.createdBy = createdBy;
     }
 
-    @Basic
-    @Column(name = "created_at")
+
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -133,37 +150,54 @@ public class Screen {
     }
 
     @Override
+    public String toString() {
+        return "Screen{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", noOfSeat=" + noOfSeat +
+                ", screenDimension=" + screenDimension +
+                ", active=" + active +
+                ", rowCount=" + rowCount +
+                ", columnCount=" + columnCount +
+                ", openingTime=" + openingTime +
+                ", closingTime=" + closingTime +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Screen that = (Screen) o;
+        Screen screen = (Screen) o;
 
-        if (id != that.id) return false;
-        if (noOfSeat != that.noOfSeat) return false;
-        if (active != that.active) return false;
-        if (rowNumber != that.rowNumber) return false;
-        if (columnNumber != that.columnNumber) return false;
-        if (screenName != null ? !screenName.equals(that.screenName) : that.screenName != null) return false;
-        if (screenType != null ? !screenType.equals(that.screenType) : that.screenType != null) return false;
-        if (opening != null ? !opening.equals(that.opening) : that.opening != null) return false;
-        if (closingTime != null ? !closingTime.equals(that.closingTime) : that.closingTime != null) return false;
-        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        if (id != screen.id) return false;
+        if (noOfSeat != screen.noOfSeat) return false;
+        if (active != screen.active) return false;
+        if (rowCount != screen.rowCount) return false;
+        if (columnCount != screen.columnCount) return false;
+        if (name != null ? !name.equals(screen.name) : screen.name != null) return false;
+        if (screenDimension != null ? !screenDimension.equals(screen.screenDimension) : screen.screenDimension != null)
+            return false;
+        if (openingTime != null ? !openingTime.equals(screen.openingTime) : screen.openingTime != null) return false;
+        if (closingTime != null ? !closingTime.equals(screen.closingTime) : screen.closingTime != null) return false;
+        if (createdBy != null ? !createdBy.equals(screen.createdBy) : screen.createdBy != null) return false;
+        return !(createdAt != null ? !createdAt.equals(screen.createdAt) : screen.createdAt != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (screenName != null ? screenName.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + noOfSeat;
-        result = 31 * result + (screenType != null ? screenType.hashCode() : 0);
-        result = 31 * result + (int) active;
-        result = 31 * result + rowNumber;
-        result = 31 * result + columnNumber;
-        result = 31 * result + (opening != null ? opening.hashCode() : 0);
+        result = 31 * result + (screenDimension != null ? screenDimension.hashCode() : 0);
+        result = 31 * result + (active ? 1 : 0);
+        result = 31 * result + rowCount;
+        result = 31 * result + columnCount;
+        result = 31 * result + (openingTime != null ? openingTime.hashCode() : 0);
         result = 31 * result + (closingTime != null ? closingTime.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
