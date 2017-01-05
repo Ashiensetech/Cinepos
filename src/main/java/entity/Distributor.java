@@ -39,7 +39,7 @@ public class Distributor {
 
     @Basic
     @Column(name = "status")
-    private boolean status;
+    private int status;
 
     @Basic
     @Column(name = "created_by",nullable = true)
@@ -113,12 +113,16 @@ public class Distributor {
         this.description = description;
     }
 
-    public boolean isStatus() {
+    public int isStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public int getCreatedBy() {

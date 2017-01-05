@@ -13,6 +13,35 @@ import java.util.List;
 public class DistributorDao extends BaseDao{
 
 
+    public void insert(Distributor distributor){
+        Session session = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(distributor);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
+
+    public void update(Distributor distributor){
+        Session session = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(distributor);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
 
     public List<Distributor> getAll(){
         Session session=this.sessionFactory.openSession();
