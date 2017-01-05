@@ -1,26 +1,17 @@
-package validator.admin.AdminScreenService;
+package validator.admin.AdminScreenService.createScreen;
 
-import dao.AuthCredentialDao;
 import dao.ScreenDimensionDao;
-import dao.UserInfDao;
-import dao.UserRoleDao;
-import entity.AuthCredential;
 import entity.ScreenDimension;
-import entity.UserRole;
-import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import validator.admin.AdminUserService.createUser.CreateAdminUserForm;
-
-import java.text.ParseException;
 
 /**
  * Created by mi on 1/4/17.
  */
 @Service
-public class CreateAdminScreenValidator implements Validator {
+public class CreateScreenValidator implements Validator {
 
     @Autowired
     ScreenDimensionDao screenDimensionDao;
@@ -33,6 +24,17 @@ public class CreateAdminScreenValidator implements Validator {
 
         if(screenDimension==null){
             errors.rejectValue("screenTypeId", "Screen type not found");
+        }
+        if(createScreenFrom.getSeatCount()<=0){
+            errors.rejectValue("seatCount", "Must be greater then zero");
+        }
+
+        if(createScreenFrom.getRowCount()<=0){
+            errors.rejectValue("rowCount", "Must be greater then zero");
+        }
+
+        if(createScreenFrom.getColumnCount() <=0){
+            errors.rejectValue("columnCount", "Must be greater then zero");
         }
     }
     @Override

@@ -39,7 +39,7 @@
             </div>
             <div class="form-group">
               <label>No of Seat</label>
-              <input class="form-control" id="seatCount" type="number"  value="${screen.noOfSeat}" >
+              <input class="form-control" id="seatCount" type="number"  value="${screen.noOfSeat}" min="1" >
               <p class="help-block error" id="errorMsg_seatCount"></p>
             </div>
             <div class="form-group">
@@ -60,12 +60,12 @@
             </div>
             <div class="form-group">
               <label>Row Count</label>
-              <input class="form-control" id="rowCount" type="number"  value="${screen.rowCount}">
+              <input class="form-control" id="rowCount" type="number"  value="${screen.rowCount}" min="1" >
               <p class="help-block error" id="errorMsg_rowCount"></p>
             </div>
             <div class="form-group">
               <label>Column Count</label>
-              <input class="form-control" id="columnCount" type="number"  value="${screen.columnCount}" >
+              <input class="form-control" id="columnCount" type="number"  value="${screen.columnCount}" min="1" >
               <p class="help-block error" id="errorMsg_columnCount"></p>
             </div>
 
@@ -97,6 +97,7 @@
 <script>
   function updateScreenData(){
 
+    var screenId =$("#screenId").val();
     var name =$("#name").val();
     var rowCount=$("#rowCount").val();
     var seatCount=$("#seatCount").val();
@@ -104,8 +105,8 @@
     var columnCount = $("#columnCount").val();
     var openingTime=$("#openingTime").val();
     var closingTime = $("#closingTime").val();
-    openingTime = (openingTime=="")?null:openingTime+":00";
-    closingTime = (closingTime=="")?null:closingTime+":00";
+    openingTime = (openingTime=="")?null:openingTime;
+    closingTime = (closingTime=="")?null:closingTime;
 
 
     var postData =  {
@@ -113,7 +114,7 @@
       rowCount:rowCount,
       seatCount:seatCount,
       screenTypeId:screenTypeId,
-      columnCount:columnCount,
+      columnCount:columnCount
     };
     if(openingTime != null){
       postData["openingTime"] = openingTime;
@@ -124,7 +125,7 @@
 
 
     $.ajax({
-      url: BASEURL+'/api/admin/screen/create',
+      url: BASEURL+'/api/admin/screen/edit/'+screenId,
       type: 'POST',
       data:postData,
       statusCode: {

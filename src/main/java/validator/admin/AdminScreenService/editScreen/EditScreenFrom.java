@@ -1,9 +1,7 @@
-package validator.admin.AdminScreenService;
+package validator.admin.AdminScreenService.editScreen;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Time;
@@ -11,7 +9,7 @@ import java.sql.Time;
 /**
  * Created by mi on 1/5/17.
  */
-public class CreateScreenFrom {
+public class EditScreenFrom {
 
     @NotBlank(message = "Name required")
     @Length(max=20,message = "Name too large")

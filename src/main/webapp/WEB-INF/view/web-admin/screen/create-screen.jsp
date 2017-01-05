@@ -38,7 +38,7 @@
             </div>
             <div class="form-group">
               <label>No of Seat</label>
-              <input class="form-control" id="seatCount" type="number">
+              <input class="form-control" id="seatCount" type="number" min="1" >
               <p class="help-block error" id="errorMsg_seatCount"></p>
             </div>
             <div class="form-group">
@@ -54,12 +54,12 @@
             </div>
             <div class="form-group">
               <label>Row Count</label>
-              <input class="form-control" id="rowCount" type="number" >
+              <input class="form-control" id="rowCount" type="number" min="1" >
               <p class="help-block error" id="errorMsg_rowCount"></p>
             </div>
             <div class="form-group">
               <label>Column Count</label>
-              <input class="form-control" id="columnCount" type="number" >
+              <input class="form-control" id="columnCount" type="number" min="1" >
               <p class="help-block error" id="errorMsg_columnCount"></p>
             </div>
 

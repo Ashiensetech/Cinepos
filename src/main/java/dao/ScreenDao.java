@@ -31,6 +31,21 @@ public class ScreenDao extends BaseDao {
             if(session!=null)session.close();
         }
     }
+    public void update(Screen screen){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(screen);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
     public Screen getById(int id){
         Session session = null;
 
@@ -49,7 +64,7 @@ public class ScreenDao extends BaseDao {
         Session session = this.sessionFactory.openSession();
         try{
             session = this.sessionFactory.openSession();
-            return session.createQuery("FROM Screen")
+            return session.createQuery("FROM Screen order by id desc ")
                     .list();
         }catch (HibernateException hEx){
             // Insert to database exception log
