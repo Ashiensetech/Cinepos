@@ -49,6 +49,7 @@
                 <value>entity.AuthCredential</value>
                 <value>entity.Distributor</value>
                 <value>entity.Screen</value>
+                <value>entity.ScreenDimension</value>
             </list>
         </property>
         <property name="hibernateProperties">

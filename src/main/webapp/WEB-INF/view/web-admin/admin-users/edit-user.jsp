@@ -106,6 +106,7 @@
 
             </div>
             <br>
+            <p class="help-block" id="submitStatus"></p>
             <button class="btn btn-primary" onclick="return updateUserData()">Update Admin</button>
           </form>
         </div>
@@ -159,7 +160,11 @@
           BindErrorsWithHtml("errorMsg_",response.responseJSON);
         }
       },success: function(data){
-        window.location = "/admin/user/all";
+        $("#submitStatus").html()
+        setTimeout(function(){
+          window.location = "/admin/user/all";
+        },3000);
+
       }
     });
     return false;
