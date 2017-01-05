@@ -50,6 +50,8 @@
                 <value>entity.Distributor</value>
                 <value>entity.Screen</value>
                 <value>entity.ScreenDimension</value>
+                <value>entity.Terminal</value>
+
             </list>
         </property>
         <property name="hibernateProperties">
