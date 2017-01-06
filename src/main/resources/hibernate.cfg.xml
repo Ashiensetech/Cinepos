@@ -8,5 +8,6 @@
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <mapping class="entity.Screen"/>
         <mapping class="entity.ScreenDimension"/>
+        <mapping class="entity.SeatType"/>
     </session-factory>
 </hibernate-configuration>

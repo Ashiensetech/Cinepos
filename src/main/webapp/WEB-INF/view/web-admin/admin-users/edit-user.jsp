@@ -30,7 +30,7 @@
       </div>
       <div class="row">
         <div class="col-lg-6">
-          <form>
+          <form id="updateUserForm">
 
             <input type="hidden" class="form-control" id="authCredentialId" value="${adminUser.id}">
             <div class="form-group">
@@ -106,7 +106,7 @@
 
             </div>
             <br>
-            <p class="help-block" id="submitStatus"></p>
+            <p class="help-block" id="statusMsg"></p>
             <button class="btn btn-primary" onclick="return updateUserData()">Update Admin</button>
           </form>
         </div>
@@ -122,7 +122,7 @@
 
 <script>
   function updateUserData(){
-
+    $("#statusMsg").html("").hide();
     var id =$("#authCredentialId").val();
     var firstName =$("#firstName").val();
     var lastName=$("#lastName").val();
@@ -135,6 +135,8 @@
     var password=$("#user_password").val();
     var roleId = $("#roleId").val();
     var dob = $("#dob").val();
+
+    enableDisableFormElement("updateUserForm",["input","button","select"],false);
     $.ajax({
       url: BASEURL+'/api/admin/user/edit/'+id,
       type: 'POST',
@@ -154,13 +156,17 @@
         401: function (response) {
           console.log("unauthorized");
           console.log(response);
+          showLoginModal();
+          enableDisableFormElement("updateUserForm",["input","button"],true);
         },
         400: function (response) {
           console.log(response);
+          $("#statusMsg").html("Error found").show();
           BindErrorsWithHtml("errorMsg_",response.responseJSON);
+          enableDisableFormElement("updateUserForm",["input","button"],true);
         }
       },success: function(data){
-        $("#submitStatus").html()
+        $("#statusMsg").html("User information updated successfully").show();
         setTimeout(function(){
           window.location = "/admin/user/all";
         },3000);

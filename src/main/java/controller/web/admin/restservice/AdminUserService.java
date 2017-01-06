@@ -84,6 +84,7 @@ public class AdminUserService {
 
         userInfDao.insert(userInf);
         authCredential.setUserName(createAdminUserForm.getUserName());
+        authCredential.setPassword(createAdminUserForm.getPassword());
         authCredential.setUserRole(userRoleDao.getById(createAdminUserForm.getRoleId()));
         authCredential.setIsAdmin(true);
         authCredential.setIsActivated(true);

@@ -51,7 +51,7 @@
                 <value>entity.Screen</value>
                 <value>entity.ScreenDimension</value>
                 <value>entity.Terminal</value>
-
+                <value>entity.SeatType</value>
             </list>
         </property>
         <property name="hibernateProperties">

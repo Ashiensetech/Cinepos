@@ -30,7 +30,7 @@
       </div>
       <div class="row">
         <div class="col-lg-6">
-          <form>
+          <form id="createUserForm">
             <div class="form-group">
               <label>First Name</label>
               <input class="form-control" id="firstName">
@@ -97,6 +97,7 @@
 
             </div>
             <br>
+            <p class="help-block" id="statusMsg"></p>
             <button class="btn btn-primary" onclick="return submitUserData()">Create Admin</button>
           </form>
         </div>
@@ -113,6 +114,8 @@
 <script>
   function submitUserData(){
 
+    $("#statusMsg").html("").hide();
+
     var firstName =$("#firstName").val();
     var lastName=$("#lastName").val();
     var email=$("#email").val();
@@ -124,6 +127,7 @@
     var password=$("#user_password").val();
     var roleId = $("#roleId").val();
     var dob = $("#dob").val();
+    enableDisableFormElement("createUserForm",["input","button","select"],false);
     $.ajax({
       url: BASEURL+'/api/admin/user/create',
       type: 'POST',
@@ -143,13 +147,22 @@
         401: function (response) {
           console.log("unauthorized");
           console.log(response);
+          showLoginModal();
+          enableDisableFormElement("createUserForm",["input","button","select"],true);
         },
         400: function (response) {
           console.log(response);
+          $("#statusMsg").html("Error found").show();
           BindErrorsWithHtml("errorMsg_",response.responseJSON);
+          enableDisableFormElement("createUserForm",["input","button","select"],true);
         }
       },success: function(data){
-        window.location = "/admin/user/all";
+        $("#statusMsg").html("User created successfully").show();
+        setTimeout(function(){
+          window.location = "/admin/user/all";
+        },2000);
+
+
       }
     });
     return false;
