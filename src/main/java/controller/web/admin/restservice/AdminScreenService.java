@@ -142,9 +142,7 @@ public class AdminScreenService {
 
     }
     @RequestMapping(value = "/active-inactive/{screenId}/{activationType}",method = RequestMethod.POST)
-    public ResponseEntity<?> editUser(@Valid EditScreenFrom editScreenFrom,
-                                      BindingResult result,
-                                      @PathVariable Integer screenId,
+    public ResponseEntity<?> statusUpdate(@PathVariable Integer screenId,
                                       @PathVariable String activationType){
 
         System.out.println(activationType);

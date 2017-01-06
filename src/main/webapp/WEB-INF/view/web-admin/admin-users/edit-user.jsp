@@ -138,7 +138,7 @@
 
     enableDisableFormElement("updateUserForm",["input","button","select"],false);
     $.ajax({
-      url: BASEURL+'/api/admin/user/edit/'+id,
+      url: BASEURL+'api/admin/user/edit/'+id,
       type: 'POST',
       data: {
         firstName:firstName,
