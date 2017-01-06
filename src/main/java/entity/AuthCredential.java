@@ -1,5 +1,6 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import entity.iface.AppCredential;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.sql.Timestamp;
 /**
  * Created by mi on 1/3/17.
  */
+
 @Entity
 @Table(name = "auth_credential")
 public class AuthCredential implements AppCredential {
@@ -59,6 +61,7 @@ public class AuthCredential implements AppCredential {
     @Basic
     @Column(name = "username")
     private String userName;
+
 
     @Basic
     @Column(name = "password")
@@ -136,6 +139,7 @@ public class AuthCredential implements AppCredential {
         this.userRole = userRole;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

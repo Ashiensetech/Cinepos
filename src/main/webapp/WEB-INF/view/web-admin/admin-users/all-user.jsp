@@ -44,6 +44,7 @@
                     <th>User Name</th>
                     <th>Email</th>
                     <th>Role</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -57,9 +58,39 @@
                     <td>${adminUser.userName}</td>
                     <td>${adminUser.userInf.email} </td>
                     <td>${adminUser.userRole.displayName}</td>
-                    <td><a href="<c:message code="base.uri" />/admin/user/edit/${adminUser.id}"
-                           type="button"
-                           class="btn btn-outline btn-primary" >Edit</a></td>
+                    <td id="statusTd${adminUser.id}" >
+                      <d:if test="${adminUser.isActivated}">
+                        Active
+                      </d:if>
+                      <d:if test="${!adminUser.isActivated}">
+                        Inactive
+                      </d:if>
+                    </td>
+                    <td id="userRow${adminUser.id}">
+
+                      <button id="statusChangeBtn${adminUser.id}"
+                              data-status="${adminUser.isActivated}"
+                              onclick="adminUserStatusUpdateScreenData('userRow${adminUser.id}',
+                                      'statusMsg${adminUser.id}',
+                                      'statusChangeBtn${adminUser.id}',
+                                      'statusTd${adminUser.id}',
+                                      ${adminUser.id})"
+                              class="btn btn-outline btn-primary" >
+                        <d:if test="${adminUser.isActivated}">
+                          Deactivate
+                        </d:if>
+                        <d:if test="${!adminUser.isActivated}">
+                          Active
+                        </d:if>
+                      </button>
+
+
+                      <a href="<c:url value="/admin/user/edit/${adminUser.id}" />"
+                         type="button"
+                         class="btn btn-outline btn-primary" >Edit</a>
+                      <p id="statusMsg${adminUser.id}"></p>
+                    </td>
+
                   </tr>
                 </d:forEach>
 
@@ -87,6 +118,53 @@
       responsive: true
     });
   });
+
+  function adminUserStatusUpdateScreenData(parentElementId,statusMsgElemId,elementId,statusTd,userCredentialId){
+
+    $("#"+statusMsgElemId).html("").hide();
+
+    var activationStatus =$("#"+elementId).data("status");
+    var activationType =(activationStatus)?"deactivate":"activate";
+    enableDisableFormElement(parentElementId,["input","button","select","a"],false);
+
+    $.ajax({
+      url: BASEURL+'api/admin/user/active-inactive/'+userCredentialId+'/'+activationType,
+      type: 'POST',
+      statusCode: {
+        401: function (response) {
+          showLoginModal();
+          enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+        },
+        422: function (response) {
+          enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+          BindErrorsWithHtml("errorMsg_",response.responseJSON);
+          $("#"+statusMsgElemId).html("Server error").fadeIn(1000,function(){
+            $(this).fadeOut(1000,function(){
+              $(this).html("");
+            });
+          });
+
+
+        }
+      },success: function(data){
+
+        var btnText = (data.active)?"Deactivate":"Activate";
+        var statusTdText = (data.active)?"Activate":"Inactivate";
+
+        $("#"+elementId).html(btnText);
+        $("#"+elementId).data("status",data.active);
+        $("#"+statusTd).html(statusTdText);
+        $("#"+statusMsgElemId).html("Status updated").fadeIn(1000,function(){
+          $(this).fadeOut(1000,function(){
+            $(this).html("");
+            enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+          });
+        });
+      }
+    });
+    return false;
+  }
+
 </script>
 </body>
 

@@ -124,7 +124,7 @@
 
 
     $.ajax({
-      url: BASEURL+'/api/admin/screen/create',
+      url: BASEURL+'api/admin/screen/create',
       type: 'POST',
       data:postData,
       statusCode: {
@@ -143,7 +143,7 @@
 
         $("#statusMsg").html("Screen created successfully").show();
         setTimeout(function(){
-          window.location = "/admin/screen/all";
+          window.location = BASEURL+"admin/screen/all";
         },2000);
       }
     });

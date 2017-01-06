@@ -129,7 +129,7 @@
 
 
     $.ajax({
-      url: BASEURL+'/api/admin/screen/edit/'+screenId,
+      url: BASEURL+'api/admin/screen/edit/'+screenId,
       type: 'POST',
       data:postData,
       statusCode: {
@@ -147,7 +147,7 @@
 
         $("#statusMsg").html("Screen update successfully").show();
         setTimeout(function(){
-          window.location = "/admin/screen/all";
+          window.location = BASEURL+"admin/screen/all";
         },2000);
 
       }

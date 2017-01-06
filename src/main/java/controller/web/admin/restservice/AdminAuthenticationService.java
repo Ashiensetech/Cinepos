@@ -56,6 +56,14 @@ public class AdminAuthenticationService {
 
             if(auth.isAuthenticated()){
                 HttpSession session = request.getSession(true);
+                CustomUserDetails customUserDetails = (CustomUserDetails)auth.getPrincipal();
+
+                if(!customUserDetails.getIsActivated()){
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ServiceResponse.getMsg("Account is inactive"));
+                }
+                if(!customUserDetails.getUserRole().getRoleName().equals("ADMIN")){
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ServiceResponse.getMsg("You don't have privilege"));
+                }
                 session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
                 return ResponseEntity.status(HttpStatus.OK).body((CustomUserDetails)auth.getPrincipal());

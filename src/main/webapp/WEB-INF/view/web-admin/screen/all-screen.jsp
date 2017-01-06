@@ -76,7 +76,7 @@
 
                       <button id="statusChangeBtn${screen.id}"
                               data-status="${screen.active}"
-                              onclick="statusUpdateScreenData('screenRow${screen.id}',
+                              onclick="screenStatusUpdateScreenData('screenRow${screen.id}',
                                                               'statusMsg${screen.id}',
                                                               'statusChangeBtn${screen.id}',
                                                               'statusTd${screen.id}',
@@ -91,7 +91,7 @@
                       </button>
 
 
-                      <a href="<c:message code="base.uri" />/admin/screen/edit/${screen.id}"
+                      <a href="<c:url value="/admin/screen/edit/${screen.id}" />"
                            type="button"
                            class="btn btn-outline btn-primary" >Edit</a>
                       <p id="statusMsg${screen.id}"></p>
@@ -125,7 +125,7 @@
     });
   });
 
-  function statusUpdateScreenData(parentElementId,statusMsgElemId,elementId,statusTd,screenId){
+  function screenStatusUpdateScreenData(parentElementId,statusMsgElemId,elementId,statusTd,screenId){
 
     $("#"+statusMsgElemId).html("").hide();
 
@@ -134,7 +134,7 @@
     enableDisableFormElement(parentElementId,["input","button","select","a"],false);
 
     $.ajax({
-      url: BASEURL+'/api/admin/screen/active-inactive/'+screenId+'/'+activationType,
+      url: BASEURL+'api/admin/screen/active-inactive/'+screenId+'/'+activationType,
       type: 'POST',
       statusCode: {
         401: function (response) {
@@ -160,10 +160,11 @@
         $("#"+elementId).html(btnText);
         $("#"+elementId).data("status",data.active);
         $("#"+statusTd).html(statusTdText);
-        enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+
         $("#"+statusMsgElemId).html("Status updated").fadeIn(1000,function(){
           $(this).fadeOut(1000,function(){
             $(this).html("");
+            enableDisableFormElement(parentElementId,["input","button","select","a"],true);
           });
         });
       }

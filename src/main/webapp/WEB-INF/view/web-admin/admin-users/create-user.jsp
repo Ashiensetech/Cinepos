@@ -129,7 +129,7 @@
     var dob = $("#dob").val();
     enableDisableFormElement("createUserForm",["input","button","select"],false);
     $.ajax({
-      url: BASEURL+'/api/admin/user/create',
+      url: BASEURL+'api/admin/user/create',
       type: 'POST',
       data: {
         firstName:firstName,
@@ -159,7 +159,7 @@
       },success: function(data){
         $("#statusMsg").html("User created successfully").show();
         setTimeout(function(){
-          window.location = "/admin/user/all";
+          window.location = BASEURL+"admin/user/all";
         },2000);
 
 

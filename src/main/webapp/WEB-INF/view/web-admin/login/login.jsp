@@ -84,7 +84,7 @@
     <%--Developer Custom Js--%>
     <script type="text/javascript" src="<c:url value="/resources/js/helper/ErrorMessaging.js"/>"></script>
     <script>
-        var BASEURL = "<c:message code="base.uri" />";
+        var BASEURL = "<c:url value="/" />";
         function doLogin(){
             $("#loginError").html("").hide();
             $("#progressStatus").html("Processing...").show();
@@ -96,7 +96,7 @@
 
 //          console.log(email, password);
             $.ajax({
-                url: BASEURL+'/auth/admin/do-auth',
+                url: BASEURL+'auth/admin/do-auth',
                 type: 'POST',
                 data: {
                     userName: userName,
@@ -116,7 +116,7 @@
                     $("#progressStatus").html("Login Success");
                     $("#loginSubmit").removeAttr("disabled");
                     enableDisableFormElement("loginForm",["input"],true);
-                    window.location = BASEURL+"/admin/user/all";
+                    window.location = BASEURL+"admin/user/all";
                 }
             });
             return false;
