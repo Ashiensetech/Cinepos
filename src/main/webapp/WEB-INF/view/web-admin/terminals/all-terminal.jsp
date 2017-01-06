@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://www.springframework.org/tags" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="d" %>
+<%@ taglib  uri="http://java.sun.com/jsp/jstl/core" prefix="d" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
@@ -50,13 +50,13 @@
                                     <tr class="odd gradeC" id="terminalRow${terminalValue.id}">
                                         <td>${count}</td>
                                         <td>${terminalValue.name}</td>
-                                        <td>${terminalValue.ip_address}</td>
+                                        <td>${terminalValue.ipAddress}</td>
                                         <td>${terminalValue.type}</td>
                                         <td id="statusTd${terminalValue.id}">${(terminalValue.status==1)?"Active":"Deactive"}</td>
                                         <td>
                                             <button id="statusChangeBtn${terminalValue.id}"
                                                     data-status="${terminalValue.status}"
-                                                    onclick="statusUpdateDistributorData('terminalRow${terminalValue.id}',
+                                                    onclick="statusUpdateTerminalData('terminalRow${terminalValue.id}',
                                                             'statusMsg${terminalValue.id}',
                                                             'statusChangeBtn${terminalValue.id}',
                                                             'statusTd${terminalValue.id}',
@@ -94,6 +94,55 @@
     </div>
 
     <jsp:directive.include file="../layouts/footer.jsp" />
+
+<script type="application/javascript">
+
+    function statusUpdateTerminalData(parentElementId,statusMsgElemId,elementId,statusTd,terminalId){
+
+        $("#"+statusMsgElemId).html("").hide();
+
+        var activationStatus =$("#"+elementId).data("status");
+        var activationType =(activationStatus)?"deactivate":"activate";
+        enableDisableFormElement(parentElementId,["input","button","select","a"],false);
+
+        $.ajax({
+            url: '/api/admin/terminal/active-inactive/'+terminalId+'/'+activationType,
+            type: 'POST',
+            statusCode: {
+                401: function (response) {
+                    showLoginModal();
+                    enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+                },
+                422: function (response) {
+                    enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+                    BindErrorsWithHtml("errorMsg_",response.responseJSON);
+                    $("#"+statusMsgElemId).html("Server error").fadeIn(1000,function(){
+                        $(this).fadeOut(1000,function(){
+                            $(this).html("");
+                        });
+                    });
+
+
+                }
+            },success: function(data){
+
+                var btnText = (data.status)?"Deactivate":"Activate";
+                var statusTdText = (data.status)?"Activate":"Inactivate";
+
+                $("#"+elementId).html(btnText);
+                $("#"+elementId).data("status",data.status);
+                $("#"+statusTd).html(statusTdText);
+                enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+                $("#"+statusMsgElemId).html("Status updated").fadeIn(1000,function(){
+                    $(this).fadeOut(1000,function(){
+                        $(this).html("");
+                    });
+                });
+            }
+        });
+        return false;
+    }
+</script>
 
     <!-- Date picker -->
 </body>
