@@ -33,12 +33,14 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables">
                         <thead>
                         <tr>
+                            <th>No</th>
                             <th>Name</th>
                             <th>Email1</th>
                             <th>Email 2</th>
                             <th>Phone</th>
                             <th>Address</th>
                             <th>Desc</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -47,16 +49,36 @@
                         <d:choose>
                             <d:when test="${not empty distributors}">
                                 <d:forEach var="distributorValue" items="${distributors}">
-                                    <tr class="odd gradeC">
+                                    <d:set var="count" value="${count+1}" />
+                                    <tr class="odd gradeC" id="distributorRow${distributorValue.id}">
+                                        <td>${count}</td>
                                         <td>${distributorValue.name}</td>
                                         <td>${distributorValue.primaryEmail}</td>
                                         <td>${distributorValue.secondaryEmail}</td>
                                         <td>${distributorValue.phone}</td>
                                         <td>${distributorValue.address}</td>
                                         <td>${distributorValue.description}</td>
+                                        <td id="statusTd${distributorValue.id}">${(distributorValue.status==1)?"Active":"Deactive"}</td>
                                         <td>
-                                            <button type="" class="btn btn-primary"  data-toggle="modal" data-target="#editDistributor">Edit</button>
-                                            <button type="" class="btn ${(distributorValue.status==1)?"btn-info":"btn-warning"}" data-distributor-id="${distributorValue.id}"  data-toggle="modal" data-target="#statusDistributor">${(distributorValue.status==1)?"Enable":"Disable"}</button>
+                                            <button id="statusChangeBtn${distributorValue.id}"
+                                                    data-status="${distributorValue.status}"
+                                                    onclick="statusUpdateDistributorData('distributorRow${distributorValue.id}',
+                                                            'statusMsg${distributorValue.id}',
+                                                            'statusChangeBtn${distributorValue.id}',
+                                                            'statusTd${distributorValue.id}',
+                                                        ${distributorValue.id})"
+                                                    class="btn btn-outline btn-primary" >
+                                                <d:if test="${distributorValue.status==1}">
+                                                    Deactivate
+                                                </d:if>
+                                                <d:if test="${distributorValue.status==0}">
+                                                    Active
+                                                </d:if>
+                                            </button>
+                                            <a href="<c:message code="base.uri" />/admin/distributor/edit/${distributorValue.id}"
+                                               type="button"
+                                               class="btn btn-outline btn-primary" >Edit</a>
+                                            <p id="statusMsg${distributorValue.id}"></p>
                                         </td>
                                     </tr>
                                 </d:forEach>
@@ -80,7 +102,57 @@
 <jsp:directive.include file="../layouts/footer.jsp" />
 
 <!-- Date picker -->
+
+<script type="application/javascript">
+
+    function statusUpdateDistributorData(parentElementId,statusMsgElemId,elementId,statusTd,distributorId){
+
+        $("#"+statusMsgElemId).html("").hide();
+
+        var activationStatus =$("#"+elementId).data("status");
+        var activationType =(activationStatus)?"deactivate":"activate";
+        enableDisableFormElement(parentElementId,["input","button","select","a"],false);
+
+        $.ajax({
+            url: BASEURL+'/api/admin/distributor/active-inactive/'+distributorId+'/'+activationType,
+            type: 'POST',
+            statusCode: {
+                401: function (response) {
+                    showLoginModal();
+                    enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+                },
+                422: function (response) {
+                    enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+                    BindErrorsWithHtml("errorMsg_",response.responseJSON);
+                    $("#"+statusMsgElemId).html("Server error").fadeIn(1000,function(){
+                        $(this).fadeOut(1000,function(){
+                            $(this).html("");
+                        });
+                    });
+
+
+                }
+            },success: function(data){
+
+                var btnText = (data.status)?"Deactivate":"Activate";
+                var statusTdText = (data.status)?"Activate":"Inactivate";
+
+                $("#"+elementId).html(btnText);
+                $("#"+elementId).data("status",data.status);
+                $("#"+statusTd).html(statusTdText);
+                enableDisableFormElement(parentElementId,["input","button","select","a"],true);
+                $("#"+statusMsgElemId).html("Status updated").fadeIn(1000,function(){
+                    $(this).fadeOut(1000,function(){
+                        $(this).html("");
+                    });
+                });
+            }
+        });
+        return false;
+    }
+</script>
 </body>
+
 
 </html>
 

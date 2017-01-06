@@ -26,6 +26,7 @@
 <script type="text/javascript" src="<c:url value="/resources/js/helper/ErrorMessaging.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/js/auth-script/login.js"/>"></script>
 <script>
+    var BASEURL = "<c:url value="/" />";
     $(document).ready(function(){
         var date_input=$('input[name="date"]'); //our date input has the name "date"
         var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
@@ -47,17 +48,17 @@
     function doLogout(){
 
         $.ajax({
-            url: '/auth/admin/do-logout',
+            url: BASEURL+'/auth/admin/do-logout',
             type: 'GET',
             success: function (data) {
                 console.log("SUCCESS");
                 console.log(data);
-                window.location = "/admin/user/create";
+                window.location = BASEURL+"admin-login/auth";
             }
         });
         return false;
     }
 
-    var BASEURL = "<c:message code="base.uri" />";
+
 </script>
 

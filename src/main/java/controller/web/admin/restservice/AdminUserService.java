@@ -7,8 +7,10 @@ import dao.UserInfDao;
 import dao.UserRoleDao;
 
 import entity.AuthCredential;
+import entity.Screen;
 import entity.UserInf;
 
+import entity.iface.AppCredential;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMethod;
 import utility.ServiceResponse;
 
+import validator.admin.AdminScreenService.editScreen.EditScreenFrom;
 import validator.admin.AdminUserService.createUser.CreateAdminUserForm;
 import validator.admin.AdminUserService.createUser.CreateAdminUserValidator;
 import validator.admin.AdminUserService.editUser.EditAdminUserForm;
@@ -166,4 +169,34 @@ public class AdminUserService {
         return ResponseEntity.status(HttpStatus.OK).body(authCredentialDao.getById(authCredential.getId()));
 
     }
+    @RequestMapping(value = "/active-inactive/{authCredentialId}/{activationType}",method = RequestMethod.POST)
+    public ResponseEntity<?> statusUpdate( @PathVariable Integer authCredentialId,
+                                      @PathVariable String activationType){
+
+        System.out.println(activationType);
+
+        boolean statusType;
+
+        if(activationType.equals("activate")){
+            statusType = true;
+        }else  if(activationType.equals("deactivate")){
+            statusType = false;
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ServiceResponse.getMsg("Uri segment wrong"));
+        }
+
+        AuthCredential authCredential = authCredentialDao.getById(authCredentialId);
+
+        if(authCredential == null){
+            ServiceResponse serviceResponse = ServiceResponse.getInstance();
+            serviceResponse.setValidationError("authCredentialId","No User information found");
+
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse);
+        }
+
+        authCredential.setIsActivated(statusType);
+        authCredentialDao.update(authCredential);
+        return ResponseEntity.status(HttpStatus.OK).body(authCredential);
+    }
 }
+

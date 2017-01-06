@@ -1,5 +1,6 @@
 package controller.web.admin.page;
 
+import controller.web.admin.AdminUriPreFix;
 import dao.TerminalDao;
 import entity.Terminal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +12,15 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "terminal")
+@RequestMapping(AdminUriPreFix.pageUriPrefix+"/terminal")
 public class AdminTerminalController {
     @Autowired
     TerminalDao terminalDao;
-    @RequestMapping(value = "index",method = RequestMethod.GET)
+    @RequestMapping(value = "all",method = RequestMethod.GET)
     public  ModelAndView index(){
         List<Terminal> terminalList=terminalDao.getAll();
-        System.out.println(terminalList);
-        System.out.println("kjkjkjk");
         ModelAndView modelAndView=new ModelAndView("web-admin/terminals/all-terminal");
+        modelAndView.addObject("terminalList",terminalList);
         return modelAndView;
     }
     @RequestMapping(value = "create",method = RequestMethod.GET)
