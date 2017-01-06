@@ -43,6 +43,22 @@ public class DistributorDao extends BaseDao{
         }
     }
 
+    public Distributor getById(int id){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (Distributor) session.createQuery("FROM Distributor where id = :id").setParameter("id", id).uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+
+    }
+
     public List<Distributor> getAll(){
         Session session=this.sessionFactory.openSession();
 

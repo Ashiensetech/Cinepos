@@ -24,56 +24,36 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">List OF admins</h1>
+                    <h1 class="page-header">Add admin</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
-                <div class="col-lg-12">
-
-                    <button class="btn btn-primary">Add Circuit Info</button>
-                    <hr>
-                    <div class="table-responsive table-bordered">
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Site Code</th>
-                                <th>Site Name</th>
-                                <th>Address</th>
-                                <th>City</th>
-                                <th>Country</th>
-                                <th>Website</th>
-                                <th>Phone Number</th>
-                                <th>Number Of Screen</th>
-                                <th>Booking Cancellation Time</th>
-                                <th>Refund Cancellation Time</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Jonathan</td>
-                                <td>Harper</td>
-                                <td>dummy@gmail.com</td>
-                                <td>017177674854</td>
-                                <td>Male</td>
-                                <td>12 January 1980</td>
-                                <td>Admin</td>
-                                <td>Admin</td>
-                                <td>Admin</td>
-                                <td>Admin</td>
-                                <td>
-                                    <button class="btn btn-sm btn-success">Enabled</button>
-                                    <button class="btn btn-sm btn-primary">Edit</button>
-                                </td>
-                            </tr>
-
-                            </tbody>
-                        </table>
-                    </div>
-                    <!-- /.table-responsive -->
+                <div class="col-lg-6">
+                    <form>
+                        <div class="form-group">
+                            <label>Site Code</label>
+                            <input class="form-control">
+                            <p class="help-block error">Validation Error</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Site Name</label>
+                            <input class="form-control">
+                            <p class="help-block error">Validation Error</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input class="form-control">
+                            <p class="help-block error">Validation Error</p>
+                        </div>
+                        <div class="form-group">
+                            <label>City</label>
+                            <input class="form-control">
+                            <p class="help-block error">Validation Error</p>
+                        </div>
+                        <br>
+                        <button class="btn btn-primary">ADD</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -33,28 +33,62 @@
                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables">
                         <thead>
                         <tr>
+                            <th>No</th>
                             <th>Name</th>
-                            <th>Email1</th>
+                            <th>Ip Address</th>
                             <th>Email 2</th>
-                            <th>Phone</th>
+                            <th>Type</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr class="odd gradeC">
-                            <td>Trident</td>
-                            <td>demo@admin.com</td>
-                            <td>demo@admin2.com</td>
-                            <td>+880145754</td>
-                            <td>
-                                <button type="" class="btn btn-primary"  data-toggle="modal" data-target="#editDistributor">Edit</button>
-                            </td>
-                        </tr>
+
+                        <d:choose>
+                            <d:when test="${not empty terminalList}">
+                                <d:forEach var="terminalValue" items="${terminalList}">
+                                    <d:set var="count" value="${count+1}" />
+                                    <tr class="odd gradeC" id="terminalRow${terminalValue.id}">
+                                        <td>${count}</td>
+                                        <td>${terminalValue.name}</td>
+                                        <td>${terminalValue.ip_address}</td>
+                                        <td>${terminalValue.type}</td>
+                                        <td id="statusTd${terminalValue.id}">${(terminalValue.status==1)?"Active":"Deactive"}</td>
+                                        <td>
+                                            <button id="statusChangeBtn${terminalValue.id}"
+                                                    data-status="${terminalValue.status}"
+                                                    onclick="statusUpdateDistributorData('terminalRow${terminalValue.id}',
+                                                            'statusMsg${terminalValue.id}',
+                                                            'statusChangeBtn${terminalValue.id}',
+                                                            'statusTd${terminalValue.id}',
+                                                        ${terminalValue.id})"
+                                                    class="btn btn-outline btn-primary" >
+                                                <d:if test="${terminalValue.status==1}">
+                                                    Deactivate
+                                                </d:if>
+                                                <d:if test="${terminalValue.status==0}">
+                                                    Active
+                                                </d:if>
+                                            </button>
+                                            <a href="<c:message code="base.uri" />/admin/terminal/edit/${terminalValue.id}"
+                                               type="button"
+                                               class="btn btn-outline btn-primary" >Edit</a>
+                                            <p id="statusMsg${terminalValue.id}"></p>
+                                        </td>
+                                    </tr>
+                                </d:forEach>
+                            </d:when>
+                            <d:otherwise>
+                                <p>Terminals Empty</p>
+                            </d:otherwise>
+                        </d:choose>
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        <!-- /.container-fluid -->
+    </div>
         <!-- /#page-wrapper -->
 
     </div>

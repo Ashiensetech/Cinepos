@@ -1,25 +1,40 @@
-package validator.admin.AdminDistributorService;
+package validator.admin.AdminDistributorService.createDistributor;
 
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-public class DistributorForm {
+import javax.validation.constraints.Size;
+
+public class createDistributorForm {
     @NotBlank(message = "Distributor name are required")
+    @Length(max = 30,message = "Distributor name too large")
    private String name;
 
     @NotBlank(message = "Primary email are required")
-   private String primaryEmail;
+    @Email(message = "Primary email is not valid")
+    @Length(max = 35,message = "Primary email is too large")
+
+    private String primaryEmail;
 
     @NotBlank(message = "Secondary email are required")
+    @Email(message = "Secondary email is not valid")
+    @Length(max = 35,message = "Secondary email is too large")
    private String secondaryEmail;
 
     @NotBlank(message = "Phone are required")
+    @Length(max = 30,message = "Phone is too large")
    private String phone;
 
     @NotBlank(message = "Address are required")
    private String address;
 
     @NotBlank(message = "Description are required")
+    @Size.List ({
+            @Size(min=50, message="Description must be at least {min} characters"),
+            @Size(max=250, message="Description must be less than {max} characters")
+    })
     private String description;
 
     public String getName() {

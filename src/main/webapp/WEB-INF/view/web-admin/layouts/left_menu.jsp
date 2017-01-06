@@ -29,6 +29,32 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            <li>
+                <a href="#">Distributor<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="/admin/distributor/all">All Distributor</a>
+                    </li>
+                    <li>
+                        <a href="/admin/distributor/create">Create Distributor</a>
+                    </li>
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#">Terminal<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="/admin/terminal/all">All Terminal</a>
+                    </li>
+                    <li>
+                        <a href="/admin/terminal/create">Create Terminal</a>
+                    </li>
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->
