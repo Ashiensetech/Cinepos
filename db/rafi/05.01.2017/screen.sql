@@ -28,18 +28,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `screen` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `screen_name` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
   `no_of_seat` int(11) NOT NULL,
-  `screen_type` enum('2D','3D') NOT NULL,
+  `screen_dimension_id` int(11) NOT NULL,
   `active` tinyint(1) NOT NULL,
-  `row_number` int(11) NOT NULL,
-  `column_number` int(11) NOT NULL,
-  `opening` time NOT NULL,
+  `row_count` int(11) NOT NULL,
+  `column_count` int(11) NOT NULL,
+  `opening_time` time NOT NULL,
   `closing_time` time NOT NULL,
   `created_by` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
