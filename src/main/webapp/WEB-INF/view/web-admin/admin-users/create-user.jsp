@@ -150,7 +150,7 @@
           showLoginModal();
           enableDisableFormElement("createUserForm",["input","button","select"],true);
         },
-        400: function (response) {
+        422: function (response) {
           console.log(response);
           $("#statusMsg").html("Error found").show();
           BindErrorsWithHtml("errorMsg_",response.responseJSON);

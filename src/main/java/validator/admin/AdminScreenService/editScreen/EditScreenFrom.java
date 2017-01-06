@@ -12,7 +12,7 @@ import java.sql.Time;
 public class EditScreenFrom {
 
     @NotBlank(message = "Name required")
-    @Length(max=20,message = "Name too large")
+    @Length(max=50,message = "Name too large")
     private String name;
 
     @NotNull(message = "Opening time required")

@@ -30,7 +30,7 @@
       </div>
       <div class="row">
         <div class="col-lg-6">
-          <form>
+          <form id="createScreenForm">
             <div class="form-group">
               <label>Screen Name</label>
               <input class="form-control" id="name">
@@ -75,6 +75,7 @@
             </div>
 
             <br>
+            <p class="help-block" id="statusMsg"></p>
             <button class="btn btn-primary" onclick="return submitScreenData()">ADD</button>
           </form>
         </div>
@@ -91,6 +92,9 @@
 <script>
   function submitScreenData(){
 
+    $("#statusMsg").html("").hide();
+
+
     var name =$("#name").val();
     var rowCount=$("#rowCount").val();
     var seatCount=$("#seatCount").val();
@@ -102,12 +106,14 @@
     closingTime = (closingTime=="")?null:closingTime+":00";
 
 
+    enableDisableFormElement("createScreenForm",["input","button","select"],false);
+
     var postData =  {
       name:name,
       rowCount:rowCount,
       seatCount:seatCount,
       screenTypeId:screenTypeId,
-      columnCount:columnCount,
+      columnCount:columnCount
     };
     if(openingTime != null){
       postData["openingTime"] = openingTime;
@@ -125,13 +131,20 @@
         401: function (response) {
           console.log("unauthorized");
           console.log(response);
+          showLoginModal();
+          enableDisableFormElement("createScreenForm",["input","button","select"],true);
         },
         422: function (response) {
           console.log(response);
+          enableDisableFormElement("createScreenForm",["input","button","select"],true);
           BindErrorsWithHtml("errorMsg_",response.responseJSON);
         }
       },success: function(data){
-        window.location = "/admin/screen/all";
+
+        $("#statusMsg").html("Screen created successfully").show();
+        setTimeout(function(){
+          window.location = "/admin/screen/all";
+        },2000);
       }
     });
     return false;

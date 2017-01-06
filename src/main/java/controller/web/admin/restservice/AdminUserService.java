@@ -54,7 +54,7 @@ public class AdminUserService {
         serviceResponse.bindValidationError(result);
 
         if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
         createAdminUserValidator.validate(createAdminUserForm, result);
@@ -62,7 +62,7 @@ public class AdminUserService {
         serviceResponse.bindValidationError(result);
 
         if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 //        userRoleDao.getById();
 
@@ -111,14 +111,14 @@ public class AdminUserService {
 
         if(authCredential == null){
             serviceResponse.setValidationError("authCredentialId","No user information found");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
         editAdminUserForm.setId(authCredentialId);
 
 
         if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
         editAdminUserValidator.validate(editAdminUserForm, result);
@@ -126,7 +126,7 @@ public class AdminUserService {
         serviceResponse.bindValidationError(result);
 
         if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
 

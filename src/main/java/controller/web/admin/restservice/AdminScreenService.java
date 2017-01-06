@@ -38,7 +38,7 @@ public class AdminScreenService {
     EditScreenValidator editScreenValidator;
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseEntity<?> createUser(@Valid CreateScreenFrom createScreenFrom,BindingResult result){
+    public ResponseEntity<?> createScreen(@Valid CreateScreenFrom createScreenFrom,BindingResult result){
         System.out.println(createScreenFrom);
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
@@ -77,9 +77,9 @@ public class AdminScreenService {
         screen.setOpeningTime(createScreenFrom.getOpeningTime());
         screen.setScreenDimension(screenDimensionDao.getById(createScreenFrom.getScreenTypeId()));
         screen.setActive(true);
-        screenDao.insert(screen);
         /***************** Service  [Ends] *************/
 
+        screenDao.insert(screen);
 
 
         return ResponseEntity.status(HttpStatus.OK).body(screen);
@@ -140,5 +140,36 @@ public class AdminScreenService {
 
         return ResponseEntity.status(HttpStatus.OK).body(screen);
 
+    }
+    @RequestMapping(value = "/active-inactive/{screenId}/{activationType}",method = RequestMethod.POST)
+    public ResponseEntity<?> editUser(@Valid EditScreenFrom editScreenFrom,
+                                      BindingResult result,
+                                      @PathVariable Integer screenId,
+                                      @PathVariable String activationType){
+
+        System.out.println(activationType);
+
+        boolean statusType;
+
+        if(activationType.equals("activate")){
+            statusType = true;
+        }else  if(activationType.equals("deactivate")){
+            statusType = false;
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ServiceResponse.getMsg("Uri segment wrong"));
+        }
+
+        Screen screen = screenDao.getById(screenId);
+
+        if(screen == null){
+            ServiceResponse serviceResponse = ServiceResponse.getInstance();
+            serviceResponse.setValidationError("screenId","No screen found");
+
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse);
+        }
+
+        screen.setActive(statusType);
+        screenDao.update(screen);
+        return ResponseEntity.status(HttpStatus.OK).body(screen);
     }
 }

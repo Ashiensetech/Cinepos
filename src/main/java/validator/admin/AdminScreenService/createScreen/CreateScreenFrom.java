@@ -2,8 +2,6 @@ package validator.admin.AdminScreenService.createScreen;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Time;
@@ -14,7 +12,7 @@ import java.sql.Time;
 public class CreateScreenFrom {
 
     @NotBlank(message = "Name required")
-    @Length(max=20,message = "Name too large")
+    @Length(max=50,message = "Name too large")
     private String name;
 
     @NotNull(message = "Opening time required")

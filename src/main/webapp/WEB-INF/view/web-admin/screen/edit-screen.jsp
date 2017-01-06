@@ -30,7 +30,7 @@
       </div>
       <div class="row">
         <div class="col-lg-6">
-          <form>
+          <form id="updateScreenForm">
             <input class="form-control" type="hidden" id="screenId" value="${screen.id}">
             <div class="form-group">
               <label>Screen Name</label>
@@ -81,6 +81,7 @@
             </div>
 
             <br>
+            <p class="help-block" id="statusMsg"></p>
             <button class="btn btn-primary" onclick="return updateScreenData()">Update</button>
           </form>
         </div>
@@ -96,6 +97,7 @@
 
 <script>
   function updateScreenData(){
+    $("#statusMsg").html("").hide();
 
     var screenId =$("#screenId").val();
     var name =$("#name").val();
@@ -107,6 +109,8 @@
     var closingTime = $("#closingTime").val();
     openingTime = (openingTime=="")?null:openingTime;
     closingTime = (closingTime=="")?null:closingTime;
+
+    enableDisableFormElement("updateScreenForm",["input","button","select"],false);
 
 
     var postData =  {
@@ -132,13 +136,20 @@
         401: function (response) {
           console.log("unauthorized");
           console.log(response);
+          enableDisableFormElement("updateScreenForm",["input","button","select"],true);
         },
         422: function (response) {
           console.log(response);
           BindErrorsWithHtml("errorMsg_",response.responseJSON);
+          enableDisableFormElement("updateScreenForm",["input","button","select"],true);
         }
       },success: function(data){
-        window.location = "/admin/screen/all";
+
+        $("#statusMsg").html("Screen update successfully").show();
+        setTimeout(function(){
+          window.location = "/admin/screen/all";
+        },2000);
+
       }
     });
     return false;

@@ -1,8 +1,6 @@
 package dao;
 
-import entity.AuthCredential;
 import entity.Screen;
-import entity.ScreenDimension;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
