@@ -23,9 +23,11 @@
     </sec:http>
 
     <sec:http auto-config="true" pattern="/api/admin/**"
-          create-session="always"  >
-        <!--entry-point-ref="adminRestEndPoint"-->
-        <sec:intercept-url pattern="/api/admin/**" />
+          create-session="always"
+              entry-point-ref="adminRestEndPoint"
+            >
+
+        <sec:intercept-url pattern="/api/admin/**" access="ROLE_ADMIN" />
 
         <!--access="ROLE_ADMIN"-->
 
