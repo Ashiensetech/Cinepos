@@ -4,6 +4,7 @@ import entity.ScreenDimension;
 import entity.SeatType;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * Created by mi on 1/6/17.
  */
+@Repository
 public class SeatTypeDao extends BaseDao {
 
     public void insert(SeatType seatType){
