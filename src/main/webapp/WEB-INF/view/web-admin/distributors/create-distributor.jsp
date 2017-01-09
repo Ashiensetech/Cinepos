@@ -106,12 +106,12 @@
                         401: function (response) {
                             console.log("unauthorized");
                             console.log(response);
-                            enableDisableFormElement("createDistributorForm",["input","button","select","textarea"],false);
+                            enableDisableFormElement("createDistributorForm",["input","button","select","textarea"],true);
 
                         },
                         422: function (response) {
                             console.log(response);
-                            enableDisableFormElement("createDistributorForm",["input","button","select","textarea"],false);
+                            enableDisableFormElement("createDistributorForm",["input","button","select","textarea"],true);
                             BindErrorsWithHtml("errorMsg_",response.responseJSON);
                         }
                     },

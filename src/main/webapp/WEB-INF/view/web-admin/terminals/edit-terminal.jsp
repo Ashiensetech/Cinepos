@@ -24,22 +24,24 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Terminal</h1>
+                    <h1 class="page-header">Edit Terminal</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <form id="createTerminalForm">
+                    <form id="editTerminalForm">
                         <div class="form-group">
+                            <input class="form-control" type="hidden" id="terminalId" value="${terminal.id}">
+
                             <label>name</label>
-                            <input class="form-control" value="" id="name">
+                            <input class="form-control" value="${terminal.name}" id="name">
                             <p class="help-block error" id="errorMsg_name"></p>
 
                         </div>
                         <div class="form-group">
                             <label>IP Address</label>
-                            <input class="form-control" value="" id="ip_address">
+                            <input class="form-control" value="${terminal.ipAddress}" id="ip_address">
                             <p class="help-block error" id="errorMsg_ipAddress"></p>
 
                         </div>
@@ -47,36 +49,37 @@
                             <label>Select Terminal Type</label>
                             <select class="form-control" id="terminal_type">
                                 <option value="">Select Terminal Type</option>
-                                <option value="pos">POS</option>
-                                <option value="kiosk">KIOSK</option>
+                                <option value="pos" ${(terminal.type=="pos")?"selected":""}>POS</option>
+                                <option value="kiosk" ${(terminal.type=="kiosk")?"selected":""}>KIOSK</option>
                             </select>
                             <p class="help-block error" id="errorMsg_type"></p>
                         </div>
                         <br>
                         <p class="help-block" id="statusMsg"></p>
-                        <button class="btn btn-primary" type="button" id="terminalBtn">ADD</button>
+                        <button class="btn btn-primary" type="button" id="terminalBtn">edit</button>
                     </form>
                 </div>
             </div>
         </div>
-    <!-- /#page-wrapper -->
+        <!-- /#page-wrapper -->
 
-</div>
+    </div>
 
-<jsp:directive.include file="../layouts/footer.jsp" />
+    <jsp:directive.include file="../layouts/footer.jsp" />
 
     <script type="application/javascript">
         $(document).ready(function () {
             $('#terminalBtn').click(function () {
+                var terminalId=$("#terminalId").val();
                 var name=$("#name").val();
                 var ip_address=$("#ip_address").val();
                 var terminal_type=$("#terminal_type").val();
 
-                enableDisableFormElement("createTerminalForm",["input","button","select","textarea"],false);
+                enableDisableFormElement("editTerminalForm",["input","button","select","textarea"],false);
 
 
                 $.ajax({
-                    url: BASEURL+'/api/admin/terminal/create',
+                    url: BASEURL+'/api/admin/terminal/edit/'+terminalId,
                     type: 'POST',
                     data: {
                         name:name,
@@ -87,17 +90,17 @@
                         401: function (response) {
                             console.log("unauthorized");
                             console.log(response);
-                            enableDisableFormElement("createTerminalForm",["input","button","select","textarea"],true);
+                            enableDisableFormElement("editTerminalForm",["input","button","select","textarea"],true);
 
                         },
                         422: function (response) {
                             console.log(response);
-                            enableDisableFormElement("createTerminalForm",["input","button","select","textarea"],true);
+                            enableDisableFormElement("editTerminalForm",["input","button","select","textarea"],true);
                             BindErrorsWithHtml("errorMsg_",response.responseJSON);
                         }
                     },
                     success: function(data){
-                        $("#statusMsg").html("Distributor created successfully").show();
+                        $("#statusMsg").html("Terminal updated successfully").show();
                         setTimeout(function(){
                             window.location = "/admin/terminal/all";
                         },2000);
@@ -107,7 +110,7 @@
         });
     </script>
 
-<!-- Date picker -->
+    <!-- Date picker -->
 </body>
 
 </html>

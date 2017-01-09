@@ -57,4 +57,22 @@ public class TerminalDao extends BaseDao {
         }
         return new ArrayList<Terminal>();
     }
+
+    public Terminal getById(int id){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (Terminal) session.createQuery("FROM Terminal where id = :id").setParameter("id", id).uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+
+    }
+
+
 }
