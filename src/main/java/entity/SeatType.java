@@ -19,6 +19,11 @@ public class SeatType {
     private String name;
 
     @Basic
+    @Column(name = "is_default")
+    private boolean isDefault;
+
+
+    @Basic
     @Column(name = "adult_price")
     private double adultPrice;
 
@@ -52,6 +57,14 @@ public class SeatType {
         this.name = name;
     }
 
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(boolean isDefault) {
+        this.isDefault = isDefault;
+    }
 
     public double getAdultPrice() {
         return adultPrice;
@@ -88,20 +101,34 @@ public class SeatType {
     }
 
     @Override
+    public String toString() {
+        return "SeatType{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", isDefault=" + isDefault +
+                ", adultPrice=" + adultPrice +
+                ", childPrice=" + childPrice +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         SeatType seatType = (SeatType) o;
 
         if (id != seatType.id) return false;
+        if (isDefault != seatType.isDefault) return false;
         if (Double.compare(seatType.adultPrice, adultPrice) != 0) return false;
         if (Double.compare(seatType.childPrice, childPrice) != 0) return false;
         if (name != null ? !name.equals(seatType.name) : seatType.name != null) return false;
         if (createdBy != null ? !createdBy.equals(seatType.createdBy) : seatType.createdBy != null) return false;
-        if (createdAt != null ? !createdAt.equals(seatType.createdAt) : seatType.createdAt != null) return false;
+        return !(createdAt != null ? !createdAt.equals(seatType.createdAt) : seatType.createdAt != null);
 
-        return true;
     }
 
     @Override
@@ -110,6 +137,7 @@ public class SeatType {
         long temp;
         result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (isDefault ? 1 : 0);
         temp = Double.doubleToLongBits(adultPrice);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(childPrice);

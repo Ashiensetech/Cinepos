@@ -2,7 +2,6 @@ package helper;
 
 import entity.ScreenSeat;
 import entity.SeatType;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import static java.lang.System.out;
 
 public class ScreenHelper {
 
-    public static List<ScreenSeat> generateSeats(int row,int col){ //, SeatType defulatSeatType
+    public static List<ScreenSeat> generateSeats(int row,int col, SeatType defaultSeatType){
         if(row>702){
             out.println("Maximum 702 row allowed");
             return null;
@@ -26,8 +25,8 @@ public class ScreenHelper {
             for(int c=0;c<col;c++){
 
                 ScreenSeat screenSeat = new ScreenSeat();
-                screenSeat.setName(seatRowName[r]+"-"+(c+1));
-                screenSeat.setSeatTypeId(0);
+                screenSeat.setName(seatRowName[r] + "-" + (c + 1));
+                screenSeat.setSeatType(defaultSeatType);
 
                 screenSeats.add(screenSeat);
             }
@@ -37,9 +36,6 @@ public class ScreenHelper {
         return screenSeats;
     }
 
-    public static void main(String[] args) {
-       ScreenHelper.generateSeats(702, 10);
-    }
     private static  String [] generateTable(int totalRow){
 
         String [] seatRowName =new  String[totalRow];
