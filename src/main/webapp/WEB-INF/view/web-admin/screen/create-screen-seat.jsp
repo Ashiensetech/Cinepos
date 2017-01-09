@@ -48,8 +48,10 @@
                             <d:forEach begin="${row.index*screen.columnCount}" end="${( screen.columnCount*(row.index+1) ) -1}" var="seat" items="${screen.seats}" varStatus="col">
                                 <td>
                                     <div class="seat-single">
-                                        <a href="#" data-toggle="modal" data-target="#seatDetail">${seat.name}</a>
-                                    </div>
+                                        <a href="#" onclick="showSeatDetailsModal(this)" data-seat='{"id":${seat.id},
+                                                                                                    "name":"${seat.name}",
+                                                                                                    "seatTypeId":${seat.seatType.id}}'
+                                                >${seat.name}</a>                                    </div>
                                 </td>
                             </d:forEach>
                         </tr>
@@ -77,9 +79,54 @@
 
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="seatDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title bold" id="myModalLabel">Add/Edit Seat Details for a single seat</h5>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label>Seat name</label>
+                        <input id="modal_seat_name" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Seat type</label>
+                        <select  id="modal_seat_type" class="form-control">
+                            <d:forEach var="seatType" items="${seatTypes}" >
+                                <option value="${seatType.id}">${seatType.name}</option>
+                            </d:forEach>
+
+                        </select>
+                    </div>
+                    <%--<div class="form-group">
+                        <label>Seat Price</label>
+                        <input class="form-control">
+                    </div>--%>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <jsp:directive.include file="../layouts/footer.jsp" />
 
 <script>
+    function showSeatDetailsModal(elem){
+        var seat = $(elem).data("seat");
+        $("#seatDetail").modal("show");
+        $("#modal_seat_type").val(seat.seatTypeId);
+        $("#modal_seat_type").val(seat.seatTypeId);
+    }
   function updateScreenData(){
     $("#statusMsg").html("").hide();
 
