@@ -9,5 +9,6 @@
         <mapping class="entity.Screen"/>
         <mapping class="entity.ScreenDimension"/>
         <mapping class="entity.SeatType"/>
+        <mapping class="entity.ScreenSeat"/>
     </session-factory>
 </hibernate-configuration>
