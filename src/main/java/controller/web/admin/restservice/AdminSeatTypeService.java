@@ -89,6 +89,8 @@ public class AdminSeatTypeService {
 
         SeatType seatType = seatTypeDao.getById(seatTypeId);
 
+        editSeatTypeForm.setId(seatTypeId);
+
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
         if(seatType==null){
