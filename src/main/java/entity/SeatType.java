@@ -58,7 +58,7 @@ public class SeatType {
     }
 
 
-    public boolean isDefault() {
+    public boolean getIsDefault() {
         return isDefault;
     }
 
