@@ -106,7 +106,7 @@
         enableDisableFormElement(parentElementId,["input","button","select","a"],false);
 
         $.ajax({
-            url: '/api/admin/terminal/active-inactive/'+terminalId+'/'+activationType,
+            url: BASEURL+'api/admin/terminal/active-inactive/'+terminalId+'/'+activationType,
             type: 'POST',
             statusCode: {
                 401: function (response) {

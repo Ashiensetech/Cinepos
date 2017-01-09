@@ -76,7 +76,7 @@
 
 
                 $.ajax({
-                    url: BASEURL+'/api/admin/terminal/create',
+                    url: BASEURL+'api/admin/terminal/create',
                     type: 'POST',
                     data: {
                         name:name,

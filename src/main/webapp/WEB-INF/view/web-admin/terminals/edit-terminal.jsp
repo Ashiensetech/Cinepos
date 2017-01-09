@@ -79,7 +79,7 @@
 
 
                 $.ajax({
-                    url: BASEURL+'/api/admin/terminal/edit/'+terminalId,
+                    url: BASEURL+'api/admin/terminal/edit/'+terminalId,
                     type: 'POST',
                     data: {
                         name:name,

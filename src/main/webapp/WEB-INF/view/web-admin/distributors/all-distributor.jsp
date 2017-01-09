@@ -114,7 +114,7 @@
         enableDisableFormElement(parentElementId,["input","button","select","a"],false);
 
         $.ajax({
-            url: '/api/admin/distributor/active-inactive/'+distributorId+'/'+activationType,
+            url: BASEURL+'api/admin/distributor/active-inactive/'+distributorId+'/'+activationType,
             type: 'POST',
             statusCode: {
                 401: function (response) {
