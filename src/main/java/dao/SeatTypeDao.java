@@ -50,7 +50,6 @@ public class SeatTypeDao extends BaseDao {
         return false;
     }
 
-
     public SeatType getByName(String name){
 
         Session session = null;
