@@ -74,6 +74,21 @@
                     </td>
                     <td>
 
+                      <d:if test="${screen.isSeatPlanComplete}" >
+                        <a href="<c:url value="/admin/screen/seat/create" />"
+                           type="button"
+                           class="btn btn-outline btn-primary" >Edit Seat plan</a>
+                      </d:if>
+
+
+                      <d:if test="${!screen.isSeatPlanComplete}" >
+                        <a href="<c:url value="/admin/screen/seat/create/${screen.id}" />"
+                           type="button"
+                           class="btn btn-outline btn-primary" >Create Seat plan</a>
+                      </d:if>
+
+
+
                       <button id="statusChangeBtn${screen.id}"
                               data-status="${screen.active}"
                               onclick="screenStatusUpdateScreenData('screenRow${screen.id}',

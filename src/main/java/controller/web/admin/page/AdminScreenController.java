@@ -5,12 +5,15 @@ import dao.ScreenDao;
 import dao.ScreenDimensionDao;
 import entity.Screen;
 import entity.ScreenDimension;
+import entity.ScreenSeat;
+import helper.ScreenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 
 
 @Controller
@@ -44,6 +47,24 @@ public class AdminScreenController {
             return new ModelAndView("redirect:"+AdminUriPreFix.pageUriPrefix+"/screen/all");
         }
         mav.addObject("screenDimensions",screenDimensionDao.getAll());
+        mav.addObject("screen",screen);
+        return mav;
+    }
+
+
+    @RequestMapping(value = "/seat/create/{screenId}")
+    public ModelAndView createScreenSeatPage(@PathVariable Integer screenId){
+        ModelAndView mav =  new ModelAndView("web-admin/screen/create-screen-seat");
+        Screen screen = screenDao.getById(screenId);
+
+        if(!screen.getIsSeatPlanComplete()){
+            List<ScreenSeat> screenSeats = ScreenHelper.generateSeats(screen.getRowCount(),screen.getColumnCount());
+            screen.setSeats(screenSeats);
+        }
+
+
+
+
         mav.addObject("screen",screen);
         return mav;
     }
