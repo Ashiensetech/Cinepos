@@ -25,6 +25,11 @@ public class Terminal {
     @Basic
     @Column(name = "type")
     private String type;
+
+    @Basic
+    @Column(name = "status")
+    private int status;
+
     @Basic
     @Column(name = "created_by")
     private int createdBy;
@@ -73,6 +78,14 @@ public class Terminal {
         this.type = type;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public int getCreatedBy() {
         return createdBy;
     }
@@ -113,6 +126,7 @@ public class Terminal {
         Terminal terminal = (Terminal) o;
 
         if (Id != terminal.Id) return false;
+        if (status != terminal.status) return false;
         if (createdBy != terminal.createdBy) return false;
         if (updatedBy != terminal.updatedBy) return false;
         if (name != null ? !name.equals(terminal.name) : terminal.name != null) return false;
@@ -128,6 +142,7 @@ public class Terminal {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (ipAddress != null ? ipAddress.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + status;
         result = 31 * result + createdBy;
         result = 31 * result + updatedBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
@@ -142,6 +157,7 @@ public class Terminal {
                 ", name='" + name + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +
                 ", type='" + type + '\'' +
+                ", status=" + status +
                 ", createdBy=" + createdBy +
                 ", updatedBy=" + updatedBy +
                 ", createdAt=" + createdAt +

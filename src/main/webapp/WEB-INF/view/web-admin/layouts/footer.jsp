@@ -48,7 +48,7 @@
     function doLogout(){
 
         $.ajax({
-            url: BASEURL+'/auth/admin/do-logout',
+            url: BASEURL+'auth/admin/do-logout',
             type: 'GET',
             success: function (data) {
                 console.log("SUCCESS");

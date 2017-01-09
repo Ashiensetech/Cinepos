@@ -49,7 +49,7 @@ public class ScreenDao extends BaseDao {
 
         try{
             session = this.sessionFactory.openSession();
-            return (Screen)session.createQuery("FROM Screen where id = :id").setParameter("id", id).uniqueResult();
+            return (Screen)session.createQuery("FROM Screen screen left join fetch screen.seats where screen.id = :id").setParameter("id", id).uniqueResult();
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();

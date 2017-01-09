@@ -176,6 +176,69 @@ body {
   border-radius: 0px;
   text-transform: uppercase;
 }
+
+
+.seat-assemble{
+  height: 500px;
+  width: 1000px;
+  background: #ededed;
+  padding:10px;
+}
+.seats-container{
+  height:490px;
+  background: #fefefe;
+  padding:10px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+.seat-single{
+  width: 80px;
+  height: 80px;
+  background: url(../images/chair.png)no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.seat-single:hover{
+  background-color: #ffe8a6;
+}
+.seat-single a{
+  display: block;
+  position: absolute;
+  top: 5px;
+  color: #fff;
+  left: 17px;
+  font-weight: bold;
+  padding: 15px;
+}
+.seat-single a:hover{
+  text-decoration: none;
+  -moz-transform: scale(1.2);
+-webkit-transform: scale(1.2);
+-o-transform: scale(1.2);
+-ms-transform: scale(1.2);
+transform: scale(1.2);
+}
+.seat-single a:active{
+  text-decoration: none;
+  outline: 0px;
+}
+.seat-single a:focus{
+  text-decoration: none;
+  outline: 0px;
+}
+table.seat-table{
+
+}
+table.seat-table td{
+  padding:5px;
+}
+.bold{
+  font-weight: bold;
+}
+.center-block{
+  float: none;
+  marker:10px auto;
+}
 /*cstm style*/
 
 

@@ -94,7 +94,7 @@
 
 
                 $.ajax({
-                    url: '/api/admin/distributor/edit/'+id,
+                    url: BASEURL+'api/admin/distributor/edit/'+id,
                     type: 'POST',
                     data: {
                         name:name,
@@ -108,12 +108,13 @@
                     statusCode: {
                         401: function (response) {
                             console.log("unauthorized");
-                            enableDisableFormElement("editDistributorForm",["input","button","select","textarea"],false);
+                           // enableDisableFormElement("editDistributorForm",["input","button","select","textarea"],false);
+                            enableDisableFormElement("editDistributorForm",["input","button","select","textarea"],true);
                         },
                         422: function (response) {
                             console.log(response);
                             BindErrorsWithHtml("errorMsg_",response.responseJSON);
-                            enableDisableFormElement("editDistributorForm",["input","button","select","textarea"],false);
+                            enableDisableFormElement("editDistributorForm",["input","button","select","textarea"],true);
                         }
                     },
                     success: function(data){
