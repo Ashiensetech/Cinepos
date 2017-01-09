@@ -3,6 +3,7 @@ package entity;
 import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by mi on 1/5/17.
@@ -17,6 +18,10 @@ public class Screen {
     @Basic
     @Column(name = "name")
     private String name;
+
+    @Basic
+    @Column(name = "is_seat_plan_complete")
+    boolean isSeatPlanComplete;
 
     @Basic
     @Column(name = "no_of_seat")
@@ -47,6 +52,11 @@ public class Screen {
     @Column(name = "closing_time")
     private Time closingTime;
 
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "screen_id",referencedColumnName = "id")
+    private List<ScreenSeat> seats;
+
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
@@ -71,6 +81,15 @@ public class Screen {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+
+    public boolean getIsSeatPlanComplete() {
+        return isSeatPlanComplete;
+    }
+
+    public void setIsSeatPlanComplete(boolean isSeatPlanComplete) {
+        this.isSeatPlanComplete = isSeatPlanComplete;
     }
 
     public int getNoOfSeat() {
@@ -132,6 +151,14 @@ public class Screen {
     }
 
 
+    public List<ScreenSeat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<ScreenSeat> screenSeats) {
+        this.seats = screenSeats;
+    }
+
     public Integer getCreatedBy() {
         return createdBy;
     }
@@ -154,6 +181,7 @@ public class Screen {
         return "Screen{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", seatePlanComplete=" + isSeatPlanComplete +
                 ", noOfSeat=" + noOfSeat +
                 ", screenDimension=" + screenDimension +
                 ", active=" + active +
@@ -161,6 +189,7 @@ public class Screen {
                 ", columnCount=" + columnCount +
                 ", openingTime=" + openingTime +
                 ", closingTime=" + closingTime +
+                ", seats=" + seats +
                 ", createdBy=" + createdBy +
                 ", createdAt=" + createdAt +
                 '}';
@@ -174,6 +203,7 @@ public class Screen {
         Screen screen = (Screen) o;
 
         if (id != screen.id) return false;
+        if (isSeatPlanComplete != screen.isSeatPlanComplete) return false;
         if (noOfSeat != screen.noOfSeat) return false;
         if (active != screen.active) return false;
         if (rowCount != screen.rowCount) return false;
@@ -183,6 +213,7 @@ public class Screen {
             return false;
         if (openingTime != null ? !openingTime.equals(screen.openingTime) : screen.openingTime != null) return false;
         if (closingTime != null ? !closingTime.equals(screen.closingTime) : screen.closingTime != null) return false;
+        if (seats != null ? !seats.equals(screen.seats) : screen.seats != null) return false;
         if (createdBy != null ? !createdBy.equals(screen.createdBy) : screen.createdBy != null) return false;
         return !(createdAt != null ? !createdAt.equals(screen.createdAt) : screen.createdAt != null);
 
@@ -192,6 +223,7 @@ public class Screen {
     public int hashCode() {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (isSeatPlanComplete ? 1 : 0);
         result = 31 * result + noOfSeat;
         result = 31 * result + (screenDimension != null ? screenDimension.hashCode() : 0);
         result = 31 * result + (active ? 1 : 0);
@@ -199,6 +231,7 @@ public class Screen {
         result = 31 * result + columnCount;
         result = 31 * result + (openingTime != null ? openingTime.hashCode() : 0);
         result = 31 * result + (closingTime != null ? closingTime.hashCode() : 0);
+        result = 31 * result + (seats != null ? seats.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;

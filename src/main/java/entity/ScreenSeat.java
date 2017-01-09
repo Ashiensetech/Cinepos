@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * Created by mi on 1/9/17.
  */
 @Entity
-@Table(name = "screen_seat", schema = "", catalog = "cinepos")
+@Table(name = "screen_seat", schema = "")
 public class ScreenSeat {
     private int id;
     private Integer screenId;
@@ -74,6 +74,19 @@ public class ScreenSeat {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+
+    @Override
+    public String toString() {
+        return "ScreenSeat{" +
+                "id=" + id +
+                ", screenId=" + screenId +
+                ", seatTypeId=" + seatTypeId +
+                ", name='" + name + '\'' +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                '}';
     }
 
     @Override
