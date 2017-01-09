@@ -21,10 +21,12 @@ public class ScreenHelper {
         }
         String [] seatRowName = ScreenHelper.generateTable(row);
         List<ScreenSeat> screenSeats  = new ArrayList<>();
+        int screenId = 1;
         for(int r=0;r<row;r++){
             for(int c=0;c<col;c++){
 
                 ScreenSeat screenSeat = new ScreenSeat();
+                screenSeat.setId(screenId++);
                 screenSeat.setName(seatRowName[r] + "-" + (c + 1));
                 screenSeat.setSeatType(defaultSeatType);
 
@@ -66,6 +68,16 @@ public class ScreenHelper {
         }
         return seatRowName;
     }
+    public static List<ScreenSeat> arrayToListAndSetIdZero(ScreenSeat[] screenSeats){
+        List<ScreenSeat> screenSeatList = new ArrayList<>();
 
+        for(ScreenSeat screenSeat : screenSeats){
+            screenSeat.setId(0);
+            screenSeatList.add(screenSeat);
+        }
+
+        out.println(screenSeatList);
+        return screenSeatList;
+    }
 
 }

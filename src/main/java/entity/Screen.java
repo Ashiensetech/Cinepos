@@ -53,7 +53,7 @@ public class Screen {
     private Time closingTime;
 
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "screen_id",referencedColumnName = "id")
     private List<ScreenSeat> seats;
 

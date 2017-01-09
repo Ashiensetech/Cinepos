@@ -69,6 +69,24 @@ public class SeatTypeDao extends BaseDao {
         return null;
     }
 
+    public SeatType getDefaultSeatType(){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (SeatType) session.createQuery("FROM SeatType where isDefault = true ")
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+        return null;
+    }
+
     public SeatType getById(Integer id){
 
         Session session = null;

@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 @Table(name = "screen_seat", schema = "")
 public class ScreenSeat {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
@@ -18,7 +19,7 @@ public class ScreenSeat {
     private Integer screenId;
 
     @OneToOne
-    @JoinColumn(name = "seat_type_id",referencedColumnName = "id",updatable = false,insertable = false)
+    @JoinColumn(name = "seat_type_id",referencedColumnName = "id")
     private SeatType seatType;
 
     @Basic

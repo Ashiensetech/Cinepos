@@ -48,9 +48,11 @@
                             <d:forEach begin="${row.index*screen.columnCount}" end="${( screen.columnCount*(row.index+1) ) -1}" var="seat" items="${screen.seats}" varStatus="col">
                                 <td>
                                     <div class="seat-single">
-                                        <a href="#" onclick="showSeatDetailsModal(this)" data-seat='{"id":${seat.id},
-                                                                                                    "name":"${seat.name}",
-                                                                                                    "seatTypeId":${seat.seatType.id}}'
+                                        <a class="seatInfHolder" id="seat_${seat.id}" href="#" onclick="showSeatDetailsModal(this)"
+                                           data-seat='{"id":${seat.id},
+                                                        "name":"${seat.name}",
+                                                        "seatType":{"id":${seat.seatType.id}}}'
+
                                                 >${seat.name}</a>                                    </div>
                                 </td>
                             </d:forEach>
@@ -89,7 +91,8 @@
                 <h5 class="modal-title bold" id="myModalLabel">Add/Edit Seat Details for a single seat</h5>
             </div>
             <div class="modal-body">
-                <form>
+                <form onsubmit="return false" >
+                    <input id="screenId" class="form-control" type="hidden" value="${screen.id}">
                     <div class="form-group">
                         <label>Seat name</label>
                         <input id="modal_seat_name" class="form-control">
@@ -112,7 +115,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Submit</button>
+                <button type="button" class="btn btn-primary" onclick="updateSeatInformation()">Submit</button>
+
             </div>
         </div>
     </div>
@@ -120,65 +124,69 @@
 
 <jsp:directive.include file="../layouts/footer.jsp" />
 
+
+<%--Developer Hidden Inputs--%>
+<input type="hidden" id="currentSeatSelected" value="0">
+
 <script>
+    function updateSeatInformation(){
+        var currentSeatId = $("#currentSeatSelected").val();
+
+        var seat = $("#seat_"+currentSeatId).data("seat");
+        seat.name = $("#modal_seat_name").val();
+        seat.seatType.id = $("#modal_seat_type").val();
+
+        $("#seat_"+currentSeatId).data("seat",seat);
+        $("#seat_"+currentSeatId).html(seat.name);
+        $("#seatDetail").modal("hide");
+    }
     function showSeatDetailsModal(elem){
         var seat = $(elem).data("seat");
+
+        $("#currentSeatSelected").val(seat.id);
+
         $("#seatDetail").modal("show");
-        $("#modal_seat_type").val(seat.seatTypeId);
-        $("#modal_seat_type").val(seat.seatTypeId);
+        $("#modal_seat_name").val(seat.name);
+        $("#modal_seat_type").val(seat.seatType.id);
+
+
+
     }
-  function updateScreenData(){
-    $("#statusMsg").html("").hide();
+  function createScreenSeat(){
+   // $("#statusMsg").html("").hide();
 
     var screenId =$("#screenId").val();
-    var name =$("#name").val();
-    var rowCount=$("#rowCount").val();
-    var seatCount=$("#seatCount").val();
-    var screenTypeId=$("#screenTypeId").val();
-    var columnCount = $("#columnCount").val();
-    var openingTime=$("#openingTime").val();
-    var closingTime = $("#closingTime").val();
-    openingTime = (openingTime=="")?null:openingTime;
-    closingTime = (closingTime=="")?null:closingTime;
 
-    enableDisableFormElement("updateScreenForm",["input","button","select"],false);
+    //enableDisableFormElement("createScreenForm",["input","button","select"],false);
+      var postData = [];
+      $(".seatInfHolder").each(function(){
+
+          postData.push($(this).data("seat"));
+      });
 
 
-    var postData =  {
-      name:name,
-      rowCount:rowCount,
-      seatCount:seatCount,
-      screenTypeId:screenTypeId,
-      columnCount:columnCount
-    };
-    if(openingTime != null){
-      postData["openingTime"] = openingTime;
-    }
-    if(closingTime != null){
-      postData["closingTime"] = closingTime;
-    }
 
 
     $.ajax({
-      url: BASEURL+'api/admin/screen/edit/'+screenId,
+      url: BASEURL+'api/admin/screen/seat-plan/create/'+screenId,
       type: 'POST',
-      data:postData,
+      data:{seats:JSON.stringify(postData),a:postData},
       statusCode: {
         401: function (response) {
           console.log("unauthorized");
           console.log(response);
-          enableDisableFormElement("updateScreenForm",["input","button","select"],true);
+         // enableDisableFormElement("createScreenForm",["input","button","select"],true);
         },
         422: function (response) {
           console.log(response);
           BindErrorsWithHtml("errorMsg_",response.responseJSON);
-          enableDisableFormElement("updateScreenForm",["input","button","select"],true);
+          //enableDisableFormElement("createScreenForm",["input","button","select"],true);
         }
       },success: function(data){
 
-        $("#statusMsg").html("Screen update successfully").show();
+        //$("#statusMsg").html("Screen update successfully").show();
         setTimeout(function(){
-          window.location = BASEURL+"admin/screen/all";
+         // window.location = BASEURL+"admin/screen/all";
         },2000);
 
       }

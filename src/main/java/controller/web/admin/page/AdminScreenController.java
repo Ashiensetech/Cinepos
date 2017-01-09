@@ -5,7 +5,6 @@ import dao.ScreenDao;
 import dao.ScreenDimensionDao;
 import dao.SeatTypeDao;
 import entity.Screen;
-import entity.ScreenDimension;
 import entity.ScreenSeat;
 import entity.SeatType;
 import helper.ScreenHelper;
@@ -61,17 +60,12 @@ public class AdminScreenController {
         ModelAndView mav =  new ModelAndView("web-admin/screen/create-screen-seat");
         Screen screen = screenDao.getById(screenId);
         List<SeatType> seatTypes = seatTypeDao.getAll();
-        SeatType seatType = seatTypes.stream().findFirst().get();
-
-        seatType.setName("Regular");
-
+        SeatType seatType = seatTypeDao.getDefaultSeatType();
 
         if(!screen.getIsSeatPlanComplete()){
             List<ScreenSeat> screenSeats = ScreenHelper.generateSeats(screen.getRowCount(),screen.getColumnCount(),seatType);
             screen.setSeats(screenSeats);
         }
-
-
 
 
         mav.addObject("screen",screen);
