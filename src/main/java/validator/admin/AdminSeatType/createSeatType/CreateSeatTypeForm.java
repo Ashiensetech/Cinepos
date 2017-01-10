@@ -14,10 +14,10 @@ public class CreateSeatTypeForm {
     private String name;
 
     @NotNull(message = "Adult Price is required")
-    private Integer adultPrice;
+    private double adultPrice;
 
     @NotNull(message = "Child Price is required")
-    private Integer childPrice;
+    private double childPrice;
 
 
     public String getName() {
@@ -25,22 +25,22 @@ public class CreateSeatTypeForm {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
-    public Integer getAdultPrice() {
+    public double getAdultPrice() {
         return adultPrice;
     }
 
-    public Integer getChildPrice() {
+    public double getChildPrice() {
         return childPrice;
     }
 
-    public void setChildPrice(Integer childPrice) {
+    public void setChildPrice(double childPrice) {
         this.childPrice = childPrice;
     }
 
-    public void setAdultPrice(Integer adultPrice) {
+    public void setAdultPrice(double adultPrice) {
         this.adultPrice = adultPrice;
     }
 

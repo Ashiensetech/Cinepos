@@ -55,6 +55,19 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            <li>
+                <a href="#">Seat Type<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="/admin/seat-type/all">All Seat Type</a>
+                    </li>
+                    <li>
+                        <a href="/admin/seat-type/create">Create Seat Type</a>
+                    </li>
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
         </ul>
     </div>
     <!-- /.sidebar-collapse -->

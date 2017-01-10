@@ -1,6 +1,5 @@
 package dao;
 
-import entity.ScreenDimension;
 import entity.SeatType;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -15,21 +14,6 @@ import java.util.List;
 @Repository
 public class SeatTypeDao extends BaseDao {
 
-    public void insert(SeatType seatType){
-        Session session = null;
-
-        try {
-            session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            session.save(seatType);
-            session.getTransaction().commit();
-        }catch (HibernateException hEx){
-            // Insert to database exception log
-            hEx.printStackTrace();
-        }finally {
-            if(session!=null)session.close();
-        }
-    }
     public List<SeatType> getAll(){
         Session session = this.sessionFactory.openSession();
         try{
@@ -45,4 +29,86 @@ public class SeatTypeDao extends BaseDao {
         return new ArrayList<SeatType>();
 
     }
+
+    public boolean isNameUsedByOthers(int id,String name){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            SeatType seatType =  (SeatType) session.createQuery("FROM SeatType where name = :name and id != :id")
+                    .setParameter("name", name)
+                    .setParameter("id", id)
+                    .setMaxResults(1)
+                    .uniqueResult();
+            return (seatType!=null);
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return false;
+    }
+
+    public SeatType getByName(String name){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (SeatType) session.createQuery("FROM SeatType where name = :name")
+                    .setParameter("name", name)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+        return null;
+    }
+
+    public SeatType getDefaultSeatType(){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (SeatType) session.createQuery("FROM SeatType where isDefault = true ")
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+        return null;
+    }
+
+    public SeatType getById(Integer id){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (SeatType) session.createQuery("FROM SeatType where id = :id")
+                    .setParameter("id", id)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+        return null;
+    }
+
+    public boolean deleteSeatTpeById(Integer id){
+        SeatType seatType = getById(id);
+        return  delete(seatType);
+    }
+
 }

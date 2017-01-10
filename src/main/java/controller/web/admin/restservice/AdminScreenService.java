@@ -1,17 +1,20 @@
 package controller.web.admin.restservice;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import controller.web.admin.AdminUriPreFix;
 import dao.ScreenDao;
 import dao.ScreenDimensionDao;
+import dao.ScreenSeatDao;
+import dao.SeatTypeDao;
 import entity.Screen;
+import entity.ScreenSeat;
+import entity.SeatType;
+import helper.ScreenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import utility.ServiceResponse;
 import validator.admin.AdminScreenService.createScreen.CreateScreenValidator;
 import validator.admin.AdminScreenService.createScreen.CreateScreenFrom;
@@ -19,6 +22,10 @@ import validator.admin.AdminScreenService.editScreen.EditScreenValidator;
 import validator.admin.AdminScreenService.editScreen.EditScreenFrom;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by mi on 1/5/17.
@@ -33,7 +40,14 @@ public class AdminScreenService {
     ScreenDimensionDao screenDimensionDao;
 
     @Autowired
+    SeatTypeDao seatTypeDao;
+
+    @Autowired
+    ScreenSeatDao screenSeatDao;
+
+    @Autowired
     CreateScreenValidator createAdminScreenValidator;
+
     @Autowired
     EditScreenValidator editScreenValidator;
 
@@ -170,4 +184,49 @@ public class AdminScreenService {
         screenDao.update(screen);
         return ResponseEntity.status(HttpStatus.OK).body(screen);
     }
+
+    @RequestMapping(value = "/seat-plan/create/{screenId}",method = RequestMethod.POST)
+    public ResponseEntity<?> createScreenSeat(@PathVariable Integer screenId,
+                                              @RequestParam(value = "seats") String seatsJsonStr){
+        //
+        System.out.println(seatsJsonStr);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ScreenSeat[] screenSeats = null;
+        try {
+            screenSeats = objectMapper.readValue(seatsJsonStr, ScreenSeat[].class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Screen screen = screenDao.getById(screenId);
+        if(screen==null){
+            ServiceResponse serviceResponse = ServiceResponse.getInstance();
+            serviceResponse.setValidationError("screenId","No screen found");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
+
+       List<ScreenSeat> screenSeatList =  ScreenHelper.arrayToListAndSetIdZero(screenSeats);
+
+
+        for(ScreenSeat screenSeat : screenSeatList){
+            screenSeat.setScreenId(screen.getId());
+            SeatType seatType = seatTypeDao.getById(screenSeat.getSeatType().getId());
+            if(seatType==null){
+                System.out.println();
+                continue;
+            }
+            screenSeat.setSeatType(seatType);
+            screenSeatDao.insert(screenSeat);
+        }
+
+        screen.setIsSeatPlanComplete(true);
+        screenDao.update(screen);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body("");
+    }
+
 }
+

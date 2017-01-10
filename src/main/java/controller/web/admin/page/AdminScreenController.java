@@ -3,9 +3,10 @@ package controller.web.admin.page;
 import controller.web.admin.AdminUriPreFix;
 import dao.ScreenDao;
 import dao.ScreenDimensionDao;
+import dao.SeatTypeDao;
 import entity.Screen;
-import entity.ScreenDimension;
 import entity.ScreenSeat;
+import entity.SeatType;
 import helper.ScreenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,8 @@ public class AdminScreenController {
     @Autowired
     private ScreenDao screenDao;
 
+    @Autowired
+    private SeatTypeDao seatTypeDao;
     @RequestMapping(value = "/all")
     public ModelAndView allScreenPage(){
         ModelAndView mav =  new ModelAndView("web-admin/screen/all-screen");
@@ -56,16 +59,17 @@ public class AdminScreenController {
     public ModelAndView createScreenSeatPage(@PathVariable Integer screenId){
         ModelAndView mav =  new ModelAndView("web-admin/screen/create-screen-seat");
         Screen screen = screenDao.getById(screenId);
+        List<SeatType> seatTypes = seatTypeDao.getAll();
+        SeatType seatType = seatTypeDao.getDefaultSeatType();
 
         if(!screen.getIsSeatPlanComplete()){
-            List<ScreenSeat> screenSeats = ScreenHelper.generateSeats(screen.getRowCount(),screen.getColumnCount());
+            List<ScreenSeat> screenSeats = ScreenHelper.generateSeats(screen.getRowCount(),screen.getColumnCount(),seatType);
             screen.setSeats(screenSeats);
         }
 
 
-
-
         mav.addObject("screen",screen);
+        mav.addObject("seatTypes",seatTypes);
         return mav;
     }
 

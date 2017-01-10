@@ -9,15 +9,32 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "screen_seat", schema = "")
 public class ScreenSeat {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+
+    @Basic
+    @Column(name = "screen_id")
     private Integer screenId;
-    private Integer seatTypeId;
+
+    @OneToOne
+    @JoinColumn(name = "seat_type_id",referencedColumnName = "id")
+    private SeatType seatType;
+
+    @Basic
+    @Column(name = "name")
     private String name;
+
+    @Basic
+    @Column(name = "created_by")
     private Integer createdBy;
+
+    @Basic
+    @Column(name = "created_at")
     private Timestamp createdAt;
 
-    @Id
-    @Column(name = "id")
+
     public int getId() {
         return id;
     }
@@ -26,8 +43,7 @@ public class ScreenSeat {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "screen_id")
+
     public Integer getScreenId() {
         return screenId;
     }
@@ -36,18 +52,20 @@ public class ScreenSeat {
         this.screenId = screenId;
     }
 
-    @Basic
-    @Column(name = "seat_type_id")
-    public Integer getSeatTypeId() {
-        return seatTypeId;
+
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public void setSeatTypeId(Integer seatTypeId) {
-        this.seatTypeId = seatTypeId;
+    public SeatType getSeatType() {
+        return seatType;
     }
 
-    @Basic
-    @Column(name = "name")
+    public void setSeatType(SeatType seatType) {
+        this.seatType = seatType;
+    }
+
+
     public String getName() {
         return name;
     }
@@ -56,8 +74,7 @@ public class ScreenSeat {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "created_by")
+
     public Integer getCreatedBy() {
         return createdBy;
     }
@@ -66,23 +83,17 @@ public class ScreenSeat {
         this.createdBy = createdBy;
     }
 
-    @Basic
-    @Column(name = "created_at")
+
     public Timestamp getCreatedAt() {
         return createdAt;
     }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
 
     @Override
     public String toString() {
         return "ScreenSeat{" +
                 "id=" + id +
                 ", screenId=" + screenId +
-                ", seatTypeId=" + seatTypeId +
+                ", seatType=" + seatType +
                 ", name='" + name + '\'' +
                 ", createdBy=" + createdBy +
                 ", createdAt=" + createdAt +
@@ -98,19 +109,18 @@ public class ScreenSeat {
 
         if (id != that.id) return false;
         if (screenId != null ? !screenId.equals(that.screenId) : that.screenId != null) return false;
-        if (seatTypeId != null ? !seatTypeId.equals(that.seatTypeId) : that.seatTypeId != null) return false;
+        if (seatType != null ? !seatType.equals(that.seatType) : that.seatType != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        return !(createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + (screenId != null ? screenId.hashCode() : 0);
-        result = 31 * result + (seatTypeId != null ? seatTypeId.hashCode() : 0);
+        result = 31 * result + (seatType != null ? seatType.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);

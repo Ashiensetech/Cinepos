@@ -2,7 +2,6 @@ package helper;
 
 import entity.ScreenSeat;
 import entity.SeatType;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,19 +14,21 @@ import static java.lang.System.out;
 
 public class ScreenHelper {
 
-    public static List<ScreenSeat> generateSeats(int row,int col){ //, SeatType defulatSeatType
+    public static List<ScreenSeat> generateSeats(int row,int col, SeatType defaultSeatType){
         if(row>702){
             out.println("Maximum 702 row allowed");
             return null;
         }
         String [] seatRowName = ScreenHelper.generateTable(row);
         List<ScreenSeat> screenSeats  = new ArrayList<>();
+        int screenId = 1;
         for(int r=0;r<row;r++){
             for(int c=0;c<col;c++){
 
                 ScreenSeat screenSeat = new ScreenSeat();
-                screenSeat.setName(seatRowName[r]+"-"+(c+1));
-                screenSeat.setSeatTypeId(0);
+                screenSeat.setId(screenId++);
+                screenSeat.setName(seatRowName[r] + "-" + (c + 1));
+                screenSeat.setSeatType(defaultSeatType);
 
                 screenSeats.add(screenSeat);
             }
@@ -37,9 +38,6 @@ public class ScreenHelper {
         return screenSeats;
     }
 
-    public static void main(String[] args) {
-       ScreenHelper.generateSeats(702, 10);
-    }
     private static  String [] generateTable(int totalRow){
 
         String [] seatRowName =new  String[totalRow];
@@ -70,6 +68,16 @@ public class ScreenHelper {
         }
         return seatRowName;
     }
+    public static List<ScreenSeat> arrayToListAndSetIdZero(ScreenSeat[] screenSeats){
+        List<ScreenSeat> screenSeatList = new ArrayList<>();
 
+        for(ScreenSeat screenSeat : screenSeats){
+            screenSeat.setId(0);
+            screenSeatList.add(screenSeat);
+        }
+
+        out.println(screenSeatList);
+        return screenSeatList;
+    }
 
 }

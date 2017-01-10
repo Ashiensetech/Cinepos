@@ -13,9 +13,17 @@ import org.springframework.validation.Validator;
 @Repository
 public class CreateSeatTypeValidator implements Validator {
 
+    @Autowired
+    SeatTypeDao seatTypeDao;
+
     @Override
     public void validate(Object obj, Errors errors) {
         CreateSeatTypeForm createSeatTypeForm = (CreateSeatTypeForm) obj;
+
+        SeatType seatType  = seatTypeDao.getByName(createSeatTypeForm.getName());
+        if(seatType!=null){
+            errors.rejectValue("name", "Name already taken");
+        }
 
     }
     @Override
