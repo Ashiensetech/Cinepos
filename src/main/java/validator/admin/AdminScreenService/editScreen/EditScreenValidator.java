@@ -36,10 +36,10 @@ public class EditScreenValidator implements Validator {
 
         if(screen.getIsSeatPlanComplete() && screen.getSeats()!=null && screen.getSeats().size()>0){
             if(screen.getRowCount() != editScreenFrom.getRowCount()){
-                errors.rejectValue("rowCount", "Row can't be changed after set plan is created");
+                errors.rejectValue("rowCount", "Row can't be changed after seat plan is created");
             }
             if(screen.getColumnCount() != editScreenFrom.getColumnCount()){
-                errors.rejectValue("columnCount", "Column can't be changed after set plan is created");
+                errors.rejectValue("columnCount", "Column can't be changed after seat plan is created");
             }
         }
     }
