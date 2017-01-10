@@ -36,6 +36,7 @@
                             <th>No</th>
                             <th>Name</th>
                             <th>Ip Address</th>
+                            <th>Terminal Code</th>
                             <th>Email 2</th>
                             <th>Type</th>
                             <th>Action</th>
@@ -51,6 +52,7 @@
                                         <td>${count}</td>
                                         <td>${terminalValue.name}</td>
                                         <td>${terminalValue.ipAddress}</td>
+                                        <td>${terminalValue.terminalCode}</td>
                                         <td>${terminalValue.type}</td>
                                         <td id="statusTd${terminalValue.id}">${(terminalValue.status==1)?"Active":"Deactive"}</td>
                                         <td>
@@ -63,10 +65,10 @@
                                                         ${terminalValue.id})"
                                                     class="btn btn-outline btn-primary" >
                                                 <d:if test="${terminalValue.status==1}">
-                                                    Deactivate
+                                                     Active
                                                 </d:if>
                                                 <d:if test="${terminalValue.status==0}">
-                                                    Active
+                                                    Deactivate
                                                 </d:if>
                                             </button>
                                             <a href="<c:message code="base.uri" />/admin/terminal/edit/${terminalValue.id}"

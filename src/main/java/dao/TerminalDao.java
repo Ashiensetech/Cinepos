@@ -8,25 +8,27 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Sarwar on 1/5/2017.
- */
+
 @Repository
 public class TerminalDao extends BaseDao {
 
-     public void insert(Terminal terminal){
+     public int insert(Terminal terminal){
          Session session = null;
          try {
              session = this.sessionFactory.openSession();
              session.beginTransaction();
-             session.save(terminal);
+             int id=(Integer) session.save(terminal);
+             System.out.println(id+"RAZA");
              session.getTransaction().commit();
+             return id;
          }catch (HibernateException hEx){
              // Insert to database exception log
              hEx.printStackTrace();
          }finally {
              if(session!=null)session.close();
          }
+
+         return 0;
 
      }
      public void update(Terminal terminal){
@@ -64,6 +66,22 @@ public class TerminalDao extends BaseDao {
         try{
             session = this.sessionFactory.openSession();
             return (Terminal) session.createQuery("FROM Terminal where id = :id").setParameter("id", id).uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+
+    }
+
+    public Terminal getLastId(){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (Terminal) session.createQuery("from Terminal order by id DESC").setMaxResults(1).uniqueResult();
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();

@@ -23,6 +23,10 @@ public class Terminal {
     private String ipAddress;
 
     @Basic
+    @Column(name = "terminal_code")
+    private String terminalCode;
+
+    @Basic
     @Column(name = "type")
     private String type;
 
@@ -68,6 +72,14 @@ public class Terminal {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public String getTerminalCode() {
+        return terminalCode;
+    }
+
+    public void setTerminalCode(String terminalCode) {
+        this.terminalCode = terminalCode;
     }
 
     public String getType() {
@@ -131,6 +143,8 @@ public class Terminal {
         if (updatedBy != terminal.updatedBy) return false;
         if (name != null ? !name.equals(terminal.name) : terminal.name != null) return false;
         if (ipAddress != null ? !ipAddress.equals(terminal.ipAddress) : terminal.ipAddress != null) return false;
+        if (terminalCode != null ? !terminalCode.equals(terminal.terminalCode) : terminal.terminalCode != null)
+            return false;
         if (type != null ? !type.equals(terminal.type) : terminal.type != null) return false;
         if (createdAt != null ? !createdAt.equals(terminal.createdAt) : terminal.createdAt != null) return false;
         return updatedAt != null ? updatedAt.equals(terminal.updatedAt) : terminal.updatedAt == null;
@@ -141,6 +155,7 @@ public class Terminal {
         int result = Id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (ipAddress != null ? ipAddress.hashCode() : 0);
+        result = 31 * result + (terminalCode != null ? terminalCode.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
         result = 31 * result + status;
         result = 31 * result + createdBy;
@@ -156,6 +171,7 @@ public class Terminal {
                 "Id=" + Id +
                 ", name='" + name + '\'' +
                 ", ipAddress='" + ipAddress + '\'' +
+                ", terminalCode='" + terminalCode + '\'' +
                 ", type='" + type + '\'' +
                 ", status=" + status +
                 ", createdBy=" + createdBy +
