@@ -76,6 +76,7 @@ public class ScreenHelper {
                 colList = new ArrayList<>();
             }
         }
+        printSears(twoDimensionList);
         return twoDimensionList;
     }
     public static List<List<ScreenSeat>> mergeSeats(List<List<ScreenSeat>> oldSeats,int newRows,int newCols, SeatType defaultSeatType){
@@ -111,7 +112,7 @@ public class ScreenHelper {
             screenSeats.add(screenSeatsCol);
         }
 
-
+        printSears(screenSeats);
         return screenSeats;
     }
     public static void main(String[] args) {

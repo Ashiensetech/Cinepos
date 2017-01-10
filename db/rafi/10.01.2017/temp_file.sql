@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 10, 2017 at 11:54 AM
+-- Generation Time: Jan 10, 2017 at 05:30 PM
 -- Server version: 5.6.33-0ubuntu0.14.04.1
 -- PHP Version: 5.6.23-1+deprecated+dontuse+deb.sury.org~trusty+1
 
@@ -23,26 +23,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `film`
+-- Table structure for table `temp_file`
 --
 
-CREATE TABLE IF NOT EXISTS `film` (
+CREATE TABLE IF NOT EXISTS `temp_file` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `distributor_id` int(11) DEFAULT NULL,
-  `rating` float NOT NULL,
-  `duration` float NOT NULL,
-  `status` enum('0','1') NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date NOT NULL,
-  `is_price_shift` tinytext NOT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` int(11) NOT NULL,
+  `path` text NOT NULL,
+  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-ALTER TABLE  `film` CHANGE  `status`  `status` TINYINT( 1 ) NOT NULL ;
-ALTER TABLE  `film` CHANGE  `is_price_shift`  `is_price_shift` TINYINT( 1 ) NOT NULL ;
