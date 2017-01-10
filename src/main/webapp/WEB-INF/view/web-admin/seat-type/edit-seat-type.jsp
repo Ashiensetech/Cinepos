@@ -48,6 +48,16 @@
               <p class="help-block error" id="errorMsg_childPrice"></p>
             </div>
 
+            <div class="form-group">
+              <label>Is Default</label>
+              <input class="form-control check-box" type="checkbox"
+                <d:if test="${seatType.isDefault == true}" >
+                       checked
+                </d:if>
+                     id="isDefault" >
+              <p class="help-block error" id="errorMsg_isDefault"></p>
+            </div>
+
             <br>
             <p class="help-block" id="statusMsg"></p>
             <button class="btn btn-primary" onclick="return updateSeatType()">Update Seat Type</button>
@@ -73,6 +83,7 @@
     var name =$("#name").val();
     var adultPrice =$("#adultPrice").val();
     var childPrice =$("#childPrice").val();
+    var isDefault = $("#isDefault").prop("checked");
     enableDisableFormElement("editSeatTypeForm",["input","button","select"],false);
     $.ajax({
       url: BASEURL+'api/admin/seat-type/update/'+seatTypeId,
@@ -80,7 +91,8 @@
       data: {
         name:name,
         adultPrice:adultPrice,
-        childPrice:childPrice
+        childPrice:childPrice,
+        isDefault:isDefault
       },statusCode: {
         401: function (response) {
           console.log("unauthorized");
