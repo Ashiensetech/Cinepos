@@ -25,10 +25,20 @@ public class EditSeatTypeForm {
     private String name;
 
     @NotNull(message = "Adult Price is required")
-    private double adultPrice;
+    private Double adultPrice;
 
     @NotNull(message = "Child Price is required")
-    private double childPrice;
+    private Double childPrice;
+
+    private boolean isDefault;
+
+    public boolean getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(boolean aDefault) {
+        isDefault = aDefault;
+    }
 
 
     public String getName() {
@@ -47,11 +57,11 @@ public class EditSeatTypeForm {
         return childPrice;
     }
 
-    public void setChildPrice(double childPrice) {
+    public void setChildPrice(Double childPrice) {
         this.childPrice = childPrice;
     }
 
-    public void setAdultPrice(double adultPrice) {
+    public void setAdultPrice(Double adultPrice) {
         this.adultPrice = adultPrice;
     }
 

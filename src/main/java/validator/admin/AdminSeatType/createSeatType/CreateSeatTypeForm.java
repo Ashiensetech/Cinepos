@@ -2,8 +2,10 @@ package validator.admin.AdminSeatType.createSeatType;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.NotNull;
+import javax.persistence.MapsId;
+import javax.validation.constraints.*;
 
 /**
  * Created by sunno on 1/6/17.
@@ -14,11 +16,21 @@ public class CreateSeatTypeForm {
     private String name;
 
     @NotNull(message = "Adult Price is required")
-    private double adultPrice;
+    @NumberFormat(style= NumberFormat.Style.CURRENCY)
+    private Double adultPrice;
 
     @NotNull(message = "Child Price is required")
-    private double childPrice;
+    private Double childPrice;
 
+    private boolean isDefault;
+
+    public boolean getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(boolean aDefault) {
+        isDefault = aDefault;
+    }
 
     public String getName() {
         return name;
@@ -28,19 +40,19 @@ public class CreateSeatTypeForm {
         this.name = name.trim();
     }
 
-    public double getAdultPrice() {
+    public Double getAdultPrice() {
         return adultPrice;
     }
 
-    public double getChildPrice() {
+    public Double getChildPrice() {
         return childPrice;
     }
 
-    public void setChildPrice(double childPrice) {
+    public void setChildPrice(Double childPrice) {
         this.childPrice = childPrice;
     }
 
-    public void setAdultPrice(double adultPrice) {
+    public void setAdultPrice(Double adultPrice) {
         this.adultPrice = adultPrice;
     }
 
@@ -50,8 +62,7 @@ public class CreateSeatTypeForm {
                 "name='" + name + '\'' +
                 ", adultPrice=" + adultPrice +
                 ", childPrice=" + childPrice+
+                ", isDefault=" + isDefault+
                 '}';
     }
-
-
 }

@@ -1,6 +1,8 @@
 package validator.admin.AdminScreenService.editScreen;
 
+import dao.ScreenDao;
 import dao.ScreenDimensionDao;
+import entity.Screen;
 import entity.ScreenDimension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class EditScreenValidator implements Validator {
     @Autowired
     ScreenDimensionDao screenDimensionDao;
 
+    @Autowired
+    ScreenDao screenDao;
+
     @Override
     public void validate(Object obj, Errors errors) {
         EditScreenFrom editScreenFrom = (EditScreenFrom)obj;
@@ -25,6 +30,17 @@ public class EditScreenValidator implements Validator {
 
         if(screenDimension==null){
             errors.rejectValue("screenTypeId", "Screen type not found");
+        }
+
+        Screen screen =screenDao.getById(editScreenFrom.getId());
+
+        if(screen.getIsSeatPlanComplete() && screen.getSeats()!=null && screen.getSeats().size()>0){
+            if(screen.getRowCount() > editScreenFrom.getRowCount()){
+                errors.rejectValue("rowCount", "Row can't be decreased after set plan is created");
+            }
+            if(screen.getColumnCount() > editScreenFrom.getColumnCount()){
+                errors.rejectValue("columnCount", "Column can't be decreased after set plan is created");
+            }
         }
     }
     @Override

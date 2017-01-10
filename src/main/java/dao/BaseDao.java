@@ -21,7 +21,7 @@ class BaseDao {
         this.sessionFactory = sessionFactory;
     }
 
-    public void insert(Object aObj){
+    protected void insert(Object aObj){
         Session session = null;
 
         try {
@@ -37,7 +37,7 @@ class BaseDao {
         }
     }
 
-    public void update(Object aObj){
+    protected void update(Object aObj){
         Session session = null;
 
         try {
@@ -53,7 +53,7 @@ class BaseDao {
         }
     }
 
-    public boolean delete(Object aObj){
+    protected boolean delete(Object aObj){
         Session session = null;
 
         try {

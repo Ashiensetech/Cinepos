@@ -42,19 +42,26 @@
             <div class="seats-container">
               <table class="seat-table">
                 <tbody>
-
-                <d:forEach begin="0" end="${screen.rowCount}" varStatus="row">
+                <d:set var="newSeatCount" value="${0}"></d:set>
+                <d:set var="newSeatId" value=""></d:set>
+                <d:forEach var="screenRow" items="${screenSeatList}">
                         <tr>
-                            <d:forEach begin="${row.index*screen.columnCount}" end="${( screen.columnCount*(row.index+1) ) -1}" var="seat" items="${screen.seats}" varStatus="col">
+                            <d:forEach  var="seat" items="${screenRow}" >
+                                <d:if test="${seat.id==0}" >
+                                    <d:set var="newSeatCount" value="${newSeatCount+1}"></d:set>
+                                    <d:set var="newSeatId" value="new_${newSeatCount}"></d:set>
+                                </d:if>
                                 <td>
                                     <div class="seat-single">
-                                        <a class="seatInfHolder" id="seat_${seat.id}" href="#" onclick="showSeatDetailsModal(this)"
+                                        <a class="seatInfHolder" id="seat_${newSeatId}${seat.id}" href="#" onclick="showSeatDetailsModal(this)"
                                            data-seat='{"id":${seat.id},
                                                         "name":"${seat.name}",
                                                         "seatType":{"id":${seat.seatType.id}}}'
 
-                                                >${seat.name}</a>                                    </div>
+                                                >${seat.name}</a>
+                                    </div>
                                 </td>
+                                <d:set var="newSeatId" value=""></d:set>
                             </d:forEach>
                         </tr>
                 </d:forEach>
@@ -68,7 +75,8 @@
 
           <br>
           <div class="col-md-12 text-center">
-            <button type="button" class="btn btn-lg btn-primary">Submit</button>
+              <p class="help-block" id="statusMsg"><p/>
+            <button type="button" class="btn btn-lg btn-primary" onclick="return createScreenSeat()">Submit</button>
           </div>
         </div>
       </div>
@@ -127,23 +135,24 @@
 
 <%--Developer Hidden Inputs--%>
 <input type="hidden" id="currentSeatSelected" value="0">
-
+<input type="hidden" id="state" value="${screen.isSeatPlanComplete}" />
 <script>
     function updateSeatInformation(){
         var currentSeatId = $("#currentSeatSelected").val();
 
-        var seat = $("#seat_"+currentSeatId).data("seat");
+        var seat = $("#"+currentSeatId).data("seat");
+
         seat.name = $("#modal_seat_name").val();
         seat.seatType.id = $("#modal_seat_type").val();
 
-        $("#seat_"+currentSeatId).data("seat",seat);
-        $("#seat_"+currentSeatId).html(seat.name);
+        $("#"+currentSeatId).data("seat",seat);
+        $("#"+currentSeatId).html(seat.name);
         $("#seatDetail").modal("hide");
     }
     function showSeatDetailsModal(elem){
         var seat = $(elem).data("seat");
 
-        $("#currentSeatSelected").val(seat.id);
+        $("#currentSeatSelected").val($(elem).attr("id"));
 
         $("#seatDetail").modal("show");
         $("#modal_seat_name").val(seat.name);
@@ -168,9 +177,9 @@
 
 
     $.ajax({
-      url: BASEURL+'api/admin/screen/seat-plan/create/'+screenId,
+      url: BASEURL+'api/admin/screen/seat-plan/create-edit/'+screenId,
       type: 'POST',
-      data:{seats:JSON.stringify(postData),a:postData},
+      data:{seats:JSON.stringify(postData),actionState:JSON.parse($("#state").val())},
       statusCode: {
         401: function (response) {
           console.log("unauthorized");
@@ -179,12 +188,12 @@
         },
         422: function (response) {
           console.log(response);
-          BindErrorsWithHtml("errorMsg_",response.responseJSON);
+         // BindErrorsWithHtml("errorMsg_",response.responseJSON);
           //enableDisableFormElement("createScreenForm",["input","button","select"],true);
         }
       },success: function(data){
 
-        //$("#statusMsg").html("Screen update successfully").show();
+        $("#statusMsg").html("Seat paln is created").show();
         setTimeout(function(){
          // window.location = BASEURL+"admin/screen/all";
         },2000);

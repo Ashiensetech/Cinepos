@@ -11,6 +11,8 @@ import java.sql.Time;
  */
 public class EditScreenFrom {
 
+    private Integer id;
+
     @NotBlank(message = "Name required")
     @Length(max=50,message = "Name too large")
     private String name;
@@ -33,6 +35,14 @@ public class EditScreenFrom {
 
     @NotNull(message = "Closing time required")
     private Time closingTime;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -90,15 +100,15 @@ public class EditScreenFrom {
         this.closingTime = closingTime;
     }
 
-
     @Override
     public String toString() {
-        return "CreateScreenFrom{" +
-                "name='" + name + '\'' +
-                ", seatCount=" + seatCount +
+        return "EditScreenFrom{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", screenTypeId=" + screenTypeId +
                 ", rowCount=" + rowCount +
                 ", columnCount=" + columnCount +
+                ", seatCount=" + seatCount +
                 ", openingTime=" + openingTime +
                 ", closingTime=" + closingTime +
                 '}';

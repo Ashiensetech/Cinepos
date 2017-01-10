@@ -38,7 +38,9 @@ public class AdminSeatTypeService {
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseEntity<?> createSeatType(@Valid CreateSeatTypeForm createSeatTypeForm, BindingResult result){
+
         System.out.println(createSeatTypeForm);
+
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
         /***************** Validation  [Start] *************/
@@ -71,6 +73,7 @@ public class AdminSeatTypeService {
         seatType.setName(createSeatTypeForm.getName());
         seatType.setAdultPrice(createSeatTypeForm.getAdultPrice());
         seatType.setChildPrice(createSeatTypeForm.getChildPrice());
+        seatType.setIsDefault(createSeatTypeForm.getIsDefault());
         seatType.setCreatedBy(1);
         /***************** Service  [Ends] *************/
 
@@ -94,7 +97,7 @@ public class AdminSeatTypeService {
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
         if(seatType==null){
-            serviceResponse.setValidationError("screenId","No screen found");
+            serviceResponse.setValidationError("seatTypeId","No Seat Type found");
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
@@ -129,6 +132,7 @@ public class AdminSeatTypeService {
         seatType.setName(editSeatTypeForm.getName());
         seatType.setAdultPrice(editSeatTypeForm.getAdultPrice());
         seatType.setChildPrice(editSeatTypeForm.getChildPrice());
+        seatType.setIsDefault(editSeatTypeForm.getIsDefault());
 //        seatType.setCreatedBy(1);
         /***************** Service  [Ends] *************/
 

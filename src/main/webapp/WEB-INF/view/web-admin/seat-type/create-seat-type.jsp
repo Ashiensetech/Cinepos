@@ -38,13 +38,19 @@
             </div>
             <div class="form-group">
               <label>Adult Price</label>
-              <input class="form-control"  id="adultPrice" >
+              <input class="form-control" type="number" step="any"  id="adultPrice" >
               <p class="help-block error" id="errorMsg_adultPrice"></p>
             </div>
             <div class="form-group">
               <label>Adult Price</label>
-              <input class="form-control"  id="childPrice" >
+              <input class="form-control"  type="number" step="any" id="childPrice" >
               <p class="help-block error" id="errorMsg_childPrice"></p>
+            </div>
+
+            <div class="form-group">
+              <label>Is Default</label>
+              <input class="form-control check-box" type="checkbox"  id="isDefault" >
+              <p class="help-block error" id="errorMsg_isDefault"></p>
             </div>
 
             <br>
@@ -70,6 +76,7 @@
     var name =$("#name").val();
     var adultPrice =$("#adultPrice").val();
     var childPrice =$("#childPrice").val();
+    var isDefault = $("#isDefault").prop("checked");
     enableDisableFormElement("createSeatTypeForm",["input","button","select"],false);
     $.ajax({
       url: BASEURL+'api/admin/seat-type/create',
@@ -77,7 +84,8 @@
       data: {
         name:name,
         adultPrice:adultPrice,
-        childPrice:childPrice
+        childPrice:childPrice,
+        isDefault : isDefault
       },statusCode: {
         401: function (response) {
           console.log("unauthorized");

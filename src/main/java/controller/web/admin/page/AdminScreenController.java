@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -55,21 +56,29 @@ public class AdminScreenController {
     }
 
 
-    @RequestMapping(value = "/seat/create/{screenId}")
+    @RequestMapping(value = "/seat/create-edit/{screenId}")
     public ModelAndView createScreenSeatPage(@PathVariable Integer screenId){
         ModelAndView mav =  new ModelAndView("web-admin/screen/create-screen-seat");
         Screen screen = screenDao.getById(screenId);
         List<SeatType> seatTypes = seatTypeDao.getAll();
         SeatType seatType = seatTypeDao.getDefaultSeatType();
+        List<List<ScreenSeat>> screenSeatList = new ArrayList<>();
+        if(!screen.getIsSeatPlanComplete() && screen.getSeats()!=null){
+            screenSeatList = ScreenHelper.generateSeats(screen.getRowCount(),screen.getColumnCount(),seatType);
+        }else{
+            int totalSeatCount = screen.getRowCount()*screen.getColumnCount();
+            if(totalSeatCount>screen.getSeats().size()){
+                List<List<ScreenSeat>>  oldSeats  = ScreenHelper.singleDimensionToTwoDimensionList(screen.getSeats(), screen.getRowCount(), screen.getColumnCount());
+                screenSeatList = ScreenHelper.mergeSeats(oldSeats, screen.getRowCount(), screen.getColumnCount(), seatType);
+            }else {
+                screenSeatList = ScreenHelper.singleDimensionToTwoDimensionList(screen.getSeats(),screen.getRowCount(),screen.getColumnCount());
+            }
 
-        if(!screen.getIsSeatPlanComplete()){
-            List<ScreenSeat> screenSeats = ScreenHelper.generateSeats(screen.getRowCount(),screen.getColumnCount(),seatType);
-            screen.setSeats(screenSeats);
         }
-
 
         mav.addObject("screen",screen);
         mav.addObject("seatTypes",seatTypes);
+        mav.addObject("screenSeatList",screenSeatList);
         return mav;
     }
 
