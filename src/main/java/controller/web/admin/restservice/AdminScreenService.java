@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static java.lang.System.out;
+
 /**
  * Created by mi on 1/5/17.
  */
@@ -185,9 +187,10 @@ public class AdminScreenService {
         return ResponseEntity.status(HttpStatus.OK).body(screen);
     }
 
-    @RequestMapping(value = "/seat-plan/create/{screenId}",method = RequestMethod.POST)
-    public ResponseEntity<?> createScreenSeat(@PathVariable Integer screenId,
-                                              @RequestParam(value = "seats") String seatsJsonStr){
+    @RequestMapping(value = "/seat-plan/create-edit/{screenId}",method = RequestMethod.POST)
+    public ResponseEntity<?> createOrUpdateScreenSeat(@PathVariable Integer screenId,
+                                              @RequestParam(value = "seats") String seatsJsonStr,
+                                              @RequestParam(value = "actionState") boolean editState){
         //
         System.out.println(seatsJsonStr);
 
@@ -206,23 +209,25 @@ public class AdminScreenService {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
+        boolean setIdToZero = true;
+        if(editState){
+            setIdToZero = false;
+        }
+       List<ScreenSeat> screenSeatList =  ScreenHelper.arrayToListAndSetIdZero(screenSeats,false);
 
-       List<ScreenSeat> screenSeatList =  ScreenHelper.arrayToListAndSetIdZero(screenSeats);
 
 
         for(ScreenSeat screenSeat : screenSeatList){
             screenSeat.setScreenId(screen.getId());
-            SeatType seatType = seatTypeDao.getById(screenSeat.getSeatType().getId());
-            if(seatType==null){
-                System.out.println();
-                continue;
-            }
-            screenSeat.setSeatType(seatType);
-            screenSeatDao.insert(screenSeat);
         }
 
-        screen.setIsSeatPlanComplete(true);
-        screenDao.update(screen);
+        screenSeatDao.insertOrUpdate(screenSeatList);
+
+
+        if(!editState){
+            screen.setIsSeatPlanComplete(true);
+            screenDao.update(screen);
+        }
 
 
         return ResponseEntity.status(HttpStatus.OK).body("");

@@ -43,9 +43,9 @@
               <table class="seat-table">
                 <tbody>
 
-                <d:forEach begin="0" end="${screen.rowCount}" varStatus="row">
+                <d:forEach var="screenRow" items="${screenSeatList}">
                         <tr>
-                            <d:forEach begin="${row.index*screen.columnCount}" end="${( screen.columnCount*(row.index+1) ) -1}" var="seat" items="${screen.seats}" varStatus="col">
+                            <d:forEach  var="seat" items="${screenRow}" >
                                 <td>
                                     <div class="seat-single">
                                         <a class="seatInfHolder" id="seat_${seat.id}" href="#" onclick="showSeatDetailsModal(this)"
@@ -53,7 +53,8 @@
                                                         "name":"${seat.name}",
                                                         "seatType":{"id":${seat.seatType.id}}}'
 
-                                                >${seat.name}</a>                                    </div>
+                                                >${seat.name}</a>
+                                    </div>
                                 </td>
                             </d:forEach>
                         </tr>
@@ -68,7 +69,8 @@
 
           <br>
           <div class="col-md-12 text-center">
-            <button type="button" class="btn btn-lg btn-primary">Submit</button>
+              <p class="help-block" id="statusMsg"><p/>
+            <button type="button" class="btn btn-lg btn-primary" onclick="return createScreenSeat()">Submit</button>
           </div>
         </div>
       </div>
@@ -127,7 +129,7 @@
 
 <%--Developer Hidden Inputs--%>
 <input type="hidden" id="currentSeatSelected" value="0">
-
+<input type="hidden" id="state" value="${screen.isSeatPlanComplete}" />
 <script>
     function updateSeatInformation(){
         var currentSeatId = $("#currentSeatSelected").val();
@@ -168,9 +170,9 @@
 
 
     $.ajax({
-      url: BASEURL+'api/admin/screen/seat-plan/create/'+screenId,
+      url: BASEURL+'api/admin/screen/seat-plan/create-edit/'+screenId,
       type: 'POST',
-      data:{seats:JSON.stringify(postData),a:postData},
+      data:{seats:JSON.stringify(postData),actionState:JSON.parse($("#state").val())},
       statusCode: {
         401: function (response) {
           console.log("unauthorized");
@@ -179,12 +181,12 @@
         },
         422: function (response) {
           console.log(response);
-          BindErrorsWithHtml("errorMsg_",response.responseJSON);
+         // BindErrorsWithHtml("errorMsg_",response.responseJSON);
           //enableDisableFormElement("createScreenForm",["input","button","select"],true);
         }
       },success: function(data){
 
-        //$("#statusMsg").html("Screen update successfully").show();
+        $("#statusMsg").html("Seat paln is created").show();
         setTimeout(function(){
          // window.location = BASEURL+"admin/screen/all";
         },2000);

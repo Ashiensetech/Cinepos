@@ -18,15 +18,34 @@ import java.util.Optional;
  */
 @Repository
 public class ScreenSeatDao  extends BaseDao {
-
     @Autowired
     SeatTypeDao seatTypeDao;
-    public void insert(ScreenSeat screenSeat){
+    public ScreenSeat getById(Integer id){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (ScreenSeat) session.createQuery("FROM ScreenSeat where id = :id")
+                    .setParameter("id", id)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+        return null;
+    }
+
+
+    public void update(ScreenSeat screenSeat){
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            session.save(screenSeat);
+            session.update(screenSeat);
             session.getTransaction().commit();
         }catch (HibernateException hEx){
             // Insert to database exception log
@@ -35,23 +54,34 @@ public class ScreenSeatDao  extends BaseDao {
             if(session!=null)session.close();
         }
     }
-//    public void insert(List<ScreenSeat> screenSeatList){
-//        Session session = null;
-//
-//        List<SeatType> seatType = seatTypeDao.getAll();
-//        try {
-//            session = this.sessionFactory.openSession();
-//            session.beginTransaction();
-//            for(ScreenSeat screenSeat: screenSeatList)
-//            Optional<SeatType> seatTypes = seatType.stream().filter(st -> st.getId() == screenSeat.getId()).findFirst();
-//
-//            session.save(screenSeat);
-//            session.getTransaction().commit();
-//        }catch (HibernateException hEx){
-//            // Insert to database exception log
-//            hEx.printStackTrace();
-//        }finally {
-//            if(session!=null)session.close();
-//        }
-//    }
+    public void insertOrUpdate(List<ScreenSeat> screenSeatList){
+        Session session = null;
+
+        List<SeatType> seatTypes = seatTypeDao.getAll();
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            for(int i=0;i<screenSeatList.size();i++){
+                ScreenSeat screenSeat = screenSeatList.get(i);
+
+
+                Optional<SeatType> optionalSeatType = seatTypes.stream().filter(st -> st.getId() == screenSeat.getSeatType().getId()).findFirst();
+                if(optionalSeatType.isPresent()){
+                    screenSeat.setSeatType(optionalSeatType.get());
+                }
+                session.saveOrUpdate(screenSeat);
+                if(i%15==0){
+                    session.flush();
+                    session.clear();
+                }
+            }
+
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
 }

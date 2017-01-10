@@ -10,5 +10,10 @@
         <mapping class="entity.ScreenDimension"/>
         <mapping class="entity.SeatType"/>
         <mapping class="entity.ScreenSeat"/>
+        <mapping class="entity.Film"/>
+        <mapping class="entity.FilmImage"/>
+        <mapping class="entity.FilmTrailer"/>
+        <mapping class="entity.Genre"/>
+        <mapping class="entity.FilmGenre"/>
     </session-factory>
 </hibernate-configuration>

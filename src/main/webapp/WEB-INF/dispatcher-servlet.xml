@@ -25,13 +25,7 @@
     </bean>
 
 
-    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basenames">
-            <list>
-                <value>/WEB-INF/resource-config/uriConfig</value>
-            </list>
-        </property>
-    </bean>
+
     <!-- ******************** Utility BEAN *********************************** -->
     <bean id="_velocityTemplatePath" class="java.lang.String">
         <constructor-arg type="java.lang.String" value="${velocity.resource.path}" />
@@ -44,6 +38,7 @@
         <property name="annotatedClasses">
             <list>
                <value>entity.Category</value>
+                <value>entity.Genre</value>
                 <value>entity.UserRole</value>
                 <value>entity.UserInf</value>
                 <value>entity.AuthCredential</value>
@@ -53,6 +48,10 @@
                 <value>entity.Terminal</value>
                 <value>entity.SeatType</value>
                 <value>entity.ScreenSeat</value>
+                <value>entity.Film</value>
+                <value>entity.FilmImage</value>
+                <value>entity.FilmTrailer</value>
+                <value>entity.FilmGenre</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -65,7 +64,7 @@
                 <prop key="hibernate.dialect">${jdbc.dialect}</prop>
                 <prop key="hibernate.enable_lazy_load_no_trans">true</prop>
                 <prop key="hibernate.search.default.directory_provider">filesystem</prop>
-                <prop key="hibernate.search.default.indexBase">${hibernate.indexBase}</prop> <!--Must create dir var/lucene-->
+                <prop key="hibernate.jdbc.batch_size">${hibernate.jdbc.batch_size}</prop>
             </props>
         </property>
     </bean>

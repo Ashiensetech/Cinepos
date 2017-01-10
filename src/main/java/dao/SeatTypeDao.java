@@ -16,7 +16,6 @@ import java.util.List;
 public class SeatTypeDao extends BaseDao {
 
 
-
     public void insert(SeatType seatType){
         Session session = null;
 
