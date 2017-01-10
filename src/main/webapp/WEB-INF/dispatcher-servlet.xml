@@ -44,6 +44,7 @@
         <property name="annotatedClasses">
             <list>
                <value>entity.Category</value>
+                <value>entity.Genre</value>
                 <value>entity.UserRole</value>
                 <value>entity.UserInf</value>
                 <value>entity.AuthCredential</value>
@@ -53,6 +54,10 @@
                 <value>entity.Terminal</value>
                 <value>entity.SeatType</value>
                 <value>entity.ScreenSeat</value>
+                <value>entity.Film</value>
+                <value>entity.FilmImage</value>
+                <value>entity.FilmTrailer</value>
+                <value>entity.FilmGenre</value>
             </list>
         </property>
         <property name="hibernateProperties">
