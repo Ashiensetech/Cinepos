@@ -4,12 +4,15 @@ package validator.admin.AdminTerminalService.createTerminal;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class createTerminalForm {
     @NotBlank(message = "Terminal name are required")
     private String name;
 
     @NotBlank(message = "IP Address are required")
+    @Pattern(regexp="^(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)(\\.(25[0-5]|2[0-4]\\d|[0-1]?\\d?\\d)){3}$",message = "IP Address validation failed.")
     private String ipAddress;
 
     @NotBlank(message = "Terminal type are required")

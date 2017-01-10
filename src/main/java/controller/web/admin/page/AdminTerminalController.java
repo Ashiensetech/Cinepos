@@ -21,7 +21,6 @@ public class AdminTerminalController {
     @RequestMapping(value = "/all",method = RequestMethod.GET)
     public  ModelAndView index(){
         List<Terminal> terminalList=terminalDao.getAll();
-        System.out.println(terminalList);
         ModelAndView modelAndView=new ModelAndView("web-admin/terminals/all-terminal");
         modelAndView.addObject("terminalList",terminalList);
         return modelAndView;

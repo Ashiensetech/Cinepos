@@ -1,14 +1,13 @@
 package helper;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.util.DigestUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
-/**
- * Created by omar on 9/3/16.
- */
+
 public class UtilityHelper {
     public static String getRandomNumber(){
         Random rnd = new Random();
@@ -36,6 +35,21 @@ public class UtilityHelper {
         BigDecimal bd = new BigDecimal(value);
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+
+    public static String getRandomStr(int length) {
+
+        String catalogStr="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            sb.append(catalogStr.charAt(random.nextInt(catalogStr
+                    .length())));
+        }
+
+        return sb.toString();
     }
 
 

@@ -3,6 +3,8 @@ package controller.web.admin.restservice;
 import controller.web.admin.AdminUriPreFix;
 import dao.TerminalDao;
 import entity.Terminal;
+import helper.UtilityHelper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import validator.admin.AdminTerminalService.editTerminal.editTerminalForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.sql.Timestamp;
 
 @RestController
 @RequestMapping(AdminUriPreFix.apiUriPrefix +"/terminal")
@@ -29,6 +32,8 @@ public class AdminTerminalService {
                                     BindingResult result,
                                     HttpServletRequest request){
         String errorMsg="Terminal successfully created";
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
 
         try{
             ServiceResponse serviceResponse=ServiceResponse.getInstance();
@@ -39,6 +44,7 @@ public class AdminTerminalService {
             }
 
             Terminal terminal=new Terminal();
+            UtilityHelper utHlpObj=new UtilityHelper();
 
             terminal.setName(createTerminalForm.getName());
             terminal.setIpAddress(createTerminalForm.getIpAddress());
@@ -46,7 +52,19 @@ public class AdminTerminalService {
             terminal.setStatus(1);
             terminal.setCreatedBy(1);
 
-            terminalDao.insert(terminal);
+            int terminalId=terminalDao.insert(terminal);
+            String randStr=utHlpObj.getRandomStr(3);
+            String terminalIdPad=StringUtils.leftPad(Integer.toString(terminalId), 3, "0");
+            String terminalCode=randStr+terminalIdPad;
+            terminalCode="T"+terminalCode;
+            Terminal terminalData=terminalDao.getById(terminalId);
+
+            terminalData.setId(terminalId);
+            terminalData.setTerminalCode(terminalCode);
+            terminalData.setUpdatedBy(1);
+            terminalData.setUpdatedAt(timestamp);
+            terminalDao.update(terminalData);
+
 
         }catch (Exception e){
 
@@ -62,6 +80,8 @@ public class AdminTerminalService {
                                    HttpServletRequest request,
                                    @PathVariable Integer terminalId){
         String errorMsg="Terminal successfully created";
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
 
         try{
             ServiceResponse serviceResponse=ServiceResponse.getInstance();
@@ -82,9 +102,10 @@ public class AdminTerminalService {
             terminal.setIpAddress(editTerminalForm.getIpAddress());
             terminal.setType(editTerminalForm.getType());
             terminal.setStatus(1);
-            terminal.setCreatedBy(1);
+            terminal.setUpdatedBy(1);
+            terminal.setUpdatedAt(timestamp);
 
-            terminalDao.insert(terminal);
+            terminalDao.update(terminal);
 
         }catch (Exception e){
 
