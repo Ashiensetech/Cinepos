@@ -79,6 +79,15 @@ public class ScreenHelper {
         printSears(twoDimensionList);
         return twoDimensionList;
     }
+    public  static List<ScreenSeat>  twoDimensionListToSingleDimension(List<List<ScreenSeat>> list2D){
+        List<ScreenSeat>  list1D = new ArrayList<>();
+
+        for(List<ScreenSeat> screenSeatsRow : list2D){
+            list1D.addAll(screenSeatsRow);
+        }
+
+        return list1D;
+    }
     public static List<List<ScreenSeat>> mergeSeats(List<List<ScreenSeat>> oldSeats,int newRows,int newCols, SeatType defaultSeatType){
         if(newRows>702){
             out.println("Maximum 702 row allowed");
@@ -115,6 +124,7 @@ public class ScreenHelper {
         printSears(screenSeats);
         return screenSeats;
     }
+
     public static void main(String[] args) {
         List<List<ScreenSeat>> screenSeats =  ScreenHelper.generateSeats(5, 5, new SeatType());
         ScreenHelper.printSears(screenSeats);

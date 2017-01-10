@@ -33,10 +33,10 @@
                 <a href="#">Distributor<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li>
-                        <a href="/admin/distributor/all">All Distributor</a>
+                        <a href="<c:url value="/admin/distributor/all" />">All Distributor</a>
                     </li>
                     <li>
-                        <a href="/admin/distributor/create">Create Distributor</a>
+                        <a href="<c:url value="/admin/distributor/create" />">Create Distributor</a>
                     </li>
 
                 </ul>
@@ -46,10 +46,10 @@
                 <a href="#">Terminal<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li>
-                        <a href="/admin/terminal/all">All Terminal</a>
+                        <a href="<c:url value="/admin/terminal/all" />">All Terminal</a>
                     </li>
                     <li>
-                        <a href="/admin/terminal/create">Create Terminal</a>
+                        <a href="<c:url value="/admin/terminal/create" />">Create Terminal</a>
                     </li>
 
                 </ul>
@@ -59,10 +59,10 @@
                 <a href="#">Seat Type<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li>
-                        <a href="/admin/seat-type/all">All Seat Type</a>
+                        <a href="<c:url value="/admin/seat-type/all" />">All Seat Type</a>
                     </li>
                     <li>
-                        <a href="/admin/seat-type/create">Create Seat Type</a>
+                        <a href="<c:url value="/admin/seat-type/create" />">Create Seat Type</a>
                     </li>
 
                 </ul>
