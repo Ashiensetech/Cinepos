@@ -56,6 +56,7 @@ public class AdminTerminalService {
             String randStr=utHlpObj.getRandomStr(3);
             String terminalIdPad=StringUtils.leftPad(Integer.toString(terminalId), 3, "0");
             String terminalCode=randStr+terminalIdPad;
+            terminalCode="T"+terminalCode;
             Terminal terminalData=terminalDao.getById(terminalId);
 
             terminalData.setId(terminalId);

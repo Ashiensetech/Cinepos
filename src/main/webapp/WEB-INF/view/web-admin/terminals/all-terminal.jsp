@@ -65,10 +65,10 @@
                                                         ${terminalValue.id})"
                                                     class="btn btn-outline btn-primary" >
                                                 <d:if test="${terminalValue.status==1}">
-                                                     Active
+                                                    Deactivate
                                                 </d:if>
                                                 <d:if test="${terminalValue.status==0}">
-                                                    Deactivate
+                                                    Active
                                                 </d:if>
                                             </button>
                                             <a href="<c:message code="base.uri" />/admin/terminal/edit/${terminalValue.id}"
