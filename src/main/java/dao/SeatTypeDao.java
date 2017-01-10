@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public class SeatTypeDao extends BaseDao {
 
+
     public List<SeatType> getAll(){
         Session session = this.sessionFactory.openSession();
         try{
