@@ -42,13 +42,18 @@
             <div class="seats-container">
               <table class="seat-table">
                 <tbody>
-
+                <d:set var="newSeatCount" value="${0}"></d:set>
+                <d:set var="newSeatId" value=""></d:set>
                 <d:forEach var="screenRow" items="${screenSeatList}">
                         <tr>
                             <d:forEach  var="seat" items="${screenRow}" >
+                                <d:if test="${seat.id==0}" >
+                                    <d:set var="newSeatCount" value="${newSeatCount+1}"></d:set>
+                                    <d:set var="newSeatId" value="new_${newSeatCount}"></d:set>
+                                </d:if>
                                 <td>
                                     <div class="seat-single">
-                                        <a class="seatInfHolder" id="seat_${seat.id}" href="#" onclick="showSeatDetailsModal(this)"
+                                        <a class="seatInfHolder" id="seat_${newSeatId}${seat.id}" href="#" onclick="showSeatDetailsModal(this)"
                                            data-seat='{"id":${seat.id},
                                                         "name":"${seat.name}",
                                                         "seatType":{"id":${seat.seatType.id}}}'
@@ -56,6 +61,7 @@
                                                 >${seat.name}</a>
                                     </div>
                                 </td>
+                                <d:set var="newSeatId" value=""></d:set>
                             </d:forEach>
                         </tr>
                 </d:forEach>
@@ -134,18 +140,19 @@
     function updateSeatInformation(){
         var currentSeatId = $("#currentSeatSelected").val();
 
-        var seat = $("#seat_"+currentSeatId).data("seat");
+        var seat = $("#"+currentSeatId).data("seat");
+
         seat.name = $("#modal_seat_name").val();
         seat.seatType.id = $("#modal_seat_type").val();
 
-        $("#seat_"+currentSeatId).data("seat",seat);
-        $("#seat_"+currentSeatId).html(seat.name);
+        $("#"+currentSeatId).data("seat",seat);
+        $("#"+currentSeatId).html(seat.name);
         $("#seatDetail").modal("hide");
     }
     function showSeatDetailsModal(elem){
         var seat = $(elem).data("seat");
 
-        $("#currentSeatSelected").val(seat.id);
+        $("#currentSeatSelected").val($(elem).attr("id"));
 
         $("#seatDetail").modal("show");
         $("#modal_seat_name").val(seat.name);

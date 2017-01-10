@@ -51,7 +51,7 @@ public class ScreenHelper {
 
                 ScreenSeat screenSeat = new ScreenSeat();
                 screenSeat.setId(0);
-                screenSeat.setName(seatRowName[r] + "-Old-" + (c + 1));
+                screenSeat.setName(seatRowName[r] + "-" + (c + 1));
                 screenSeat.setSeatType(defaultSeatType);
 
                 screenSeatsCol.add(screenSeat);

@@ -106,7 +106,7 @@ public class AdminScreenService {
     public ResponseEntity<?> editUser(@Valid EditScreenFrom editScreenFrom,
                                       BindingResult result,
                                       @PathVariable Integer screenId){
-        System.out.println(editScreenFrom);
+
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
         Screen screen = screenDao.getById(screenId);
@@ -115,6 +115,8 @@ public class AdminScreenService {
             serviceResponse.setValidationError("screenId","No screen found");
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
+
+        editScreenFrom.setId(screenId);
 
         /***************** Validation  [Start] *************/
 

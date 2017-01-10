@@ -63,10 +63,17 @@ public class AdminScreenController {
         List<SeatType> seatTypes = seatTypeDao.getAll();
         SeatType seatType = seatTypeDao.getDefaultSeatType();
         List<List<ScreenSeat>> screenSeatList = new ArrayList<>();
-        if(!screen.getIsSeatPlanComplete()){
+        if(!screen.getIsSeatPlanComplete() && screen.getSeats()!=null){
             screenSeatList = ScreenHelper.generateSeats(screen.getRowCount(),screen.getColumnCount(),seatType);
         }else{
-            screenSeatList = ScreenHelper.singleDimensionToTwoDimensionList(screen.getSeats(),screen.getRowCount(),screen.getColumnCount());
+            int totalSeatCount = screen.getRowCount()*screen.getColumnCount();
+            if(totalSeatCount>screen.getSeats().size()){
+                List<List<ScreenSeat>>  oldSeats  = ScreenHelper.singleDimensionToTwoDimensionList(screen.getSeats(), screen.getRowCount(), screen.getColumnCount());
+                screenSeatList = ScreenHelper.mergeSeats(oldSeats, screen.getRowCount(), screen.getColumnCount(), seatType);
+            }else {
+                screenSeatList = ScreenHelper.singleDimensionToTwoDimensionList(screen.getSeats(),screen.getRowCount(),screen.getColumnCount());
+            }
+
         }
 
         mav.addObject("screen",screen);

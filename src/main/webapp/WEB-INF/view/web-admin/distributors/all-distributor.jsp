@@ -75,7 +75,7 @@
                                                     Active
                                                 </d:if>
                                             </button>
-                                            <a href="<c:message code="base.uri" />/admin/distributor/edit/${distributorValue.id}"
+                                            <a href="<c:url value="/admin/distributor/edit/${distributorValue.id}" />"
                                                type="button"
                                                class="btn btn-outline btn-primary" >Edit</a>
                                             <p id="statusMsg${distributorValue.id}"></p>
