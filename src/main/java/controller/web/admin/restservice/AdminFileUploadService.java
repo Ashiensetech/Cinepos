@@ -98,13 +98,7 @@ public class AdminFileUploadService {
 
         tempFileDao.insert(tempFile);
 
-        try {
-            System.out.println(fileUtil.moveProductFileFromTemp(1, n));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (TempFileException e) {
-            e.printStackTrace();
-        }
+
 
         return ResponseEntity.status(HttpStatus.OK).body(tempFile.getToken());
     }
