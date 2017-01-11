@@ -47,6 +47,23 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <d:forEach var="film" items="${films}" >
+                            <d:set var="count" value="${count+1}" />
+                            <tr>
+                                <td>${count}</td>
+                                <td>${film.name} </td>
+                                <td>${film.distributor.name}</td>
+                                <td>film type</td>
+                                <td>${film.rating}</td>
+                                <td>${film.duration}</td>
+                                <td>${film.startDate}</td>
+                                <td>${film.endDate}</td>
+                                <td>fvt</td>
+                                <td>img</td>
+                                <td>action</td>
+
+                            </tr>
+                        </d:forEach>
                         <tr class="odd gradeC">
                             <td>Trident</td>
                             <td>demo@admin.com</td>

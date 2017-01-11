@@ -21,7 +21,8 @@ public class CreateFilmForm {
     @Length(max=50,message = "Name too large")
     private String name;
 
-    private Integer distributerId;
+    @NotNull(message = "Distributor is required")
+    private Integer distributorId;
 
     @NotNull(message = "Rating is required")
     private Float rating;
@@ -35,11 +36,11 @@ public class CreateFilmForm {
     @NotNull(message = "Price Shift is required")
     private boolean isPriceShift;
 
-//    @DateTimeFormat(pattern="dd/MM/yyyy")
+//    @DateTimeFormat(pattern="MM/dd/yyyy")
     @NotNull(message = "Start Time is required")
     private String startDate;
 
-//    @DateTimeFormat(pattern="dd/MM/yyyy")
+//    @DateTimeFormat(pattern="MM/dd/yyyy")
     @NotNull(message = "End Date is required")
     private String endDate;
 
@@ -72,12 +73,12 @@ public class CreateFilmForm {
         this.name = name;
     }
 
-    public Integer getDistributerId() {
-        return distributerId;
+    public Integer getDistributorId() {
+        return distributorId;
     }
 
-    public void setDistributerId(Integer distributerId) {
-        this.distributerId = distributerId;
+    public void setDistributorId(Integer distributorId) {
+        this.distributorId = distributorId;
     }
 
     public Float getRating() {
@@ -132,7 +133,7 @@ public class CreateFilmForm {
     public String toString() {
         return "CreateFilmFrom{" +
                 "name='" + name + '\'' +
-                ", DistributorId=" + distributerId +
+                ", distributorId=" + distributorId +
                 ", rating=" + rating +
                 ", duration=" + duration +
                 ", status=" + status +

@@ -69,7 +69,7 @@ public class AdminFilmService {
 
         film.setName(createFilmForm.getName());
 
-        film.setDistributor(distributorDao.getById(createFilmForm.getDistributerId()));
+        film.setDistributor(distributorDao.getById(createFilmForm.getDistributorId()));
 
         film.setDuration(createFilmForm.getDuration());
         film.setRating(createFilmForm.getRating());
