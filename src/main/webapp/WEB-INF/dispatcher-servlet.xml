@@ -74,6 +74,7 @@
                 <value>entity.FilmTrailer</value>
                 <value>entity.FilmGenre</value>
                 <value>entity.Circuit</value>
+                <value>entity.VatSetting</value>
             </list>
         </property>
         <property name="hibernateProperties">

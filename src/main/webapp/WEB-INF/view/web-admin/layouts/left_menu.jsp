@@ -18,7 +18,11 @@
             </li>
 
             <li>
-                <a href="/admin/circuit/index">Circuit</a>
+                <a href="<c:url value="/admin/circuit/index"/>">Circuit</a>
+            </li>
+
+            <li>
+                <a href="<c:url value="/admin/vat-setting/index"/>">Vat Setting</a>
             </li>
 
             <li>
