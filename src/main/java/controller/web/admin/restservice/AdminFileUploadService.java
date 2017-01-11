@@ -1,7 +1,6 @@
 package controller.web.admin.restservice;
 
 import controller.web.admin.AdminUriPreFix;
-import custom_exception.TempFileException;
 import dao.TempFileDao;
 import entity.TempFile;
 import helper.ImageHelper;
@@ -16,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import utility.FileUtil;
 import utility.ServiceResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.FileNameMap;
 import java.net.URLConnection;
@@ -31,7 +28,8 @@ import java.util.Random;
 @RestController
 @RequestMapping(AdminUriPreFix.apiUriPrefix +"/file-upload/")
 public class AdminFileUploadService {
-    private List<String> documentContentTypeList;
+    private List<String> filmImgContentTypeList;
+    private List<String> productImgContentTypeList;
     @Autowired
     TempFileDao tempFileDao;
 
@@ -39,7 +37,17 @@ public class AdminFileUploadService {
     public FileUtil fileUtil;
 
     public AdminFileUploadService(){
-        documentContentTypeList = new ArrayList<String>(){
+        filmImgContentTypeList = new ArrayList<String>(){
+            {
+                add("image/jpeg");
+                add("image/pjpeg");
+                add("image/jpeg");
+                add("image/png");
+
+            }
+        };
+
+        productImgContentTypeList = new ArrayList<String>(){
             {
                 add("image/jpeg");
                 add("image/pjpeg");
@@ -50,11 +58,7 @@ public class AdminFileUploadService {
         };
 
     }
-    @RequestMapping(value = "/film", headers = "Content-Type=multipart/form-data",method = RequestMethod.POST)
-    public ResponseEntity<?> uploadFilmImage(@RequestParam("filmImage") MultipartFile file){
-
-        TempFile tempFile = new TempFile();
-        /*---------Content type validation -----------------*/
+    private String getMimeType(MultipartFile file){
         String mimeType = file.getContentType();
 
         if(mimeType==null || mimeType.equals("")){
@@ -66,9 +70,21 @@ public class AdminFileUploadService {
             mimeType = fileNameMap.getContentTypeFor(file.getOriginalFilename());
             System.out.println("File Inf 03 " + file.getOriginalFilename() + " " + file.getSize() + " " + mimeType);
         }
+        return mimeType;
+    }
+
+    @RequestMapping(value = "/film", headers = "Content-Type=multipart/form-data",method = RequestMethod.POST)
+    public ResponseEntity<?> uploadFilmImage(@RequestParam("filmImage") MultipartFile file){
+
+        TempFile tempFile = new TempFile();
+        /*---------Content type validation -----------------*/
+        String mimeType = this.getMimeType(file);
+
+
+
 
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
-        if(!documentContentTypeList.contains(mimeType)){
+        if(!filmImgContentTypeList.contains(mimeType)){
             serviceResponse.setValidationError("filmImage"," Mime Type "+ mimeType+" not allowed");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
         }
@@ -90,6 +106,14 @@ public class AdminFileUploadService {
         }
 
 
+
+        long fileSizeLimit = 2 *1024 *1024; // 2 MB
+
+        if(file.getSize() > fileSizeLimit){
+            serviceResponse.setValidationError("filmImage", "Max file size 2 MB");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+        }
+
         Random rnd = new Random();
         int n = 1000000000 + rnd.nextInt(900000);
 
@@ -102,6 +126,53 @@ public class AdminFileUploadService {
 
         return ResponseEntity.status(HttpStatus.OK).body(tempFile.getToken());
     }
+    @RequestMapping(value = "/product", headers = "Content-Type=multipart/form-data",method = RequestMethod.POST)
+    public ResponseEntity<?> uploadProductImage(@RequestParam("productImage") MultipartFile file){
 
+        TempFile tempFile = new TempFile();
+        /*---------Content type validation -----------------*/
+        String mimeType = this.getMimeType(file);
+
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+        if(!productImgContentTypeList.contains(mimeType)){
+            serviceResponse.setValidationError("productImage"," Mime Type "+ mimeType+" not allowed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+        }
+
+
+        try {
+            byte[] fileByte = file.getBytes();
+            System.out.println("Byte Received " +fileByte.length);
+            if(fileByte.length==0){
+                serviceResponse.setValidationError("productImage", "No file attached");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+            }
+            String filePath = ImageHelper.saveInTempFolder(fileByte, file.getOriginalFilename());
+            tempFile.setPath(filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+            serviceResponse.setValidationError("productImage", "No file attached. "+e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+        }
+
+        long fileSizeLimit = 2 *1024 *1024; // 2 MB
+
+        if(file.getSize() > fileSizeLimit){
+            serviceResponse.setValidationError("productImage", "Max file size 2 MB");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+        }
+
+        Random rnd = new Random();
+        int n = 1000000000 + rnd.nextInt(900000);
+
+        tempFile.setToken(n);
+
+
+        tempFileDao.insert(tempFile);
+
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(tempFile.getToken());
+    }
 
 }
