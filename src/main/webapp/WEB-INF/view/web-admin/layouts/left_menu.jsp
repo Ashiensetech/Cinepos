@@ -16,6 +16,11 @@
 
                 </ul>
             </li>
+
+            <li>
+                <a href="/admin/circuit/index">Circuit</a>
+            </li>
+
             <li>
                 <a href="#">Screen<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
@@ -63,6 +68,19 @@
                     </li>
                     <li>
                         <a href="<c:url value="/admin/seat-type/create" />">Create Seat Type</a>
+                    </li>
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#">Film<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="<c:url value="/admin/film/all" />">All Films</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/film/create" />">Create Film</a>
                     </li>
 
                 </ul>

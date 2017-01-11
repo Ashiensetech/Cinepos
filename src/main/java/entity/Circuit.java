@@ -35,7 +35,7 @@ public class Circuit {
 
     @Basic
     @Column(name = "website")
-    private String 	website;
+    private String 	webSite;
 
     @Basic
     @Column(name = "phone_no")
@@ -50,8 +50,12 @@ public class Circuit {
     private Time bookingCancellationTime;
 
     @Basic
+    @Column(name = "refund_deduction_percentage")
+    private float refundDeductionPercentage;
+
+    @Basic
     @Column(name = "refund_cancellation_time")
-    private int refundCancellationTime;
+    private Time refundCancellationTime;
 
     @Basic
     @Column(name = "created_by",nullable = true)
@@ -117,12 +121,12 @@ public class Circuit {
         this.country = country;
     }
 
-    public String getWebsite() {
-        return website;
+    public String getWebSite() {
+        return webSite;
     }
 
-    public void setWebsite(String website) {
-        this.website = website;
+    public void setWebSite(String webSite) {
+        this.webSite = webSite;
     }
 
     public String getPhoneNo() {
@@ -149,11 +153,19 @@ public class Circuit {
         this.bookingCancellationTime = bookingCancellationTime;
     }
 
-    public int getRefundCancellationTime() {
+    public float getRefundDeductionPercentage() {
+        return refundDeductionPercentage;
+    }
+
+    public void setRefundDeductionPercentage(float refundDeductionPercentage) {
+        this.refundDeductionPercentage = refundDeductionPercentage;
+    }
+
+    public Time getRefundCancellationTime() {
         return refundCancellationTime;
     }
 
-    public void setRefundCancellationTime(int refundCancellationTime) {
+    public void setRefundCancellationTime(Time refundCancellationTime) {
         this.refundCancellationTime = refundCancellationTime;
     }
 
@@ -198,7 +210,7 @@ public class Circuit {
 
         if (Id != circuit.Id) return false;
         if (screenNo != circuit.screenNo) return false;
-        if (refundCancellationTime != circuit.refundCancellationTime) return false;
+        if (Float.compare(circuit.refundDeductionPercentage, refundDeductionPercentage) != 0) return false;
         if (createdBy != circuit.createdBy) return false;
         if (updatedBy != circuit.updatedBy) return false;
         if (siteCode != null ? !siteCode.equals(circuit.siteCode) : circuit.siteCode != null) return false;
@@ -206,9 +218,11 @@ public class Circuit {
         if (address != null ? !address.equals(circuit.address) : circuit.address != null) return false;
         if (city != null ? !city.equals(circuit.city) : circuit.city != null) return false;
         if (country != null ? !country.equals(circuit.country) : circuit.country != null) return false;
-        if (website != null ? !website.equals(circuit.website) : circuit.website != null) return false;
+        if (webSite != null ? !webSite.equals(circuit.webSite) : circuit.webSite != null) return false;
         if (phoneNo != null ? !phoneNo.equals(circuit.phoneNo) : circuit.phoneNo != null) return false;
         if (bookingCancellationTime != null ? !bookingCancellationTime.equals(circuit.bookingCancellationTime) : circuit.bookingCancellationTime != null)
+            return false;
+        if (refundCancellationTime != null ? !refundCancellationTime.equals(circuit.refundCancellationTime) : circuit.refundCancellationTime != null)
             return false;
         if (createdAt != null ? !createdAt.equals(circuit.createdAt) : circuit.createdAt != null) return false;
         return updatedAt != null ? updatedAt.equals(circuit.updatedAt) : circuit.updatedAt == null;
@@ -222,11 +236,12 @@ public class Circuit {
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (city != null ? city.hashCode() : 0);
         result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + (website != null ? website.hashCode() : 0);
+        result = 31 * result + (webSite != null ? webSite.hashCode() : 0);
         result = 31 * result + (phoneNo != null ? phoneNo.hashCode() : 0);
         result = 31 * result + screenNo;
         result = 31 * result + (bookingCancellationTime != null ? bookingCancellationTime.hashCode() : 0);
-        result = 31 * result + refundCancellationTime;
+        result = 31 * result + (refundDeductionPercentage != +0.0f ? Float.floatToIntBits(refundDeductionPercentage) : 0);
+        result = 31 * result + (refundCancellationTime != null ? refundCancellationTime.hashCode() : 0);
         result = 31 * result + createdBy;
         result = 31 * result + updatedBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
@@ -243,10 +258,11 @@ public class Circuit {
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
                 ", country='" + country + '\'' +
-                ", website='" + website + '\'' +
+                ", webSite='" + webSite + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +
                 ", screenNo=" + screenNo +
                 ", bookingCancellationTime=" + bookingCancellationTime +
+                ", refundDeductionPercentage=" + refundDeductionPercentage +
                 ", refundCancellationTime=" + refundCancellationTime +
                 ", createdBy=" + createdBy +
                 ", updatedBy=" + updatedBy +
