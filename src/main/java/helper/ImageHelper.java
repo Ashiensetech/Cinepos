@@ -1,10 +1,13 @@
 package helper;
 
 
+import custom_exception.TempFileException;
 import nonentity.photo.Picture;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+import utility.FileUtil;
 
 import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
@@ -16,222 +19,100 @@ import java.util.Random;
 /**
  * Created by mi on 10/1/15.
  */
-
+@Component
 public class ImageHelper {
     //server settings for pictures and images
       /* ------------------- Live server of client ----------------------------- */
 
     private static String GLOBAL_PATH ="";
 
-
+    @Autowired
     public String TGLOBAL_PATH;
 
-    /* ------------------- Develop ----------------------------- */
-  //  private static String GLOBAL_PATH = "/home/wsit/rentguru24files/";
 
-    /* -------------------- Beta ---------------------------------- */
-//    private static String GLOBAL_PATH = "/home/wsit/rentguru24files_beta/";
-
-        /*------------------Local---------------------*/
-   // private static String GLOBAL_PATH= "/home/mi/Projects/j2ee/rentguru24files/";
-
-//    private static String GLOBAL_PATH= "/home/omar/IdeaProjects/rentguru24files/";
-
-    private static String DOC_FOLDER= "";
-    private static String DOC_PATH=  "";
-    private static String PRODUCT_FOLDER= "";
-    private static String PRODUCT_PATH= "";
-    private static String PROFILE_FOLDER= "";
-    private static String PROFILE_PATH= "";
-    private static String CATEGORY_FOLDER= "";
-    private static String CATEGORY_PATH= "";
-    private static String TEMP_FOLDER= "";
-    private static String TEMP_FILE_PATH= "";
-    private static String BANNER_IMAGE_FOLDER = "";
-    private static String BANNER_IMAGE_PATH= "";
-
+    private static String FILM_FILE_FOLDER = "";
+    private static String TEMP_FILE_FOLDER = "";
+    private static String PRODUCT_FOLDER = "";
+    private static String FILM_FILE_PATH = "";
+    private static String TEMP_FILE_PATH = "";
+    private static String PRODUCT_FILE_PATH = "";
     @PostConstruct
     public void init(){
         ImageHelper.GLOBAL_PATH = TGLOBAL_PATH;
-        DOC_FOLDER= "identityDoc/";
-        DOC_PATH= GLOBAL_PATH+DOC_FOLDER;
-        PRODUCT_FOLDER= "product/";
-        PRODUCT_PATH= GLOBAL_PATH+PRODUCT_FOLDER;
-        PROFILE_FOLDER= "profile/";
-        PROFILE_PATH= GLOBAL_PATH+PROFILE_FOLDER;
-        CATEGORY_FOLDER= "category/";
-        CATEGORY_PATH= GLOBAL_PATH+CATEGORY_FOLDER;
-        TEMP_FOLDER= "temp/";
-        TEMP_FILE_PATH= GLOBAL_PATH+TEMP_FOLDER;
-        BANNER_IMAGE_FOLDER = "bannerImage/";
-        BANNER_IMAGE_PATH= GLOBAL_PATH+BANNER_IMAGE_FOLDER;
+        FILM_FILE_FOLDER = "film/";
+        FILM_FILE_PATH = GLOBAL_PATH+FILM_FILE_FOLDER;
+        TEMP_FILE_FOLDER = "temp/";
+        TEMP_FILE_PATH =GLOBAL_PATH+TEMP_FILE_FOLDER;
+        PRODUCT_FOLDER = "product/";
+        PRODUCT_FILE_PATH = GLOBAL_PATH+PRODUCT_FOLDER;
+        System.out.println("TGLOBAL_PATH :" +TGLOBAL_PATH);
     }
 
 
-    public static void setGlobalPath(String globalPath) {
-        GLOBAL_PATH = globalPath;
-    }
-
-    public static String getGlobalPath() {
-        return GLOBAL_PATH;
-    }
-    public static boolean isFileExist(String path){
-        File docFile =new File(GLOBAL_PATH+path);
+    private static boolean isFileExist(String absPath){
+        File docFile =new File(absPath);
         return docFile.exists();
     }
-    public static String moveFile(int appCredentialId,String oldPath){
-        String fileName = appCredentialId+"/"+System.nanoTime()+"."+getExtension(oldPath);
-        String filePath = DOC_PATH+fileName;
+    public static boolean isFilmFileExist(String path){
+        return isFileExist(FILM_FILE_PATH + path);
+    }
+    public static boolean isTempFileExist(String fileName){
+        System.out.println(TEMP_FILE_PATH+fileName);
+        return isFileExist(TEMP_FILE_PATH+fileName);
+    }
+    public static String moveFilmFile(int filmId,String tempFileName) throws TempFileException{
+        String fileName = filmId+"/"+System.nanoTime()+"."+getExtension(tempFileName);
+        String filePath = FILM_FILE_PATH +fileName;
         try{
 
-            File docFile =new File(GLOBAL_PATH+oldPath);
+            File docFile =new File(TEMP_FILE_PATH+tempFileName);
 
-            createDirIfNotExist(DOC_PATH + appCredentialId);
+            createDirIfNotExist(FILM_FILE_PATH + filmId);
 
             if(docFile.renameTo(new File(filePath))){
                 System.out.println("File is moved successful!");
             }else{
-                System.out.println("File is failed to move!"+filePath);
+               throw  new TempFileException("Unable to move file");
             }
-            System.out.println(GLOBAL_PATH+oldPath);
+            System.out.println(GLOBAL_PATH+tempFileName);
 
 
         }catch(Exception e){
-            e.printStackTrace();
+            throw  new TempFileException(e.getMessage());
         }
-        return DOC_FOLDER+fileName;
+        return fileName;
     }
-    public static Picture moveProductImage(int appCredentialId,String oldPath){
-        String fileName = appCredentialId+"/"+System.nanoTime()+"."+getExtension(oldPath);
-        String filePath = PRODUCT_PATH+fileName;
-        Picture picture = new Picture();
+    public static String moveProductFile(int productId,String tempFileName) throws TempFileException{
+        String fileName = productId+"/"+System.nanoTime()+"."+getExtension(tempFileName);
+        String filePath = PRODUCT_FILE_PATH +fileName;
         try{
 
-            File docFile =new File(GLOBAL_PATH+oldPath);
+            File docFile =new File(TEMP_FILE_PATH+tempFileName);
 
-            createDirIfNotExist(PRODUCT_PATH + appCredentialId);
+            createDirIfNotExist(PRODUCT_FILE_PATH + productId);
 
             if(docFile.renameTo(new File(filePath))){
-                BufferedImage in = ImageIO.read(new File(filePath));
-
-                picture.getOriginal().setPath(PRODUCT_FOLDER + fileName);
-                picture.getOriginal().getSize().setHeight(in.getHeight());
-                picture.getOriginal().getSize().setWidth(in.getWidth());
-                in.flush();
-
+                System.out.println("File is moved successful!");
             }else{
-                System.out.println("File is failed to move!"+filePath);
+                throw  new TempFileException("Unable to move file");
             }
-            System.out.println(GLOBAL_PATH+oldPath);
+            System.out.println(PRODUCT_FILE_PATH+tempFileName);
 
 
         }catch(Exception e){
-            e.printStackTrace();
+            throw  new TempFileException(e.getMessage());
         }
-
-        return picture;
-    }
-    public static Picture moveProfileImage(int appCredentialId,String oldPath){
-        String fileName = appCredentialId+"/"+System.nanoTime()+"."+getExtension(oldPath);
-        String filePath = PROFILE_PATH+fileName;
-        Picture picture = new Picture();
-        try{
-
-            File docFile =new File(GLOBAL_PATH+oldPath);
-
-            createDirIfNotExist(PROFILE_PATH + appCredentialId);
-
-            if(docFile.renameTo(new File(filePath))){
-                BufferedImage in = ImageIO.read(new File(filePath));
-
-                picture.getOriginal().setPath(fileName);
-                picture.getOriginal().getSize().setHeight(in.getHeight());
-                picture.getOriginal().getSize().setWidth(in.getWidth());
-                in.flush();
-
-            }else{
-                System.out.println("File is failed to move!"+filePath);
-            }
-            System.out.println(GLOBAL_PATH+oldPath);
-
-
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
-        }
-
-        return picture;
-    }
-    public static Picture moveCategoryImage(String oldPath){
-        String fileName = System.nanoTime()+"."+getExtension(oldPath);
-        String filePath = CATEGORY_PATH+fileName;
-        Picture picture = new Picture();
-        try{
-
-            File docFile =new File(GLOBAL_PATH+oldPath);
-
-            createDirIfNotExist(CATEGORY_PATH);
-
-            if(docFile.renameTo(new File(filePath))){
-                BufferedImage in = ImageIO.read(new File(filePath));
-
-                picture.getOriginal().setPath(fileName);
-                picture.getOriginal().getSize().setHeight(in.getHeight());
-                picture.getOriginal().getSize().setWidth(in.getWidth());
-                in.flush();
-
-            }else{
-                System.out.println("File is failed to move!"+filePath);
-            }
-            System.out.println(GLOBAL_PATH+oldPath);
-
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        return picture;
-    }
-    public static Picture moveBannerImage(String oldPath){
-        String fileName = System.nanoTime()+"."+getExtension(oldPath);
-        String filePath = BANNER_IMAGE_PATH+fileName;
-        Picture picture = new Picture();
-        try{
-
-            File docFile =new File(GLOBAL_PATH+oldPath);
-
-            createDirIfNotExist(BANNER_IMAGE_PATH);
-
-            if(docFile.renameTo(new File(filePath))){
-                BufferedImage in = ImageIO.read(new File(filePath));
-
-                picture.getOriginal().setPath(fileName);
-                picture.getOriginal().getSize().setHeight(in.getHeight());
-                picture.getOriginal().getSize().setWidth(in.getWidth());
-                in.flush();
-
-            }else{
-                System.out.println("File is failed to move!"+filePath);
-            }
-            System.out.println(GLOBAL_PATH+oldPath);
-
-
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
-        return picture;
+        return fileName;
     }
     public static void createDirIfNotExist(String path) {
         File theDir = new File(path);
 
         // if the directory does not exist, create it
         if (!theDir.exists()) {
-            try {
-                theDir.mkdir();
+            if(theDir.mkdir()){
                 System.out.println("DIR created");
-            } catch (SecurityException se) {
-                //handle it
+            }else{
+                System.out.println("Cannot create dir");
             }
         }
     }
@@ -258,11 +139,12 @@ public class ImageHelper {
         }
         return image;
     }
-    public static String saveFile(byte[] pdfByte, String originalFileName) {
-        String fileName = getRandomNumber() + "."+getExtension(originalFileName);
+    public static String saveInTempFolder(byte[] pdfByte, String originalFileName) {
+        String fileName = System.nanoTime()+ "."+getExtension(originalFileName);
         System.out.println(GLOBAL_PATH);
+        String filePath = TEMP_FILE_PATH+fileName;
         try {
-            File someFile = new File(TEMP_FILE_PATH+ "/" +fileName);
+            File someFile = new File(filePath);
             FileOutputStream fos;
             fos = new FileOutputStream(someFile);
             fos.write(pdfByte);
@@ -271,9 +153,9 @@ public class ImageHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return TEMP_FOLDER+fileName;
+        return fileName;
     }
-    public static void saveFile(String base64Str) {
+    public static void saveInTempFolder(String base64Str) {
         BufferedImage image = null;
         byte[]        pdfByte;
         try {
@@ -290,36 +172,6 @@ public class ImageHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    }
-    public static Picture saveProfileImage(int appCredentialId,InputStream inputStream) {
-        InputStream in = new BufferedInputStream(inputStream);
-        OutputStream out = null;
-        String fileName = getRandomNumber() + ".jpg";
-        String fileFolder = PROFILE_PATH+"/"+appCredentialId+"/";
-        String filePath = PROFILE_PATH+"/"+appCredentialId+"/"+fileName;
-        Picture picture = new Picture();
-        try {
-            createDirIfNotExist(fileFolder);
-            out = new BufferedOutputStream(new FileOutputStream(filePath));
-            for ( int i; (i = in.read()) != -1; ) {
-                out.write(i);
-            }
-            in.close();
-            out.close();
-
-            BufferedImage bIm = ImageIO.read(new File(filePath));
-            picture.getOriginal().setPath(appCredentialId+"/" + fileName);
-            picture.getOriginal().getSize().setHeight(bIm.getHeight());
-            picture.getOriginal().getSize().setWidth(bIm.getWidth());
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return picture;
-
 
     }
     public static String getRandomNumber(){
