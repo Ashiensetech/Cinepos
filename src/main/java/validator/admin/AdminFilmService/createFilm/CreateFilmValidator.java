@@ -1,6 +1,8 @@
 package validator.admin.AdminFilmService.createFilm;
 
+import dao.DistributorDao;
 import dao.FilmDao;
+import entity.Distributor;
 import entity.Film;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +22,18 @@ public class CreateFilmValidator implements Validator {
     @Autowired
     FilmDao filmDao;
 
+    @Autowired
+    DistributorDao distributorDao;
+
     @Override
     public void validate(Object obj, Errors errors) {
         CreateFilmForm createFilmForm = (CreateFilmForm) obj;
+
+        Distributor distributor = distributorDao.getById(createFilmForm.getDistributorId());
+        System.out.print(distributor);
+        if (distributor==null){
+            errors.rejectValue("distributorId", "No distributor found");
+        }
 
         try {
             createFilmForm.setFormattedStartDate(DateHelper.getStringToDate(createFilmForm.getStartDate(), "dd/MM/yyyy"));
