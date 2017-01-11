@@ -21,7 +21,7 @@ class BaseDao {
         this.sessionFactory = sessionFactory;
     }
 
-    protected void insert(Object aObj){
+    protected Object insert(Object aObj){
         Session session = null;
 
         try {
@@ -29,12 +29,14 @@ class BaseDao {
             session.beginTransaction();
             session.save(aObj);
             session.getTransaction().commit();
+            return aObj;
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();
         }finally {
             if(session!=null)session.close();
         }
+        return null;
     }
 
     protected void update(Object aObj){

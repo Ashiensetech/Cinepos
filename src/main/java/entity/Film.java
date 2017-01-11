@@ -1,5 +1,7 @@
 package entity;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -52,7 +54,7 @@ public class Film {
 
     @Basic
     @Column(name = "status")
-    private String status;
+    private Boolean status;
 
 
     @Basic
@@ -149,11 +151,11 @@ public class Film {
 
 
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
