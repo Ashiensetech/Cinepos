@@ -4,13 +4,14 @@ import dao.SeatTypeDao;
 import entity.SeatType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 /**
  * Created by sunno on 1/6/17.
  */
-@Repository
+@Service
 public class CreateSeatTypeValidator implements Validator {
 
     @Autowired
@@ -30,4 +31,5 @@ public class CreateSeatTypeValidator implements Validator {
     public boolean supports(Class<?> aClass) {
         return CreateSeatTypeForm.class.equals(aClass);
     }
+
 }

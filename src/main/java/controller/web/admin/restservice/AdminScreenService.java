@@ -135,6 +135,23 @@ public class AdminScreenService {
 
         serviceResponse.bindValidationError(result);
 
+
+        if(screen.getIsSeatPlanComplete() && screen.getSeats()!=null && screen.getSeats().size()>0){
+            if(screen.getRowCount() != editScreenFrom.getRowCount() || screen.getColumnCount() != editScreenFrom.getColumnCount()){
+                SeatType seatType = seatTypeDao.getDefaultSeatType();
+
+                List<List<ScreenSeat>> oldSeats = ScreenHelper.singleDimensionToTwoDimensionList(screen.getSeats(), screen.getRowCount(), screen.getColumnCount());
+                List<List<ScreenSeat>> mergedSeats = ScreenHelper.mergeSeats(oldSeats, editScreenFrom.getRowCount(), editScreenFrom.getColumnCount(), seatType);
+                List<ScreenSeat> merged1dSeatList = ScreenHelper.twoDimensionListToSingleDimension(mergedSeats);
+                for(ScreenSeat screenSeat : merged1dSeatList){
+                    screenSeat.setScreenId(screen.getId());
+                }
+                screenSeatDao.insertOrUpdate(merged1dSeatList);
+
+                screen.setSeats(merged1dSeatList);
+            }
+        }
+
         if(serviceResponse.hasErrors()){
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }

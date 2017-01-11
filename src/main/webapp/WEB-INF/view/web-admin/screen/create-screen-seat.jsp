@@ -135,7 +135,7 @@
 
 <%--Developer Hidden Inputs--%>
 <input type="hidden" id="currentSeatSelected" value="0">
-<input type="hidden" id="state" value="${screen.isSeatPlanComplete}" />
+<input type="hidden" id="editActionState" value="${screen.isSeatPlanComplete}" />
 <script>
     function updateSeatInformation(){
         var currentSeatId = $("#currentSeatSelected").val();
@@ -165,7 +165,7 @@
    // $("#statusMsg").html("").hide();
 
     var screenId =$("#screenId").val();
-
+    var editActionState = JSON.parse($("#editActionState").val());
     //enableDisableFormElement("createScreenForm",["input","button","select"],false);
       var postData = [];
       $(".seatInfHolder").each(function(){
@@ -179,7 +179,7 @@
     $.ajax({
       url: BASEURL+'api/admin/screen/seat-plan/create-edit/'+screenId,
       type: 'POST',
-      data:{seats:JSON.stringify(postData),actionState:JSON.parse($("#state").val())},
+      data:{seats:JSON.stringify(postData),actionState:editActionState},
       statusCode: {
         401: function (response) {
           console.log("unauthorized");
@@ -192,10 +192,14 @@
           //enableDisableFormElement("createScreenForm",["input","button","select"],true);
         }
       },success: function(data){
+        var statusMsg = "Seat plan is created successfully";
 
-        $("#statusMsg").html("Seat paln is created").show();
+        if(editActionState){
+            statusMsg = "Seat plan is updated successfully";
+        }
+        $("#statusMsg").html(statusMsg).show();
         setTimeout(function(){
-         // window.location = BASEURL+"admin/screen/all";
+          window.location = BASEURL+"admin/screen/all";
         },2000);
 
       }
