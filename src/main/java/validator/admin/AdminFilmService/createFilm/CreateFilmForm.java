@@ -36,11 +36,11 @@ public class CreateFilmForm {
     @NotNull(message = "Price Shift is required")
     private boolean isPriceShift;
 
-//    @DateTimeFormat(pattern="dd/MM/yyyy")
+//    @DateTimeFormat(pattern="MM/dd/yyyy")
     @NotNull(message = "Start Time is required")
     private String startDate;
 
-//    @DateTimeFormat(pattern="dd/MM/yyyy")
+//    @DateTimeFormat(pattern="MM/dd/yyyy")
     @NotNull(message = "End Date is required")
     private String endDate;
 
