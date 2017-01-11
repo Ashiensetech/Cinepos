@@ -18,7 +18,6 @@ public class TerminalDao extends BaseDao {
              session = this.sessionFactory.openSession();
              session.beginTransaction();
              int id=(Integer) session.save(terminal);
-             System.out.println(id+"RAZA");
              session.getTransaction().commit();
              return id;
          }catch (HibernateException hEx){

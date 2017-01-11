@@ -16,6 +16,11 @@
 
                 </ul>
             </li>
+
+            <li>
+                <a href="/admin/circuit/index">Circuit</a>
+            </li>
+
             <li>
                 <a href="#">Screen<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">

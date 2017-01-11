@@ -61,8 +61,8 @@ public class AdminTerminalService {
 
             terminalData.setId(terminalId);
             terminalData.setTerminalCode(terminalCode);
-            terminalData.setUpdatedBy(1);
-            terminalData.setUpdatedAt(timestamp);
+            //terminalData.setUpdatedBy(1);
+            //terminalData.setUpdatedAt(timestamp);
             terminalDao.update(terminalData);
 
 

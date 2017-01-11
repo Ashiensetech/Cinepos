@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public class createDistributorForm {
+
     @NotBlank(message = "Distributor name are required")
     @Length(max = 30,message = "Distributor name too large")
    private String name;

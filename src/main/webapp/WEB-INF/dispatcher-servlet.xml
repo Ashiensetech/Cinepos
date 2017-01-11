@@ -52,6 +52,7 @@
                 <value>entity.FilmImage</value>
                 <value>entity.FilmTrailer</value>
                 <value>entity.FilmGenre</value>
+                <value>entity.Circuit</value>
             </list>
         </property>
         <property name="hibernateProperties">
