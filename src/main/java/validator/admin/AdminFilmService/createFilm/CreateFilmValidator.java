@@ -2,12 +2,8 @@ package validator.admin.AdminFilmService.createFilm;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dao.DistributorDao;
-import dao.FilmDao;
-import dao.TempFileDao;
-import entity.Distributor;
-import entity.Film;
-import entity.TempFile;
+import dao.*;
+import entity.*;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +28,12 @@ public class CreateFilmValidator implements Validator {
 
     @Autowired
     TempFileDao tempFileDao;
+
+    @Autowired
+    ScreenDimensionDao screenDimensionDao;
+
+    @Autowired
+    GenreDao genreDao;
 
     @Override
     public void validate(Object obj, Errors errors) {
@@ -63,10 +65,13 @@ public class CreateFilmValidator implements Validator {
             }
         }
 
+        /**
+         * Film Images
+        * */
         if(createFilmForm.getOtherImagesToken()!=null && !createFilmForm.getOtherImagesToken().equals("")){
+            TypeReference<List<Integer>> tRef = new TypeReference<List<Integer>>() {};
             try {
                 ObjectMapper objectMapper = new ObjectMapper();
-                TypeReference<List<Integer>> tRef = new TypeReference<List<Integer>>() {};
                 createFilmForm.setOtherImagesTokenArray(objectMapper.readValue(createFilmForm.getOtherImagesToken(), tRef));
 
                 List<TempFile> tempFileList = tempFileDao.getByToken(createFilmForm.getOtherImagesTokenArray());
@@ -80,6 +85,52 @@ public class CreateFilmValidator implements Validator {
             } catch (IOException e) {
                 errors.rejectValue("bannerImageToken", "Broken json string found");
             }
+
+
+            /**
+             * Film Screen dimension
+             * */
+
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                createFilmForm.setScreenDimensionIdList(objectMapper.readValue(createFilmForm.getScreenDimensions(), tRef));
+                List<Integer> screenDimensionIdList = createFilmForm.getScreenDimensionIdList();
+                for (Integer screenDimensionId : screenDimensionIdList){
+                    ScreenDimension screenDimension = screenDimensionDao.getById(screenDimensionId);
+                    if(screenDimension==null){
+                        errors.rejectValue("screenDimensions", "Screen dimension not found by id :"+screenDimensionId);
+                        break;
+                    }
+                }
+
+
+            } catch (IOException e) {
+                errors.rejectValue("screenDimensions","Broken String found");
+            }
+
+
+
+            /**
+             * Film Genre
+             * */
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                createFilmForm.setFilmGenreIdList(objectMapper.readValue(createFilmForm.getGenreIds(), tRef));
+                List<Integer> filmGenreIdList = createFilmForm.getFilmGenreIdList();
+                for (Integer filmGenreId : filmGenreIdList){
+                    Genre filmGenre = genreDao.getById(filmGenreId);
+                    if(filmGenre==null){
+                        errors.rejectValue("filmGenre", "Genre not found by id :"+filmGenreId);
+                        break;
+                    }
+                }
+
+
+            } catch (IOException e) {
+                errors.rejectValue("filmGenre","Broken String found");
+            }
+
+
         }
 
     }

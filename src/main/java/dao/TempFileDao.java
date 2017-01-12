@@ -5,6 +5,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,7 +36,9 @@ public class TempFileDao extends BaseDao {
     }
     public List<TempFile> getByToken(List<Integer> tokenList){
         Session session = this.sessionFactory.openSession();
-
+        if(tokenList==null || tokenList.size()==0){
+            return new ArrayList<>();
+        }
         try {
             return session.createQuery("FROM TempFile  WHERE token in :tokenList ")
                     .setParameter("tokenList",tokenList)

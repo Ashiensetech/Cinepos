@@ -15,6 +15,7 @@
 
     <mvc:resources mapping="/admin-resources/**" location="/WEB-INF/admin-resources/"
                    cache-period="31556926"/>
+
     <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"
                    cache-period="31556926"/>
 
@@ -73,6 +74,7 @@
                 <value>entity.FilmImage</value>
                 <value>entity.FilmTrailer</value>
                 <value>entity.FilmGenre</value>
+                <value>entity.FilmScreenType</value>
                 <value>entity.Circuit</value>
                 <value>entity.VatSetting</value>
             </list>

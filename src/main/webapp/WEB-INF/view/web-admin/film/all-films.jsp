@@ -41,8 +41,6 @@
                             <th>Duration</th>
                             <th>Start date</th>
                             <th>End date</th>
-                            <th>F.V.T</th>
-                            <th>Image</th>
                             <th>Action</th>
                         </tr>
                         </thead>
@@ -53,45 +51,19 @@
                                 <td>${count}</td>
                                 <td>${film.name} </td>
                                 <td>${film.distributor.name}</td>
-                                <td>film type</td>
+                                <td>
+                                    <d:forEach var="genre" items="${film.filmGenre}" >
+                                        <span class="info">${genre.name}</span>
+                                    </d:forEach>
+                                </td>
                                 <td>${film.rating}</td>
-                                <td>${film.duration}</td>
+                                <td>${film.durationHour} Hour ${film.durationMin} Min </td>
                                 <td>${film.startDate}</td>
                                 <td>${film.endDate}</td>
-                                <td>fvt</td>
-                                <td>img</td>
-                                <td>action</td>
+                                <td><a type="button" href="#" class="btn btn-outline btn-primary">Edit</a> </td>
 
                             </tr>
                         </d:forEach>
-                        <tr class="odd gradeC">
-                            <td>Trident</td>
-                            <td>demo@admin.com</td>
-                            <td>demo@admin2.com</td>
-                            <td>+880145754</td>
-                            <td>
-                                Lorem ipsum dolor sit amet, consectetur
-                            </td>
-                            <td>
-                                Lorem ipsum dolor sit amet, consectetur
-                            </td>
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                2
-                            </td>
-                            <td>
-                                3
-                            </td>
-                            <td>
-                                <button type="" class="btn btn-default"  data-toggle="modal" data-target="#imgEdit">Add Image</button>
-                            </td>
-                            <td>
-                                <button type="" class="btn btn-primary"  data-toggle="modal" data-target="#editDistributor">Edit</button>
-                            </td>
-
-                        </tr>
                         </tbody>
                     </table>
                 </div>

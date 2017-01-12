@@ -1,12 +1,8 @@
 package validator.admin.AdminFilmService.createFilm;
 
-import entity.Distributor;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -30,13 +26,19 @@ public class CreateFilmForm {
     private Float rating;
 
     @NotNull(message = "Duration is required")
-    private Float duration;
+    private Integer durationHour;
+
+    @NotNull(message = "Duration is required")
+    private Integer durationMin;
 
     @NotNull(message = "Status is required")
     private boolean status;
 
     @NotNull(message = "Price Shift is required")
     private boolean isPriceShift;
+
+    @NotNull(message = "Trailer is required")
+    private String trailer;
 
 //    @DateTimeFormat(pattern="MM/dd/yyyy")
     @NotNull(message = "Start Time is required")
@@ -46,9 +48,18 @@ public class CreateFilmForm {
     @NotNull(message = "End Date is required")
     private String endDate;
 
+    @NotNull(message = "Film screen type required")
+    @NotBlank(message = "Film screen type required")
+    private String screenDimensions;
 
     @NotNull(message = "Banner Image is required")
     private Integer bannerImageToken;
+
+    @NotNull(message = "Film genre  required")
+    @NotBlank(message = "Film genre required")
+    private String genreIds;
+
+    private List<Integer> filmGenreIdList = new ArrayList<>();
 
     private String otherImagesToken;
 
@@ -58,7 +69,7 @@ public class CreateFilmForm {
 
     private Date formattedEndDate;
 
-
+    private List<Integer> screenDimensionIdList;
 
 
 
@@ -102,12 +113,20 @@ public class CreateFilmForm {
         this.rating = rating;
     }
 
-    public Float getDuration() {
-        return duration;
+    public Integer getDurationMin() {
+        return durationMin;
     }
 
-    public void setDuration(Float duration) {
-        this.duration = duration;
+    public void setDurationMin(Integer durationMin) {
+        this.durationMin = durationMin;
+    }
+
+    public Integer getDurationHour() {
+        return durationHour;
+    }
+
+    public void setDurationHour(Integer durationHour) {
+        this.durationHour = durationHour;
     }
 
     public boolean getStatus() {
@@ -124,6 +143,14 @@ public class CreateFilmForm {
 
     public void setIsPriceShift(boolean priceShift) {
         isPriceShift = priceShift;
+    }
+
+    public String getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
     }
 
     public String getStartDate() {
@@ -167,15 +194,50 @@ public class CreateFilmForm {
         this.otherImagesTokenArray = otherImagesTokenArray;
     }
 
+
+    public String getScreenDimensions() {
+        return screenDimensions;
+    }
+
+    public void setScreenDimensions(String screenDimensions) {
+        this.screenDimensions = screenDimensions;
+    }
+
+    public List<Integer> getScreenDimensionIdList() {
+        return screenDimensionIdList;
+    }
+
+    public void setScreenDimensionIdList(List<Integer> screenDimensionIdList) {
+        this.screenDimensionIdList = screenDimensionIdList;
+    }
+
+    public String getGenreIds() {
+        return genreIds;
+    }
+
+    public void setGenreIds(String genreIds) {
+        this.genreIds = genreIds;
+    }
+
+    public List<Integer> getFilmGenreIdList() {
+        return filmGenreIdList;
+    }
+
+    public void setFilmGenreIdList(List<Integer> filmGenreIdList) {
+        this.filmGenreIdList = filmGenreIdList;
+    }
+
     @Override
     public String toString() {
         return "CreateFilmForm{" +
                 "name='" + name + '\'' +
                 ", distributorId=" + distributorId +
                 ", rating=" + rating +
-                ", duration=" + duration +
+                ", durationHour=" + durationHour +
+                ", durationMin=" + durationMin +
                 ", status=" + status +
                 ", isPriceShift=" + isPriceShift +
+                ", trailer='" + trailer + '\'' +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", bannerImageToken=" + bannerImageToken +

@@ -41,7 +41,7 @@ public class AdminAuthenticationService {
             ServiceResponse serviceResponse = ServiceResponse.getInstance();
             serviceResponse.bindValidationError(result);
             if(serviceResponse.hasErrors()){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorMsg);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ServiceResponse.getMsg(errorMsg));
             }
 
             String username=loginForm.getUserName();

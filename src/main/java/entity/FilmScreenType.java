@@ -4,33 +4,28 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
- * Created by mi on 1/10/17.
+ * Created by mi on 1/12/17.
  */
 @Entity
-@Table(name = "film_trailer")
-public class FilmTrailer {
-
+@Table(name = "film_screen_type")
+public class FilmScreenType {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy =GenerationType.IDENTITY)
     private int id;
 
     @Basic
-    @Column(name = "film_id")
+    @Column(name = "flim_id")
     private int filmId;
 
     @Basic
-    @Column(name = "trailer_url")
-    private String trailerUrl;
-
-
-    @Basic
-    @Column(name = "created_by")
-    private int createdBy;
+    @Column(name = "screen_dimension_id")
+    private int screenDimensionId;
 
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
+
 
     public int getId() {
         return id;
@@ -40,29 +35,21 @@ public class FilmTrailer {
         this.id = id;
     }
 
+
     public int getFilmId() {
         return filmId;
     }
 
-    public void setFilmId(int flimId) {
-        this.filmId = flimId;
+    public void setFilmId(int filmId) {
+        this.filmId = filmId;
     }
 
-
-    public String getTrailerUrl() {
-        return trailerUrl;
+    public int getScreenDimensionId() {
+        return screenDimensionId;
     }
 
-    public void setTrailerUrl(String trailerUrl) {
-        this.trailerUrl = trailerUrl;
-    }
-
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
+    public void setScreenDimensionId(int screenDimensionId) {
+        this.screenDimensionId = screenDimensionId;
     }
 
 
@@ -79,12 +66,11 @@ public class FilmTrailer {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FilmTrailer that = (FilmTrailer) o;
+        FilmScreenType that = (FilmScreenType) o;
 
         if (id != that.id) return false;
         if (filmId != that.filmId) return false;
-        if (createdBy != that.createdBy) return false;
-        if (trailerUrl != null ? !trailerUrl.equals(that.trailerUrl) : that.trailerUrl != null) return false;
+        if (screenDimensionId != that.screenDimensionId) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
 
         return true;
@@ -94,8 +80,7 @@ public class FilmTrailer {
     public int hashCode() {
         int result = id;
         result = 31 * result + filmId;
-        result = 31 * result + (trailerUrl != null ? trailerUrl.hashCode() : 0);
-        result = 31 * result + createdBy;
+        result = 31 * result + screenDimensionId;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }

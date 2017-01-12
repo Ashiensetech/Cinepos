@@ -51,9 +51,10 @@
                         </div>
                         <div class="form-group">
                             <label>Select Film type</label>
-                            <select class="form-control">
-                                <option>Action</option>
-                                <option>Drama</option>
+                            <select id="genreIds" class="form-control">
+                                <d:forEach var="genre" items="${genres}" >
+                                    <option value="${genre.id}">${genre.name}</option>
+                                </d:forEach>
                             </select>
                         </div>
                         <div class="form-group">
@@ -62,9 +63,13 @@
                             <p class="help-block error" id="errorMsg_rating"></p>
                         </div>
                         <div class="form-group">
-                            <label>Duration</label>
-                            <input name="" id="duration" class="form-control">
-                            <p class="help-block error" id="errorMsg_duration"></p>
+                            <label>Duration Hour</label>
+                            <input  id="duration_hour" class="form-control" min="0" type="number" >
+                            <p class="help-block error" id="errorMsg_durationHour" ></p>
+                            <br>
+                            <label>Min</label>
+                            <input  id="duration_min" class="form-control"  min="0" type="number" >
+                            <p class="help-block error" id="errorMsg_durationMin"></p>
                         </div>
                         <div class="form-group">
                             <label>Start date</label>
@@ -88,16 +93,16 @@
                         </div>
                         <div class="form-group">
                             <label>Trailer link</label>
-                            <input type="text" class="form-control">
+                            <input id="trailer" type="text" class="form-control">
+                            <p class="help-block error" id="errorMsg_trailer"></p>
                         </div>
                         <div class="form-group">
                             <label>Film view Type</label><br>
-                            <label class="checkbox-inline">
-                                <input type="checkbox">2D
-                            </label>
-                            <label class="checkbox-inline">
-                                <input type="checkbox">3D
-                            </label>
+                            <d:forEach var="screenDimension" items="${screenDimensions}" >
+                                <label class="checkbox-inline">
+                                    <input class="screenDimensionChk" value="${screenDimension.id}" type="checkbox">${screenDimension.name}
+                                </label>
+                            </d:forEach>
                             <p class="help-block error" ></p>
                         </div>
 
@@ -256,24 +261,41 @@
 
         var name = $("#name").val();
         var distributorId = $("#distributorId").val();
-        var duration = $("#duration").val();
         var rating = $("#rating").val();
+        var trailer = $("#trailer").val();
         var isPriceShift = $("#isPriceShift").prop("checked");
         var startDate = $("#startDate").val();
         var endDate = $("#endDate").val();
+        var durationHour = $("#duration_hour").val();
+        var durationMin = $("#duration_min").val();
+        var screenDimensions = [];
+        var genreIds = [parseInt($("#genreIds").val())];
+
+        $("input.screenDimensionChk:checked").each(function(){
+            screenDimensions.push(parseInt($(this).val()));
+        });
         enableDisableFormElement("createFilmForm", ["input", "button", "select"], false);
 
         var postData = {
             name: name,
             distributorId: distributorId,
-            duration: duration,
             rating: rating,
+            trailer:trailer,
             isPriceShift: isPriceShift,
-            otherImagesToken : JSON.stringify(otherImagesToken)
+            otherImagesToken : JSON.stringify(otherImagesToken),
+            screenDimensions: JSON.stringify(screenDimensions),
+            genreIds : JSON.stringify(genreIds)
         };
         if(bannerImageToken>0){
             postData["bannerImageToken"] = bannerImageToken;
         }
+        if(durationHour){
+            postData['durationHour'] = durationHour;
+        }
+        if(durationMin){
+            postData['durationMin'] = durationMin;
+        }
+
         if(startDate)
             postData['startDate'] = startDate;
         if(endDate)

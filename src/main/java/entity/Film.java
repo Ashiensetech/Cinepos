@@ -35,11 +35,18 @@ public class Film {
                     nullable = false, updatable = false) })
     private List<Genre> filmGenre;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(name = "film_screen_type", joinColumns = {
+            @JoinColumn(name = "film_id", nullable = false, updatable = false) },
+            inverseJoinColumns = { @JoinColumn(name = "screen_dimension_id",
+                    nullable = false, updatable = false) })
+    private List<ScreenDimension> screenDimensions;
+
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id",referencedColumnName = "id")
     private List<FilmImage> filmImages;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id",referencedColumnName = "id")
     private List<FilmTrailer> filmTrailers;
 
@@ -48,8 +55,14 @@ public class Film {
     private float rating;
 
     @Basic
-    @Column(name = "duration")
-    private float duration;
+    @Column(name = "duration_hour")
+    private float durationHour;
+
+
+    @Basic
+    @Column(name = "duration_min")
+    private float durationMin;
+
 
 
     @Basic
@@ -115,6 +128,14 @@ public class Film {
     }
 
 
+    public List<ScreenDimension> getScreenDimensions() {
+        return screenDimensions;
+    }
+
+    public void setScreenDimensions(List<ScreenDimension> screenDimensions) {
+        this.screenDimensions = screenDimensions;
+    }
+
     public List<FilmImage> getFilmImages() {
         return filmImages;
     }
@@ -140,16 +161,21 @@ public class Film {
     }
 
 
-
-    public float getDuration() {
-        return duration;
+    public float getDurationHour() {
+        return durationHour;
     }
 
-    public void setDuration(float duration) {
-        this.duration = duration;
+    public void setDurationHour(float durationHour) {
+        this.durationHour = durationHour;
     }
 
+    public float getDurationMin() {
+        return durationMin;
+    }
 
+    public void setDurationMin(float durationMin) {
+        this.durationMin = durationMin;
+    }
 
     public Boolean getStatus() {
         return status;
@@ -207,4 +233,74 @@ public class Film {
     }
 
 
+    @Override
+    public String toString() {
+        return "Film{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", distributor=" + distributor +
+                ", filmGenre=" + filmGenre +
+                ", screenDimensions=" + screenDimensions +
+                ", filmImages=" + filmImages +
+                ", filmTrailers=" + filmTrailers +
+                ", rating=" + rating +
+                ", durationHour=" + durationHour +
+                ", durationMin=" + durationMin +
+                ", status=" + status +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", isPriceShift=" + isPriceShift +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Film film = (Film) o;
+
+        if (id != film.id) return false;
+        if (Float.compare(film.rating, rating) != 0) return false;
+        if (Float.compare(film.durationHour, durationHour) != 0) return false;
+        if (Float.compare(film.durationMin, durationMin) != 0) return false;
+        if (isPriceShift != film.isPriceShift) return false;
+        if (name != null ? !name.equals(film.name) : film.name != null) return false;
+        if (distributor != null ? !distributor.equals(film.distributor) : film.distributor != null) return false;
+        if (filmGenre != null ? !filmGenre.equals(film.filmGenre) : film.filmGenre != null) return false;
+        if (screenDimensions != null ? !screenDimensions.equals(film.screenDimensions) : film.screenDimensions != null)
+            return false;
+        if (filmImages != null ? !filmImages.equals(film.filmImages) : film.filmImages != null) return false;
+        if (filmTrailers != null ? !filmTrailers.equals(film.filmTrailers) : film.filmTrailers != null) return false;
+        if (status != null ? !status.equals(film.status) : film.status != null) return false;
+        if (startDate != null ? !startDate.equals(film.startDate) : film.startDate != null) return false;
+        if (endDate != null ? !endDate.equals(film.endDate) : film.endDate != null) return false;
+        if (createdBy != null ? !createdBy.equals(film.createdBy) : film.createdBy != null) return false;
+        return !(createdAt != null ? !createdAt.equals(film.createdAt) : film.createdAt != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (distributor != null ? distributor.hashCode() : 0);
+        result = 31 * result + (filmGenre != null ? filmGenre.hashCode() : 0);
+        result = 31 * result + (screenDimensions != null ? screenDimensions.hashCode() : 0);
+        result = 31 * result + (filmImages != null ? filmImages.hashCode() : 0);
+        result = 31 * result + (filmTrailers != null ? filmTrailers.hashCode() : 0);
+        result = 31 * result + (rating != +0.0f ? Float.floatToIntBits(rating) : 0);
+        result = 31 * result + (durationHour != +0.0f ? Float.floatToIntBits(durationHour) : 0);
+        result = 31 * result + (durationMin != +0.0f ? Float.floatToIntBits(durationMin) : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
+        result = 31 * result + (isPriceShift ? 1 : 0);
+        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        return result;
+    }
 }
