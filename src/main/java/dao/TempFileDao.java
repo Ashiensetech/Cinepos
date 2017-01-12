@@ -5,6 +5,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by omar on 8/2/16.
  */
@@ -27,6 +29,17 @@ public class TempFileDao extends BaseDao {
                     .setParameter("token",token)
                     .setMaxResults(1)
                     .uniqueResult();
+        }finally {
+            session.close();
+        }
+    }
+    public List<TempFile> getByToken(List<Integer> tokenList){
+        Session session = this.sessionFactory.openSession();
+
+        try {
+            return session.createQuery("FROM TempFile  WHERE token in :tokenList ")
+                    .setParameter("tokenList",tokenList)
+                    .list();
         }finally {
             session.close();
         }

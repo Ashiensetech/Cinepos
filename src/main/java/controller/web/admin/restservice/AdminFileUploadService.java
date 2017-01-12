@@ -175,4 +175,25 @@ public class AdminFileUploadService {
         return ResponseEntity.status(HttpStatus.OK).body(tempFile.getToken());
     }
 
+    @RequestMapping(value = "/delete/temp-file", method = RequestMethod.POST)
+    public ResponseEntity<?> deleteImage(@RequestParam("token") Integer token){
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+        if(token==null){
+            serviceResponse.setValidationError("token", "Token required");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+        }
+        TempFile tempFile = tempFileDao.getByToken(token);
+
+        if(tempFile==null){
+            serviceResponse.setValidationError("token", "No information found");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(serviceResponse.getFormError());
+        }
+
+
+        ImageHelper.removeTempFile(tempFile.getPath());
+        tempFileDao.delete(tempFile);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ServiceResponse.getMsg("File removed"));
+    }
+
 }

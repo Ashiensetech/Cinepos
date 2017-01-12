@@ -43,7 +43,6 @@
                         <div class="form-group">
                             <label>Distributor</label>
                             <select id="distributorId" class="form-control">
-                                <option></option>
                                 <d:forEach var="distributor" items="${distributors}">
                                     <option value="${distributor.id}">${distributor.name}</option>
                                 </d:forEach>
@@ -59,7 +58,7 @@
                         </div>
                         <div class="form-group">
                             <label>Ratings</label>
-                            <input id="rating" class="form-control">
+                            <input id="rating" class="form-control" type="number" min="0">
                             <p class="help-block error" id="errorMsg_rating"></p>
                         </div>
                         <div class="form-group">
@@ -74,8 +73,8 @@
                                     </span>
                                 <input type='text' class="form-control" id="startDate" name="date"
                                        placeholder="MM/DD/YYY" type="text"/>
-                                <p class="help-block error" id="errorMsg_startDate"></p>
                             </div>
+                            <p class="help-block error" id="errorMsg_startDate"></p>
                         </div>
                         <div class="form-group">
                             <label>End date</label>
@@ -84,8 +83,8 @@
                                     </span>
                                 <input type='text' class="form-control" id="endDate" name="date" placeholder="MM/DD/YYY"
                                        type="text"/>
-                                <p class="help-block error" id="errorMsg_endDate"></p>
                             </div>
+                            <p class="help-block error" id="errorMsg_endDate"></p>
                         </div>
                         <div class="form-group">
                             <label>Trailer link</label>
@@ -99,17 +98,14 @@
                             <label class="checkbox-inline">
                                 <input type="checkbox">3D
                             </label>
+                            <p class="help-block error" ></p>
                         </div>
 
                         <div class="form-group">
-                            <label>Is Default</label>
-                            <input class="form-control check-box" type="checkbox" id="status">
-                            <p class="help-block error" id="errorMsg_status"></p>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Is PriceShift</label>
-                            <input class="form-control check-box" type="checkbox" id="isPriceShift">
+                            <label>Is PriceShift</label><br>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="isPriceShift">Yes
+                            </label>
                             <p class="help-block error" id="errorMsg_isPriceShift"></p>
                         </div>
 
@@ -120,32 +116,22 @@
                     </div>
                     <div class="col-lg-7">
                         <div class="row clearfix">
-                            <label style="padding-left: 15px;font-size: 16px;">Choose Image</label>
+                            <label style="padding-left: 15px;font-size: 16px;">Choose Banner Image</label>
                             <div class="col-md-12">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="">
-                                        Banner
-                                    </label>
+
+                                <div id="bannerImg" class="dropzone">
+                                    <%--<div class="fallback">
+                                        <input name="filmImage" type="file" multiple />
+                                    </div>--%>
                                 </div>
-                                <div action="/file-upload" class="dropzone">
-                                    <div class="fallback">
-                                        <input name="file" type="file" multiple/>
-                                    </div>
-                                </div>
+                                <p class="help-block error" id="errorMsg_bannerImageToken"></p>
                             </div>
                             <div class="col-md-12">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" value="">
-                                        Other
-                                    </label>
+                                <label style="padding-left: 15px;font-size: 16px;">Choose Other Images</label>
+                                <div id="otherImg"  class="dropzone" >
+
                                 </div>
-                                <div action="/file-upload" class="dropzone">
-                                    <div class="fallback">
-                                        <input name="file" type="file" multiple/>
-                                    </div>
-                                </div>
+                                <p class="help-block error" id="errorMsg_otherImagesToken"></p>
                             </div>
                         </div>
                     </div>
@@ -155,7 +141,20 @@
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
+    <%------------------------------------------------------------------%>
+    <div class="table table-striped" class="files" id="previews">
 
+        <div id="template" class="file-row">
+            <!-- This is used as the file preview template -->
+            <div>
+                <span class="preview"><img data-dz-thumbnail /></span>
+            </div>
+            <div>
+                <strong class="error text-danger" data-dz-errormessage></strong>
+            </div>
+        </div>
+    </div>
+    <%------------------------------------------------------------------------------------%>
 </div>
 
 <jsp:directive.include file="../layouts/footer.jsp"/>
@@ -164,6 +163,93 @@
 <script src="<c:url value="/admin-resources/dropzone/dropzone.js"/>"></script>
 
 <script>
+    Dropzone.autoDiscover = false;
+    //Dropzone.options.bannerImg = false;
+    var bannerImageToken = 0;
+    var otherImagesToken = [];
+
+    $(function() {
+        var bannerImgDropzone = new Dropzone("div#bannerImg",
+                {
+                    url: BASEURL+"api/admin/file-upload/film",
+                    method:"post",
+                    paramName:"filmImage",
+                    maxFilesize: 2,
+                    maxFiles:1,
+                    addRemoveLinks: true,
+                    removedfile:function(file){
+                        bannerImageToken = 0;
+                        var _ref;
+                        if(file.token == undefined){
+                            return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                        }
+                        removeImageByToken(file.token);
+                        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+
+                    },
+                    success:function(file,response){
+                        bannerImageToken = response;
+                        file.token = response;
+                        console.log(response);
+                    }
+                }
+        );
+
+        var otherImgDropzone = new Dropzone("div#otherImg",
+                {
+                    url: BASEURL+"api/admin/file-upload/film",
+                    method:"post",
+                    paramName:"filmImage",
+                    maxFilesize: 2,
+                    maxFiles:5,
+                    addRemoveLinks: true,
+                    removedfile:function(file){
+                        console.log(file);
+                        var _ref;
+                        if(file.token == undefined){
+                            return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                        }
+                        var index = otherImagesToken.indexOf(file.token);
+                        if(index>0){
+                            otherImagesToken.splice(index,1);
+                        }
+                        removeImageByToken(file.token);
+                        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+
+                    },
+                    success:function(file,response){
+                        otherImagesToken.push(response);
+                        file.token = response;
+                        console.log(response);
+                    }
+                }
+        );
+
+    });
+
+
+    function removeImageByToken(token){
+        $.ajax({
+            url: BASEURL + 'api/admin/file-upload/delete/temp-file',
+            type: 'POST',
+            data: {token:token},
+            statusCode: {
+                401: function (response) {
+                    console.log("unauthorized");
+                    console.log(response);
+                    showLoginModal();
+                },
+                422: function (response) {
+                    console.log(response);
+                    enableDisableFormElement("createFilmForm", ["input", "button", "select"], true);
+                    BindErrorsWithHtml("errorMsg_", response.responseJSON);
+                }
+            }, success: function (data) {
+            }
+        });
+    }
+
+
     function submitFilm() {
 
         $("#statusMsg").html("").hide();
@@ -172,11 +258,9 @@
         var distributorId = $("#distributorId").val();
         var duration = $("#duration").val();
         var rating = $("#rating").val();
-        var status = $("#status").prop("checked");
         var isPriceShift = $("#isPriceShift").prop("checked");
         var startDate = $("#startDate").val();
         var endDate = $("#endDate").val();
-
         enableDisableFormElement("createFilmForm", ["input", "button", "select"], false);
 
         var postData = {
@@ -185,8 +269,11 @@
             duration: duration,
             rating: rating,
             isPriceShift: isPriceShift,
-            status: status,
+            otherImagesToken : JSON.stringify(otherImagesToken)
         };
+        if(bannerImageToken>0){
+            postData["bannerImageToken"] = bannerImageToken;
+        }
         if(startDate)
             postData['startDate'] = startDate;
         if(endDate)

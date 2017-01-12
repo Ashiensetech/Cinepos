@@ -9,6 +9,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -45,7 +47,20 @@ public class CreateFilmForm {
     private String endDate;
 
 
+    @NotNull(message = "Banner Image is required")
+    private Integer bannerImageToken;
+
+    private String otherImagesToken;
+
+    private List<Integer> otherImagesTokenArray = new ArrayList<>();
+
     private Date formattedStartDate;
+
+    private Date formattedEndDate;
+
+
+
+
 
     public Date getFormattedStartDate() {
         return formattedStartDate;
@@ -62,8 +77,6 @@ public class CreateFilmForm {
     public void setFormattedEndDate(Date formattedEndDate) {
         this.formattedEndDate = formattedEndDate;
     }
-
-    private Date formattedEndDate;
 
     public String getName() {
         return name;
@@ -129,17 +142,47 @@ public class CreateFilmForm {
         this.endDate = endDate;
     }
 
+    public Integer getBannerImageToken() {
+        return bannerImageToken;
+    }
+
+    public void setBannerImageToken(Integer bannerImageToken) {
+        this.bannerImageToken = bannerImageToken;
+    }
+
+    public String getOtherImagesToken() {
+        return otherImagesToken;
+    }
+
+    public void setOtherImagesToken(String otherImagesToken) {
+        this.otherImagesToken = otherImagesToken;
+    }
+
+
+    public List<Integer> getOtherImagesTokenArray() {
+        return otherImagesTokenArray;
+    }
+
+    public void setOtherImagesTokenArray(List<Integer> otherImagesTokenArray) {
+        this.otherImagesTokenArray = otherImagesTokenArray;
+    }
+
     @Override
     public String toString() {
-        return "CreateFilmFrom{" +
+        return "CreateFilmForm{" +
                 "name='" + name + '\'' +
                 ", distributorId=" + distributorId +
                 ", rating=" + rating +
                 ", duration=" + duration +
                 ", status=" + status +
                 ", isPriceShift=" + isPriceShift +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", bannerImageToken=" + bannerImageToken +
+                ", otherImagesToken='" + otherImagesToken + '\'' +
+                ", otherImagesTokenArray=" + otherImagesTokenArray +
+                ", formattedStartDate=" + formattedStartDate +
+                ", formattedEndDate=" + formattedEndDate +
                 '}';
     }
 }

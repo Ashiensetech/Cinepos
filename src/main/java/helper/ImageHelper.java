@@ -174,6 +174,18 @@ public class ImageHelper {
         }
 
     }
+    public static void removeTempFile(String fileName){
+        File img = new File(TEMP_FILE_PATH+fileName);
+        if(img.exists()){
+            if(img.delete()){
+                System.out.println("From remove function .File removed");
+            }else{
+                System.out.println("From remove function .File does not removed,");
+            }
+        }else{
+            System.out.println("From remove function .File does not exist,");
+        }
+    }
     public static String getRandomNumber(){
         Random rnd = new Random();
         int n = 1000 + rnd.nextInt(900000);
