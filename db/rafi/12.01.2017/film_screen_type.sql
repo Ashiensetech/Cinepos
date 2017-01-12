@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `film_screen_type` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `flim_id` int(11) NOT NULL,
+  `film_id` int(11) NOT NULL,
   `screen_dimension_id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
