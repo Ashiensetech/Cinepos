@@ -11,6 +11,7 @@ import entity.Genre;
 import entity.ScreenDimension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -51,6 +52,20 @@ public class AdminFilmController {
         mav.addObject("screenDimensions",screenDimensions);
         mav.addObject("distributors",distributors);
         mav.addObject("genres",genres);
+        return mav;
+    }
+    @RequestMapping(value = "/edit/{filmId}")
+    public ModelAndView editFilm(@PathVariable Integer filmId){
+        List<Distributor> distributors = distributorDao.getAll();
+        List<ScreenDimension> screenDimensions = screenDimensionDao.getAll();
+        Film film = filmDao.getById(filmId);
+
+        ModelAndView mav =  new ModelAndView("web-admin/film/edit-film");
+        List<Genre> genres = genreDao.getAllAlphabetically();
+        mav.addObject("screenDimensions",screenDimensions);
+        mav.addObject("distributors",distributors);
+        mav.addObject("genres",genres);
+        mav.addObject("film",film);
         return mav;
     }
 }

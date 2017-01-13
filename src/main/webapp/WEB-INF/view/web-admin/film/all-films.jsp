@@ -61,7 +61,7 @@
                                 <td>${film.durationHour} Hour ${film.durationMin} Min </td>
                                 <td>${film.startDate}</td>
                                 <td>${film.endDate}</td>
-                                <td><a type="button" href="#" class="btn btn-outline btn-primary">Edit</a> </td>
+                                <td><a type="button" href="<c:url value="/admin/film/edit/${film.id}" />" class="btn btn-outline btn-primary">Edit</a> </td>
 
                             </tr>
                         </d:forEach>

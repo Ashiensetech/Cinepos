@@ -2,6 +2,8 @@ package console;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.validator.routines.UrlValidator;
+
 import static java.lang.System.out;
 
 /**
@@ -11,28 +13,13 @@ public class IfaceTest {
 
 
     public static void main(String[] args) {
-        String  a = "asd3/api/api asd1";
-        if(a.contains("/ap1/")){
-            out.println("ASD");
+        String[] schemes = {"http","https"}; // DEFAULT schemes = "http", "https", "ftp"
+        UrlValidator urlValidator = new UrlValidator(schemes);
+        if (urlValidator.isValid("http://foo.bar.com/")) {
+            System.out.println("URL is valid");
+        } else {
+            System.out.println("URL is invalid");
         }
-        out.println("ASD1");
     }
 
-}
-
-
-interface IfaceA{
-    String getText();
-}
-interface IfaceB extends IfaceA{
-    String getType();
-}
-class A implements IfaceA,IfaceB{
-    public String getType() {
-        return "TYPE";
-    }
-
-    public String getText() {
-        return "TEXT";
-    }
 }

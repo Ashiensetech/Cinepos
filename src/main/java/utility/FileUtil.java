@@ -47,6 +47,10 @@ public class FileUtil {
 
             String filePath = ImageHelper.moveFilmFile(filmId,tempFile.getPath());
 
+            /**
+             * Delete Token
+             * */
+            tempFileDao.delete(tempFile);
 
             return filePath;
         }
@@ -69,6 +73,10 @@ public class FileUtil {
 
             String filePath = ImageHelper.moveProductFile(productId, tempFile.getPath());
 
+            /**
+             * Delete Token
+             * */
+            tempFileDao.delete(tempFile);
 
             return filePath;
         }

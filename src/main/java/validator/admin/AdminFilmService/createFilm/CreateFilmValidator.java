@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.*;
 import entity.*;
 import helper.DateHelper;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -63,6 +64,15 @@ public class CreateFilmValidator implements Validator {
             if(tempFile==null){
                 errors.rejectValue("bannerImageToken", "Invalid token found");
             }
+        }
+
+        /**
+         *
+        * */
+        String[] schemes = {"http","https"}; // DEFAULT schemes = "http", "https", "ftp"
+        UrlValidator urlValidator = new UrlValidator(schemes);
+        if (!urlValidator.isValid(createFilmForm.getTrailer())) {
+            errors.rejectValue("trailer", "Trailer url not in valid format");
         }
 
         /**
