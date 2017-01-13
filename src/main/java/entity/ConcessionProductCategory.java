@@ -7,6 +7,8 @@ import java.util.List;
 /**
  * Created by Sarwar on 1/9/2017.
  */
+@Entity
+@Table(name = "concession_product_category")
 public class ConcessionProductCategory {
     @Id
     @Column(name = "id")
@@ -14,32 +16,20 @@ public class ConcessionProductCategory {
     private int id;
 
     @Basic
-    @ManyToOne(fetch = FetchType.LAZY,cascade=CascadeType.ALL)
-    @JoinColumn(name = "parent_id", referencedColumnName = "id", nullable = true)
-    private Integer parentId;
-
-    @OneToMany(mappedBy = "parentId")
-    private List<Category> subCategories;
-
-    @Basic
     @Column(name = "name")
     private String name;
+
+    @Basic
+    @Column(name = "status")
+    private int status;
 
     @Basic
     @Column(name = "created_by",nullable = true)
     private int createdBy;
 
     @Basic
-    @Column(name = "updated_by",nullable = true)
-    private int updatedBy;
-
-    @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
-
-    @Basic
-    @Column(name = "updated_at",nullable = true)
-    private Timestamp updatedAt;
 
     public int getId() {
         return id;
@@ -47,22 +37,6 @@ public class ConcessionProductCategory {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
-
-    public List<Category> getSubCategories() {
-        return subCategories;
-    }
-
-    public void setSubCategories(List<Category> subCategories) {
-        this.subCategories = subCategories;
     }
 
     public String getName() {
@@ -73,20 +47,20 @@ public class ConcessionProductCategory {
         this.name = name;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public int getCreatedBy() {
         return createdBy;
     }
 
     public void setCreatedBy(int createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public int getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(int updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     public Timestamp getCreatedAt() {
@@ -97,14 +71,6 @@ public class ConcessionProductCategory {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,26 +79,19 @@ public class ConcessionProductCategory {
         ConcessionProductCategory that = (ConcessionProductCategory) o;
 
         if (id != that.id) return false;
+        if (status != that.status) return false;
         if (createdBy != that.createdBy) return false;
-        if (updatedBy != that.updatedBy) return false;
-        if (parentId != null ? !parentId.equals(that.parentId) : that.parentId != null) return false;
-        if (subCategories != null ? !subCategories.equals(that.subCategories) : that.subCategories != null)
-            return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
-        return updatedAt != null ? updatedAt.equals(that.updatedAt) : that.updatedAt == null;
+        return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + (parentId != null ? parentId.hashCode() : 0);
-        result = 31 * result + (subCategories != null ? subCategories.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + status;
         result = 31 * result + createdBy;
-        result = 31 * result + updatedBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         return result;
     }
 
@@ -140,13 +99,10 @@ public class ConcessionProductCategory {
     public String toString() {
         return "ConcessionProductCategory{" +
                 "id=" + id +
-                ", parentId=" + parentId +
-                ", subCategories=" + subCategories +
                 ", name='" + name + '\'' +
+                ", status=" + status +
                 ", createdBy=" + createdBy +
-                ", updatedBy=" + updatedBy +
                 ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
                 '}';
     }
 }

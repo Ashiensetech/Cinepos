@@ -102,7 +102,7 @@
                     success: function(data){
                         $("#statusMsg").html("Terminal updated successfully").show();
                         setTimeout(function(){
-                            window.location = "/admin/terminal/all";
+                            window.location = BASEURL+"admin/terminal/all";
                         },2000);
                     }
                 });

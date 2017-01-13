@@ -178,7 +178,7 @@
                     success: function(data){
                         $("#statusMsg").html(data.msg).show();
                         setTimeout(function(){
-                            window.location = "/admin/circuit/index";
+                            window.location = BASEURL+"admin/circuit/index";
                         },2000);
                     }
                 });
