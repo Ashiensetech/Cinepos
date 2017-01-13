@@ -168,7 +168,7 @@
       },success: function(data){
         $("#statusMsg").html("User information updated successfully").show();
         setTimeout(function(){
-          window.location = "/admin/user/all";
+          window.location =  BASEURL+"admin/user/all";
         },3000);
 
       }
