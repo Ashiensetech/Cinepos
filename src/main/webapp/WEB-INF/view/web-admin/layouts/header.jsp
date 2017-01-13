@@ -13,6 +13,11 @@
     <!-- MetisMenu CSS -->
     <link href="<c:url value="/admin-resources/metisMenu/metisMenu.min.css"/>" rel="stylesheet">
 
+
+    <!-- Dropzone CSS -->
+    <link href="<c:url value="/admin-resources/dropzone/dropzone.css"/>" rel="stylesheet">
+
+
     <!-- DataTables CSS -->
     <link href="<c:url value="/admin-resources/datatables-plugins/dataTables.bootstrap.css"/>" rel="stylesheet">
 
