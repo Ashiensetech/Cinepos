@@ -28,6 +28,21 @@ public class GenreDao extends BaseDao {
             if(session!=null)session.close();
         }
     }
+    public void delete(Genre genre){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.delete(genre);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
     public void update(Genre genre){
         Session session = null;
 
@@ -56,6 +71,41 @@ public class GenreDao extends BaseDao {
             if(session!=null)session.close();
         }
         return null;
+    }
+    public Genre getByName(String genreName){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            return (Genre)session.createQuery("FROM Genre genre  where genre.name = :name")
+                    .setParameter("name", genreName)
+                    .uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+    }
+    public boolean isNameUsedByOther(int id,String genreName){
+        Session session = null;
+        Genre genre = null;
+        try{
+            session = this.sessionFactory.openSession();
+            genre = (Genre)session.createQuery("FROM Genre genre  where genre.name = :name and genre.id != :id")
+                    .setParameter("id", id)
+                    .setParameter("name", genreName)
+                    .setMaxResults(1)
+                    .uniqueResult();
+            return (genre==null)?false:true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return (genre==null)?false:true;
     }
     public List<Genre> getAll(){
         Session session = this.sessionFactory.openSession();

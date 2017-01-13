@@ -78,6 +78,19 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
+                <a href="#">Film Genre<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="<c:url value="/admin/genre/all" />">All Genre</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/genre/create" />">Create Genre</a>
+                    </li>
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
                 <a href="#">Film<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li>

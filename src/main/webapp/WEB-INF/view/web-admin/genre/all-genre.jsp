@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">New film List</h1>
+                    <h1 class="page-header">All Genre</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -34,35 +34,18 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Film Name</th>
-                            <th>Distributor</th>
-                            <th>Film type</th>
-                            <th>Ratings</th>
-                            <th>Duration</th>
-                            <th>Start date</th>
-                            <th>End date</th>
+                            <th>Name</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         <d:set var="count" value="${0}" />
-                        <d:forEach var="film" items="${films}" >
+                        <d:forEach var="genre" items="${genres}" >
                             <d:set var="count" value="${count+1}" />
                             <tr>
                                 <td>${count}</td>
-                                <td>${film.name} </td>
-                                <td>${film.distributor.name}</td>
-                                <td>
-                                    <d:forEach var="genre" items="${film.filmGenre}" >
-                                        <span class="info">${genre.name}</span>
-                                    </d:forEach>
-                                </td>
-                                <td>${film.rating}</td>
-                                <td>${film.durationHour} Hour ${film.durationMin} Min </td>
-                                <td>${film.startDate}</td>
-                                <td>${film.endDate}</td>
-                                <td><a type="button" href="#" class="btn btn-outline btn-primary">Edit</a> </td>
-
+                                <td>${genre.name} </td>
+                                <td><a type="button" href="<c:url value="/admin/genre/edit/${genre.id}" />" class="btn btn-outline btn-primary">Edit</a> </td>
                             </tr>
                         </d:forEach>
                         </tbody>

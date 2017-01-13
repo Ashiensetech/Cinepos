@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-/**
- * Created by sunno on 1/6/17.
- */
+
 @Service
 public class CreateSeatTypeValidator implements Validator {
 
