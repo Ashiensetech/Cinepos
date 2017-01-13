@@ -120,7 +120,7 @@
                     success: function(data){
                         $("#statusMsg").html("Distributor updated successfully").show();
                         setTimeout(function(){
-                            window.location = "/admin/distributor/all";
+                            window.location = BASEURL+"admin/distributor/all";
                         },2000);
                     }
                 });

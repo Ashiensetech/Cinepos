@@ -111,7 +111,7 @@
                     success: function(data){
                         $("#statusMsg").html(data.msg).show();
                         setTimeout(function(){
-                            window.location = "/admin/vat-setting/index";
+                            window.location = BASEURL+"admin/vat-setting/index";
                         },2000);
                     }
                 });

@@ -91,7 +91,7 @@
 
 
                 $.ajax({
-                    url: '/api/admin/distributor/create',
+                    url: BASEURL+'api/admin/distributor/create',
                     type: 'POST',
                     data: {
                         name:name,
@@ -118,7 +118,7 @@
                     success: function(data){
                         $("#statusMsg").html("Distributor created successfully").show();
                         setTimeout(function(){
-                            window.location = "/admin/distributor/all";
+                            window.location = BASEURL+"admin/distributor/all";
                         },2000);
                     }
                 });
