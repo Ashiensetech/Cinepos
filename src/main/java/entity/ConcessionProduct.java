@@ -33,10 +33,8 @@ public class ConcessionProduct {
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private ConcessionProductCategory concessionProductCategory;
 
-
-    @ManyToMany
-    @JoinTable(name = "concession_product_image", joinColumns = {
-            @JoinColumn(name = "concession_product_id", nullable = false, updatable = false) })
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "concession_product_id",referencedColumnName = "id")
     private List<ConcessionProductImage> ConcessionProductImage;
 
     @Basic

@@ -24,111 +24,207 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Distributor</h1>
+                    <h1 class="page-header">Add New Concession Product</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
-                <div class="col-lg-6">
-                    <form id="editDistributorForm">
-                        <input type="hidden" class="form-control" id="distributorId" value="${distributor.id}">
-
+                <form id="createConcessionProductForm">
+                    <div class="col-lg-5">
                         <div class="form-group">
                             <label>Name</label>
-                            <input id="name" value="${distributor.name}" class="form-control">
+                            <input class="form-control" id="name" value="">
                             <p class="help-block error" id="errorMsg_name"></p>
                         </div>
                         <div class="form-group">
-                            <label>Primary Email</label>
-                            <input id="primary_email" value="${distributor.primaryEmail}" class="form-control">
-                            <p class="help-block error" id="errorMsg_primaryEmail"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Secondary Email</label>
-                            <input class="form-control" id="secondary_email" value="${distributor.secondaryEmail}">
-                            <p class="help-block error" id="errorMsg_secondaryEmail"></p>
-
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input class="form-control" id="distributorPhone" value="${distributor.phone}">
-                            <p class="help-block error" id="errorMsg_phone"></p>
-
-                        </div>
-                        <div class="form-group">
-                            <label>Address</label>
-                            <textarea name="" class="form-control" id="distributorAddress">${distributor.address}</textarea>
-                            <p class="help-block error" id="errorMsg_address"></p>
+                            <label>Annotation</label>
+                            <textarea name="" class="form-control" id="annotation" value=""></textarea>
+                            <p class="help-block error" id="errorMsg_annotation"></p>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea name="" class="form-control" id="description">${distributor.description}</textarea>
+                            <textarea name="" class="form-control" id="description"></textarea>
                             <p class="help-block error" id="errorMsg_description"></p>
+
                         </div>
-                        <br>
+                        <div class="form-group">
+                            <label>Select Product Category</label>
+                            <select class="form-control" id="productCategory">
+                                <option value="">Select Product Category</option>
+
+                                <d:choose>
+                                    <d:when test="${not empty ProductCategoryList}">
+                                        <d:forEach var="ProductCategoryValue" items="${ProductCategoryList}">
+                                            <option value="${ProductCategoryValue.id}">${ProductCategoryValue.name}</option>
+                                        </d:forEach>
+                                    </d:when>
+                                </d:choose>
+
+                            </select>
+                            <p class="help-block error" id="errorMsg_productCategory"></p>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>Unit</label>
+                            <input class="form-control" value="" id="unit">
+                            <p class="help-block error" id="errorMsg_unit"></p>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label>Buying Price</label>
+                            <input class="form-control" value="" id="buyingPrice">
+                            <p class="help-block error" id="errorMsg_buyingPrice"></p>
+
+                        </div>
+                        <div class="form-group">
+                            <label>Selling Price</label>
+                            <input class="form-control" value="" id="sellingPrice">
+                            <p class="help-block error" id="errorMsg_sellingPrice"></p>
+
+                        </div>
+                        <div class="form-group clearfix">
+                            <label class="pull-left">Remote Print</label>
+                            <div class="col-md-6">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="remotePrint" class="onoffswitch-checkbox" id="remotePrint">
+                                    <label class="onoffswitch-label" for="remotePrint">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="pull-left">Is Combo?</label>
+                            <div class="col-md-6">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="isCombo" class="onoffswitch-checkbox" id="isCombo">
+                                    <label class="onoffswitch-label" for="isCombo">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="pull-left">Is Price Shift?</label>
+                            <div class="col-md-6">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="isPriceShift" value="0" class="onoffswitch-checkbox" id="isPriceShift">
+                                    <label class="onoffswitch-label" for="isPriceShift">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-7">
+                        <div class="row clearfix">
+                            <label style="padding-left: 15px;font-size: 16px;">Choose Image</label>
+                            <div class="col-md-12">
+                                <div class="checkbox">
+                                </div>
+                                <div action="/file-upload" class="dropzone">
+                                    <div class="fallback">
+                                        <input name="file" type="file" multiple />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="col-md-12 nopadding">
                         <p class="help-block" id="statusMsg"></p>
-                        <button type="button" id="distributorBtn" class="btn btn-primary">SAVE</button>
-                    </form>
-                </div>
+                        <button type="button" id="concessionProductBtn" class="btn btn-primary">SAVE</button>
+                    </div>
+                </form>
             </div>
         </div>
-        <!-- /#page-wrapper -->
-
+        <!-- /.container-fluid -->
     </div>
+    <!-- /#page-wrapper -->
 
-    <jsp:directive.include file="../layouts/footer.jsp"/>
+</div>
 
-    <script type="application/javascript">
-        $(document).ready(function () {
-            $('#distributorBtn').click(function () {
-                var id=$('#distributorId').val();
-                var name=$("#name").val();
-                var primary_email=$("#primary_email").val();
-                var secondary_email=$("#secondary_email").val();
-                var phone=$("#distributorPhone").val();
-                var address=$("#distributorAddress").val();
-                var description=$("#description").val();
-                var status=$("#status").val();
+<jsp:directive.include file="../layouts/footer.jsp"/>
 
-                enableDisableFormElement("editDistributorForm",["input","button","select","textarea"],false);
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('#concessionProductBtn').click(function () {
+            var name=$("#name").val();
+            var annotation=$("#annotation").val();
+            var description=$("#description").val();
+            var productCategory=$("#productCategory").val();
+            var unit=$("#unit").val();
+            var buyingPrice=$("#buyingPrice").val();
+            var sellingPrice=$("#sellingPrice").val();
+            var isPriceShiftSel=$("#isPriceShift")
+            var isComboSel=$("#isCombo")
+            var isPriceShiftSel=$("#isPriceShift")
+            var remotePrintSel=$("#remotePrint")
+
+            isPriceShiftSel.is(':checked') ? isPriceShiftSel.val(1) : isPriceShiftSel.val(0);
+            isComboSel.is(':checked') ? isComboSel.val(1) : isComboSel.val(0);
+            remotePrintSel.is(':checked') ? remotePrintSel.val(1) : remotePrintSel.val(0);
 
 
-                $.ajax({
-                    url: BASEURL+'api/admin/distributor/edit/'+id,
-                    type: 'POST',
-                    data: {
-                        name:name,
-                        primaryEmail:primary_email,
-                        secondaryEmail:secondary_email,
-                        secondary_email:secondary_email,
-                        phone:phone,
-                        address:address,
-                        description:description,
+            var postData={
+                name:name,
+                annotation:annotation,
+                description:description,
+                productCategory:productCategory,
+                unit:unit,
+                buyingPrice:buyingPrice,
+                sellingPrice:sellingPrice,
+                isPriceShift:isPriceShiftSel.val(),
+                isCombo:isComboSel.val(),
+                remotePrint:remotePrintSel.val(),
+
+            };
+
+
+
+            enableDisableFormElement("createConcessionProductForm",["input","button","select","textarea"],false);
+
+
+            $.ajax({
+                url: BASEURL+'api/admin/concession-product/create',
+                type: 'POST',
+                data: postData,
+                statusCode: {
+                    401: function (response) {
+                        console.log("unauthorized");
+                        console.log(response);
+                        enableDisableFormElement("createConcessionProductForm",["input","button","select","textarea"],true);
+
                     },
-                    statusCode: {
-                        401: function (response) {
-                            console.log("unauthorized");
-                           // enableDisableFormElement("editDistributorForm",["input","button","select","textarea"],false);
-                            enableDisableFormElement("editDistributorForm",["input","button","select","textarea"],true);
-                        },
-                        422: function (response) {
-                            console.log(response);
-                            BindErrorsWithHtml("errorMsg_",response.responseJSON);
-                            enableDisableFormElement("editDistributorForm",["input","button","select","textarea"],true);
-                        }
-                    },
-                    success: function(data){
-                        $("#statusMsg").html("Distributor updated successfully").show();
-                        setTimeout(function(){
-                            window.location = BASEURL+"admin/distributor/all";
-                        },2000);
+                    422: function (response) {
+                        console.log(response);
+                        enableDisableFormElement("createConcessionProductForm",["input","button","select","textarea"],true);
+                        BindErrorsWithHtml("errorMsg_",response.responseJSON);
                     }
-                });
+                },
+                success: function(data){
+                    $("#statusMsg").html("Concession Product created successfully").show();
+                    setTimeout(function(){
+                        window.location = BASEURL+"admin/concession-product/all";
+                    },2000);
+                }
             });
         });
-    </script>
+    });
+</script>
 
-    <!-- Date picker -->
+<!-- Date picker -->
 </body>
 
 </html>
