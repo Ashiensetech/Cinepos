@@ -77,7 +77,10 @@
                 <value>entity.FilmScreenType</value>
                 <value>entity.Circuit</value>
                 <value>entity.VatSetting</value>
+                <value>entity.ConcessionProduct</value>
                 <value>entity.ConcessionProductCategory</value>
+                <value>entity.SeatPriceShift</value>
+                <value>entity.ConcessionPriceShift</value>
             </list>
         </property>
         <property name="hibernateProperties">
