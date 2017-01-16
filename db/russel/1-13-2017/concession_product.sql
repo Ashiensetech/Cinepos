@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 13, 2017 at 11:08 AM
+-- Generation Time: Jan 16, 2017 at 08:27 AM
 -- Server version: 10.1.13-MariaDB
 -- PHP Version: 7.0.5
 
@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `concession_product` (
   `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   `annotation` varchar(255) NOT NULL,
   `category_id` int(11) DEFAULT NULL,
@@ -35,6 +36,7 @@ CREATE TABLE `concession_product` (
   `remote_print` tinyint(4) NOT NULL,
   `is_combo` tinyint(4) NOT NULL,
   `status` int(11) NOT NULL,
+  `selling_price` decimal(8,2) NOT NULL,
   `buying_price` decimal(8,2) NOT NULL,
   `is_price_shift` int(11) NOT NULL,
   `created_by` int(11) DEFAULT NULL,

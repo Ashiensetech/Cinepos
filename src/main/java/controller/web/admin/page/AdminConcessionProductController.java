@@ -16,7 +16,7 @@ public class AdminConcessionProductController {
 
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     public ModelAndView index(){
-        ModelAndView modelAndView=new ModelAndView("web-admin/circuit/index-circuit");
+        ModelAndView modelAndView=new ModelAndView("web-admin/concession-product/all-concession-product");
         return modelAndView;
     }
 

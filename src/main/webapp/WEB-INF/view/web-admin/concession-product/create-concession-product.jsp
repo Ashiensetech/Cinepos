@@ -32,13 +32,6 @@
                 <form>
                     <div class="col-lg-5">
                         <div class="form-group">
-                            <label>Status</label>
-                            <select class="form-control">
-                                <option>Active</option>
-                                <option>Inactive</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label>Annotation</label>
                             <textarea name="" class="form-control"></textarea>
                         </div>

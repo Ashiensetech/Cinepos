@@ -8,9 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Sarwar on 1/13/2017.
- */
+
 @Repository
 public class ConcessionProductCategoryDao extends BaseDao{
 
