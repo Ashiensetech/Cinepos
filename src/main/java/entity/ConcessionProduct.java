@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Created by Sarwar on 1/13/2017.
@@ -27,9 +28,14 @@ public class ConcessionProduct {
     @Column(name = "annotation")
     private String annotation;
 
-    @Basic
-    @Column(name = "category_id")
-    private int category_id;
+
+    @OneToOne
+    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    private ConcessionProductCategory concessionProductCategory;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "concession_product_id",referencedColumnName = "id")
+    private List<ConcessionProductImage> ConcessionProductImage;
 
     @Basic
     @Column(name = "unit")
@@ -49,11 +55,11 @@ public class ConcessionProduct {
 
     @Basic
     @Column(name = "selling_price")
-    private float selling_price;
+    private float sellingPrice;
 
     @Basic
     @Column(name = "buying_price")
-    private float buying_price;
+    private float buyingPrice;
 
     @Basic
     @Column(name = "is_price_shift")
@@ -100,12 +106,20 @@ public class ConcessionProduct {
         this.annotation = annotation;
     }
 
-    public int getCategory_id() {
-        return category_id;
+    public ConcessionProductCategory getConcessionProductCategory() {
+        return concessionProductCategory;
     }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
+    public void setConcessionProductCategory(ConcessionProductCategory concessionProductCategory) {
+        this.concessionProductCategory = concessionProductCategory;
+    }
+
+    public List<entity.ConcessionProductImage> getConcessionProductImage() {
+        return ConcessionProductImage;
+    }
+
+    public void setConcessionProductImage(List<entity.ConcessionProductImage> concessionProductImage) {
+        ConcessionProductImage = concessionProductImage;
     }
 
     public int getUnit() {
@@ -140,20 +154,20 @@ public class ConcessionProduct {
         this.status = status;
     }
 
-    public float getSelling_price() {
-        return selling_price;
+    public float getSellingPrice() {
+        return sellingPrice;
     }
 
-    public void setSelling_price(float selling_price) {
-        this.selling_price = selling_price;
+    public void setSellingPrice(float sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
-    public float getBuying_price() {
-        return buying_price;
+    public float getBuyingPrice() {
+        return buyingPrice;
     }
 
-    public void setBuying_price(float buying_price) {
-        this.buying_price = buying_price;
+    public void setBuyingPrice(float buyingPrice) {
+        this.buyingPrice = buyingPrice;
     }
 
     public int getIsPriceShift() {
@@ -188,18 +202,21 @@ public class ConcessionProduct {
         ConcessionProduct that = (ConcessionProduct) o;
 
         if (id != that.id) return false;
-        if (category_id != that.category_id) return false;
         if (unit != that.unit) return false;
         if (remotePrint != that.remotePrint) return false;
         if (isCombo != that.isCombo) return false;
         if (status != that.status) return false;
-        if (Float.compare(that.selling_price, selling_price) != 0) return false;
-        if (Float.compare(that.buying_price, buying_price) != 0) return false;
+        if (Float.compare(that.sellingPrice, sellingPrice) != 0) return false;
+        if (Float.compare(that.buyingPrice, buyingPrice) != 0) return false;
         if (isPriceShift != that.isPriceShift) return false;
         if (createdBy != that.createdBy) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (annotation != null ? !annotation.equals(that.annotation) : that.annotation != null) return false;
+        if (concessionProductCategory != null ? !concessionProductCategory.equals(that.concessionProductCategory) : that.concessionProductCategory != null)
+            return false;
+        if (ConcessionProductImage != null ? !ConcessionProductImage.equals(that.ConcessionProductImage) : that.ConcessionProductImage != null)
+            return false;
         return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
     }
 
@@ -209,13 +226,14 @@ public class ConcessionProduct {
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (annotation != null ? annotation.hashCode() : 0);
-        result = 31 * result + category_id;
+        result = 31 * result + (concessionProductCategory != null ? concessionProductCategory.hashCode() : 0);
+        result = 31 * result + (ConcessionProductImage != null ? ConcessionProductImage.hashCode() : 0);
         result = 31 * result + unit;
         result = 31 * result + remotePrint;
         result = 31 * result + isCombo;
         result = 31 * result + status;
-        result = 31 * result + (selling_price != +0.0f ? Float.floatToIntBits(selling_price) : 0);
-        result = 31 * result + (buying_price != +0.0f ? Float.floatToIntBits(buying_price) : 0);
+        result = 31 * result + (sellingPrice != +0.0f ? Float.floatToIntBits(sellingPrice) : 0);
+        result = 31 * result + (buyingPrice != +0.0f ? Float.floatToIntBits(buyingPrice) : 0);
         result = 31 * result + isPriceShift;
         result = 31 * result + createdBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
@@ -229,13 +247,14 @@ public class ConcessionProduct {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", annotation='" + annotation + '\'' +
-                ", category_id=" + category_id +
+                ", concessionProductCategory=" + concessionProductCategory +
+                ", ConcessionProductImage=" + ConcessionProductImage +
                 ", unit=" + unit +
                 ", remotePrint=" + remotePrint +
                 ", isCombo=" + isCombo +
                 ", status=" + status +
-                ", selling_price=" + selling_price +
-                ", buying_price=" + buying_price +
+                ", sellingPrice=" + sellingPrice +
+                ", buyingPrice=" + buyingPrice +
                 ", isPriceShift=" + isPriceShift +
                 ", createdBy=" + createdBy +
                 ", createdAt=" + createdAt +

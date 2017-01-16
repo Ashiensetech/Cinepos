@@ -29,41 +29,67 @@
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
-                <form>
+                <form id="createConcessionProductForm">
                     <div class="col-lg-5">
                         <div class="form-group">
-                            <label>Annotation</label>
-                            <textarea name="" class="form-control"></textarea>
+                            <label>Name</label>
+                            <input class="form-control" id="name" value="">
+                            <p class="help-block error" id="errorMsg_name"></p>
                         </div>
+                        <div class="form-group">
+                            <label>Annotation</label>
+                            <textarea name="" class="form-control" id="annotation" value=""></textarea>
+                            <p class="help-block error" id="errorMsg_annotation"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea name="" class="form-control" id="description"></textarea>
+                            <p class="help-block error" id="errorMsg_description"></p>
+
+                        </div>
+                        <div class="form-group">
+                            <label>Select Product Category</label>
+                            <select class="form-control" id="productCategory">
+                                <option value="">Select Product Category</option>
+
+                                <d:choose>
+                                    <d:when test="${not empty ProductCategoryList}">
+                                        <d:forEach var="ProductCategoryValue" items="${ProductCategoryList}">
+                                            <option value="${ProductCategoryValue.id}">${ProductCategoryValue.name}</option>
+                                        </d:forEach>
+                                    </d:when>
+                                </d:choose>
+
+                            </select>
+                            <p class="help-block error" id="errorMsg_productCategory"></p>
+
+                        </div>
+
                         <div class="form-group">
                             <label>Unit</label>
-                            <input class="form-control">
+                            <input class="form-control" value="" id="unit">
+                            <p class="help-block error" id="errorMsg_unit"></p>
+
                         </div>
+
                         <div class="form-group">
-                            <label>Select Category</label>
-                            <select class="form-control">
-                                <option>Action</option>
-                                <option>Drama</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Price</label>
-                            <input class="form-control">
+                            <label>Buying Price</label>
+                            <input class="form-control" value="" id="buyingPrice">
+                            <p class="help-block error" id="errorMsg_buyingPrice"></p>
+
                         </div>
                         <div class="form-group">
                             <label>Selling Price</label>
-                            <input class="form-control">
+                            <input class="form-control" value="" id="sellingPrice">
+                            <p class="help-block error" id="errorMsg_sellingPrice"></p>
+
                         </div>
                         <div class="form-group clearfix">
                             <label class="pull-left">Remote Print</label>
                             <div class="col-md-6">
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-                                    <label class="onoffswitch-label" for="myonoffswitch">
+                                    <input type="checkbox" name="remotePrint" class="onoffswitch-checkbox" id="remotePrint">
+                                    <label class="onoffswitch-label" for="remotePrint">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
                                     </label>
@@ -72,6 +98,33 @@
                             </div>
                         </div>
 
+                        <div class="form-group clearfix">
+                            <label class="pull-left">Is Combo?</label>
+                            <div class="col-md-6">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="isCombo" class="onoffswitch-checkbox" id="isCombo">
+                                    <label class="onoffswitch-label" for="isCombo">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label class="pull-left">Is Price Shift?</label>
+                            <div class="col-md-6">
+                                <div class="onoffswitch">
+                                    <input type="checkbox" name="isPriceShift" value="0" class="onoffswitch-checkbox" id="isPriceShift">
+                                    <label class="onoffswitch-label" for="isPriceShift">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-lg-7">
@@ -90,7 +143,8 @@
                     </div>
                     <hr>
                     <div class="col-md-12 nopadding">
-                        <button class="btn btn-primary">SAVE</button>
+                        <p class="help-block" id="statusMsg"></p>
+                        <button type="button" id="concessionProductBtn" class="btn btn-primary">SAVE</button>
                     </div>
                 </form>
             </div>
@@ -105,46 +159,64 @@
 
     <script type="application/javascript">
         $(document).ready(function () {
-            $('#distributorBtn').click(function () {
+            $('#concessionProductBtn').click(function () {
                var name=$("#name").val();
-               var primary_email=$("#primary_email").val();
-               var secondary_email=$("#secondary_email").val();
-               var phone=$("#distributorPhone").val();
-               var address=$("#distributorAddress").val();
+               var annotation=$("#annotation").val();
                var description=$("#description").val();
+               var productCategory=$("#productCategory").val();
+               var unit=$("#unit").val();
+               var buyingPrice=$("#buyingPrice").val();
+               var sellingPrice=$("#sellingPrice").val();
+               var isPriceShiftSel=$("#isPriceShift")
+               var isComboSel=$("#isCombo")
+               var isPriceShiftSel=$("#isPriceShift")
+               var remotePrintSel=$("#remotePrint")
 
-                enableDisableFormElement("createDistributorForm",["input","button","select","textarea"],false);
+                isPriceShiftSel.is(':checked') ? isPriceShiftSel.val(1) : isPriceShiftSel.val(0);
+                isComboSel.is(':checked') ? isComboSel.val(1) : isComboSel.val(0);
+                remotePrintSel.is(':checked') ? remotePrintSel.val(1) : remotePrintSel.val(0);
+
+
+                var postData={
+                    name:name,
+                    annotation:annotation,
+                    description:description,
+                    productCategory:productCategory,
+                    unit:unit,
+                    buyingPrice:buyingPrice,
+                    sellingPrice:sellingPrice,
+                    isPriceShift:isPriceShiftSel.val(),
+                    isCombo:isComboSel.val(),
+                    remotePrint:remotePrintSel.val(),
+
+                };
+
+
+
+                enableDisableFormElement("createConcessionProductForm",["input","button","select","textarea"],false);
 
 
                 $.ajax({
-                    url: BASEURL+'api/admin/distributor/create',
+                    url: BASEURL+'api/admin/concession-product/create',
                     type: 'POST',
-                    data: {
-                        name:name,
-                        primaryEmail:primary_email,
-                        secondaryEmail:secondary_email,
-                        secondary_email:secondary_email,
-                        phone:phone,
-                        address:address,
-                        description:description,
-                    },
+                    data: postData,
                     statusCode: {
                         401: function (response) {
                             console.log("unauthorized");
                             console.log(response);
-                            enableDisableFormElement("createDistributorForm",["input","button","select","textarea"],true);
+                            enableDisableFormElement("createConcessionProductForm",["input","button","select","textarea"],true);
 
                         },
                         422: function (response) {
                             console.log(response);
-                            enableDisableFormElement("createDistributorForm",["input","button","select","textarea"],true);
+                            enableDisableFormElement("createConcessionProductForm",["input","button","select","textarea"],true);
                             BindErrorsWithHtml("errorMsg_",response.responseJSON);
                         }
                     },
                     success: function(data){
-                        $("#statusMsg").html("Distributor created successfully").show();
+                        $("#statusMsg").html("Concession Product created successfully").show();
                         setTimeout(function(){
-                            window.location = BASEURL+"admin/distributor/all";
+                            window.location = BASEURL+"admin/concession-product/all";
                         },2000);
                     }
                 });

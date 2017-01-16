@@ -35,11 +35,12 @@
                         <tr>
                             <th>No</th>
                             <th>Name</th>
-                            <th>Email1</th>
-                            <th>Email 2</th>
-                            <th>Phone</th>
-                            <th>Address</th>
-                            <th>Desc</th>
+                            <th>Annotation</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Unit</th>
+                            <th>Selling Price</th>
+                            <th>Buying Price</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -47,44 +48,45 @@
                         <tbody>
 
                         <d:choose>
-                            <d:when test="${not empty distributors}">
-                                <d:forEach var="distributorValue" items="${distributors}">
+                            <d:when test="${not empty concessionProductList}">
+                                <d:forEach var="concessionProductValue" items="${concessionProductList}">
                                     <d:set var="count" value="${count+1}" />
-                                    <tr class="odd gradeC" id="distributorRow${distributorValue.id}">
+                                    <tr class="odd gradeC" id="distributorRow${concessionProductValue.id}">
                                         <td>${count}</td>
-                                        <td>${distributorValue.name}</td>
-                                        <td>${distributorValue.primaryEmail}</td>
-                                        <td>${distributorValue.secondaryEmail}</td>
-                                        <td>${distributorValue.phone}</td>
-                                        <td>${distributorValue.address}</td>
-                                        <td>${distributorValue.description}</td>
-                                        <td id="statusTd${distributorValue.id}">${(distributorValue.status==1)?"Active":"Deactive"}</td>
+                                        <td>${concessionProductValue.name}</td>
+                                        <td>${concessionProductValue.annotation}</td>
+                                        <td>${concessionProductValue.description}</td>
+                                        <td>${concessionProductValue.concessionProductCategory.name}</td>
+                                        <td>${concessionProductValue.unit}</td>
+                                        <td>${concessionProductValue.sellingPrice}</td>
+                                        <td>${concessionProductValue.buyingPrice}</td>
+                                        <td id="statusTd${concessionProductValue.id}">${(concessionProductValue.status==1)?"Active":"Deactive"}</td>
                                         <td>
-                                            <button id="statusChangeBtn${distributorValue.id}"
-                                                    data-status="${distributorValue.status}"
-                                                    onclick="statusUpdateDistributorData('distributorRow${distributorValue.id}',
-                                                            'statusMsg${distributorValue.id}',
-                                                            'statusChangeBtn${distributorValue.id}',
-                                                            'statusTd${distributorValue.id}',
-                                                        ${distributorValue.id})"
+                                            <button id="statusChangeBtn${concessionProductValue.id}"
+                                                    data-status="${concessionProductValue.status}"
+                                                    onclick="statusUpdateDistributorData('distributorRow${concessionProductValue.id}',
+                                                            'statusMsg${concessionProductValue.id}',
+                                                            'statusChangeBtn${concessionProductValue.id}',
+                                                            'statusTd${concessionProductValue.id}',
+                                                        ${concessionProductValue.id})"
                                                     class="btn btn-outline btn-primary" >
-                                                <d:if test="${distributorValue.status==1}">
+                                                <d:if test="${concessionProductValue.status==1}">
                                                     Deactivate
                                                 </d:if>
-                                                <d:if test="${distributorValue.status==0}">
+                                                <d:if test="${concessionProductValue.status==0}">
                                                     Active
                                                 </d:if>
                                             </button>
-                                            <a href="<c:url value="/admin/distributor/edit/${distributorValue.id}" />"
+                                            <a href="<c:url value="/admin/concession-product/edit/${concessionProductValue.id}" />"
                                                type="button"
                                                class="btn btn-outline btn-primary" >Edit</a>
-                                            <p id="statusMsg${distributorValue.id}"></p>
+                                            <p id="statusMsg${concessionProductValue.id}"></p>
                                         </td>
                                     </tr>
                                 </d:forEach>
                             </d:when>
                             <d:otherwise>
-                                 <p>Distributor's Empty</p>
+                                 <p>distributorValue Empty</p>
                             </d:otherwise>
                         </d:choose>
 
