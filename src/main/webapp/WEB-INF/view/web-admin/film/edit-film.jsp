@@ -37,6 +37,7 @@
 
                         <div class="form-group">
                             <label>Film Name</label>
+                            <input id="filmId" class="form-control" value="${film.id}" type="hidden">
                             <input id="name" class="form-control" value="${film.name}">
                             <p class="help-block error" id="errorMsg_name"></p>
                         </div>
@@ -141,7 +142,7 @@
 
                         <br>
                         <p class="help-block" id="statusMsg"></p>
-                        <button class="btn btn-primary" onclick="return submitFilm()">SAVE</button>
+                        <button class="btn btn-primary" onclick="return updateFilm()">SAVE</button>
 
                     </div>
                     <div class="col-lg-7">
@@ -303,10 +304,11 @@
     }
 
 
-    function submitFilm() {
+    function updateFilm() {
 
         $("#statusMsg").html("").hide();
 
+        var filmId = $("#filmId").val()
         var name = $("#name").val();
         var distributorId = $("#distributorId").val();
         var rating = $("#rating").val();
@@ -352,7 +354,7 @@
 
 
         $.ajax({
-            url: BASEURL + 'api/admin/film/create',
+            url: BASEURL + 'api/admin/film/edit/'+filmId,
             type: 'POST',
             data: postData,
             statusCode: {

@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by mi on 1/10/17.
@@ -40,7 +41,7 @@ public class Film {
             @JoinColumn(name = "film_id", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "screen_dimension_id",
                     nullable = false, updatable = false) })
-    private List<ScreenDimension> screenDimensions;
+    private Set<ScreenDimension> screenDimensions;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id",referencedColumnName = "id")
@@ -128,11 +129,11 @@ public class Film {
     }
 
 
-    public List<ScreenDimension> getScreenDimensions() {
+    public Set<ScreenDimension> getScreenDimensions() {
         return screenDimensions;
     }
 
-    public void setScreenDimensions(List<ScreenDimension> screenDimensions) {
+    public void setScreenDimensions(Set<ScreenDimension> screenDimensions) {
         this.screenDimensions = screenDimensions;
     }
 

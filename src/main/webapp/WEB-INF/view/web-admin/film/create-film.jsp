@@ -77,7 +77,7 @@
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 <input type='text' class="form-control" id="startDate" name="date"
-                                       placeholder="MM/DD/YYY" type="text"/>
+                                       placeholder="MM/DD/YYY" />
                             </div>
                             <p class="help-block error" id="errorMsg_startDate"></p>
                         </div>
@@ -87,7 +87,7 @@
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 <input type='text' class="form-control" id="endDate" name="date" placeholder="MM/DD/YYY"
-                                       type="text"/>
+                                       />
                             </div>
                             <p class="help-block error" id="errorMsg_endDate"></p>
                         </div>
@@ -124,17 +124,22 @@
                             <label style="padding-left: 15px;font-size: 16px;">Choose Banner Image</label>
                             <div class="col-md-12">
 
-                                <div id="bannerImg" class="dropzone">
+                                <div id="bannerImg" >
                                     <%--<div class="fallback">
                                         <input name="filmImage" type="file" multiple />
                                     </div>--%>
+                                        <div class="dz-default dz-message">
+                                            <span>Add banner image</span>
+                                        </div>
                                 </div>
                                 <p class="help-block error" id="errorMsg_bannerImageToken"></p>
                             </div>
                             <div class="col-md-12">
                                 <label style="padding-left: 15px;font-size: 16px;">Choose Other Images</label>
-                                <div id="otherImg"  class="dropzone" >
-
+                                <div id="otherImg"  >
+                                    <div class="dz-default dz-message">
+                                        <span>Add other images</span>
+                                    </div>
                                 </div>
                                 <p class="help-block error" id="errorMsg_otherImagesToken"></p>
                             </div>
@@ -169,7 +174,6 @@
 
 <script>
     Dropzone.autoDiscover = false;
-    //Dropzone.options.bannerImg = false;
     var bannerImageToken = 0;
     var otherImagesToken = [];
 
@@ -182,6 +186,9 @@
                     maxFilesize: 2,
                     maxFiles:1,
                     addRemoveLinks: true,
+                    init:function(){
+                        $("div#bannerImg").addClass("dropzone");
+                    },
                     removedfile:function(file){
                         bannerImageToken = 0;
                         var _ref;
@@ -208,6 +215,9 @@
                     maxFilesize: 2,
                     maxFiles:5,
                     addRemoveLinks: true,
+                    init:function(){
+                        $("div#otherImg").addClass("dropzone");
+                    },
                     removedfile:function(file){
                         console.log(file);
                         var _ref;

@@ -40,11 +40,9 @@ public class CreateFilmForm {
     @NotNull(message = "Trailer is required")
     private String trailer;
 
-//    @DateTimeFormat(pattern="MM/dd/yyyy")
     @NotNull(message = "Start Time is required")
     private String startDate;
 
-//    @DateTimeFormat(pattern="MM/dd/yyyy")
     @NotNull(message = "End Date is required")
     private String endDate;
 
