@@ -183,7 +183,19 @@ public class ImageHelper {
                 System.out.println("From remove function .File does not removed,");
             }
         }else{
-            System.out.println("From remove function .File does not exist,");
+            System.out.println("From remove function .File does not exist,file name :"+TEMP_FILE_PATH+fileName);
+        }
+    }
+    public static void removeFilmFile(String fileName){
+        File img = new File(FILM_FILE_PATH+fileName);
+        if(img.exists()){
+            if(img.delete()){
+                System.out.println("From remove function .File removed");
+            }else{
+                System.out.println("From remove function .File does not removed,");
+            }
+        }else{
+            System.out.println("From remove function .File does not exist,file name:"+FILM_FILE_PATH+fileName);
         }
     }
     public static String getRandomNumber(){

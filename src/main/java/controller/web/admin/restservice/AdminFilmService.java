@@ -4,14 +4,12 @@ import controller.web.admin.AdminUriPreFix;
 import custom_exception.TempFileException;
 import dao.*;
 import entity.*;
+import helper.ImageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import utility.FileUtil;
 import utility.ServiceResponse;
 import validator.admin.AdminFilmService.createFilm.CreateFilmForm;
@@ -250,6 +248,25 @@ public class AdminFilmService {
 
 
 
+        /**
+         *  Film Trailer
+         *  */
+        if(editFilmForm.getTrailer()!=null){
+            List<FilmTrailer> filmTrailerList = film.getFilmTrailers();
+            if(filmTrailerList == null){
+                filmTrailerList = new ArrayList<>();
+            }
+            Optional<FilmTrailer> optionalFilmTrailer = filmTrailerList.stream().findFirst();
+
+            FilmTrailer filmTrailer = new FilmTrailer();
+            if(optionalFilmTrailer.isPresent()){
+                filmTrailer = optionalFilmTrailer.get();
+            }
+            filmTrailer.setTrailerUrl(editFilmForm.getTrailer());
+            filmTrailerList.add(filmTrailer);
+
+            film.setFilmTrailers(filmTrailerList);
+        }
 
 
 
@@ -307,7 +324,7 @@ public class AdminFilmService {
         /**
          *  Film Other Images
          *  */
-        if(editFilmForm.getBannerImageToken()!=null){
+        if(editFilmForm.getOtherImagesToken()!=null){
             List<Integer> otherImagesToken = editFilmForm.getOtherImagesTokenArray();
             List<FilmImage> filmImages = film.getFilmImages();
             if(filmImages==null){
@@ -328,14 +345,50 @@ public class AdminFilmService {
             }
             film.setFilmImages(filmImages);
         }
+        /**
+         *  Film Deleted other Images
+         *  Only other images remove section
+         *  Banner can't be removed
+         *  */
+        Set<FilmImage> deletedFilmImages = new HashSet<>();
+        if(editFilmForm.getDeletedImagesIdSet()!=null && editFilmForm.getDeletedImagesIdSet().size() >0){
+            Set<Integer> deleteImageSet = editFilmForm.getDeletedImagesIdSet();
 
+            List<FilmImage> filmImages = film.getFilmImages();
+
+            for(Integer deletedImgId : deleteImageSet){
+                if(deletedImgId<=0)continue;
+
+                Optional<FilmImage> optionalFilmImage =  filmImages.stream().filter(
+                        filmImage -> ( filmImage.getId() == deletedImgId && !filmImage.getIsBanner())
+                ).findFirst();
+
+                if(optionalFilmImage.isPresent()){
+                    filmImages.remove(optionalFilmImage.get());
+                    deletedFilmImages.add(optionalFilmImage.get());
+                }
+            }
+
+            film.setFilmImages(filmImages);
+
+        }
         /***************** Service  [Ends] *************/
 
 
         filmDao.update(film);
 
+
+        /**
+         * Deleting image from directory
+         * */
+
+        for(FilmImage deletedImage : deletedFilmImages) {
+            deletedImage.getFilePath();
+
+            ImageHelper.removeFilmFile(deletedImage.getFilePath());
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(film);
 
     }
-
 }

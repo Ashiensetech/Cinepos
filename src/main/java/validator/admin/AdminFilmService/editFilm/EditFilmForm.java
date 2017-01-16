@@ -2,6 +2,7 @@ package validator.admin.AdminFilmService.editFilm;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,14 +12,6 @@ import java.util.Set;
 public class EditFilmForm {
 
     private int id;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     private String name;
 
@@ -56,8 +49,20 @@ public class EditFilmForm {
 
     private String screenDimensions;
 
-    private Set<Integer> screenDimensionIdList;
+    private Set<Integer> screenDimensionIdList = new HashSet<>();
 
+    private String deletedImagesIds;
+
+    private Set<Integer> deletedImagesIdSet = new HashSet<>();
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }
@@ -208,6 +213,22 @@ public class EditFilmForm {
 
     public void setScreenDimensions(String screenDimensions) {
         this.screenDimensions = screenDimensions;
+    }
+
+    public String getDeletedImagesIds() {
+        return deletedImagesIds;
+    }
+
+    public void setDeletedImagesIds(String deletedImagesIds) {
+        this.deletedImagesIds = deletedImagesIds;
+    }
+
+    public Set<Integer> getDeletedImagesIdSet() {
+        return deletedImagesIdSet;
+    }
+
+    public void setDeletedImagesIdSet(Set<Integer> deletedImagesIdSet) {
+        this.deletedImagesIdSet = deletedImagesIdSet;
     }
 
     @Override

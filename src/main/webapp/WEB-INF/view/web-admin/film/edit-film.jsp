@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="d" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,11 +81,11 @@
                         </div>
                         <div class="form-group">
                             <label>Duration Hour</label>
-                            <input  id="duration_hour" class="form-control" min="0" type="number" value="${film.durationHour}">
+                            <input  id="duration_hour" class="form-control" min="0" type="number" pattern="[0-9]" value="${fn:substringBefore(film.durationHour,".")}">
                             <p class="help-block error" id="errorMsg_durationHour" ></p>
                             <br>
                             <label>Min</label>
-                            <input  id="duration_min" class="form-control"  min="0" type="number" value="${film.durationMin}">
+                            <input  id="duration_min" class="form-control"  min="0" type="number" pattern="[0-9]" value="${fn:substringBefore(film.durationMin,".")}">
                             <p class="help-block error" id="errorMsg_durationMin"></p>
                         </div>
                         <div class="form-group">
@@ -147,20 +148,44 @@
                     </div>
                     <div class="col-lg-7">
                         <div class="row clearfix">
-                            <label style="padding-left: 15px;font-size: 16px;">Choose Banner Image</label>
+                            <label style="padding-left: 15px;font-size: 16px;">Banner Image</label>
                             <div class="col-md-12">
-
-                                <div id="bannerImg" class="dropzone">
-                                    <%--<div class="fallback">
-                                        <input name="filmImage" type="file" multiple />
-                                    </div>--%>
+                                <div class="img-container clearfix">
+                                    <d:forEach var="filmImage" items="${film.filmImages}" >
+                                        <d:if test="${filmImage.isBanner}" >
+                                            <div class="col-md-4">
+                                                <div class="panel prev-img panel-default">
+                                                    <img src="<c:url value="/film-image/${filmImage.filePath}" />" alt="">
+                                                </div>
+                                            </div>
+                                        </d:if>
+                                    </d:forEach>
+                                </div>
+                                <div id="bannerImg" >
+                                        <div class="dz-default dz-message">
+                                            <span>Replace banner image</span>
+                                        </div>
                                 </div>
                                 <p class="help-block error" id="errorMsg_bannerImageToken"></p>
                             </div>
                             <div class="col-md-12">
-                                <label style="padding-left: 15px;font-size: 16px;">Choose Other Images</label>
-                                <div id="otherImg"  class="dropzone" >
-
+                                <label style="padding-left: 15px;font-size: 16px;">Other Images</label>
+                                <div class="img-container clearfix">
+                                    <d:forEach var="filmImage" items="${film.filmImages}" >
+                                        <d:if test="${!filmImage.isBanner}" >
+                                            <div class="col-md-4">
+                                                <div class="panel prev-img panel-default">
+                                                    <img src="<c:url value="/film-image/${filmImage.filePath}" />" alt="">
+                                                    <a class="dz-remove" href="javascript:undefined;" onclick="removeExistingImage(${filmImage.id})">Remove file</a>
+                                                </div>
+                                            </div>
+                                        </d:if>
+                                    </d:forEach>
+                                </div>
+                                <div id="otherImg"  >
+                                    <div class="dz-default dz-message">
+                                        <span>Add other images</span>
+                                    </div>
                                 </div>
                                 <p class="help-block error" id="errorMsg_otherImagesToken"></p>
                             </div>
@@ -198,6 +223,8 @@
     //Dropzone.options.bannerImg = false;
     var bannerImageToken = 0;
     var otherImagesToken = [];
+    var deletedImagesIdSet = [];
+
 
     $(function() {
         var bannerImgDropzone = new Dropzone("div#bannerImg",
@@ -208,28 +235,8 @@
                     maxFilesize: 2,
                     maxFiles:1,
                     addRemoveLinks: true,
-                    init: function () {
-                    var myDropzone = this;
-
-                    //Populate any existing thumbnails
-                        var thumbnailUrls = ["https://lh3.googleusercontent.com/YGqr3CRLm45jMF8eM8eQxc1VSERDTyzkv1CIng0qjcenJZxqV5DBgH5xlRTawnqNPcOp=w300"]
-                        if (thumbnailUrls) {
-                            for (var i = 0; i < thumbnailUrls.length; i++) {
-                                var mockFile = {
-                                    name: "myimage.jpg",
-                                    status: Dropzone.ADDED,
-                                    url: thumbnailUrls[i]
-                                };
-
-                                // Call the default addedfile event handler
-                                myDropzone.emit("addedfile", mockFile);
-
-                                // And optionally show the thumbnail of the file:
-                                myDropzone.emit("thumbnail", mockFile, thumbnailUrls[i]);
-
-                                myDropzone.files.push(mockFile);
-                            }
-                        }
+                    init:function(){
+                        $("div#bannerImg").addClass("dropzone");
                     },
                     removedfile:function(file){
                         bannerImageToken = 0;
@@ -255,8 +262,14 @@
                     method:"post",
                     paramName:"filmImage",
                     maxFilesize: 2,
-                    maxFiles:5,
+                    maxFiles:${5-(film.filmImages.size()-1)
+
+
+                    },
                     addRemoveLinks: true,
+                    init:function(){
+                        $("div#otherImg").addClass("dropzone");
+                    },
                     removedfile:function(file){
                         console.log(file);
                         var _ref;
@@ -281,7 +294,9 @@
 
     });
 
-
+    function removeExistingImage(id){
+        deletedImagesIdSet.push(id);
+    }
     function removeImageByToken(token){
         $.ajax({
             url: BASEURL + 'api/admin/file-upload/delete/temp-file',
@@ -334,7 +349,8 @@
             isPriceShift: isPriceShift,
             otherImagesToken : JSON.stringify(otherImagesToken),
             screenDimensions: JSON.stringify(screenDimensions),
-            genreIds : JSON.stringify(genreIds)
+            genreIds : JSON.stringify(genreIds),
+            deletedImagesIds : JSON.stringify(deletedImagesIdSet)
         };
         if(bannerImageToken>0){
             postData["bannerImageToken"] = bannerImageToken;
@@ -371,7 +387,7 @@
                 }
             }, success: function (data) {
 
-                $("#statusMsg").html("Film created successfully").show();
+                $("#statusMsg").html("Film updated successfully").show();
                 setTimeout(function () {
                     window.location = BASEURL + "admin/film/all";
                 }, 2000);

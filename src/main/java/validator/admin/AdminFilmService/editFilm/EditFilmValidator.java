@@ -2,13 +2,11 @@ package validator.admin.AdminFilmService.editFilm;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dao.DistributorDao;
-import dao.FilmDao;
-import dao.GenreDao;
-import dao.ScreenDimensionDao;
+import dao.*;
 import entity.Distributor;
 import entity.Genre;
 import entity.ScreenDimension;
+import entity.TempFile;
 import helper.DateHelper;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,9 @@ public class EditFilmValidator implements Validator {
 
     @Autowired
     ScreenDimensionDao screenDimensionDao;
+
+    @Autowired
+    TempFileDao tempFileDao;
 
     @Override
     public void validate(Object obj, Errors errors) {
@@ -149,6 +150,51 @@ public class EditFilmValidator implements Validator {
                 }
             } catch (IOException e) {
                 errors.rejectValue("screenDimensions","Broken String found");
+            }
+        }
+
+        /**
+         * Film Images
+         * */
+                 /*~~~~~~ Banner Image ~~~~~~~~~*/
+        if(editFilmForm.getBannerImageToken()!=null ){
+            if(editFilmForm.getBannerImageToken()<=0){
+                errors.rejectValue("bannerImageToken", "Banner Image required");
+            }else{
+                TempFile tempFile = tempFileDao.getByToken(editFilmForm.getBannerImageToken());
+                if(tempFile==null){
+                    errors.rejectValue("bannerImageToken", "Invalid token found");
+                }
+            }
+        }
+
+
+            /*~~~~~~ Others Image ~~~~~~~~~*/
+        if(editFilmForm.getOtherImagesToken()!=null && !editFilmForm.getOtherImagesToken().equals("")){
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                editFilmForm.setOtherImagesTokenArray(objectMapper.readValue(editFilmForm.getOtherImagesToken(), tRef));
+
+                List<TempFile> tempFileList = tempFileDao.getByToken(editFilmForm.getOtherImagesTokenArray());
+                if(tempFileList==null){
+                    errors.rejectValue("otherImagesToken", "Some of the token are invalid");
+                }else{
+                    if(tempFileList.size() != editFilmForm.getOtherImagesTokenArray().size() ){
+                        errors.rejectValue("otherImagesToken", "Some of the token are invalid");
+                    }
+                }
+            } catch (IOException e) {
+                errors.rejectValue("otherImagesToken", "Broken json string found");
+            }
+        }
+              /*~~~~~~ Deleted Images ~~~~~~~~~*/
+
+        if(editFilmForm.getDeletedImagesIds()!=null && !editFilmForm.getDeletedImagesIds().equals("")){
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                editFilmForm.setDeletedImagesIdSet(objectMapper.readValue(editFilmForm.getDeletedImagesIds(), tRefSet));
+            } catch (IOException e) {
+                errors.rejectValue("deletedImagesIds", "Broken json string found");
             }
         }
     }
