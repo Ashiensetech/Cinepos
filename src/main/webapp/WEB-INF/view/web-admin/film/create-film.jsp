@@ -77,7 +77,7 @@
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 <input type='text' class="form-control" id="startDate" name="date"
-                                       placeholder="MM/DD/YYY" type="text"/>
+                                       placeholder="MM/DD/YYY" />
                             </div>
                             <p class="help-block error" id="errorMsg_startDate"></p>
                         </div>
@@ -87,7 +87,7 @@
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 <input type='text' class="form-control" id="endDate" name="date" placeholder="MM/DD/YYY"
-                                       type="text"/>
+                                       />
                             </div>
                             <p class="help-block error" id="errorMsg_endDate"></p>
                         </div>
