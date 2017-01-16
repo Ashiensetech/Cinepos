@@ -1,10 +1,9 @@
 package validator.admin.AdminFilmService.editFilm;
 
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
-
-import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by sunno on 1/11/17.
@@ -21,53 +20,43 @@ public class EditFilmForm {
         this.id = id;
     }
 
-    @NotBlank(message = "Name required")
-    @Length(max=50,message = "Name too large")
     private String name;
 
-    @NotNull(message = "Distributor is required")
     private Integer distributorId;
 
-    @NotNull(message = "Rating is required")
     private Float rating;
 
-    @NotNull(message = "Duration is required")
-    private Float duration;
+    private Integer durationHour;
 
-    @NotNull(message = "Status is required")
+    private Integer durationMin;
+
     private boolean status;
 
-    @NotNull(message = "Price Shift is required")
     private boolean isPriceShift;
 
-    //    @DateTimeFormat(pattern="MM/dd/yyyy")
-    @NotNull(message = "Start Time is required")
     private String startDate;
 
-    //    @DateTimeFormat(pattern="MM/dd/yyyy")
-    @NotNull(message = "End Date is required")
     private String endDate;
 
+    private String genreIds;
+
+    private List<Integer> filmGenreIdList = new ArrayList<>();
+
+    private Integer bannerImageToken;
+
+    private String otherImagesToken;
+
+    private List<Integer> otherImagesTokenArray = new ArrayList<>();
 
     private Date formattedStartDate;
 
-    public Date getFormattedStartDate() {
-        return formattedStartDate;
-    }
-
-    public void setFormattedStartDate(Date formattedStartDate) {
-        this.formattedStartDate = formattedStartDate;
-    }
-
-    public Date getFormattedEndDate() {
-        return formattedEndDate;
-    }
-
-    public void setFormattedEndDate(Date formattedEndDate) {
-        this.formattedEndDate = formattedEndDate;
-    }
-
     private Date formattedEndDate;
+
+    private String trailer;
+
+    private String screenDimensions;
+
+    private Set<Integer> screenDimensionIdList;
 
     public String getName() {
         return name;
@@ -93,15 +82,23 @@ public class EditFilmForm {
         this.rating = rating;
     }
 
-    public Float getDuration() {
-        return duration;
+    public Integer getDurationHour() {
+        return durationHour;
     }
 
-    public void setDuration(Float duration) {
-        this.duration = duration;
+    public void setDurationHour(Integer durationHour) {
+        this.durationHour = durationHour;
     }
 
-    public boolean getStatus() {
+    public Integer getDurationMin() {
+        return durationMin;
+    }
+
+    public void setDurationMin(Integer durationMin) {
+        this.durationMin = durationMin;
+    }
+
+    public boolean isStatus() {
         return status;
     }
 
@@ -109,12 +106,12 @@ public class EditFilmForm {
         this.status = status;
     }
 
-    public boolean getIsPriceShift() {
+    public boolean isPriceShift() {
         return isPriceShift;
     }
 
-    public void setIsPriceShift(boolean priceShift) {
-        isPriceShift = priceShift;
+    public void setIsPriceShift(boolean isPriceShift) {
+        this.isPriceShift = isPriceShift;
     }
 
     public String getStartDate() {
@@ -133,17 +130,108 @@ public class EditFilmForm {
         this.endDate = endDate;
     }
 
+    public String getGenreIds() {
+        return genreIds;
+    }
+
+    public void setGenreIds(String genreIds) {
+        this.genreIds = genreIds;
+    }
+
+    public List<Integer> getFilmGenreIdList() {
+        return filmGenreIdList;
+    }
+
+    public void setFilmGenreIdList(List<Integer> filmGenreIdList) {
+        this.filmGenreIdList = filmGenreIdList;
+    }
+
+    public Integer getBannerImageToken() {
+        return bannerImageToken;
+    }
+
+    public void setBannerImageToken(Integer bannerImageToken) {
+        this.bannerImageToken = bannerImageToken;
+    }
+
+    public String getOtherImagesToken() {
+        return otherImagesToken;
+    }
+
+    public void setOtherImagesToken(String otherImagesToken) {
+        this.otherImagesToken = otherImagesToken;
+    }
+
+    public List<Integer> getOtherImagesTokenArray() {
+        return otherImagesTokenArray;
+    }
+
+    public void setOtherImagesTokenArray(List<Integer> otherImagesTokenArray) {
+        this.otherImagesTokenArray = otherImagesTokenArray;
+    }
+
+    public Date getFormattedStartDate() {
+        return formattedStartDate;
+    }
+
+    public void setFormattedStartDate(Date formattedStartDate) {
+        this.formattedStartDate = formattedStartDate;
+    }
+
+    public Date getFormattedEndDate() {
+        return formattedEndDate;
+    }
+
+    public void setFormattedEndDate(Date formattedEndDate) {
+        this.formattedEndDate = formattedEndDate;
+    }
+
+    public Set<Integer> getScreenDimensionIdList() {
+        return screenDimensionIdList;
+    }
+
+    public void setScreenDimensionIdList(Set<Integer> screenDimensionIdList) {
+        this.screenDimensionIdList = screenDimensionIdList;
+    }
+
+    public String getTrailer() {
+        return trailer;
+    }
+
+    public void setTrailer(String trailer) {
+        this.trailer = trailer;
+    }
+
+    public String getScreenDimensions() {
+        return screenDimensions;
+    }
+
+    public void setScreenDimensions(String screenDimensions) {
+        this.screenDimensions = screenDimensions;
+    }
+
     @Override
     public String toString() {
-        return "EditFilmFrom{" +
-                "name='" + name + '\'' +
+        return "EditFilmForm{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", distributorId=" + distributorId +
                 ", rating=" + rating +
-                ", duration=" + duration +
+                ", durationHour=" + durationHour +
+                ", durationMin=" + durationMin +
                 ", status=" + status +
                 ", isPriceShift=" + isPriceShift +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
+                ", startDate='" + startDate + '\'' +
+                ", endDate='" + endDate + '\'' +
+                ", genreIds='" + genreIds + '\'' +
+                ", filmGenreIdList=" + filmGenreIdList +
+                ", otherImagesToken='" + otherImagesToken + '\'' +
+                ", otherImagesTokenArray=" + otherImagesTokenArray +
+                ", formattedStartDate=" + formattedStartDate +
+                ", formattedEndDate=" + formattedEndDate +
+                ", trailer='" + trailer + '\'' +
+                ", screenDimensions='" + screenDimensions + '\'' +
+                ", screenDimensionIdList=" + screenDimensionIdList +
                 '}';
     }
 }

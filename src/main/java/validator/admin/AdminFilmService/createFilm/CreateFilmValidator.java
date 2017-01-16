@@ -15,9 +15,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-/**
- * Created by sunno on 1/11/17.
- */
 @Service
 public class CreateFilmValidator implements Validator {
 
@@ -67,7 +64,7 @@ public class CreateFilmValidator implements Validator {
         }
 
         /**
-         *
+         *Film Trailer
         * */
         String[] schemes = {"http","https"}; // DEFAULT schemes = "http", "https", "ftp"
         UrlValidator urlValidator = new UrlValidator(schemes);
@@ -130,14 +127,14 @@ public class CreateFilmValidator implements Validator {
                 for (Integer filmGenreId : filmGenreIdList){
                     Genre filmGenre = genreDao.getById(filmGenreId);
                     if(filmGenre==null){
-                        errors.rejectValue("filmGenre", "Genre not found by id :"+filmGenreId);
+                        errors.rejectValue("genreIds", "Genre not found by id :"+filmGenreId);
                         break;
                     }
                 }
 
 
             } catch (IOException e) {
-                errors.rejectValue("filmGenre","Broken String found");
+                errors.rejectValue("genreIds","Broken String found");
             }
 
 
