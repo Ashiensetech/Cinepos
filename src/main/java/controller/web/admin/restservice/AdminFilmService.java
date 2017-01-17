@@ -97,7 +97,7 @@ public class AdminFilmService {
         film.setIsPriceShift(createFilmForm.getIsPriceShift());
         film.setStartDate(createFilmForm.getFormattedStartDate());
         film.setEndDate(createFilmForm.getFormattedEndDate());
-
+        film.setStatus(true);
 
 
 
