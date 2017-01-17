@@ -35,7 +35,7 @@ public class ConcessionProduct {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "concession_product_id",referencedColumnName = "id")
-    private List<ConcessionProductImage> ConcessionProductImage;
+    private List<ConcessionProductImage> concessionProductImages;
 
     @Basic
     @Column(name = "unit")
@@ -114,12 +114,12 @@ public class ConcessionProduct {
         this.concessionProductCategory = concessionProductCategory;
     }
 
-    public List<entity.ConcessionProductImage> getConcessionProductImage() {
-        return ConcessionProductImage;
+    public List<ConcessionProductImage> getConcessionProductImages() {
+        return concessionProductImages;
     }
 
-    public void setConcessionProductImage(List<entity.ConcessionProductImage> concessionProductImage) {
-        ConcessionProductImage = concessionProductImage;
+    public void setConcessionProductImages(List<ConcessionProductImage> concessionProductImages) {
+        this.concessionProductImages = concessionProductImages;
     }
 
     public int getUnit() {
@@ -215,7 +215,7 @@ public class ConcessionProduct {
         if (annotation != null ? !annotation.equals(that.annotation) : that.annotation != null) return false;
         if (concessionProductCategory != null ? !concessionProductCategory.equals(that.concessionProductCategory) : that.concessionProductCategory != null)
             return false;
-        if (ConcessionProductImage != null ? !ConcessionProductImage.equals(that.ConcessionProductImage) : that.ConcessionProductImage != null)
+        if (concessionProductImages != null ? !concessionProductImages.equals(that.concessionProductImages) : that.concessionProductImages != null)
             return false;
         return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
     }
@@ -227,7 +227,7 @@ public class ConcessionProduct {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (annotation != null ? annotation.hashCode() : 0);
         result = 31 * result + (concessionProductCategory != null ? concessionProductCategory.hashCode() : 0);
-        result = 31 * result + (ConcessionProductImage != null ? ConcessionProductImage.hashCode() : 0);
+        result = 31 * result + (concessionProductImages != null ? concessionProductImages.hashCode() : 0);
         result = 31 * result + unit;
         result = 31 * result + remotePrint;
         result = 31 * result + isCombo;
@@ -248,7 +248,7 @@ public class ConcessionProduct {
                 ", description='" + description + '\'' +
                 ", annotation='" + annotation + '\'' +
                 ", concessionProductCategory=" + concessionProductCategory +
-                ", ConcessionProductImage=" + ConcessionProductImage +
+                ", concessionProductImages=" + concessionProductImages +
                 ", unit=" + unit +
                 ", remotePrint=" + remotePrint +
                 ", isCombo=" + isCombo +

@@ -1,6 +1,7 @@
 package entity;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * Created by Sarwar on 1/13/2017.
@@ -17,7 +18,7 @@ public class ConcessionProductImage {
     private int concessionProductId;
 
     @Column(name = "file_path")
-    private int filePath;
+    private String filePath;
 
     @Column(name = "is_banner")
     private int isBanner;
@@ -32,7 +33,7 @@ public class ConcessionProductImage {
     private int createdBy;
 
     @Column(name = "created_at")
-    private int createdAt;
+    private Timestamp createdAt;
 
     public int getId() {
         return id;
@@ -50,11 +51,11 @@ public class ConcessionProductImage {
         this.concessionProductId = concessionProductId;
     }
 
-    public int getFilePath() {
+    public String getFilePath() {
         return filePath;
     }
 
-    public void setFilePath(int filePath) {
+    public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
 
@@ -90,11 +91,11 @@ public class ConcessionProductImage {
         this.createdBy = createdBy;
     }
 
-    public int getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(int createdAt) {
+    public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -107,24 +108,24 @@ public class ConcessionProductImage {
 
         if (id != that.id) return false;
         if (concessionProductId != that.concessionProductId) return false;
-        if (filePath != that.filePath) return false;
         if (isBanner != that.isBanner) return false;
         if (width != that.width) return false;
         if (height != that.height) return false;
         if (createdBy != that.createdBy) return false;
-        return createdAt == that.createdAt;
+        if (filePath != null ? !filePath.equals(that.filePath) : that.filePath != null) return false;
+        return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + concessionProductId;
-        result = 31 * result + filePath;
+        result = 31 * result + (filePath != null ? filePath.hashCode() : 0);
         result = 31 * result + isBanner;
         result = 31 * result + width;
         result = 31 * result + height;
         result = 31 * result + createdBy;
-        result = 31 * result + createdAt;
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }
 
@@ -133,7 +134,7 @@ public class ConcessionProductImage {
         return "ConcessionProductImage{" +
                 "id=" + id +
                 ", concessionProductId=" + concessionProductId +
-                ", filePath=" + filePath +
+                ", filePath='" + filePath + '\'' +
                 ", isBanner=" + isBanner +
                 ", width=" + width +
                 ", height=" + height +

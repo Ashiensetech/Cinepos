@@ -182,7 +182,7 @@
                                         </d:if>
                                     </d:forEach>
                                 </div>
-                                <div id="otherImg"  >
+                                <div id="otherImg">
                                     <div class="dz-default dz-message">
                                         <span>Add other images</span>
                                     </div>

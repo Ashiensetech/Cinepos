@@ -43,6 +43,21 @@ public class ConcessionProductDao extends BaseDao{
         }
     }
 
+    public void update(ConcessionProduct concessionProduct){
+        Session session = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(concessionProduct);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
+
     public ConcessionProduct getById(int id){
 
         Session session = null;

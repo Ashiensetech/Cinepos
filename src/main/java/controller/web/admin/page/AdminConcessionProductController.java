@@ -47,8 +47,12 @@ public class AdminConcessionProductController {
     @RequestMapping(value = "/edit/{productId}",method = RequestMethod.GET)
     public ModelAndView editDistributor(@PathVariable Integer productId){
         List<ConcessionProductCategory> productCategoryList=concessionProductCategoryDao.getAll();
+        ConcessionProduct concessionProduct=concessionProductDao.getById(productId);
         ModelAndView modelAndView= new ModelAndView("web-admin/concession-product/edit-concession-product");
+        System.out.println(concessionProduct);
+        System.out.println(concessionProduct.getConcessionProductImages());
         modelAndView.addObject("ProductCategoryList",productCategoryList);
+        modelAndView.addObject("concessionProduct",concessionProduct);
         return modelAndView;
     }
 }

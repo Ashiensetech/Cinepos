@@ -30,20 +30,21 @@
             </div>
             <div class="row">
                 <form id="createConcessionProductForm">
+                    <input type="hidden" value="${concessionProduct.id}" id="productId">
                     <div class="col-lg-5">
                         <div class="form-group">
                             <label>Name</label>
-                            <input class="form-control" id="name" value="">
+                            <input class="form-control" id="name" value="${concessionProduct.name}">
                             <p class="help-block error" id="errorMsg_name"></p>
                         </div>
                         <div class="form-group">
                             <label>Annotation</label>
-                            <textarea name="" class="form-control" id="annotation" value=""></textarea>
+                            <textarea name="" class="form-control" id="annotation">${concessionProduct.annotation}</textarea>
                             <p class="help-block error" id="errorMsg_annotation"></p>
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea name="" class="form-control" id="description"></textarea>
+                            <textarea name="" class="form-control" id="description">${concessionProduct.description}</textarea>
                             <p class="help-block error" id="errorMsg_description"></p>
 
                         </div>
@@ -55,7 +56,7 @@
                                 <d:choose>
                                     <d:when test="${not empty ProductCategoryList}">
                                         <d:forEach var="ProductCategoryValue" items="${ProductCategoryList}">
-                                            <option value="${ProductCategoryValue.id}">${ProductCategoryValue.name}</option>
+                                            <option ${(concessionProduct.concessionProductCategory.id==ProductCategoryValue.id)?"selected":""} value="${ProductCategoryValue.id}">${ProductCategoryValue.name}</option>
                                         </d:forEach>
                                     </d:when>
                                 </d:choose>
@@ -67,20 +68,20 @@
 
                         <div class="form-group">
                             <label>Unit</label>
-                            <input class="form-control" value="" id="unit">
+                            <input class="form-control" type="number" value="${concessionProduct.unit}" id="unit">
                             <p class="help-block error" id="errorMsg_unit"></p>
 
                         </div>
 
                         <div class="form-group">
                             <label>Buying Price</label>
-                            <input class="form-control" value="" id="buyingPrice">
+                            <input class="form-control" type="number" value="${concessionProduct.buyingPrice}" id="buyingPrice">
                             <p class="help-block error" id="errorMsg_buyingPrice"></p>
 
                         </div>
                         <div class="form-group">
                             <label>Selling Price</label>
-                            <input class="form-control" value="" id="sellingPrice">
+                            <input class="form-control" type="number" value="${concessionProduct.sellingPrice}" id="sellingPrice">
                             <p class="help-block error" id="errorMsg_sellingPrice"></p>
 
                         </div>
@@ -88,7 +89,7 @@
                             <label class="pull-left">Remote Print</label>
                             <div class="col-md-6">
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="remotePrint" class="onoffswitch-checkbox" id="remotePrint">
+                                    <input type="checkbox" ${(concessionProduct.remotePrint==1)?"checked":""} value="${concessionProduct.remotePrint}" name="remotePrint" class="onoffswitch-checkbox" id="remotePrint">
                                     <label class="onoffswitch-label" for="remotePrint">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
@@ -102,7 +103,7 @@
                             <label class="pull-left">Is Combo?</label>
                             <div class="col-md-6">
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="isCombo" class="onoffswitch-checkbox" id="isCombo">
+                                    <input type="checkbox" ${(concessionProduct.isCombo==1)?"checked":""} value="${concessionProduct.isCombo}" name="isCombo" class="onoffswitch-checkbox" id="isCombo">
                                     <label class="onoffswitch-label" for="isCombo">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
@@ -116,7 +117,7 @@
                             <label class="pull-left">Is Price Shift?</label>
                             <div class="col-md-6">
                                 <div class="onoffswitch">
-                                    <input type="checkbox" name="isPriceShift" value="0" class="onoffswitch-checkbox" id="isPriceShift">
+                                    <input type="checkbox" name="isPriceShift" ${(concessionProduct.isPriceShift==1)?"checked":""} value="${concessionProduct.isPriceShift}" class="onoffswitch-checkbox" id="isPriceShift">
                                     <label class="onoffswitch-label" for="isPriceShift">
                                         <span class="onoffswitch-inner"></span>
                                         <span class="onoffswitch-switch"></span>
@@ -129,15 +130,25 @@
 
                     <div class="col-lg-7">
                         <div class="row clearfix">
-                            <label style="padding-left: 15px;font-size: 16px;">Choose Image</label>
+                            <label style="padding-left: 15px;font-size: 16px;">Choose Product Image</label>
                             <div class="col-md-12">
-                                <div class="checkbox">
+                                <div class="img-container clearfix">
+                                    <d:forEach var="productImage" items="${concessionProduct.concessionProductImages}" >
+                                        <d:if test="${productImage.isBanner==1}" >
+                                            <div class="col-md-4">
+                                                <div class="panel prev-img panel-default">
+                                                    <img src="<c:url value="/product-image/${productImage.filePath}" />" alt="">
+                                                </div>
+                                            </div>
+                                        </d:if>
+                                    </d:forEach>
                                 </div>
-                                <div action="/file-upload" class="dropzone">
-                                    <div class="fallback">
-                                        <input name="file" type="file" multiple />
+                                <div id="productImg" >
+                                    <div class="dz-default dz-message">
+                                        <span>Replace product image</span>
                                     </div>
                                 </div>
+                                <p class="help-block error" id="errorMsg_bannerImageToken"></p>
                             </div>
                         </div>
                     </div>
@@ -158,8 +169,68 @@
 <jsp:directive.include file="../layouts/footer.jsp"/>
 
 <script type="application/javascript">
+
+    Dropzone.autoDiscover = false;
+    var productImageToken = 0;
+
+    $(function() {
+        var productImgDropzone = new Dropzone("div#productImg",
+            {
+                url: BASEURL+"api/admin/file-upload/product",
+                method:"post",
+                paramName:"productImage",
+                maxFilesize: 2,
+                maxFiles:1,
+                addRemoveLinks: true,
+                init:function(){
+                    $("div#productImg").addClass("dropzone");
+                },
+                removedfile:function(file){
+                    productImageToken = 0;
+                    var _ref;
+                    if(file.token == undefined){
+                        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                    }
+                    removeImageByToken(file.token);
+                    return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+
+                },
+                success:function(file,response){
+                    productImageToken = response;
+                    console.log(productImageToken);
+                    file.token = response;
+                    console.log(response);
+                }
+            }
+        );
+
+    });
+
+    function removeImageByToken(token){
+        $.ajax({
+            url: BASEURL + 'api/admin/file-upload/delete/temp-file',
+            type: 'POST',
+            data: {token:token},
+            statusCode: {
+                401: function (response) {
+                    console.log("unauthorized");
+                    console.log(response);
+                    showLoginModal();
+                },
+                422: function (response) {
+                    console.log(response);
+                    enableDisableFormElement("createFilmForm", ["input", "button", "select","textarea"], true);
+                    BindErrorsWithHtml("errorMsg_", response.responseJSON);
+                }
+            }, success: function (data) {
+            }
+        });
+    }
+
+
     $(document).ready(function () {
         $('#concessionProductBtn').click(function () {
+            var productId=$("#productId").val();
             var name=$("#name").val();
             var annotation=$("#annotation").val();
             var description=$("#description").val();
@@ -167,10 +238,10 @@
             var unit=$("#unit").val();
             var buyingPrice=$("#buyingPrice").val();
             var sellingPrice=$("#sellingPrice").val();
-            var isPriceShiftSel=$("#isPriceShift")
-            var isComboSel=$("#isCombo")
-            var isPriceShiftSel=$("#isPriceShift")
-            var remotePrintSel=$("#remotePrint")
+            var isPriceShiftSel=$("#isPriceShift");
+            var isComboSel=$("#isCombo");
+            var isPriceShiftSel=$("#isPriceShift");
+            var remotePrintSel=$("#remotePrint");
 
             isPriceShiftSel.is(':checked') ? isPriceShiftSel.val(1) : isPriceShiftSel.val(0);
             isComboSel.is(':checked') ? isComboSel.val(1) : isComboSel.val(0);
@@ -188,6 +259,7 @@
                 isPriceShift:isPriceShiftSel.val(),
                 isCombo:isComboSel.val(),
                 remotePrint:remotePrintSel.val(),
+                productImageToken : JSON.stringify(productImageToken),
 
             };
 
@@ -197,7 +269,7 @@
 
 
             $.ajax({
-                url: BASEURL+'api/admin/concession-product/create',
+                url: BASEURL+'api/admin/concession-product/edit/'+productId,
                 type: 'POST',
                 data: postData,
                 statusCode: {
@@ -214,7 +286,7 @@
                     }
                 },
                 success: function(data){
-                    $("#statusMsg").html("Concession Product created successfully").show();
+                    $("#statusMsg").html("Concession Product updated successfully").show();
                     setTimeout(function(){
                         window.location = BASEURL+"admin/concession-product/all";
                     },2000);
@@ -223,7 +295,6 @@
         });
     });
 </script>
-
 <!-- Date picker -->
 </body>
 

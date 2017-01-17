@@ -64,7 +64,7 @@
                                         <td>
                                             <button id="statusChangeBtn${concessionProductValue.id}"
                                                     data-status="${concessionProductValue.status}"
-                                                    onclick="statusUpdateDistributorData('distributorRow${concessionProductValue.id}',
+                                                    onclick="statusUpdateConcessionProductData('distributorRow${concessionProductValue.id}',
                                                             'statusMsg${concessionProductValue.id}',
                                                             'statusChangeBtn${concessionProductValue.id}',
                                                             'statusTd${concessionProductValue.id}',
@@ -107,7 +107,7 @@
 
 <script type="application/javascript">
 
-    function statusUpdateDistributorData(parentElementId,statusMsgElemId,elementId,statusTd,distributorId){
+    function statusUpdateConcessionProductData(parentElementId,statusMsgElemId,elementId,statusTd,concessionProductId){
 
         $("#"+statusMsgElemId).html("").hide();
 
@@ -116,7 +116,7 @@
         enableDisableFormElement(parentElementId,["input","button","select","a"],false);
 
         $.ajax({
-            url: BASEURL+'api/admin/distributor/active-inactive/'+distributorId+'/'+activationType,
+            url: BASEURL+'api/admin/concession-product/active-inactive/'+concessionProductId+'/'+activationType,
             type: 'POST',
             statusCode: {
                 401: function (response) {

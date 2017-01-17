@@ -67,20 +67,20 @@
 
                         <div class="form-group">
                             <label>Unit</label>
-                            <input class="form-control" value="" id="unit">
+                            <input class="form-control" type="number" value="" id="unit">
                             <p class="help-block error" id="errorMsg_unit"></p>
 
                         </div>
 
                         <div class="form-group">
                             <label>Buying Price</label>
-                            <input class="form-control" value="" id="buyingPrice">
+                            <input class="form-control" type="number" value="" id="buyingPrice">
                             <p class="help-block error" id="errorMsg_buyingPrice"></p>
 
                         </div>
                         <div class="form-group">
                             <label>Selling Price</label>
-                            <input class="form-control" value="" id="sellingPrice">
+                            <input class="form-control" type="number" value="" id="sellingPrice">
                             <p class="help-block error" id="errorMsg_sellingPrice"></p>
 
                         </div>
@@ -129,16 +129,16 @@
 
                     <div class="col-lg-7">
                         <div class="row clearfix">
-                            <label style="padding-left: 15px;font-size: 16px;">Choose Image</label>
+                            <label style="padding-left: 15px;font-size: 16px;">Choose Product Image</label>
                             <div class="col-md-12">
-                                <div class="checkbox">
-                                </div>
-                                <div action="/file-upload" class="dropzone">
-                                    <div class="fallback">
-                                        <input name="file" type="file" multiple />
+                                <div id="productImg" >
+                                    <div class="dz-default dz-message">
+                                        <span>Add product image</span>
                                     </div>
                                 </div>
+                                <p class="help-block error" id="errorMsg_productImageToken"></p>
                             </div>
+
                         </div>
                     </div>
                     <hr>
@@ -158,6 +158,65 @@
 <jsp:directive.include file="../layouts/footer.jsp"/>
 
     <script type="application/javascript">
+
+        Dropzone.autoDiscover = false;
+        var productImageToken = 0;
+
+        $(function() {
+            var productImgDropzone = new Dropzone("div#productImg",
+                {
+                    url: BASEURL+"api/admin/file-upload/product",
+                    method:"post",
+                    paramName:"productImage",
+                    maxFilesize: 2,
+                    maxFiles:1,
+                    addRemoveLinks: true,
+                    init:function(){
+                        $("div#productImg").addClass("dropzone");
+                    },
+                    removedfile:function(file){
+                        productImageToken = 0;
+                        var _ref;
+                        if(file.token == undefined){
+                            return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+                        }
+                        removeImageByToken(file.token);
+                        return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+
+                    },
+                    success:function(file,response){
+                        productImageToken = response;
+                        console.log(productImageToken);
+                        file.token = response;
+                        console.log(response);
+                    }
+                }
+            );
+
+        });
+
+        function removeImageByToken(token){
+            $.ajax({
+                url: BASEURL + 'api/admin/file-upload/delete/temp-file',
+                type: 'POST',
+                data: {token:token},
+                statusCode: {
+                    401: function (response) {
+                        console.log("unauthorized");
+                        console.log(response);
+                        showLoginModal();
+                    },
+                    422: function (response) {
+                        console.log(response);
+                        enableDisableFormElement("createFilmForm", ["input", "button", "select","textarea"], true);
+                        BindErrorsWithHtml("errorMsg_", response.responseJSON);
+                    }
+                }, success: function (data) {
+                }
+            });
+        }
+
+
         $(document).ready(function () {
             $('#concessionProductBtn').click(function () {
                var name=$("#name").val();
@@ -167,10 +226,10 @@
                var unit=$("#unit").val();
                var buyingPrice=$("#buyingPrice").val();
                var sellingPrice=$("#sellingPrice").val();
-               var isPriceShiftSel=$("#isPriceShift")
-               var isComboSel=$("#isCombo")
-               var isPriceShiftSel=$("#isPriceShift")
-               var remotePrintSel=$("#remotePrint")
+               var isPriceShiftSel=$("#isPriceShift");
+               var isComboSel=$("#isCombo");
+               var isPriceShiftSel=$("#isPriceShift");
+               var remotePrintSel=$("#remotePrint");
 
                 isPriceShiftSel.is(':checked') ? isPriceShiftSel.val(1) : isPriceShiftSel.val(0);
                 isComboSel.is(':checked') ? isComboSel.val(1) : isComboSel.val(0);
@@ -188,8 +247,11 @@
                     isPriceShift:isPriceShiftSel.val(),
                     isCombo:isComboSel.val(),
                     remotePrint:remotePrintSel.val(),
-
                 };
+
+                if(productImageToken>0){
+                    postData["productImageToken"] = productImageToken;
+                }
 
 
 

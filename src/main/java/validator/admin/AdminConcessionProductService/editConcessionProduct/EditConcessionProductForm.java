@@ -1,4 +1,4 @@
-package validator.admin.AdminConcessionProductService.createConcessionProduct;
+package validator.admin.AdminConcessionProductService.editConcessionProduct;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
-public class createConcessionProductForm {
+public class EditConcessionProductForm {
 
     @NotBlank(message = "Product name are required")
     @Length(max = 60,message = "Product name too large")
@@ -33,7 +33,7 @@ public class createConcessionProductForm {
     @NotNull(message = "Product selling price are required")
     private Float sellingPrice;
 
-    @NotNull(message = "Product buying price are required")
+    @NotNull(message = "Product selling price are required")
     private Float buyingPrice;
 
     private Integer isPriceShift;
