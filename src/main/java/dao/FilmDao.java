@@ -60,6 +60,20 @@ public class FilmDao extends BaseDao {
         return new ArrayList<>();
 
     }
+    public List<Film> getAllActive(){
+        Session session = this.sessionFactory.openSession();
+        try{
+            session = this.sessionFactory.openSession();
+            return session.createQuery("FROM Film  where status = true order by id desc ")
+                    .list();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<>();
 
+    }
 
 }

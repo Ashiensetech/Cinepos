@@ -173,10 +173,10 @@
                                 <div class="img-container clearfix">
                                     <d:forEach var="filmImage" items="${film.filmImages}" >
                                         <d:if test="${!filmImage.isBanner}" >
-                                            <div class="col-md-4">
+                                            <div id="filmImages_${filmImage.id}" class="col-md-4">
                                                 <div class="panel prev-img panel-default">
                                                     <img src="<c:url value="/film-image/${filmImage.filePath}" />" alt="">
-                                                    <a class="dz-remove" href="javascript:undefined;" onclick="removeExistingImage(${filmImage.id})">Remove file</a>
+                                                    <span class="remove" onclick="removeExistingImage(${filmImage.id})" >X</span>
                                                 </div>
                                             </div>
                                         </d:if>
@@ -295,7 +295,10 @@
     });
 
     function removeExistingImage(id){
-        deletedImagesIdSet.push(id);
+        $("#filmImages_"+id).fadeOut(600);
+        if(deletedImagesIdSet.indexOf(id)<0){
+            deletedImagesIdSet.push(id);
+        }
     }
     function removeImageByToken(token){
         $.ajax({
