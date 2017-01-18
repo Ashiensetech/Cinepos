@@ -104,18 +104,18 @@
                 <!-- /.nav-second-level -->
             </li>
             <li>
-            <a href="#">Product Category<span class="fa arrow"></span></a>
-            <ul class="nav nav-second-level collapse">
-                <li>
-                    <a href="<c:url value="/admin/product-category/all" />">All product category</a>
-                </li>
-                <li>
-                    <a href="<c:url value="/admin/product-category/create" />">Create product category</a>
-                </li>
+                <a href="#">Product Category<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="<c:url value="/admin/product-category/all" />">All product category</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/product-category/create" />">Create product category</a>
+                    </li>
 
-            </ul>
-            <!-- /.nav-second-level -->
-        </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
             <li>
                 <a href="#">Product<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
@@ -124,6 +124,31 @@
                     </li>
                     <li>
                         <a href="<c:url value="/admin/concession-product/create" />">Create product</a>
+                    </li>
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a href="#">Concession Product Price Shift<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="<c:url value="/admin/concession-price-shift/all" />">All</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/concession-price-shift/create" />">Create</a>
+                    </li>
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li><li>
+                <a href="#">Seat Price Shift<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="<c:url value="/admin/seat-price-shift/all" />">All</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/seat-price-shift/create" />">Create</a>
                     </li>
 
                 </ul>

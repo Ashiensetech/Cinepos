@@ -2,6 +2,8 @@ package validator.admin.AdminConcessionPriceShiftService.createConcessionPriceSh
 
 import dao.ConcessionPriceShiftDao;
 import dao.ConcessionProductDao;
+import entity.ConcessionPriceShift;
+import entity.ConcessionProduct;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ public class CreateConcessionPriceShiftValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        CreateConcessionPriceShiftForm concessionPriceShiftForm= (CreateConcessionPriceShiftForm) obj;
+        CreateConcessionPriceShiftForm concessionPriceShiftForm = (CreateConcessionPriceShiftForm) obj;
 
 
         try {
@@ -38,7 +40,22 @@ public class CreateConcessionPriceShiftValidator implements Validator {
             errors.rejectValue("endDate", "End Date format miss matched");
         }
 
+        if (concessionPriceShiftForm.getFormattedEndDate().before(concessionPriceShiftForm.getFormattedStartDate())) {
+            errors.rejectValue("endDate", "End Date should be after start date");
+        }
+        ConcessionPriceShift concessionPriceShift  = concessionPriceShiftDao.getByDates(concessionPriceShiftForm.getFormattedStartDate(),concessionPriceShiftForm.getFormattedEndDate());
+        if(concessionPriceShift!=null){
+            errors.rejectValue("startDate", "Start date or end date already exist");
+        }
+
+        ConcessionProduct concessionProduct = concessionProductDao.getById(concessionPriceShiftForm.getConcessionProductId());
+        if(concessionProduct==null){
+            errors.rejectValue("concessionProductId", "Product does not exists");
+        }
+
+
     }
+
     @Override
     public boolean supports(Class<?> aClass) {
         return CreateConcessionPriceShiftForm.class.equals(aClass);

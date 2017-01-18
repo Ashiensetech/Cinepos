@@ -8,6 +8,8 @@
 <head>
     <jsp:directive.include file="../layouts/header.jsp" />
 </head>
+
+
 <body>
 
 <div id="wrapper">
@@ -22,21 +24,21 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Concession Price Shift</h1>
+                    <h1 class="page-header">Add Seat Price Shift</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <form id="createConcessionPriceShiftForm">
+                    <form id="createSeatPriceShiftForm">
                         <div class="form-group">
-                            <label>Product</label>
-                            <select class="form-control" id="productId" >
-                                <d:forEach var="product" items="${concessionProducts}" >
-                                    <option value="${product.id}">${product.name}</option>
+                            <label>Seat</label>
+                            <select class="form-control" id="seatTypeId" >
+                                <d:forEach var="seat" items="${seatTypes}" >
+                                    <option value="${seat.id}">${seat.name}</option>
                                 </d:forEach>
                             </select>
-                            <p class="help-block error" id="errorMsg_productId"></p>
+                            <p class="help-block error" id="errorMsg_seatTypeId"></p>
                         </div>
 
                         <div class="form-group">
@@ -86,14 +88,13 @@
 
         $("#statusMsg").html("").hide();
 
-        var productId =$("#productId").val();
+        var seatTypeId =$("#seatTypeId").val();
         var startDate =$("#startDate").val();
         var endDate =$("#endDate").val();
         var price =$("#price").val();
-        enableDisableFormElement("createConcessionPriceShiftForm",["input","button","select"],false);
+        enableDisableFormElement("createSeatPriceShiftForm",["input","button","select"],false);
         var postData={
-//            concessionProductId:productId,
-            concessionProductId:1,
+            seatTypeId:seatTypeId,
             price:price
         };
 
@@ -103,7 +104,7 @@
             postData['endDate'] = endDate;
 
         $.ajax({
-            url: BASEURL+'api/admin/concession-price-shift/create',
+            url: BASEURL+'api/admin/seat-price-shift/create',
             type: 'POST',
             data: postData ,
             statusCode: {
@@ -111,28 +112,25 @@
                     console.log("unauthorized");
                     console.log(response);
                     showLoginModal();
-                    enableDisableFormElement("createConcessionPriceShiftForm",["input","button","select"],true);
+                    enableDisableFormElement("createSeatPriceShiftForm",["input","button","select"],true);
                 },
                 422: function (response) {
                     console.log(response);
                     $("#statusMsg").html("Error found").show();
                     BindErrorsWithHtml("errorMsg_",response.responseJSON);
-                    enableDisableFormElement("createConcessionPriceShiftForm",["input","button","select"],true);
+                    enableDisableFormElement("createSeatPriceShiftForm",["input","button","select"],true);
                 }
             },success: function(data){
-                $("#statusMsg").html("Price Shift created successfully").show();
+                $("#statusMsg").html("Seat Price Shift created successfully").show();
                 setTimeout(function(){
-                    window.location = BASEURL+"admin/concession-price-shift/all";
+                    window.location = BASEURL+"admin/seat-price-shift/all";
                 },2000);
-
-
             }
         });
         return false;
     }
 </script>
 </body>
-
 </html>
 
 

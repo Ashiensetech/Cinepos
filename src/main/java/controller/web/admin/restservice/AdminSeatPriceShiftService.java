@@ -3,7 +3,10 @@ package controller.web.admin.restservice;
 import controller.web.admin.AdminUriPreFix;
 import dao.ConcessionPriceShiftDao;
 import dao.ConcessionProductDao;
+import dao.SeatPriceShiftDao;
+import dao.SeatTypeDao;
 import entity.ConcessionPriceShift;
+import entity.SeatPriceShift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
 import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift.CreateConcessionPriceShiftForm;
 import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift.CreateConcessionPriceShiftValidator;
+import validator.admin.AdminSeatPriceShiftService.createSeatPriceShift.CreateSeatPriceShiftForm;
+import validator.admin.AdminSeatPriceShiftService.createSeatPriceShift.CreateSeatPriceShiftValidator;
 
 import javax.validation.Valid;
 
@@ -22,21 +27,21 @@ import javax.validation.Valid;
  * Created by sunno on 1/16/17.
  */
 @RestController
-@RequestMapping(AdminUriPreFix.apiUriPrefix +"/concession-price-shift")
-public class AdminConcessionPriceShiftService {
+@RequestMapping(AdminUriPreFix.apiUriPrefix +"/seat-price-shift")
+public class AdminSeatPriceShiftService {
     @Autowired
-    ConcessionPriceShiftDao concessionPriceShiftDao;
+    SeatPriceShiftDao seatPriceShiftDao;
 
     @Autowired
-    CreateConcessionPriceShiftValidator createConcessionPriceShiftValidator;
+    CreateSeatPriceShiftValidator createSeatPriceShiftValidator;
 
     @Autowired
-    ConcessionProductDao concessionProductDao;
+    SeatTypeDao seatTypeDao;
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseEntity<?> createConcessionPriceShift(@Valid CreateConcessionPriceShiftForm createConcessionPriceShiftForm, BindingResult result){
+    public ResponseEntity<?> createSeatPriceShift(@Valid CreateSeatPriceShiftForm createSeatPriceShiftForm, BindingResult result){
 
-        System.out.println(createConcessionPriceShiftForm);
+        System.out.println(createSeatPriceShiftForm);
 
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
@@ -53,7 +58,7 @@ public class AdminConcessionPriceShiftService {
         /**
          * Business logic validation
          * */
-        createConcessionPriceShiftValidator.validate(createConcessionPriceShiftForm,result);
+        createSeatPriceShiftValidator.validate(createSeatPriceShiftForm,result);
 
         serviceResponse.bindValidationError(result);
 
@@ -65,30 +70,28 @@ public class AdminConcessionPriceShiftService {
 
 
         /***************** Service  [Start] *************/
-        ConcessionPriceShift concessionPriceShift= new ConcessionPriceShift();
+        SeatPriceShift seatPriceShift = new SeatPriceShift();
 
-
-        System.out.println(createConcessionPriceShiftForm);
-
-        concessionPriceShift.setConcessionProduct(concessionProductDao.getById(createConcessionPriceShiftForm.getConcessionProductId()));
-        concessionPriceShift.setStartDate(createConcessionPriceShiftForm.getFormattedStartDate());
-        concessionPriceShift.setEndDate(createConcessionPriceShiftForm.getFormattedEndDate());
-        concessionPriceShift.setPrice(createConcessionPriceShiftForm.getPrice());
-        concessionPriceShift.setStatus(true);
-        concessionPriceShift.setCreatedBy(1);
+        seatPriceShift.setSeatType(seatTypeDao.getById(createSeatPriceShiftForm.getSeatTypeId()));
+        seatPriceShift.setStartDate(createSeatPriceShiftForm.getFormattedStartDate());
+        seatPriceShift.setEndDate(createSeatPriceShiftForm.getFormattedEndDate());
+        seatPriceShift.setPrice(createSeatPriceShiftForm.getPrice());
+        seatPriceShift.setStatus(true);
+        seatPriceShift.setCreatedBy(1);
         /***************** Service  [Ends] *************/
 
-        System.out.println(concessionPriceShift);
+        System.out.println(seatPriceShift);
 
-        concessionPriceShift = concessionPriceShiftDao.insert(concessionPriceShift);
+        seatPriceShift = seatPriceShiftDao.insert(seatPriceShift);
 
-        return ResponseEntity.status(HttpStatus.OK).body(concessionPriceShift);
+        return ResponseEntity.status(HttpStatus.OK).body(seatPriceShift);
 
     }
 
+
     @RequestMapping(value = "/delete/{priceShiftId}",method = RequestMethod.DELETE)
-    public boolean deleteConcessionPriceShift(@PathVariable Integer priceShiftId){
-        return  concessionPriceShiftDao.delete(concessionPriceShiftDao.getById(priceShiftId));
+    public boolean deleteSeatPriceShift(@PathVariable Integer priceShiftId){
+        return  seatPriceShiftDao.delete(seatPriceShiftDao.getById(priceShiftId));
     }
 
 }
