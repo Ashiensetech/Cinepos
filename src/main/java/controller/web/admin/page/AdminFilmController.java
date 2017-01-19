@@ -45,7 +45,7 @@ public class AdminFilmController {
     }
     @RequestMapping(value = "/create")
     public ModelAndView createFilm(){
-        List<Distributor> distributors = distributorDao.getAll();
+        List<Distributor> distributors = distributorDao.getActiveDistrubutors();
         List<ScreenDimension> screenDimensions = screenDimensionDao.getAll();
         ModelAndView mav =  new ModelAndView("web-admin/film/create-film");
         List<Genre> genres = genreDao.getAllAlphabetically();

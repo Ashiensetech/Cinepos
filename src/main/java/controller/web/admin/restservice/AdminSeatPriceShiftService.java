@@ -20,6 +20,8 @@ import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShi
 import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift.CreateConcessionPriceShiftValidator;
 import validator.admin.AdminSeatPriceShiftService.createSeatPriceShift.CreateSeatPriceShiftForm;
 import validator.admin.AdminSeatPriceShiftService.createSeatPriceShift.CreateSeatPriceShiftValidator;
+import validator.admin.AdminSeatPriceShiftService.editSeatPriceShift.EditSeatPriceShiftForm;
+import validator.admin.AdminSeatPriceShiftService.editSeatPriceShift.EditSeatPriceShiftValidator;
 
 import javax.validation.Valid;
 
@@ -34,6 +36,9 @@ public class AdminSeatPriceShiftService {
 
     @Autowired
     CreateSeatPriceShiftValidator createSeatPriceShiftValidator;
+
+    @Autowired
+    EditSeatPriceShiftValidator editSeatPriceShiftValidator;
 
     @Autowired
     SeatTypeDao seatTypeDao;
@@ -88,6 +93,52 @@ public class AdminSeatPriceShiftService {
 
     }
 
+    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    public ResponseEntity<?> editSeatPriceShift(@Valid EditSeatPriceShiftForm editSeatPriceShiftForm, BindingResult result){
+
+        System.out.println(editSeatPriceShiftForm);
+
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+
+        /***************** Validation  [Start] *************/
+
+        /**
+         * Basic form validation
+         * */
+        serviceResponse.bindValidationError(result);
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
+        /**
+         * Business logic validation
+         * */
+        editSeatPriceShiftValidator.validate(editSeatPriceShiftForm,result);
+
+        serviceResponse.bindValidationError(result);
+
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+        /***************** Validation  [End] *************/
+
+
+
+        /***************** Service  [Start] *************/
+        SeatPriceShift seatPriceShift = seatPriceShiftDao.getById(editSeatPriceShiftForm.getId());
+        seatPriceShift.setSeatType(seatTypeDao.getById(editSeatPriceShiftForm.getSeatTypeId()));
+        seatPriceShift.setStartDate(editSeatPriceShiftForm.getFormattedStartDate());
+        seatPriceShift.setEndDate(editSeatPriceShiftForm.getFormattedEndDate());
+        seatPriceShift.setPrice(editSeatPriceShiftForm.getPrice());
+        seatPriceShift.setStatus(true);
+//        seatPriceShift.setCreatedBy(1);
+        /***************** Service  [Ends] *************/
+
+        System.out.println(seatPriceShift);
+        seatPriceShiftDao.update(seatPriceShift);
+
+        return ResponseEntity.status(HttpStatus.OK).body(seatPriceShift);
+    }
 
     @RequestMapping(value = "/delete/{priceShiftId}",method = RequestMethod.DELETE)
     public boolean deleteSeatPriceShift(@PathVariable Integer priceShiftId){

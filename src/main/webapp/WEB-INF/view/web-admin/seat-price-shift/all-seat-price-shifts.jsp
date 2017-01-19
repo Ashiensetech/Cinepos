@@ -63,7 +63,7 @@
                     <td>${item.endDate}</td>
                     <td>${item.status}</td>
                     <td >
-                      <a href="<c:url value="/admin/concession-price-shift/edit/${item.id}" />"
+                      <a href="<c:url value="/admin/seat-price-shift/edit/${item.id}" />"
                          type="button"
                          class="btn btn-outline btn-primary" >Edit</a>
                       <button data-price-shift-id="${item.id}"

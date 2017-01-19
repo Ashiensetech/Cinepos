@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
 import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift.CreateConcessionPriceShiftForm;
 import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift.CreateConcessionPriceShiftValidator;
+import validator.admin.AdminConcessionPriceShiftService.editConcessionPriceShift.EditConcessionPriceShiftForm;
+import validator.admin.AdminConcessionPriceShiftService.editConcessionPriceShift.EditConcessionPriceShiftValidator;
+import validator.admin.AdminSeatPriceShiftService.editSeatPriceShift.EditSeatPriceShiftValidator;
 
 import javax.validation.Valid;
 
@@ -32,6 +35,9 @@ public class AdminConcessionPriceShiftService {
 
     @Autowired
     ConcessionProductDao concessionProductDao;
+
+    @Autowired
+    EditConcessionPriceShiftValidator editConcessionPriceShiftValidator;
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseEntity<?> createConcessionPriceShift(@Valid CreateConcessionPriceShiftForm createConcessionPriceShiftForm, BindingResult result){
@@ -74,6 +80,57 @@ public class AdminConcessionPriceShiftService {
         concessionPriceShift.setStartDate(createConcessionPriceShiftForm.getFormattedStartDate());
         concessionPriceShift.setEndDate(createConcessionPriceShiftForm.getFormattedEndDate());
         concessionPriceShift.setPrice(createConcessionPriceShiftForm.getPrice());
+        concessionPriceShift.setStatus(true);
+        concessionPriceShift.setCreatedBy(1);
+        /***************** Service  [Ends] *************/
+
+        System.out.println(concessionPriceShift);
+
+        concessionPriceShift = concessionPriceShiftDao.insert(concessionPriceShift);
+
+        return ResponseEntity.status(HttpStatus.OK).body(concessionPriceShift);
+
+    }
+    @RequestMapping(value = "/update",method = RequestMethod.POST)
+    public ResponseEntity<?> updateConcessionPriceShift(@Valid EditConcessionPriceShiftForm editConcessionPriceShiftForm, BindingResult result){
+
+        System.out.println(editConcessionPriceShiftForm);
+
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+
+        /***************** Validation  [Start] *************/
+
+        /**
+         * Basic form validation
+         * */
+        serviceResponse.bindValidationError(result);
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
+        /**
+         * Business logic validation
+         * */
+        editConcessionPriceShiftValidator.validate(editConcessionPriceShiftForm,result);
+
+        serviceResponse.bindValidationError(result);
+
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+        /***************** Validation  [End] *************/
+
+
+
+        /***************** Service  [Start] *************/
+        ConcessionPriceShift concessionPriceShift= concessionPriceShiftDao.getById(editConcessionPriceShiftForm.getId());
+
+        System.out.println(editConcessionPriceShiftForm);
+
+        concessionPriceShift.setConcessionProduct(concessionProductDao.getById(editConcessionPriceShiftForm.getConcessionProductId()));
+        concessionPriceShift.setStartDate(editConcessionPriceShiftForm.getFormattedStartDate());
+        concessionPriceShift.setEndDate(editConcessionPriceShiftForm.getFormattedEndDate());
+        concessionPriceShift.setPrice(editConcessionPriceShiftForm.getPrice());
         concessionPriceShift.setStatus(true);
         concessionPriceShift.setCreatedBy(1);
         /***************** Service  [Ends] *************/

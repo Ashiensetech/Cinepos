@@ -1,11 +1,7 @@
-package validator.admin.AdminSeatPriceShiftService.createSeatPriceShift;
+package validator.admin.AdminSeatPriceShiftService.editSeatPriceShift;
 
-import dao.ConcessionPriceShiftDao;
-import dao.ConcessionProductDao;
 import dao.SeatPriceShiftDao;
 import dao.SeatTypeDao;
-import entity.ConcessionPriceShift;
-import entity.ConcessionProduct;
 import entity.SeatPriceShift;
 import entity.SeatType;
 import helper.DateHelper;
@@ -20,7 +16,7 @@ import java.text.ParseException;
  * Created by sunno on 1/16/17.
  */
 @Service
-public class CreateSeatPriceShiftValidator implements Validator {
+public class EditSeatPriceShiftValidator implements Validator {
     @Autowired
     SeatPriceShiftDao seatPriceShiftDao;
 
@@ -29,7 +25,7 @@ public class CreateSeatPriceShiftValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        CreateSeatPriceShiftForm seatPriceShiftForm = (CreateSeatPriceShiftForm) obj;
+        EditSeatPriceShiftForm seatPriceShiftForm = (EditSeatPriceShiftForm) obj;
 
         try {
             seatPriceShiftForm.setFormattedStartDate(DateHelper.getStringToDate(seatPriceShiftForm.getStartDate(), "MM/dd/yyyy"));
@@ -59,6 +55,6 @@ public class CreateSeatPriceShiftValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return CreateSeatPriceShiftForm.class.equals(aClass);
+        return EditSeatPriceShiftForm.class.equals(aClass);
     }
 }

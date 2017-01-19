@@ -6,7 +6,9 @@ import dao.SeatTypeDao;
 import entity.SeatPriceShift;
 import entity.SeatType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,5 +43,14 @@ public class AdminSeatPriceShiftController {
         return mav;
     }
 
+    @RequestMapping("/edit/{seatPriceShiftId}")
+    public ModelAndView editSeatPriceShiftPage(Authentication authentication, @PathVariable Integer seatPriceShiftId){
+        ModelAndView mav =  new ModelAndView("web-admin/seat-price-shift/edit-seat-price-shift");
+        SeatPriceShift seatPriceShift = seatPriceShiftDao.getById(seatPriceShiftId);
+        List<SeatType> seatTypes = seatTypeDao.getAll();
+        mav.addObject("seatPriceShift",seatPriceShift);
+        mav.addObject("seatTypes",seatTypes);
+        return mav;
+    }
 
 }

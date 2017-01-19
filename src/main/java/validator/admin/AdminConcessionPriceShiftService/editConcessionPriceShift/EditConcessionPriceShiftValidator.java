@@ -1,4 +1,4 @@
-package validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift;
+package validator.admin.AdminConcessionPriceShiftService.editConcessionPriceShift;
 
 import dao.ConcessionPriceShiftDao;
 import dao.ConcessionProductDao;
@@ -16,7 +16,7 @@ import java.text.ParseException;
  * Created by sunno on 1/16/17.
  */
 @Service
-public class CreateConcessionPriceShiftValidator implements Validator {
+public class EditConcessionPriceShiftValidator implements Validator {
     @Autowired
     ConcessionPriceShiftDao concessionPriceShiftDao;
 
@@ -25,7 +25,7 @@ public class CreateConcessionPriceShiftValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
-        CreateConcessionPriceShiftForm concessionPriceShiftForm = (CreateConcessionPriceShiftForm) obj;
+        EditConcessionPriceShiftForm concessionPriceShiftForm = (EditConcessionPriceShiftForm) obj;
 
 
         try {
@@ -57,6 +57,6 @@ public class CreateConcessionPriceShiftValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return CreateConcessionPriceShiftForm.class.equals(aClass);
+        return EditConcessionPriceShiftForm.class.equals(aClass);
     }
 }

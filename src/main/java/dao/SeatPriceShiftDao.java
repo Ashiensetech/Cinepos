@@ -1,8 +1,10 @@
 package dao;
 
 import entity.SeatPriceShift;
+import entity.SeatType;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -14,6 +16,9 @@ import java.util.List;
  */
 @Repository
 public class SeatPriceShiftDao extends BaseDao{
+
+    @Autowired
+    SeatTypeDao seatTypeDao;
 
     public SeatPriceShift insert(SeatPriceShift seatPriceShift){
         return (SeatPriceShift) super.insert(seatPriceShift);
@@ -59,11 +64,15 @@ public class SeatPriceShiftDao extends BaseDao{
     }
 
 
-    public SeatPriceShift getByDates(Date startDate, Date endDate){
+    public SeatPriceShift getBySeatAndDates(Integer seatTypeId,Date startDate, Date endDate){
         Session session = null;
+        SeatType seatType = seatTypeDao.getById(seatTypeId);
         try{
             session = this.sessionFactory.openSession();
-            return (SeatPriceShift) session.createQuery("FROM SeatPriceShift where (startDate BETWEEN :startDate AND :endDate) or (endDate BETWEEN :startDate AND :endDate)")
+            return (SeatPriceShift) session.createQuery("FROM SeatPriceShift where seatType =:seatType and " +
+                    "((startDate BETWEEN :startDate AND :endDate) or (endDate BETWEEN :startDate AND :endDate) " +
+                    "or (:startDate BETWEEN startDate AND endDate) or (:endDate BETWEEN startDate AND endDate))")
+                    .setParameter("seatType", seatType)
                     .setParameter("startDate", startDate)
                     .setParameter("endDate", endDate)
                     .setMaxResults(1)

@@ -1,8 +1,10 @@
 package dao;
 
 import entity.ConcessionPriceShift;
+import entity.ConcessionProduct;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
@@ -14,6 +16,9 @@ import java.util.List;
  */
 @Repository
 public class ConcessionPriceShiftDao extends BaseDao{
+
+    @Autowired
+    ConcessionProductDao concessionProductDao;
 
     public ConcessionPriceShift insert(ConcessionPriceShift concessionPriceShift){
         return (ConcessionPriceShift) super.insert(concessionPriceShift);
@@ -61,11 +66,15 @@ public class ConcessionPriceShiftDao extends BaseDao{
 
 
 
-    public ConcessionPriceShift getByDates(Date startDate, Date endDate){
+    public ConcessionPriceShift getByProductAndDates(Integer productId,Date startDate, Date endDate){
         Session session = null;
+        ConcessionProduct concessionProduct = concessionProductDao.getById(productId);
         try{
             session = this.sessionFactory.openSession();
-            return (ConcessionPriceShift) session.createQuery("FROM ConcessionPriceShift where (startDate BETWEEN :startDate AND :endDate) or (endDate BETWEEN :startDate AND :endDate)")
+            return (ConcessionPriceShift) session.createQuery("FROM ConcessionPriceShift where concessionProduct =:concessionProduct and " +
+                    "((startDate BETWEEN :startDate AND :endDate) or (endDate BETWEEN :startDate AND :endDate) " +
+                    "or (:startDate BETWEEN startDate AND endDate) or (:endDate BETWEEN startDate AND endDate))")
+                    .setParameter("concessionProduct", concessionProduct)
                     .setParameter("startDate", startDate)
                     .setParameter("endDate", endDate)
                     .setMaxResults(1)
