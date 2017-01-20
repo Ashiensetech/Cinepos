@@ -31,7 +31,7 @@
       <div class="row">
         <div class="col-lg-6">
           <form id="editSeatTypeForm">
-            <input type="hidden" id="seatTypeId" value="${seatType.id}">
+            <input type="hidden" id="seatType" value="${seatType.id}">
             <div class="form-group">
               <label>Name</label>
               <input class="form-control" id="name" value="${seatType.name}">
@@ -78,7 +78,7 @@
 
     $("#statusMsg").html("").hide();
 
-    var seatTypeId = $("#seatTypeId").val();
+    var seatType = $("#seatType").val();
 
     var name =$("#name").val();
     var adultPrice =$("#adultPrice").val();
@@ -86,7 +86,7 @@
     var isDefault = $("#isDefault").prop("checked");
     enableDisableFormElement("editSeatTypeForm",["input","button","select"],false);
     $.ajax({
-      url: BASEURL+'api/admin/seat-type/update/'+seatTypeId,
+      url: BASEURL+'api/admin/seat-type/update/'+seatType,
       type: 'POST',
       data: {
         name:name,

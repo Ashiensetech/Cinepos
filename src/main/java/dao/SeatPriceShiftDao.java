@@ -1,7 +1,7 @@
 package dao;
 
-import entity.ConcessionPriceShift;
-import entity.ConcessionProduct;
+import entity.SeatPriceShift;
+import entity.SeatType;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,27 +15,27 @@ import java.util.List;
  * Created by sunno on 1/16/17.
  */
 @Repository
-public class ConcessionPriceShiftDao extends BaseDao{
+public class SeatPriceShiftDao extends BaseDao{
 
     @Autowired
-    ConcessionProductDao concessionProductDao;
+    SeatTypeDao seatTypeDao;
 
-    public ConcessionPriceShift insert(ConcessionPriceShift concessionPriceShift){
-        return (ConcessionPriceShift) super.insert(concessionPriceShift);
+    public SeatPriceShift insert(SeatPriceShift seatPriceShift){
+        return (SeatPriceShift) super.insert(seatPriceShift);
     }
-    public void update(ConcessionPriceShift concessionPriceShift){
-        super.update(concessionPriceShift);
-    }
-
-    public boolean delete(ConcessionPriceShift concessionPriceShift){
-        return super.delete(concessionPriceShift);
+    public void update(SeatPriceShift seatPriceShift){
+        super.update(seatPriceShift);
     }
 
-    public List<ConcessionPriceShift> getAll(){
+    public boolean delete(SeatPriceShift seatPriceShift){
+        return super.delete(seatPriceShift);
+    }
+
+    public List<SeatPriceShift> getAll(){
         Session session = this.sessionFactory.openSession();
         try{
             session = this.sessionFactory.openSession();
-            return session.createQuery("FROM ConcessionPriceShift")
+            return session.createQuery("FROM SeatPriceShift")
                     .list();
         }catch (HibernateException hEx){
             // Insert to database exception log
@@ -43,14 +43,14 @@ public class ConcessionPriceShiftDao extends BaseDao{
         }finally{
             if(session!=null)session.close();
         }
-        return new ArrayList<ConcessionPriceShift>();
+        return new ArrayList<SeatPriceShift>();
     }
 
-    public ConcessionPriceShift getById(Integer id){
+    public SeatPriceShift getById(Integer id){
         Session session = null;
         try{
             session = this.sessionFactory.openSession();
-            return (ConcessionPriceShift) session.createQuery("FROM ConcessionPriceShift where id = :id")
+            return (SeatPriceShift) session.createQuery("FROM SeatPriceShift where id = :id")
                     .setParameter("id", id)
                     .setMaxResults(1)
                     .uniqueResult();
@@ -60,21 +60,19 @@ public class ConcessionPriceShiftDao extends BaseDao{
         }finally {
             if(session!=null)session.close();
         }
-
         return null;
     }
 
 
-
-    public ConcessionPriceShift getByProductAndDates(Integer productId,Date startDate, Date endDate){
+    public SeatPriceShift getBySeatAndDates(Integer seatTypeId,Date startDate, Date endDate){
         Session session = null;
-        ConcessionProduct concessionProduct = concessionProductDao.getById(productId);
+        SeatType seatType = seatTypeDao.getById(seatTypeId);
         try{
             session = this.sessionFactory.openSession();
-            return (ConcessionPriceShift) session.createQuery("FROM ConcessionPriceShift where concessionProduct =:concessionProduct and " +
+            return (SeatPriceShift) session.createQuery("FROM SeatPriceShift where seatType =:seatType and " +
                     "((startDate BETWEEN :startDate AND :endDate) or (endDate BETWEEN :startDate AND :endDate) " +
                     "or (:startDate BETWEEN startDate AND endDate) or (:endDate BETWEEN startDate AND endDate))")
-                    .setParameter("concessionProduct", concessionProduct)
+                    .setParameter("seatType", seatType)
                     .setParameter("startDate", startDate)
                     .setParameter("endDate", endDate)
                     .setMaxResults(1)

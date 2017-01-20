@@ -73,6 +73,20 @@ public class DistributorDao extends BaseDao{
          return new ArrayList<Distributor>();
     }
 
+    public List<Distributor> getActiveDistrubutors(){
+        Session session=this.sessionFactory.openSession();
+
+         try{
+            return session.createQuery("FROM Distributor where status=1").list();
+
+         }catch (HibernateException hEx){
+             hEx.printStackTrace();
+         }finally{
+             if(session!=null)session.close();
+         }
+         return new ArrayList<Distributor>();
+    }
+
 
 
 }

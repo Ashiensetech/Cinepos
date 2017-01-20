@@ -8,7 +8,9 @@ import entity.ConcessionProduct;
 import entity.Distributor;
 import entity.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,7 +36,6 @@ public class AdminConcessionPriceShiftController {
         return mav;
     }
 
-
     @RequestMapping("/all")
     public ModelAndView allSeatTypePage(){
         ModelAndView mav = new ModelAndView("web-admin/concession-price-shift/all-concession-price-shifts");
@@ -43,5 +44,14 @@ public class AdminConcessionPriceShiftController {
         return mav;
     }
 
+    @RequestMapping("/edit/{concessionProductPriceShiftId}")
+    public ModelAndView editSeatPriceShiftPage(Authentication authentication, @PathVariable Integer concessionProductPriceShiftId){
+        ModelAndView mav =  new ModelAndView("web-admin/concession-price-shift/edit-concession-price-shift");
+        ConcessionPriceShift concessionPriceShift = concessionPriceShiftDao.getById(concessionProductPriceShiftId);
+        List<ConcessionProduct> concessionProducts= concessionProductDao.getAll();
+        mav.addObject("concessionProducts",concessionProducts);
+        mav.addObject("concessionPriceShift",concessionPriceShift);
+        return mav;
+    }
 
 }

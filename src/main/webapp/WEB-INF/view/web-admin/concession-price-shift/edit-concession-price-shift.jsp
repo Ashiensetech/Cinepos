@@ -22,18 +22,23 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Concession Price Shift</h1>
+                    <h1 class="page-header">Edit Concession Price Shift</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <form id="createConcessionPriceShiftForm">
+                    <form id="editConcessionPriceShiftForm">
+                        <input type="hidden" id="concessionProductPriceShiftId" value="${concessionPriceShift.id}">
                         <div class="form-group">
                             <label>Product</label>
                             <select class="form-control" id="productId" >
                                 <d:forEach var="product" items="${concessionProducts}" >
-                                    <option value="${product.id}">${product.name}</option>
+                                    <option
+                                            <d:if test="${product.id == concessionPriceShift.concessionProduct.id}" >
+                                                selected
+                                            </d:if>
+                                            value="${product.id}">${product.name}</option>
                                 </d:forEach>
                             </select>
                             <p class="help-block error" id="errorMsg_productId"></p>
@@ -41,7 +46,7 @@
 
                         <div class="form-group">
                             <label>Price</label>
-                            <input id="price" class="form-control">
+                            <input id="price" class="form-control" value="${concessionPriceShift.price}">
                             <p class="help-block error" id="errorMsg_price"></p>
                         </div>
 
@@ -50,7 +55,9 @@
                             <div class='input-group date'>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                                <input id="startDate" type='text' class="form-control" name="date" placeholder="MM/DD/YYY" />
+                                <input id="startDate" type='text'
+                                       value="<fmt:formatDate  value="${concessionPriceShift.startDate}" pattern="MM/dd/yyy" />"
+                                       class="form-control" name="date" placeholder="MM/DD/YYY" />
 
                             </div>
                             <p class="help-block error" id="errorMsg_startDate"></p>
@@ -60,7 +67,9 @@
                             <div class='input-group date'>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                                <input type='text' class="form-control" id="endDate" name="date" placeholder="MM/DD/YYY" />
+                                <input type='text' class="form-control" id="endDate"
+                                       value="<fmt:formatDate  value="${concessionPriceShift.endDate}" pattern="MM/dd/yyy" />"
+                                       name="date" placeholder="MM/DD/YYY" />
 
                             </div>
                             <p class="help-block error" id="errorMsg_endDate"></p>
@@ -68,7 +77,7 @@
 
                         <br>
                         <p class="help-block" id="statusMsg"></p>
-                        <button class="btn btn-primary" onclick="return submitPriceShiftData()">Create Price Shift</button>
+                        <button class="btn btn-primary" onclick="return submitPriceShiftData()">Update Product Price Shift</button>
                     </form>
                 </div>
             </div>
@@ -86,12 +95,15 @@
 
         $("#statusMsg").html("").hide();
 
+
+        var concessionProductPriceShiftId =$("#concessionProductPriceShiftId").val();
         var productId =$("#productId").val();
         var startDate =$("#startDate").val();
         var endDate =$("#endDate").val();
         var price =$("#price").val();
-        enableDisableFormElement("createConcessionPriceShiftForm",["input","button","select"],false);
+        enableDisableFormElement("editConcessionPriceShiftForm",["input","button","select"],false);
         var postData={
+            id:concessionProductPriceShiftId,
             concessionProductId:productId,
 //            concessionProductId:1,
             price:price
@@ -103,7 +115,7 @@
             postData['endDate'] = endDate;
 
         $.ajax({
-            url: BASEURL+'api/admin/concession-price-shift/create',
+            url: BASEURL+'api/admin/concession-price-shift/update',
             type: 'POST',
             data: postData ,
             statusCode: {
@@ -111,13 +123,13 @@
                     console.log("unauthorized");
                     console.log(response);
                     showLoginModal();
-                    enableDisableFormElement("createConcessionPriceShiftForm",["input","button","select"],true);
+                    enableDisableFormElement("editConcessionPriceShiftForm",["input","button","select"],true);
                 },
                 422: function (response) {
                     console.log(response);
                     $("#statusMsg").html("Error found").show();
                     BindErrorsWithHtml("errorMsg_",response.responseJSON);
-                    enableDisableFormElement("createConcessionPriceShiftForm",["input","button","select"],true);
+                    enableDisableFormElement("editConcessionPriceShiftForm",["input","button","select"],true);
                 }
             },success: function(data){
                 $("#statusMsg").html("Price Shift created successfully").show();

@@ -24,7 +24,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
-          <h1 class="page-header">All Concession Price Shifts</h1>
+          <h1 class="page-header">All Seat Price Shifts</h1>
         </div>
         <!-- /.col-lg-12 -->
       </div>
@@ -53,17 +53,17 @@
                 </thead>
                 <tbody>
                 <d:set var="count" value="0" />
-                <d:forEach var="item" items="${concessionPriceShifts}" >
+                <d:forEach var="item" items="${seatPriceShifts}" >
                     <d:set var="count" value="${count+1}" />
                   <tr>
                     <td>${count}</td>
-                    <td>${item.concessionProduct.name}</td>
+                    <td>${item.seatType.name}</td>
                     <td>${item.price}</td>
                     <td>${item.startDate} </td>
                     <td>${item.endDate}</td>
                     <td>${item.status}</td>
                     <td >
-                      <a href="<c:url value="/admin/concession-price-shift/edit/${item.id}" />"
+                      <a href="<c:url value="/admin/seat-price-shift/edit/${item.id}" />"
                          type="button"
                          class="btn btn-outline btn-primary" >Edit</a>
                       <button data-price-shift-id="${item.id}"
@@ -106,7 +106,7 @@
           var crntRow= $(this).parent().parent();
 
           $.ajax({
-              url: BASEURL+'api/admin/concession-price-shift/delete/'+priceShiftId,
+              url: BASEURL+'api/admin/seat-price-shift/delete/'+priceShiftId,
               type: 'DELETE',
               statusCode: {
                   401: function (response) {

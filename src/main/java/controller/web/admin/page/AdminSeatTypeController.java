@@ -38,7 +38,7 @@ public class AdminSeatTypeController {
     }
 
     @RequestMapping("/edit/{seatTypeId}")
-    public ModelAndView editAdminUserPage(Authentication authentication, @PathVariable Integer seatTypeId){
+    public ModelAndView editSeatTypePage(Authentication authentication, @PathVariable Integer seatTypeId){
         ModelAndView mav =  new ModelAndView("web-admin/seat-type/edit-seat-type");
         SeatType seatType = seatTypeDao.getById(seatTypeId);
         mav.addObject("seatType",seatType);
