@@ -129,6 +129,20 @@
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+
+            <li>
+                <a href="#">Combo<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="<c:url value="/admin/combo/all" />">All Combo</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/combo/create" />">Create Combo</a>
+                    </li>
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
         </ul>
 
     </div>

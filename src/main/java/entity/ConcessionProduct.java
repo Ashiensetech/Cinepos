@@ -55,11 +55,11 @@ public class ConcessionProduct {
 
     @Basic
     @Column(name = "selling_price")
-    private float sellingPrice;
+    private Float sellingPrice;
 
     @Basic
     @Column(name = "buying_price")
-    private float buyingPrice;
+    private Float buyingPrice;
 
     @Basic
     @Column(name = "is_price_shift")
@@ -154,19 +154,19 @@ public class ConcessionProduct {
         this.status = status;
     }
 
-    public float getSellingPrice() {
+    public Float getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(float sellingPrice) {
+    public void setSellingPrice(Float sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 
-    public float getBuyingPrice() {
+    public Float getBuyingPrice() {
         return buyingPrice;
     }
 
-    public void setBuyingPrice(float buyingPrice) {
+    public void setBuyingPrice(Float buyingPrice) {
         this.buyingPrice = buyingPrice;
     }
 
@@ -206,8 +206,6 @@ public class ConcessionProduct {
         if (remotePrint != that.remotePrint) return false;
         if (isCombo != that.isCombo) return false;
         if (status != that.status) return false;
-        if (Float.compare(that.sellingPrice, sellingPrice) != 0) return false;
-        if (Float.compare(that.buyingPrice, buyingPrice) != 0) return false;
         if (isPriceShift != that.isPriceShift) return false;
         if (createdBy != that.createdBy) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
@@ -217,6 +215,8 @@ public class ConcessionProduct {
             return false;
         if (concessionProductImages != null ? !concessionProductImages.equals(that.concessionProductImages) : that.concessionProductImages != null)
             return false;
+        if (sellingPrice != null ? !sellingPrice.equals(that.sellingPrice) : that.sellingPrice != null) return false;
+        if (buyingPrice != null ? !buyingPrice.equals(that.buyingPrice) : that.buyingPrice != null) return false;
         return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
     }
 
@@ -232,8 +232,8 @@ public class ConcessionProduct {
         result = 31 * result + remotePrint;
         result = 31 * result + isCombo;
         result = 31 * result + status;
-        result = 31 * result + (sellingPrice != +0.0f ? Float.floatToIntBits(sellingPrice) : 0);
-        result = 31 * result + (buyingPrice != +0.0f ? Float.floatToIntBits(buyingPrice) : 0);
+        result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
+        result = 31 * result + (buyingPrice != null ? buyingPrice.hashCode() : 0);
         result = 31 * result + isPriceShift;
         result = 31 * result + createdBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);

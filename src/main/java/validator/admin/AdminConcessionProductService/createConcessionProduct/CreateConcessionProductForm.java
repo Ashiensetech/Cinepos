@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
-public class createConcessionProductForm {
+public class CreateConcessionProductForm {
 
     @NotBlank(message = "Product name are required")
     @Length(max = 60,message = "Product name too large")

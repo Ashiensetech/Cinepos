@@ -82,6 +82,9 @@
                 <value>entity.SeatPriceShift</value>
                 <value>entity.ConcessionPriceShift</value>
                 <value>entity.ConcessionProductImage</value>
+                <value>entity.Combo</value>
+                <value>entity.ComboProduct</value>
+
             </list>
         </property>
         <property name="hibernateProperties">

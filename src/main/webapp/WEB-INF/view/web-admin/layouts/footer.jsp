@@ -10,6 +10,9 @@
 <!-- Metis Menu Plugin JavaScript -->
 <script src="<c:url value="/admin-resources/metisMenu/metisMenu.min.js"/>"></script>
 
+<!-- Select -->
+<script src="<c:url value="/admin-resources/bootstrap/js/bootstrap-select.min.js"/>"></script>
+
 <script src="<c:url value="/admin-resources/datatables/js/jquery.dataTables.min.js"/>"></script>
 <script src="<c:url value="/admin-resources/datatables-plugins/dataTables.bootstrap.min.js"/>"></script>
 <script src="<c:url value="/admin-resources/datatables-responsive/dataTables.responsive.js"/>"></script>

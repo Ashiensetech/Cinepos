@@ -6,7 +6,6 @@ import dao.ConcessionProductCategoryDao;
 import dao.ConcessionProductDao;
 import entity.ConcessionProduct;
 import entity.ConcessionProductImage;
-import entity.Distributor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.FileUtil;
 import utility.ServiceResponse;
-import validator.admin.AdminConcessionProductService.createConcessionProduct.createConcessionProductForm;
+import validator.admin.AdminConcessionProductService.createConcessionProduct.CreateConcessionProductForm;
 import validator.admin.AdminConcessionProductService.editConcessionProduct.EditConcessionProductForm;
-import validator.admin.AdminDistributorService.editDistributor.editDistributorForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -39,7 +37,7 @@ public class AdminConcessionProductService {
     FileUtil fileUtil;
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseEntity<?> create (@Valid createConcessionProductForm createConcessionProductForm, BindingResult result, HttpServletRequest request){
+    public ResponseEntity<?> create (@Valid CreateConcessionProductForm createConcessionProductForm, BindingResult result, HttpServletRequest request){
         String errorMsg="Concession product successfully created";
         try{
             ServiceResponse serviceResponse=ServiceResponse.getInstance();
@@ -102,6 +100,7 @@ public class AdminConcessionProductService {
 
         return ResponseEntity.status(HttpStatus.OK).body(ServiceResponse.getMsg(errorMsg));
     }
+
 
 
     @RequestMapping(value = "/edit/{productId}",method = RequestMethod.POST)
@@ -200,7 +199,7 @@ public class AdminConcessionProductService {
 
         if(concessionProduct == null) {
             ServiceResponse serviceResponse = ServiceResponse.getInstance();
-            serviceResponse.setValidationError("concessionProductId", "No distributor found");
+            serviceResponse.setValidationError("concessionProductId", "No Concession Product found");
 
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse);
 
@@ -215,5 +214,25 @@ public class AdminConcessionProductService {
 
 
     }
+
+    @RequestMapping(value = "/getproductbyid/{productId}",method = RequestMethod.GET)
+    public ResponseEntity<?> getProductById(@Valid EditConcessionProductForm editConcessionProductForm,
+                                            BindingResult result,
+                                            @PathVariable Integer productId){
+
+        ConcessionProduct concessionProduct=concessionProductDao.getById(productId);
+
+        if(concessionProduct == null) {
+            ServiceResponse serviceResponse = ServiceResponse.getInstance();
+            serviceResponse.setValidationError("concessionProductId", "No Concession Product found");
+
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse);
+
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(concessionProduct);
+    }
+
 
 }
