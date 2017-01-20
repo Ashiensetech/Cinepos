@@ -92,8 +92,8 @@
         var price =$("#price").val();
         enableDisableFormElement("createConcessionPriceShiftForm",["input","button","select"],false);
         var postData={
-//            concessionProductId:productId,
-            concessionProductId:1,
+            concessionProductId:productId,
+//            concessionProductId:1,
             price:price
         };
 

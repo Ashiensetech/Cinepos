@@ -104,8 +104,8 @@
         enableDisableFormElement("editConcessionPriceShiftForm",["input","button","select"],false);
         var postData={
             id:concessionProductPriceShiftId,
-//            concessionProductId:productId,
-            concessionProductId:1,
+            concessionProductId:productId,
+//            concessionProductId:1,
             price:price
         };
 

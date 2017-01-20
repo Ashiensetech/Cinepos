@@ -57,7 +57,7 @@
                     <d:set var="count" value="${count+1}" />
                   <tr>
                     <td>${count}</td>
-                    <td></td>
+                    <td>${item.concessionProduct.name}</td>
                     <td>${item.price}</td>
                     <td>${item.startDate} </td>
                     <td>${item.endDate}</td>
