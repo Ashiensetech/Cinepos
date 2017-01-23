@@ -49,11 +49,11 @@ public class FilmRental {
     }
 
 
-    public Film getFilmId() {
+    public Film getFilm() {
         return film;
     }
 
-    public void setFilmId(Film film) {
+    public void setFilm(Film film) {
         this.film = film;
     }
 
