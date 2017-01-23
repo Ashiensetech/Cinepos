@@ -84,6 +84,7 @@
                 <value>entity.ConcessionProductImage</value>
                 <value>entity.Combo</value>
                 <value>entity.ComboProduct</value>
+                <value>entity.FilmRental</value>
 
             </list>
         </property>
