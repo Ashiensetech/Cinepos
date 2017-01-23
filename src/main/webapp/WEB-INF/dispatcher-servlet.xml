@@ -27,8 +27,8 @@
 
     <bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location">
-            <value>/WEB-INF/resource-config/localConfig.properties</value>
-            <!--<value>/WEB-INF/resource-config/liveConfig.properties</value>-->
+            <!--<value>/WEB-INF/resource-config/localConfig.properties</value>-->
+            <value>/WEB-INF/resource-config/liveConfig.properties</value>
         </property>
     </bean>
 
