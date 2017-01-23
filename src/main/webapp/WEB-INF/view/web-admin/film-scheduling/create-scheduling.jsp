@@ -89,9 +89,10 @@
                             </div>
                             <div class="form-group">
                                 <label>Select Film</label>
-                                <select class="form-control">
+                                <select id="filmSelector" class="form-control">
                                     <d:forEach var="film" items="${films}" >
-                                        <option value="${film.id}">${film.name}</option>
+                                        <option value="${film.id}" data-details='{"id":${film.id},
+                                                                                  "name":"${film.name}"}'>${film.name}</option>
                                     </d:forEach>
                                 </select>
                             </div>
@@ -110,7 +111,7 @@
                                 </div>
                             </div>
 
-                            <button type="" class="btn btn-primary">Add film to schedule</button>
+                            <button type="" class="btn btn-primary" onclick="addFilmToSchedule()">Add film to schedule</button>
                         </div>
                     </div>
 
@@ -186,8 +187,15 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
 
 <!-- Time picker -->
 <script type="text/javascript">
-    $('#startTimePicker').timepicker();
-    $('#endTimePicker').timepicker();
+    $('#startTimePicker').timepicker(
+            {
+                showMeridian: false,
+                defaultTime: false
+            });
+    $('#endTimePicker').timepicker( {
+        showMeridian: false,
+        defaultTime: false
+    });
 </script>
 
 <!-- Time picker -->
@@ -233,9 +241,10 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         $('#scheduleDateSelector').find("option").remove();
         for(var i in dates){
             var filmSchedule = new FilmSchedule();
+            filmSchedule.id="filmCell"+i;
             filmSchedule.rowName = dates[i];
             filmScheduler.push(filmSchedule);
-            $('#scheduleDateSelector').append($('<option>', {value:filmSchedule.rowName, text:filmSchedule.rowName}));
+            $('#scheduleDateSelector').append($('<option>', {id:filmSchedule.id,value:filmSchedule.rowName, text:filmSchedule.rowName}));
         }
         drawTimeTable();
     }
@@ -279,15 +288,11 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         }
         return dateArray;
     }
-    function removeScheduleRow(elem){
-        console.log(elem);
-    }
-
 
 
 
     var FilmSchedule = function(){
-        this.id = 0;
+        this.id = "";
         this.rowName = "";
         this.filmTime = [];
     };
@@ -301,7 +306,81 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         };
     };
 
-    initTimeTable();
+
+
+    function addFilmToSchedule(){
+        var scheduleDateStr = $("#scheduleDateSelector").val();
+        var startTime = $("#startTimePicker").val();
+        var endTime = $("#endTimePicker").val();
+
+        var film = {};
+
+        /* Schedule time initilizing variables */
+        var year = 0;
+        var month = 0;
+        var day = 0;
+        var startHour=0;
+        var startMin =0;
+        var endHour =0;
+        var endMin =0;
+        var scheduleDate = moment(scheduleDateStr,"MMMM Do YYYY");
+
+        try{
+            film = $("#filmSelector option:selected").data("details");
+
+
+            var tmpStartTimeArray = startTime.split(":");
+            var tmpEndTimeeArray = endTime.split(":");
+
+            year = parseInt(scheduleDate.format("YYYY"));
+            month = parseInt(scheduleDate.format("M"));
+            day = parseInt(scheduleDate.format("d"));
+            startHour = parseInt(tmpStartTimeArray[0]);
+            startMin = parseInt(tmpStartTimeArray[1]);
+            endHour = parseInt(tmpEndTimeeArray[0]);
+            endMin = parseInt(tmpEndTimeeArray[1]);
+
+            if(typeof film == "string"){
+                film = JSON.parse(film);
+            }
+        }catch(ex){
+            console.log(ex);
+            return;
+        }
+
+        var filmTime = new FilmTime();
+        filmTime.filmId = film.id;
+        filmTime.filmName = film.name;
+
+
+
+        filmTime.filmStartTime = new Date(year,month,day,startHour,startMin);
+        filmTime.filmEndTime = new Date(year,month,day,endHour,endMin);
+
+        var index = getFilmScheduleRowByRowName(scheduleDateStr);
+        filmScheduler[index].filmTime.push(filmTime);
+        drawTimeTable();
+    }
+
+    function getFilmScheduleRowByRowName(rowName){
+        for(var index in filmScheduler){
+            if(filmScheduler[index].rowName === rowName){
+                return index;
+            }
+        }
+        return -1;
+    }
+    function hasCollusion(index,filmTime){
+        var filmTime = new FilmTime();
+        for(var i in filmScheduler[index].filmTime ){
+            var currentFilmTime = filmScheduler[index].filmTime[i];
+            filmTime.filmStartTime == currentFilmTime.filmStartTime
+            filmTime.filmEndTime ==  currentFilmTime.filmEndTime
+        }
+    }
+
+
+
 </script>
 </body>
 

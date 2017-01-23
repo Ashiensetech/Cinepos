@@ -123,19 +123,7 @@ Timetable.Renderer = function(tt) {
 			function appendRowHeaders(ulNode) {
 				for (var k=0; k<timetable.locations.length; k++) {
 					var liNode = ulNode.appendChild(document.createElement('li'));
-                    var crossNode = liNode.appendChild(document.createElement('span'));
                     var spanNode = liNode.appendChild(document.createElement('span'));
-
-                    crossNode.textContent="x";
-                    crossNode.className = 'sc-remove';
-                    if(removeScheduleRow != undefined){
-                        crossNode.addEventListener("click",function(e){
-                            removeScheduleRow(this);
-                        });
-                    }else{
-                        console.log("removeScheduleRow function not present");
-                    }
-
 					spanNode.className = 'row-heading';
 					spanNode.textContent = timetable.locations[k];
 				}
@@ -186,9 +174,10 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendEvent(event, node) {
 				var hasOptions = event.options !== undefined;
-				var hasURL, hasAdditionalClass, hasDataAttributes,hasClickEvent = true;
+				var hasURL, hasAdditionalClass, hasDataAttributes,hasClickEvent,hasId = true;
 
 				if(hasOptions) {
+					hasId = (event.options.id !== undefined) ? true : false;
 					hasURL = (event.options.url !== undefined) ? true : false;
 					hasAdditionalClass = (event.options.class !== undefined) ? true : false;
 					hasDataAttributes = (event.options.data !== undefined) ? true : false;
@@ -208,6 +197,11 @@ Timetable.Renderer = function(tt) {
 						aNode.setAttribute('data-'+key, event.options.data[key]);
 					}
 				}
+				if(hasId){
+					aNode.setAttribute('id', event.options.id);
+				}
+
+
                 if(hasClickEvent){
                     aNode.addEventListener("click",function(e){
                         event.options.onclick(this);

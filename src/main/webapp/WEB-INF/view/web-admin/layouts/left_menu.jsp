@@ -164,12 +164,23 @@
                     </li>
                     <li>
                         <a href="<c:url value="/admin/seat-price-shift/create" />">Create</a>
-
                     </li>
-
                 </ul>
                 <!-- /.nav-second-level -->
             </li>
+            <li>
+                <a href="#">Scheduling film<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li>
+                        <a href="<c:url value="/admin/film-scheduling/all" />">All</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/film-scheduling/create" />">Create</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+
         </ul>
 
     </div>

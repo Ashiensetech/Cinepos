@@ -11,16 +11,27 @@ import static java.lang.System.out;
 /**
  * Created by mi on 12/21/16.
  */
+class Animal{
+    public void sound(){
+        System.out.println("Sound Like Animal");
+    }
+}
+class Dog extends Animal{
+    public void sound(){
+        System.out.println("Sound Like Dog");
+    }
+}
+class Cat extends Animal{
+    public void sound(){
+        System.out.println("Sound Like Cat");
+    }
+}
 public class IfaceTest {
 
 
     public static void main(String[] args) {
-       Set<Integer> i = new HashSet<>();
+         Cat c = (Cat) new Animal();
 
-        i.add(1);
-        i.add(1);
-        i.add(2);
-        out.println(i);
     }
 
 
