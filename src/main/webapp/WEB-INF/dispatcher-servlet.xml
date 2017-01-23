@@ -85,6 +85,7 @@
                 <value>entity.Combo</value>
                 <value>entity.ComboProduct</value>
                 <value>entity.FilmRental</value>
+                <value>entity.ComboProduct</value>
 
             </list>
         </property>
