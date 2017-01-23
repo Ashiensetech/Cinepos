@@ -75,12 +75,10 @@
                                                     Active
                                                 </d:if>
                                             </button>
-                                            <%--<a href="<c:url value="/admin/combo/edit/${comboValue.id}" />"--%>
-                                               <%--type="button"--%>
-                                               <%--class="btn btn-outline btn-primary" >Edit</a>--%>
-                                            <a href="<c:url value="#" />"
+                                            <a href="<c:url value="/admin/combo/edit/${comboValue.id}" />"
                                                type="button"
                                                class="btn btn-outline btn-primary" >Edit</a>
+
                                             <p id="statusMsg${comboValue.id}"></p>
                                         </td>
                                     </tr>

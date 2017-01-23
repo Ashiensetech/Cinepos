@@ -75,10 +75,10 @@
 
                             <div class="col-lg-12 clearfix combo-selector">
                                 <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="ticketRadio" value="option1"> Ticket + Concession Product
+                                    <input type="radio" name="inlineRadioOptions" id="ticketRadio" value="ticketRadio" checked="checked"> Ticket + Concession Product
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="inlineRadioOptions" id="productRadio" value="option2"> Concession Product
+                                    <input type="radio" name="inlineRadioOptions" id="productRadio" value="productRadio"> Concession Product
                                 </label>
 
                             </div>
@@ -86,10 +86,12 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label>Ticket</label>
-                                    <select class="form-control">
+                                    <select class="form-control" id="tickets">
                                         <option>Active</option>
                                         <option>Inactive</option>
                                     </select>
+                                    <p class="help-block error" id="errorMsg_tickets"></p>
+
                                 </div>
                                 <div class="form-group">
                                     <label>Product</label><br>
@@ -105,8 +107,7 @@
 
                                     </select>
                                     <button type="button" class="btn btn-primary" onclick="return addProductToCombo()">Add</button>
-                                    <p class="help-block error" id="errorMsg_concessionProduct"></p>
-
+                                    <p class="help-block error" id="errorMsg_productIds"></p>
                                 </div>
 
                             </div>
@@ -123,10 +124,9 @@
 
                                         </ul>
                                         <div class="plist-total">
-                                            Total <span class="plist-price" id="plistTotal"></span>
+                                            Total<span class="plist-price" id="plistTotal"></span>
                                         </div>
                                     </div>
-                                    <p class="help-block error" id="errorMsg_productIds"></p>
                                 </div>
                             </div>
                         </div>
@@ -149,6 +149,7 @@
     <script type="application/javascript">
 
         var products = [];
+        var radioOption=[];
 
         function addProductToCombo() {
             var productId=$("#concessionProduct").val();
@@ -180,7 +181,7 @@
                     var pListPrice="";
 
                     productHtml+='<li>'
-                    productHtml+=data.name+' <span class="plist-price plistPrice" data-proids="'+data.id+'">'+data.sellingPrice+'</span>'
+                    productHtml+=data.name+' <span class="plist-price plistPrice" data-price="'+data.sellingPrice+'" data-proids="'+data.id+'">$'+data.sellingPrice+'</span>'
                     productHtml+='<span class="plist-remove" data-proid="'+data.id+'">X</span>'
                     productHtml+='</li>';
 
@@ -202,23 +203,36 @@
             pListPrice=$(".plistPrice");
 
             pListPrice.each(function (index) {
-                //console.log($(this ).text());
-                //console.log($(this ).data('proids'));
                 products.push($(this ).data('proids'));
-               // console.log(products);
-                price+=parseInt($(this ).text());
-                console.log("dsdsds");
-
+                price+=parseFloat($(this ).data("price"));
             });
 
-            $('#plistTotal').text(price);
+            $('#plistTotal').text("$"+price);
         }
 
 
 
         $(document).ready(function () {
 
+
+
+            $('input:radio[name=inlineRadioOptions]').click(function () {
+                radioOption=[];
+                radioOption[$(this).val()]=$(this).val();
+                    if (radioOption.hasOwnProperty('ticketRadio'))
+                        $("#tickets").show("slow");
+                    else
+                        $("#tickets").hide("slow");
+
+                console.log(radioOption);
+            });
+
             $('#comboBtn').click(function () {
+                if(radioOption.hasOwnProperty('ticketRadio')){
+                   $("#errorMsg_tickets").text("Tickets are required");
+                    //BindErrorsWithHtml("errorMsg_",response.responseJSON);
+                }
+
                 var comboName=$("#comboName").val();
                 var details=$("#details").val();
                 var price=$("#price").val();
