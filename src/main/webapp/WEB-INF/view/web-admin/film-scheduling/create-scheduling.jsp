@@ -150,6 +150,39 @@
     <%------------------------------------------------------------------------------------%>
 </div>
 
+<div id="changeFilmTimeModal" class="modal fade">
+    <div class="form-group">
+        <label>Select date</label>
+        <select id="scheduleDateSelector" class="form-control">
+            <option value=""></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Select Film</label>
+        <select id="filmSelector" class="form-control">
+            <d:forEach var="film" items="${films}" >
+                <option value="${film.id}" data-details='{"id":${film.id},
+                                                                                  "name":"${film.name}"}'>${film.name}</option>
+            </d:forEach>
+        </select>
+    </div>
+    <div class="form-group">
+        <label>Start time</label>
+        <div class="input-group bootstrap-timepicker timepicker">
+            <input id="startTimePicker" type="text" class="form-control input-small">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>End time</label>
+        <div class="input-group bootstrap-timepicker timepicker">
+            <input id="endTimePicker" type="text" class="form-control input-small">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+        </div>
+    </div>
+
+    <button  class="btn btn-primary" onclick="addFilmToSchedule()">Add film to schedule</button>
+</div>
 <jsp:directive.include file="../layouts/footer.jsp"/>
 <!-- dropzone JavaScript -->
 
@@ -206,12 +239,12 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
     function initTimeTable(){
 
         var filmSchedule = new FilmSchedule();
-        filmSchedule.rowName="A";
+        filmSchedule.date="A";
         var filmTime = new FilmTime();
 
         filmTime.filmName = "Beautiful Mind";
         filmTime.filmStartTime = new Date(2015,7,17,9,00);
-        filmTime.filmEndTime = new Date(2015,7,17,11,30);
+        filmTime.endTime = new Date(2015,7,17,11,30);
 
 
 
@@ -228,7 +261,7 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         };
         filmSchedule.filmTime.push(filmTime);
         filmScheduler.push(filmSchedule);
-
+        drawTimeTable();
 
     }
     function createScheduling(){
@@ -242,9 +275,9 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         for(var i in dates){
             var filmSchedule = new FilmSchedule();
             filmSchedule.id="filmCell"+i;
-            filmSchedule.rowName = dates[i];
+            filmSchedule.date = dates[i];
             filmScheduler.push(filmSchedule);
-            $('#scheduleDateSelector').append($('<option>', {id:filmSchedule.id,value:filmSchedule.rowName, text:filmSchedule.rowName}));
+            $('#scheduleDateSelector').append($('<option>', {id:filmSchedule.id,value:filmSchedule.date, text:filmSchedule.date}));
         }
         drawTimeTable();
     }
@@ -256,14 +289,14 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
 
         timetable.setScope(9,3);
 
-        var rowNames = [];
+        var dates = [];
         for(var r in filmScheduler){
-            rowNames.push(filmScheduler[r].rowName);
+            dates.push(filmScheduler[r].date);
         }
-        timetable.addLocations(rowNames);
+        timetable.addLocations(dates);
         for(var r in filmScheduler){
-            var rowName = filmScheduler[r].rowName;
-            var scheduleDate = filmScheduler[r].rowName;;
+            var date = filmScheduler[r].date;
+            var scheduleDate = filmScheduler[r].date;;
             var filmTimes = filmScheduler[r].filmTime;
             for(var c in filmTimes){
                 filmTimes[c].options = {id:"film_"+filmTimes[c].filmId,
@@ -272,7 +305,7 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
                         id:filmTimes[c].filmId,
                         filmname:filmTimes[c].filmName,
                         starttime:moment(filmTimes[c].filmStartTime).format('H:mm'),
-                        endtme:moment(filmTimes[c].filmEndTime).format('H:mm'),
+                        endtme:moment(filmTimes[c].endTime).format('H:mm'),
                         screenname:$("#screenSelector option:selected").text(),
                         scheduledate:scheduleDate
                     },
@@ -289,9 +322,9 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
 
                     }
                 };
-                timetable.addEvent(filmTimes[c].filmName, rowName,
-                        filmTimes[c].filmStartTime,
-                        filmTimes[c].filmEndTime,
+                timetable.addEvent(filmTimes[c].filmName, date,
+                        filmTimes[c].startTime,
+                        filmTimes[c].endTime,
                         filmTimes[c].options);
             }
 
@@ -317,19 +350,19 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
 
     var FilmSchedule = function(){
         this.id = "";
-        this.rowName = "";
+        this.date = "";
         this.filmTime = [];
     };
     var FilmTime=function(){
-      this.filmId=0;
+        this.filmId=0;
         this.filmName="";
-        this.filmStartTime = new Date();
-        this.filmEndTime = new Date();
+        this.startTime = new Date();
+        this.endTime = new Date();
         this.options={
 
         };
     };
-
+    var DISPLAY_FORMAT = "MMMM Do YYYY";
 
 
     function addFilmToSchedule(){
@@ -347,22 +380,22 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         var startMin =0;
         var endHour =0;
         var endMin =0;
-        var scheduleDate = moment(scheduleDateStr,"MMMM Do YYYY");
+        var scheduleDate = moment(scheduleDateStr,DISPLAY_FORMAT);
 
         try{
             film = $("#filmSelector option:selected").data("details");
 
 
             var tmpStartTimeArray = startTime.split(":");
-            var tmpEndTimeeArray = endTime.split(":");
+            var tmpEndTimeArray = endTime.split(":");
 
             year = parseInt(scheduleDate.format("YYYY"));
             month = parseInt(scheduleDate.format("M"));
             day = parseInt(scheduleDate.format("d"));
             startHour = parseInt(tmpStartTimeArray[0]);
             startMin = parseInt(tmpStartTimeArray[1]);
-            endHour = parseInt(tmpEndTimeeArray[0]);
-            endMin = parseInt(tmpEndTimeeArray[1]);
+            endHour = parseInt(tmpEndTimeArray[0]);
+            endMin = parseInt(tmpEndTimeArray[1]);
 
             if(typeof film == "string"){
                 film = JSON.parse(film);
@@ -378,10 +411,10 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
 
 
 
-        filmTime.filmStartTime = new Date(year,month,day,startHour,startMin);
-        filmTime.filmEndTime = new Date(year,month,day,endHour,endMin);
+        filmTime.startTime = new Date(year,month,day,startHour,startMin);
+        filmTime.endTime = new Date(year,month,day,endHour,endMin);
 
-        var index = getFilmScheduleRowByRowName(scheduleDateStr);
+        var index = getFilmScheduleRowBydate(scheduleDateStr);
         if(index>=0){
             if(!hasCollusion(index,filmTime)){
                 filmScheduler[index].filmTime.push(filmTime);
@@ -390,9 +423,9 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         }
     }
 
-    function getFilmScheduleRowByRowName(rowName){
+    function getFilmScheduleRowBydate(date){
         for(var index in filmScheduler){
-            if(filmScheduler[index].rowName === rowName){
+            if(filmScheduler[index].date === date){
                 return index;
             }
         }
@@ -401,11 +434,11 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
     function hasCollusion(index,filmTime){
         for(var i in filmScheduler[index].filmTime ){
             var currentFilmTime = filmScheduler[index].filmTime[i];
-            if(filmTime.filmStartTime < currentFilmTime.filmStartTime
-                    && filmTime.filmEndTime <  currentFilmTime.filmStartTime){
+            if(filmTime.startTime < currentFilmTime.startTime
+                    && filmTime.endTime <  currentFilmTime.startTime){
                 continue;
-            }else if(filmTime.filmStartTime > currentFilmTime.filmEndTime
-                    && filmTime.filmEndTime >  currentFilmTime.filmEndTime){
+            }else if(filmTime.startTime > currentFilmTime.endTime
+                    && filmTime.endTime >  currentFilmTime.endTime){
                 continue;
             }else{
                 alert("cONFLICT");
@@ -415,8 +448,65 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         return false;
     }
 
+    function submitPriceShiftData(){
 
+        /*$("#statusMsg").html("").hide();
 
+        var filmId =$("#filmId").val();
+        var startDate =$("#startDate").val();
+        var endDate =$("#endDate").val();
+        var weekName =$("#weekName").val();
+        enableDisableFormElement("createFilmForm",["input","button","select"],false);
+        var postData={
+            filmId:filmId,
+            weekName:weekName
+        };
+
+        if(startDate)
+            postData['startDate'] = startDate;
+        if(endDate)
+            postData['endDate'] = endDate;*/
+
+        $.ajax({
+            url: BASEURL+'api/admin/film-scheduling/create-merge',
+            type: 'POST',
+            data: {scheduleJson:JSON.stringify(getPostData())} ,
+            statusCode: {
+                401: function (response) {
+                    console.log("unauthorized");
+                    console.log(response);
+                    showLoginModal();
+                    enableDisableFormElement("createFilmForm",["input","button","select"],true);
+                },
+                422: function (response) {
+                    console.log(response);
+                    $("#statusMsg").html("Error found").show();
+                    BindErrorsWithHtml("errorMsg_",response.responseJSON);
+                    enableDisableFormElement("createFilmForm",["input","button","select"],true);
+                }
+            },success: function(data){
+                //$("#statusMsg").html("Film Rental created successfully").show();
+                setTimeout(function(){
+                   // window.location = BASEURL+"admin/film-rental/all";
+                },2000);
+            }
+        });
+        return false;
+    }
+    function getPostData(){
+        var tmpFilmScheduler =JSON.parse(JSON.stringify(filmScheduler));
+        for(var i in tmpFilmScheduler){
+           var filmSchedule =  tmpFilmScheduler[i];
+            filmSchedule.date = moment(filmSchedule.date,DISPLAY_FORMAT).format("YYYY-MM-DD");
+            for(var j in filmSchedule.filmTime){
+                var tmpFilmtime =  filmSchedule.filmTime[j];
+                tmpFilmtime.startTime = moment(tmpFilmtime.startTime).format("HH:mm:ss");
+                tmpFilmtime.endTime = moment(tmpFilmtime.endTime).format("HH:mm:ss");
+            }
+        }
+
+        return tmpFilmScheduler[0];
+    }
 </script>
 </body>
 

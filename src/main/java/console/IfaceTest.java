@@ -1,12 +1,17 @@
 package console;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import validator.admin.AdminFilmService.editFilm.EditFilmForm;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Time;
 import java.util.*;
 
 import static java.lang.System.out;
+import static java.lang.System.runFinalizersOnExit;
 
 /**
  * Created by mi on 12/21/16.
@@ -22,15 +27,32 @@ class Dog extends Animal{
     }
 }
 class Cat extends Animal{
+    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="HH:mm:ss")
+    Time dob;
+
     public void sound(){
         System.out.println("Sound Like Cat");
+    }
+
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "dob=" + dob +
+                "} " + super.toString();
     }
 }
 public class IfaceTest {
 
 
     public static void main(String[] args) {
-         Cat c = (Cat) new Animal();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+           Cat cat = objectMapper.readValue("{\"dob\":\"10:00:00\"}", Cat.class);
+            out.println(cat);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
