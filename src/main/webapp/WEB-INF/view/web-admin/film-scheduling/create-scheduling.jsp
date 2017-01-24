@@ -39,9 +39,9 @@
                     <div class="col-lg-6 center text-center">
                         <div class="form-group">
                             <label>Choose Screen</label>
-                            <select class="form-control">
-                                <option>Screen 1</option>
-                                <option>Screen 2</option>
+                            <select id="screenSelector" class="form-control">
+                                <option value="1">Screen 1</option>
+                                <option value="2">Screen 2</option>
                             </select>
                         </div>
                         <button type="" class="btn btn-primary">Submit</button>
@@ -115,13 +115,13 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-6 schedule-show ">
+                    <div id="filmTimeDetails" class="col-lg-6 schedule-show" style="display: none">
                         <div class="well text-center">
                             <h4>Film Schedule</h4>
-                            <p>Screen 1</p>
-                            <p>24 Dec 2016, Saturday</p>
-                            <p class="f-name">X-MEN</p>
-                            <p>11:30 AM-1:00PM</p>
+                            <p id="screenName"></p>
+                            <p id="scheduleDate"></p>
+                            <p id="filmName" class="f-name"></p>
+                            <p><span id="startTimeSpan"></span>-<span id="endTimeSpan"></span></p>
                             <hr>
                             <button type="" class="btn btn-danger">Remove this film</button>
                             <button type="" class="btn btn-success">Change timetable</button>
@@ -263,8 +263,32 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         timetable.addLocations(rowNames);
         for(var r in filmScheduler){
             var rowName = filmScheduler[r].rowName;
+            var scheduleDate = filmScheduler[r].rowName;;
             var filmTimes = filmScheduler[r].filmTime;
             for(var c in filmTimes){
+                filmTimes[c].options = {id:"film_"+filmTimes[c].filmId,
+                    data:{
+                        //camelCase does not work
+                        id:filmTimes[c].filmId,
+                        filmname:filmTimes[c].filmName,
+                        starttime:moment(filmTimes[c].filmStartTime).format('H:mm'),
+                        endtme:moment(filmTimes[c].filmEndTime).format('H:mm'),
+                        screenname:$("#screenSelector option:selected").text(),
+                        scheduledate:scheduleDate
+                    },
+                    onclick:function(elem){
+                        console.log($(elem));
+                        var filmTimeDetails = $(elem).data();
+
+                        $("#filmTimeDetails").show();
+                        $("#screenName").html(filmTimeDetails.screenname);
+                        $("#scheduleDate").html(filmTimeDetails.scheduledate);
+                        $("#filmName").html(filmTimeDetails.filmname);
+                        $("#startTimeSpan").html(filmTimeDetails.starttime);
+                        $("#endTimeSpan").html(filmTimeDetails.endtme);
+
+                    }
+                };
                 timetable.addEvent(filmTimes[c].filmName, rowName,
                         filmTimes[c].filmStartTime,
                         filmTimes[c].filmEndTime,
@@ -358,8 +382,12 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         filmTime.filmEndTime = new Date(year,month,day,endHour,endMin);
 
         var index = getFilmScheduleRowByRowName(scheduleDateStr);
-        filmScheduler[index].filmTime.push(filmTime);
-        drawTimeTable();
+        if(index>=0){
+            if(!hasCollusion(index,filmTime)){
+                filmScheduler[index].filmTime.push(filmTime);
+                drawTimeTable();
+            }
+        }
     }
 
     function getFilmScheduleRowByRowName(rowName){
@@ -371,12 +399,20 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         return -1;
     }
     function hasCollusion(index,filmTime){
-        var filmTime = new FilmTime();
         for(var i in filmScheduler[index].filmTime ){
             var currentFilmTime = filmScheduler[index].filmTime[i];
-            filmTime.filmStartTime == currentFilmTime.filmStartTime
-            filmTime.filmEndTime ==  currentFilmTime.filmEndTime
+            if(filmTime.filmStartTime < currentFilmTime.filmStartTime
+                    && filmTime.filmEndTime <  currentFilmTime.filmStartTime){
+                continue;
+            }else if(filmTime.filmStartTime > currentFilmTime.filmEndTime
+                    && filmTime.filmEndTime >  currentFilmTime.filmEndTime){
+                continue;
+            }else{
+                alert("cONFLICT");
+                return true;
+            }
         }
+        return false;
     }
 
 

@@ -1,4 +1,7 @@
-/*jshint -W079*/
+/**
+ * http://timetablejs.org/
+ * jshint -W079
+* */
 
 'use strict';
 
