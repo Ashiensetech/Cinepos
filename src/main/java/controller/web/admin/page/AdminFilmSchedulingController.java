@@ -1,10 +1,7 @@
 package controller.web.admin.page;
 
 import controller.web.admin.AdminUriPreFix;
-import dao.DistributorDao;
-import dao.FilmDao;
-import dao.GenreDao;
-import dao.ScreenDimensionDao;
+import dao.*;
 import entity.Distributor;
 import entity.Film;
 import entity.Genre;
@@ -35,10 +32,14 @@ public class AdminFilmSchedulingController {
     @Autowired
     GenreDao genreDao;
 
+    @Autowired
+    ScreenDao screeDao;
 
     @RequestMapping(value = "/create")
     public ModelAndView createSchedule(){
         ModelAndView mav =  new ModelAndView("web-admin/film-scheduling/create-scheduling");
+
+        mav.addObject("screens", screeDao.getAllActivated());
         mav.addObject("films",filmDao.getAllActive());
         return mav;
     }

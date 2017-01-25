@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -13,10 +14,22 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateOrMergeForm {
-    @NotBlank
+
+    @NotNull(message = "Screen required")
+    Integer screenId;
+
+    @NotBlank(message = "scheduleJson can't be empty")
     String scheduleJson;
     public ScheduleForm scheduleForm;
 
+
+    public Integer getScreenId() {
+        return screenId;
+    }
+
+    public void setScreenId(Integer screenId) {
+        this.screenId = screenId;
+    }
 
     public String getScheduleJson() {
         return scheduleJson;

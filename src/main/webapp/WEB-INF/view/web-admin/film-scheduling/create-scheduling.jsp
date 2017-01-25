@@ -39,12 +39,13 @@
                     <div class="col-lg-6 center text-center">
                         <div class="form-group">
                             <label>Choose Screen</label>
-                            <select id="screenSelector" class="form-control">
-                                <option value="1">Screen 1</option>
-                                <option value="2">Screen 2</option>
+                            <select id="screenSelector" class="form-control" >
+                                <d:forEach var="screen" items="${screens}" >
+                                    <option value="${screen.id}">${screen.name}</option>
+                                </d:forEach>
                             </select>
                         </div>
-                        <button type="" class="btn btn-primary">Submit</button>
+                        <button type="" class="btn btn-primary" onclick="triggerSubmitCreateSchedule()">Submit</button>
                     </div>
                 </div>
                 <div class="col-lg-12 clearfix">
@@ -149,40 +150,51 @@
     </div>
     <%------------------------------------------------------------------------------------%>
 </div>
-
-<div id="changeFilmTimeModal" class="modal fade">
-    <div class="form-group">
-        <label>Select date</label>
-        <select id="scheduleDateSelector" class="form-control">
-            <option value=""></option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label>Select Film</label>
-        <select id="filmSelector" class="form-control">
-            <d:forEach var="film" items="${films}" >
-                <option value="${film.id}" data-details='{"id":${film.id},
-                                                                                  "name":"${film.name}"}'>${film.name}</option>
-            </d:forEach>
-        </select>
-    </div>
-    <div class="form-group">
-        <label>Start time</label>
-        <div class="input-group bootstrap-timepicker timepicker">
-            <input id="startTimePicker" type="text" class="form-control input-small">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
+<div class="modal fade" id="changeFilmTimeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <form accept-charset="utf-8">
+                    <div class="form-group">
+                        <label>Sample input</label>
+                        <input type="text" class="form-control" name="">
+                    </div>
+                    <div class="form-group">
+                        <label>Select Film</label>
+                        <select  class="form-control">
+                            <d:forEach var="film" items="${films}" >
+                                <option value="${film.id}" data-details='{"id":${film.id},"name":"${film.name}"}'>${film.name}</option>
+                            </d:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Start time</label>
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <input id="modalStartTimePicker" type="time" class="form-control input-small">
+                         <%--   <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>End time</label>
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <input id="modalEndTimePicker" type="time" class="form-control input-small">
+                            <%--<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <label>End time</label>
-        <div class="input-group bootstrap-timepicker timepicker">
-            <input id="endTimePicker" type="text" class="form-control input-small">
-            <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-        </div>
-    </div>
-
-    <button  class="btn btn-primary" onclick="addFilmToSchedule()">Add film to schedule</button>
 </div>
+
 <jsp:directive.include file="../layouts/footer.jsp"/>
 <!-- dropzone JavaScript -->
 
@@ -190,7 +202,7 @@
 <%--<script src="<c:url value="/admin-resources/timetable/timetable.js" />"></script>--%>
 <!-- Timepicker @Overridden-->
 <script src="<c:url value="/admin-resources/developer/custom/vendor/timetable/timetable.js" />" ></script>
-file:///home/mi/Projects/j2ee/cinepos/src/main
+
 <!-- Timepicker -->
 <script src="<c:url value="/admin-resources/timepicker/bootstrap-timepicker.js" />" ></script>
 
@@ -229,6 +241,18 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         showMeridian: false,
         defaultTime: false
     });
+    /**
+     * Modal Time picker
+    * */
+  /*  $('#modalStartTimePicker').timepicker(
+            {
+                showMeridian: false,
+                defaultTime: false
+            });
+    $('#modalSndTimePicker').timepicker( {
+        showMeridian: false,
+        defaultTime: false
+    });*/
 </script>
 
 <!-- Time picker -->
@@ -236,50 +260,67 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
 <!-- Time table -->
 <script>
     var filmScheduler = [];
-    function initTimeTable(){
+    function initializeFilmScheduler(data){
+        filmScheduler = [];
+        $('#scheduleDateSelector').find("option").remove();
+        for(var i in data){
+            var tmpFilmSchedule = data[i];
+            var filmSchedule = new FilmSchedule();
+            var scheduleDateStr = getDateInDisplayFormat(tmpFilmSchedule.date);
+            filmSchedule.id="filmCell"+tmpFilmSchedule.id;
+            filmSchedule.date = scheduleDateStr;
+            filmScheduler.push(filmSchedule);
+            $('#scheduleDateSelector').append($('<option>', {id:filmSchedule.id,value:filmSchedule.date, text:filmSchedule.date}));
 
-        var filmSchedule = new FilmSchedule();
-        filmSchedule.date="A";
-        var filmTime = new FilmTime();
-
-        filmTime.filmName = "Beautiful Mind";
-        filmTime.filmStartTime = new Date(2015,7,17,9,00);
-        filmTime.endTime = new Date(2015,7,17,11,30);
-
-
-
-        filmTime.options = {
-            url: 'javascript:void(0)',
-            class: 'vip',
-            onclick:function(elem){
-                console.log(elem);
-            },
-            data: {
-                id: 0,
-                ticketType: 'VIP'
+            for(var ftIndex in tmpFilmSchedule.filmTimes){
+               var filmTime = tmpFilmSchedule.filmTimes[ftIndex];
+                addFilmToSchedule({
+                    scheduleDateStr : filmSchedule.date,
+                    startTime : filmTime.startTime,
+                    endTime :filmTime.endTime,
+                    film : {
+                        id : filmTime.film.id,
+                        name : filmTime.film.name
+                    }
+                });
             }
-        };
-        filmSchedule.filmTime.push(filmTime);
-        filmScheduler.push(filmSchedule);
-        drawTimeTable();
+
+        }
+
 
     }
     function createScheduling(){
         var startDate = $("#startDate").data('datepicker').getFormattedDate("yyyy-mm-dd");
-        var stopDate =$("#endDate").data('datepicker').getFormattedDate("yyyy-mm-dd");
+        var endDate =$("#endDate").data('datepicker').getFormattedDate("yyyy-mm-dd");
+        var screenId = $("#screenSelector").val();
+      //  var dates = getDates(startDate,endDate);
 
-        var dates = getDates(startDate,stopDate);
 
-        filmScheduler = [];
-        $('#scheduleDateSelector').find("option").remove();
-        for(var i in dates){
-            var filmSchedule = new FilmSchedule();
-            filmSchedule.id="filmCell"+i;
-            filmSchedule.date = dates[i];
-            filmScheduler.push(filmSchedule);
-            $('#scheduleDateSelector').append($('<option>', {id:filmSchedule.id,value:filmSchedule.date, text:filmSchedule.date}));
-        }
-        drawTimeTable();
+        $.ajax({
+            url: BASEURL+'api/app/film-scheduling/get-all-in-date-range/'+screenId,
+            type: 'POST',
+            data: {"startDate":startDate,"endDate":endDate},
+            statusCode: {
+                401: function (response) {
+                    console.log("unauthorized");
+                   // showLoginModal();
+                    //enableDisableFormElement("createFilmForm",["input","button","select"],true);
+                },
+                422: function (response) {
+                    console.log(response);
+                    $("#statusMsg").html("Error found").show();
+                  //  BindErrorsWithHtml("errorMsg_",response.responseJSON);
+                  //  enableDisableFormElement("createFilmForm",["input","button","select"],true);
+                }
+            },success: function(data){
+                //$("#statusMsg").html("Film Rental created successfully").show();
+                console.log(data);
+                initializeFilmScheduler(data);
+                drawTimeTable();
+
+            }
+        });
+
     }
     function drawTimeTable(){
 
@@ -333,14 +374,16 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         var renderer = new Timetable.Renderer(timetable);
         renderer.draw('.timetable');
     }
-
+    function getDateInDisplayFormat(date) {
+        return moment(date).format(DISPLAY_DATE_FORMAT);
+    }
     function getDates(startDate, stopDate) {
         //        date Format for startDate and stopDate 'YYYY-MM-DD'
         var dateArray = [];
         var currentDate = moment(startDate);
         var endDate = moment(stopDate);
         while (currentDate <= endDate   ) {
-            dateArray.push( moment(currentDate).format('MMMM Do YYYY'));
+            dateArray.push( moment(currentDate).format(DISPLAY_DATE_FORMAT));
             currentDate = moment(currentDate).add(1, 'days');
         }
         return dateArray;
@@ -362,13 +405,22 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
 
         };
     };
-    var DISPLAY_FORMAT = "MMMM Do YYYY";
+    var DISPLAY_DATE_FORMAT = "MMMM Do YYYY";
 
 
-    function addFilmToSchedule(){
-        var scheduleDateStr = $("#scheduleDateSelector").val();
-        var startTime = $("#startTimePicker").val();
-        var endTime = $("#endTimePicker").val();
+    function addFilmToSchedule(filmTimeData){
+       
+        if(filmTimeData==undefined){
+            filmTimeData ={
+                 scheduleDateStr : $("#scheduleDateSelector").val(),
+                 startTime : $("#startTimePicker").val(),
+                 endTime : $("#endTimePicker").val(),
+                film : $("#filmSelector option:selected").data("details")
+            };
+        }
+        var scheduleDateStr =filmTimeData.scheduleDateStr;
+        var startTime = filmTimeData.startTime;
+        var endTime = filmTimeData.endTime;
 
         var film = {};
 
@@ -380,20 +432,21 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         var startMin =0;
         var endHour =0;
         var endMin =0;
-        var scheduleDate = moment(scheduleDateStr,DISPLAY_FORMAT);
+        var scheduleDate = moment(scheduleDateStr,DISPLAY_DATE_FORMAT);
 
         try{
-            film = $("#filmSelector option:selected").data("details");
+            film = filmTimeData.film;
 
 
             var tmpStartTimeArray = startTime.split(":");
             var tmpEndTimeArray = endTime.split(":");
+            var tmpMin = parseInt(tmpStartTimeArray[1]);
 
             year = parseInt(scheduleDate.format("YYYY"));
             month = parseInt(scheduleDate.format("M"));
             day = parseInt(scheduleDate.format("d"));
             startHour = parseInt(tmpStartTimeArray[0]);
-            startMin = parseInt(tmpStartTimeArray[1]);
+            startMin = (tmpMin>=0||tmpMin<=9)?"0"+tmpMin:tmpMin; // Two digits required ..why?? ..... Crazy JS knows!!!
             endHour = parseInt(tmpEndTimeArray[0]);
             endMin = parseInt(tmpEndTimeArray[1]);
 
@@ -448,7 +501,7 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         return false;
     }
 
-    function submitPriceShiftData(){
+    function triggerSubmitCreateSchedule(){
 
         /*$("#statusMsg").html("").hide();
 
@@ -466,11 +519,27 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
             postData['startDate'] = startDate;
         if(endDate)
             postData['endDate'] = endDate;*/
+        var postDataArray = getPostData();
+        submitCreateSchedule(postDataArray);
 
+    }
+
+    function submitCreateSchedule(postDataArray){
+        var postData;
+        if(postDataArray.length > 0){
+            postData = postDataArray.pop();
+        }else{
+            return;
+        }
+
+        var screenId = $("#screenSelector").val();
         $.ajax({
             url: BASEURL+'api/admin/film-scheduling/create-merge',
             type: 'POST',
-            data: {scheduleJson:JSON.stringify(getPostData())} ,
+            data: {
+                screenId:screenId,
+                scheduleJson:JSON.stringify(postData)
+            } ,
             statusCode: {
                 401: function (response) {
                     console.log("unauthorized");
@@ -486,9 +555,8 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
                 }
             },success: function(data){
                 //$("#statusMsg").html("Film Rental created successfully").show();
-                setTimeout(function(){
-                   // window.location = BASEURL+"admin/film-rental/all";
-                },2000);
+                submitCreateSchedule(postDataArray);
+                console.log(data);
             }
         });
         return false;
@@ -497,7 +565,7 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
         var tmpFilmScheduler =JSON.parse(JSON.stringify(filmScheduler));
         for(var i in tmpFilmScheduler){
            var filmSchedule =  tmpFilmScheduler[i];
-            filmSchedule.date = moment(filmSchedule.date,DISPLAY_FORMAT).format("YYYY-MM-DD");
+            filmSchedule.date = moment(filmSchedule.date,DISPLAY_DATE_FORMAT).format("YYYY-MM-DD");
             for(var j in filmSchedule.filmTime){
                 var tmpFilmtime =  filmSchedule.filmTime[j];
                 tmpFilmtime.startTime = moment(tmpFilmtime.startTime).format("HH:mm:ss");
@@ -505,7 +573,7 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
             }
         }
 
-        return tmpFilmScheduler[0];
+        return tmpFilmScheduler;
     }
 </script>
 </body>

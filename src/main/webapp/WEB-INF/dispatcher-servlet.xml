@@ -86,7 +86,8 @@
                 <value>entity.ComboProduct</value>
                 <value>entity.FilmRental</value>
                 <value>entity.ComboProduct</value>
-
+                <value>entity.FilmSchedule</value>
+                <value>entity.FilmTime</value>
             </list>
         </property>
         <property name="hibernateProperties">
