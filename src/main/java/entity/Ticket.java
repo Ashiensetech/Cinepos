@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Set;
 
 /**
  * Created by mi on 1/24/17.
@@ -17,10 +18,28 @@ public class Ticket {
     @Column(name = "id")
     private int id;
 
-    @Basic
-    @Column(name = "seat_type_id")
-    private int seatTypeId;
+    public SeatType getSeatType() {
+        return seatType;
+    }
 
+    public void setSeatType(SeatType seatType) {
+        this.seatType = seatType;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "seat_type_id",referencedColumnName = "id")
+    private SeatType seatType;
+
+    @OneToOne
+    @JoinColumn(name = "vat_id",referencedColumnName = "id")
+    private VatSetting vat;
+
+    @ManyToMany
+    @JoinTable(name = "ticket_channels", joinColumns = {
+            @JoinColumn(name = "ticket_id", nullable = false, updatable = false) },
+            inverseJoinColumns = { @JoinColumn(name = "channel_id",
+                    nullable = false, updatable = false) })
+    private Set<TicketChannels> ticketChannels;
 
     @Basic
     @Column(name = "name")
@@ -42,9 +61,14 @@ public class Ticket {
     @Column(name = "sale_channels")
     private String saleChannels;
 
-    @Basic
-    @Column(name = "vat_id")
-    private Integer vatId;
+
+    public VatSetting getVat() {
+        return vat;
+    }
+
+    public void setVat(VatSetting vat) {
+        this.vat = vat;
+    }
 
     @Basic
     @Column(name = "is_child")
@@ -79,15 +103,6 @@ public class Ticket {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-
-    public int getSeatTypeId() {
-        return seatTypeId;
-    }
-
-    public void setSeatTypeId(int seatTypeId) {
-        this.seatTypeId = seatTypeId;
     }
 
     public String getName() {
@@ -131,12 +146,12 @@ public class Ticket {
         this.saleChannels = saleChannels;
     }
 
-    public Integer getVatId() {
-        return vatId;
+    public Set<TicketChannels> getTicketChannels() {
+        return ticketChannels;
     }
 
-    public void setVatId(Integer vatId) {
-        this.vatId = vatId;
+    public void setTicketChannels(Set<TicketChannels> ticketChannels) {
+        this.ticketChannels = ticketChannels;
     }
 
     public boolean isChild() {
@@ -203,10 +218,13 @@ public class Ticket {
         Ticket ticket = (Ticket) o;
 
         if (id != ticket.id) return false;
-        if (seatTypeId != ticket.seatTypeId) return false;
         if (isChild != ticket.isChild) return false;
         if (isAdult != ticket.isAdult) return false;
         if (status != ticket.status) return false;
+        if (seatType != null ? !seatType.equals(ticket.seatType) : ticket.seatType != null) return false;
+        if (vat != null ? !vat.equals(ticket.vat) : ticket.vat != null) return false;
+        if (ticketChannels != null ? !ticketChannels.equals(ticket.ticketChannels) : ticket.ticketChannels != null)
+            return false;
         if (name != null ? !name.equals(ticket.name) : ticket.name != null) return false;
         if (description != null ? !description.equals(ticket.description) : ticket.description != null) return false;
         if (annotation != null ? !annotation.equals(ticket.annotation) : ticket.annotation != null) return false;
@@ -214,25 +232,24 @@ public class Ticket {
             return false;
         if (saleChannels != null ? !saleChannels.equals(ticket.saleChannels) : ticket.saleChannels != null)
             return false;
-        if (vatId != null ? !vatId.equals(ticket.vatId) : ticket.vatId != null) return false;
         if (startDate != null ? !startDate.equals(ticket.startDate) : ticket.startDate != null) return false;
         if (endDate != null ? !endDate.equals(ticket.endDate) : ticket.endDate != null) return false;
         if (createdBy != null ? !createdBy.equals(ticket.createdBy) : ticket.createdBy != null) return false;
-        if (createdAt != null ? !createdAt.equals(ticket.createdAt) : ticket.createdAt != null) return false;
+        return createdAt != null ? createdAt.equals(ticket.createdAt) : ticket.createdAt == null;
 
-        return true;
     }
 
     @Override
     public int hashCode() {
         int result = id;
-        result = 31 * result + seatTypeId;
+        result = 31 * result + (seatType != null ? seatType.hashCode() : 0);
+        result = 31 * result + (vat != null ? vat.hashCode() : 0);
+        result = 31 * result + (ticketChannels != null ? ticketChannels.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (annotation != null ? annotation.hashCode() : 0);
         result = 31 * result + (printedPrice != null ? printedPrice.hashCode() : 0);
         result = 31 * result + (saleChannels != null ? saleChannels.hashCode() : 0);
-        result = 31 * result + (vatId != null ? vatId.hashCode() : 0);
         result = 31 * result + (isChild ? 1 : 0);
         result = 31 * result + (isAdult ? 1 : 0);
         result = 31 * result + (status ? 1 : 0);
@@ -241,5 +258,27 @@ public class Ticket {
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", seatType=" + seatType +
+                ", vat=" + vat +
+                ", ticketChannels=" + ticketChannels +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", annotation='" + annotation + '\'' +
+                ", printedPrice=" + printedPrice +
+                ", saleChannels='" + saleChannels + '\'' +
+                ", isChild=" + isChild +
+                ", isAdult=" + isAdult +
+                ", status=" + status +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

@@ -33,7 +33,6 @@ CREATE TABLE IF NOT EXISTS `ticket` (
   `description` text NOT NULL,
   `annotation` varchar(100) NOT NULL,
   `printed_price` decimal(8,2) NOT NULL,
-  `sale_channels` enum('Web','POS','Kiosk') NOT NULL,
   `vat_id` int(11) DEFAULT NULL,
   `is_child` tinyint(1) NOT NULL,
   `is_adult` tinyint(1) NOT NULL,
