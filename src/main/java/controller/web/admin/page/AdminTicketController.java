@@ -2,8 +2,10 @@ package controller.web.admin.page;
 
 import controller.web.admin.AdminUriPreFix;
 import dao.SeatTypeDao;
+import dao.TicketDao;
 import dao.VatSettingDao;
 import entity.SeatType;
+import entity.Ticket;
 import entity.VatSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,9 @@ public class AdminTicketController {
     @Autowired
     VatSettingDao vatSettingDao;
 
+    @Autowired
+    TicketDao ticketDao;
+
     @RequestMapping(value = "/create")
     public ModelAndView createTicket(){
         List<SeatType> seatTypes = seatTypeDao.getAll();
@@ -33,6 +38,14 @@ public class AdminTicketController {
         ModelAndView mav =  new ModelAndView("web-admin/ticket/create-ticket");
         mav.addObject("seatTypes",seatTypes);
         mav.addObject("vats",vats);
+        return mav;
+    }
+
+    @RequestMapping(value = "/all")
+    public ModelAndView allTicket(){
+        List<Ticket> tickets = ticketDao.getAll();
+        ModelAndView mav =  new ModelAndView("web-admin/ticket/all-tickets");
+        mav.addObject("tickets",tickets);
         return mav;
     }
 }

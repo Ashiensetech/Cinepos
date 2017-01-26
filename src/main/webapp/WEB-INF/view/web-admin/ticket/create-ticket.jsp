@@ -32,10 +32,25 @@
                 <div class="col-lg-6">
                     <form id="createTicketForm">
                         <div class="form-group">
+                            <label>Name</label>
+                            <input id="name" class="form-control">
+                            <p class="help-block error" id="errorMsg_name"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input id="description" class="form-control">
+                            <p class="help-block error" id="errorMsg_description"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Annotation</label>
+                            <input id="annotation" class="form-control">
+                            <p class="help-block error" id="errorMsg_annotation"></p>
+                        </div>
+                        <div class="form-group">
                             <label>Seat</label>
                             <select class="form-control" id="seatTypeId" >
                                 <d:forEach var="seat" items="${seatTypes}" >
-                                    <option value="${seat.id}">${seat.name}</option>
+                                    <option value="${seat.id}" data-adult-price="${seat.adultPrice}" data-child-price="${seat.childPrice}">${seat.name}</option>
                                 </d:forEach>
                             </select>
                             <p class="help-block error" id="errorMsg_seatTypeId"></p>
@@ -45,10 +60,18 @@
                             <label>Vat</label>
                             <select class="form-control" id="vatId" >
                                 <d:forEach var="vat" items="${vats}" >
-                                    <option value="${vat.id}">${vat.name}</option>
+                                    <option value="${vat.id}" data-price = ${vat.amount}>${vat.name}</option>
                                 </d:forEach>
                             </select>
                             <p class="help-block error" id="errorMsg_vatId"></p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Is Child</label><br>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="isChild">Yes
+                            </label>
+                            <p class="help-block error" id="errorMsg_isChild"></p>
                         </div>
 
                         <div class="form-group">
@@ -94,6 +117,7 @@
 <jsp:directive.include file="../layouts/footer.jsp" />
 
 <script>
+    doPriceCalculation();
     function submitTicketData(){
 
         $("#statusMsg").html("").hide();
@@ -102,12 +126,24 @@
         var vatId =$("#vatId").val();
         var startDate =$("#startDate").val();
         var endDate =$("#endDate").val();
+        var isChild = $("#isChild").prop("checked");
+        var isAdult = true;
+        if(isChild)
+            isAdult=false;
         var printedPrice =$("#printedPrice").val();
+        var name =$("#name").val();
+        var description =$("#description").val();
+        var annotation =$("#annotation").val();
         enableDisableFormElement("createTicketForm",["input","button","select"],false);
         var postData={
             seatTypeId:seatTypeId,
+            name:name,
+            description:description,
+            annotation:annotation,
             printedPrice:printedPrice,
-            vatId:vatId
+            vatId:vatId,
+            isChild:isChild,
+            isAdult : isAdult
         };
 
         if(startDate)
@@ -140,6 +176,24 @@
             }
         });
         return false;
+    }
+
+    $("#isChild").change(doPriceCalculation);
+    $("#isAdult").change(doPriceCalculation);
+    $("#seatTypeId").change(doPriceCalculation);
+    $("#vatId").change(doPriceCalculation);
+
+
+    function doPriceCalculation(){
+        var adultPrice = $("option:selected","#seatTypeId").attr("data-adult-price");
+        var childPrice = $("option:selected","#seatTypeId").attr("data-child-price");
+        var isChild = $("#isChild").prop("checked");
+        var seatPrice = adultPrice;
+        if(isChild)
+            seatPrice = childPrice;
+        var vatPercentage = $("option:selected","#vatId").attr("data-price");
+        var totalPrice = parseFloat(seatPrice)+(parseFloat(seatPrice)*parseFloat(vatPercentage))/100;
+        $("#printedPrice").val(totalPrice);
     }
 </script>
 </body>
