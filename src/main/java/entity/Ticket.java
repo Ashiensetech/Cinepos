@@ -39,7 +39,7 @@ public class Ticket {
             @JoinColumn(name = "ticket_id", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "channel_id",
                     nullable = false, updatable = false) })
-    private Set<TicketChannels> ticketChannels;
+    private Set<SellsChannel> sellsChannels;
 
     @Basic
     @Column(name = "name")
@@ -55,12 +55,7 @@ public class Ticket {
 
     @Basic
     @Column(name = "printed_price")
-    private BigDecimal printedPrice;
-
-    @Basic
-    @Column(name = "sale_channels")
-    private String saleChannels;
-
+    private Double printedPrice;
 
     public VatSetting getVat() {
         return vat;
@@ -130,28 +125,20 @@ public class Ticket {
         this.annotation = annotation;
     }
 
-    public BigDecimal getPrintedPrice() {
+    public Double getPrintedPrice() {
         return printedPrice;
     }
 
-    public void setPrintedPrice(BigDecimal printedPrice) {
+    public void setPrintedPrice(Double printedPrice) {
         this.printedPrice = printedPrice;
     }
 
-    public String getSaleChannels() {
-        return saleChannels;
+    public Set<SellsChannel> getSellsChannels() {
+        return sellsChannels;
     }
 
-    public void setSaleChannels(String saleChannels) {
-        this.saleChannels = saleChannels;
-    }
-
-    public Set<TicketChannels> getTicketChannels() {
-        return ticketChannels;
-    }
-
-    public void setTicketChannels(Set<TicketChannels> ticketChannels) {
-        this.ticketChannels = ticketChannels;
+    public void setSellsChannels(Set<SellsChannel> sellsChannels) {
+        this.sellsChannels = sellsChannels;
     }
 
     public boolean isChild() {
@@ -223,14 +210,12 @@ public class Ticket {
         if (status != ticket.status) return false;
         if (seatType != null ? !seatType.equals(ticket.seatType) : ticket.seatType != null) return false;
         if (vat != null ? !vat.equals(ticket.vat) : ticket.vat != null) return false;
-        if (ticketChannels != null ? !ticketChannels.equals(ticket.ticketChannels) : ticket.ticketChannels != null)
+        if (sellsChannels != null ? !sellsChannels.equals(ticket.sellsChannels) : ticket.sellsChannels != null)
             return false;
         if (name != null ? !name.equals(ticket.name) : ticket.name != null) return false;
         if (description != null ? !description.equals(ticket.description) : ticket.description != null) return false;
         if (annotation != null ? !annotation.equals(ticket.annotation) : ticket.annotation != null) return false;
         if (printedPrice != null ? !printedPrice.equals(ticket.printedPrice) : ticket.printedPrice != null)
-            return false;
-        if (saleChannels != null ? !saleChannels.equals(ticket.saleChannels) : ticket.saleChannels != null)
             return false;
         if (startDate != null ? !startDate.equals(ticket.startDate) : ticket.startDate != null) return false;
         if (endDate != null ? !endDate.equals(ticket.endDate) : ticket.endDate != null) return false;
@@ -244,12 +229,11 @@ public class Ticket {
         int result = id;
         result = 31 * result + (seatType != null ? seatType.hashCode() : 0);
         result = 31 * result + (vat != null ? vat.hashCode() : 0);
-        result = 31 * result + (ticketChannels != null ? ticketChannels.hashCode() : 0);
+        result = 31 * result + (sellsChannels != null ? sellsChannels.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (annotation != null ? annotation.hashCode() : 0);
         result = 31 * result + (printedPrice != null ? printedPrice.hashCode() : 0);
-        result = 31 * result + (saleChannels != null ? saleChannels.hashCode() : 0);
         result = 31 * result + (isChild ? 1 : 0);
         result = 31 * result + (isAdult ? 1 : 0);
         result = 31 * result + (status ? 1 : 0);
@@ -266,12 +250,11 @@ public class Ticket {
                 "id=" + id +
                 ", seatType=" + seatType +
                 ", vat=" + vat +
-                ", ticketChannels=" + ticketChannels +
+                ", ticketChannels=" + sellsChannels +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", annotation='" + annotation + '\'' +
                 ", printedPrice=" + printedPrice +
-                ", saleChannels='" + saleChannels + '\'' +
                 ", isChild=" + isChild +
                 ", isAdult=" + isAdult +
                 ", status=" + status +

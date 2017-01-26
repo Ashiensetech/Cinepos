@@ -48,11 +48,6 @@ public class CreateTicketValidator implements Validator {
         if (createTicketForm.getFormattedEndDate().before(createTicketForm.getFormattedStartDate())) {
             errors.rejectValue("endDate", "End Date should be after start date");
         }
-        Ticket ticket= ticketDao.getBySeatAndDates(createTicketForm.getSeatTypeId(),createTicketForm.getFormattedStartDate(),createTicketForm.getFormattedEndDate());
-        if(ticket!=null){
-            errors.rejectValue("startDate", "Start date or end date already exist");
-        }
-
         SeatType seatType= seatTypeDao.getById(createTicketForm.getSeatTypeId());
         if(seatType==null){
             errors.rejectValue("seatTypeId", "Seat type does not exists");
@@ -61,6 +56,11 @@ public class CreateTicketValidator implements Validator {
         VatSetting vatSetting= vatSettingDao.getById(createTicketForm.getVatId());
         if(vatSetting==null){
             errors.rejectValue("vatId", "Vat does not exists");
+        }
+
+        Ticket ticket= ticketDao.getBySeatAndDates(createTicketForm.getSeatTypeId(),createTicketForm.getFormattedStartDate(),createTicketForm.getFormattedEndDate());
+        if(ticket!=null){
+            errors.rejectValue("startDate", "Start date or end date already exist");
         }
     }
 

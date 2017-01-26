@@ -36,13 +36,10 @@ public class CreateTicketForm {
 
     private Date formattedEndDate;
 
-    @NotNull(message = "Is child is required")
     private Boolean isChild;
 
-    @NotNull(message = "Is adult is required")
     private Boolean isAdult;
 
-    @NotNull(message = "Status is required")
     private Boolean status;
 
     public Integer getSeatTypeId() {
@@ -125,19 +122,19 @@ public class CreateTicketForm {
         this.vatId = vatId;
     }
 
-    public Boolean getChild() {
+    public Boolean getIsChild() {
         return isChild;
     }
 
-    public void setChild(Boolean child) {
+    public void setisChild(Boolean child) {
         isChild = child;
     }
 
-    public Boolean getAdult() {
+    public Boolean getIsAdult() {
         return isAdult;
     }
 
-    public void setAdult(Boolean adult) {
+    public void setIsAdult(Boolean adult) {
         isAdult = adult;
     }
 
