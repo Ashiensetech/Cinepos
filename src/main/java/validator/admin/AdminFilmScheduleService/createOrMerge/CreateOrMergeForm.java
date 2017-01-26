@@ -15,13 +15,12 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateOrMergeForm {
 
-    @NotNull(message = "Screen required")
     Integer screenId;
 
     @NotBlank(message = "scheduleJson can't be empty")
     String scheduleJson;
-    public ScheduleForm scheduleForm;
 
+    public ScheduleForm scheduleForm;
 
     public Integer getScreenId() {
         return screenId;
