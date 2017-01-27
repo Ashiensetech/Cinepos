@@ -64,8 +64,6 @@ public class AdminComboService {
                 return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
             }
 
-            System.out.println(createComboForm);
-
             Combo combo=new Combo();
             combo.setComboName(createComboForm.getComboName());
             combo.setDetails(createComboForm.getDetails());
@@ -99,7 +97,6 @@ public class AdminComboService {
             }
             combo.setComboProducts(comboProductArray);
 
-            System.out.println(comboProductArray);
 
             /**
              * Updating Combo
@@ -163,12 +160,6 @@ public class AdminComboService {
 
             List<Integer> productsIds = createComboForm.getProductsIdArray();
             for (Integer productsId :productsIds){
-
-                System.out.println("RAZA");
-                System.out.println(comboId);
-                System.out.println(productsId);
-                System.out.println("RAZA ONE");
-
                 ComboProduct comboProductd= comboProductDao.getBycomboIdAndProductId(comboId,productsId);
                 comboProductArray.add(comboProductd);
                 if(comboProductd==null){
@@ -184,9 +175,6 @@ public class AdminComboService {
 
             }
             combo.setComboProducts(comboProductArray);
-
-            System.out.println(comboProductArray);
-
             /**
              * Updating Combo
              * */
