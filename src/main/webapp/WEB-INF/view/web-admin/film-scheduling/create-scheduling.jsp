@@ -45,7 +45,7 @@
                                 </d:forEach>
                             </select>
                         </div>
-                        <button type="" class="btn btn-primary" onclick="triggerSubmitCreateSchedule()">Submit</button>
+
                     </div>
                 </div>
                 <div class="col-lg-12 clearfix">
@@ -78,8 +78,8 @@
                                 </div>
                             </div>
 
-
-                            <button type="" class="btn btn-primary" onclick="createScheduling()">Create schedule</button>
+                            <p id="createScheduleStatusMsg" class="help-block error" ></p>
+                            <button type="" class="btn btn-primary" onclick="createScheduling()">Show Schedule</button>
                         </div>
                         <div id="filmTimingAddForm" class="well">
                             <div class="form-group">
@@ -113,6 +113,12 @@
                             </div>
 
                             <button type="" class="btn btn-primary" onclick="addFilmToSchedule()">Add film to schedule</button>
+                         </div>
+                        <div class="well">
+                            <div class="form-group">
+                                <p id="submitCreateScheduleMsg" class="help-block error" ></p>
+                                <button type="" class="btn btn-primary" onclick="triggerSubmitCreateSchedule()">Save changes</button>
+                            </div>
                         </div>
                     </div>
 
@@ -124,7 +130,7 @@
                             <p id="filmName" class="f-name"></p>
                             <p><span id="startTimeSpan"></span>-<span id="endTimeSpan"></span></p>
                             <hr>
-                            <p><span id="filmTimeDetailsStatusMsg"></span></p>
+                            <p  class="help-block error" id="filmTimeDetailsStatusMsg"></p>
                             <button type="" class="btn btn-danger" onclick="removeFilmTime()">Remove this film</button>
                             <button onclick="showFilmTimeModal()" type="" class="btn btn-success">Change timetable</button>
                             <button onclick="hideFilmTimeDetails()" type="" class="btn btn-success">Cancel</button>
@@ -192,7 +198,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <p id="changeFilmTimeModalStatusMsg" class="help-block has-error"></p>
+                <p id="changeFilmTimeModalStatusMsg" class="help-block error"></p>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" onclick="updateFilmTime()" >Update</button>
             </div>
@@ -226,7 +232,6 @@
 <%--Delveper JS--%>
 <script type="text/javascript" src="<c:url value="/admin-resources/developer/admin/film-scheduling/film-scheduling.js" />" ></script>
 
-film-scheduling.js
 <script>
     $(document).ready(function(){
         var date_input=$('input[name="date"]'); //our date input has the name "date"
@@ -235,7 +240,7 @@ film-scheduling.js
             format: 'mm/dd/yyyy',
             container: container,
             todayHighlight: true,
-            autoclose: true,
+            autoclose: true
         });
 
         /*Initially disabled */

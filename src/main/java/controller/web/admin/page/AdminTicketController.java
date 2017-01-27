@@ -8,7 +8,9 @@ import entity.SeatType;
 import entity.Ticket;
 import entity.VatSetting;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -48,4 +50,17 @@ public class AdminTicketController {
         mav.addObject("tickets",tickets);
         return mav;
     }
+
+    @RequestMapping(value = "/edit/{ticketId}")
+    public ModelAndView editTicket(Authentication authentication, @PathVariable Integer ticketId){
+        Ticket ticket = ticketDao.getById(ticketId);
+        List<SeatType> seatTypes = seatTypeDao.getAll();
+        List<VatSetting> vats = vatSettingDao.getAll();
+        ModelAndView mav =  new ModelAndView("web-admin/ticket/edit-ticket");
+        mav.addObject("seatTypes",seatTypes);
+        mav.addObject("vats",vats);
+        mav.addObject("ticket",ticket);
+        return mav;
+    }
+
 }

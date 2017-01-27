@@ -69,7 +69,9 @@ public class EditFilmTimeValidator implements Validator {
         }
 
 
-
+        if(filmTimeForm.getStartTime().after(filmTimeForm.getEndTime())){
+            errors.rejectValue("sTime","Time is greater then end time");
+        }
 
 
 

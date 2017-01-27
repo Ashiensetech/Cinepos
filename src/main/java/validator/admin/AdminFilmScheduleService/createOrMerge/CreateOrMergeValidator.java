@@ -59,6 +59,7 @@ public class CreateOrMergeValidator implements Validator {
         }
 
 
+
         FilmSchedule filmSchedule = null;
         if(createOrMergeForm.scheduleForm.getId()==0){
             filmSchedule = filmScheduleDao.getByDate(createOrMergeForm.getScreenId(), createOrMergeForm.scheduleForm.getDate());
@@ -74,7 +75,14 @@ public class CreateOrMergeValidator implements Validator {
                 errors.rejectValue("film", "Film not found");
                 break;
             }
+
+            if(filmTimeForm.getStartTime().after(filmTimeForm.getEndTime())){
+                errors.rejectValue("scheduleJson", "Start date is greater then end time");
+                break;
+            }
         }
+
+
 
         System.out.println(createOrMergeForm.scheduleForm);
     }

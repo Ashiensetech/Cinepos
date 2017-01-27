@@ -2,6 +2,7 @@ package console;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import helper.DateHelper;
 import validator.admin.AdminFilmService.editFilm.EditFilmForm;
 
 import java.io.IOException;
@@ -45,15 +46,15 @@ public class IfaceTest {
 
 
     public static void main(String[] args) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-           Cat cat = objectMapper.readValue("{\"dob\":\"10:00:00\"}", Cat.class);
-            out.println(cat);
-        } catch (IOException e) {
-            e.printStackTrace();
+       Time before =  DateHelper.getStringToTime("01:00:00");
+        Time after =   DateHelper.getStringToTime("02:00:00");
+
+        if(after.after(before)){
+            out.println("After");
         }
-
-
+        if(before.before(after)){
+            out.println("before");
+        }
     }
 
 
