@@ -175,7 +175,7 @@
                         <a href="<c:url value="/admin/film-scheduling/all" />">All</a>
                     </li>
                     <li>
-                        <a href="<c:url value="/admin/film-scheduling/create" />">Create</a>
+                        <a href="<c:url value="/admin/film-scheduling/manage" />">Manage</a>
                     </li>
                 </ul>
                 <!-- /.nav-second-level -->
