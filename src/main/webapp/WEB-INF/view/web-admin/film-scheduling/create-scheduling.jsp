@@ -230,7 +230,8 @@
 <%--Delveper Helper [ Vendor ]--%>
 <script type="text/javascript" src="<c:url value="/admin-resources/moment/moment.min.js" />" ></script>
 <%--Delveper JS--%>
-<script type="text/javascript" src="<c:url value="/admin-resources/developer/admin/film-scheduling/film-scheduling.js" />" ></script>
+    <%--Scheduling--%>
+<script type="text/javascript" src="<c:url value="/admin-resources/developer/admin/film-scheduling/film-scheduling-core.js" />" ></script>
 
 <script>
     $(document).ready(function(){

@@ -36,24 +36,16 @@
             </div>
             <div class="row">
                 <div class="row clearfix">
-                    <div class="col-lg-6 center text-center">
-                        <div class="form-group">
-                            <label>Choose Screen</label>
-                            <select id="screenSelector" class="form-control" >
-                                <d:forEach var="screen" items="${screens}" >
-                                    <option value="${screen.id}">${screen.name}</option>
-                                </d:forEach>
-                            </select>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-lg-12 clearfix">
-                    <div class="timetable clearfix"></div>
-                </div>
-                <div class="row clearfix">
-                    <div class="col-lg-6 schedule-edit ">
-                        <div class="well">
+                    <div class="col-lg-12 ">
+                        <form class="form-inline" onsubmit="return false;">
+                            <div class="form-group">
+                                <label>Choose Screen</label>
+                                <select id="screenSelector" class="form-control" >
+                                    <d:forEach var="screen" items="${screens}" >
+                                        <option value="${screen.id}">${screen.name}</option>
+                                    </d:forEach>
+                                </select>
+                            </div> |
                             <div class="form-group">
                                 <label>Start date</label>
                                 <div class='input-group date'>
@@ -61,8 +53,9 @@
                                     </span>
                                     <input type='text' class="form-control" id="startDate" name="date" placeholder="MM/DD/YYY" type="text" />
 
+
                                 </div>
-                            </div>
+                            </div> |
                             <div class="form-group">
                                 <label>End date</label>
                                 <div class='input-group date'>
@@ -73,138 +66,27 @@
                                            name="date"
                                            placeholder="MM/DD/YYY"
                                            type="text"
-                                            onchange=""
+                                           onchange=""
                                             />
                                 </div>
                             </div>
-
-                            <p id="createScheduleStatusMsg" class="help-block" ></p>
-                            <button type="" class="btn btn-primary" onclick="createScheduling()">Show Schedule</button>
-                        </div>
-                        <div id="filmTimingAddForm" class="well">
-                            <div class="form-group">
-                                <label>Select date</label>
-                                <select id="scheduleDateSelector" class="form-control">
-                                    <option value=""></option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Select Film</label>
-                                <select id="filmSelector" class="form-control">
-                                    <d:forEach var="film" items="${films}" >
-                                        <option value="${film.id}" data-details='{"id":${film.id},
-                                                                                  "name":"${film.name}"}'>${film.name}</option>
-                                    </d:forEach>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Start time</label>
-                                <div class="input-group bootstrap-timepicker timepicker">
-                                    <input id="startTimePicker" type="text" class="form-control input-small">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>End time</label>
-                                <div class="input-group bootstrap-timepicker timepicker">
-                                    <input id="endTimePicker" type="text" class="form-control input-small">
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
-                                </div>
-                            </div>
-                            <p id="addFilmToSchedulStatusMsg" class="help-block"></p>
-                            <button type="" class="btn btn-primary" onclick="addFilmToSchedule()">Add film to schedule</button>
-                         </div>
-                        <div class="well">
-                            <div class="form-group">
-                                <p id="submitCreateScheduleMsg" class="help-block" ></p>
-                                <button type="" class="btn btn-primary" onclick="triggerSubmitCreateSchedule()">Save changes</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="filmTimeDetails" class="col-lg-6 schedule-show" style="display: none">
-                        <div class="well text-center">
-                            <h4>Film Schedule</h4>
-                            <p id="screenName"></p>
-                            <p id="scheduleDate"></p>
-                            <p id="filmName" class="f-name"></p>
-                            <p><span id="startTimeSpan"></span>-<span id="endTimeSpan"></span></p>
-                            <hr>
-                            <p  class="help-block" id="filmTimeDetailsStatusMsg"></p>
-                            <button type="" class="btn btn-danger" onclick="removeFilmTime()">Remove this film</button>
-                            <button onclick="showFilmTimeModal()" type="" class="btn btn-success">Change timetable</button>
-                            <button onclick="hideFilmTimeDetails()" type="" class="btn btn-success">Cancel</button>
-                        </div>
+                            <button type="" class="btn btn-primary" onclick="return showScheduling()">Show Schedule</button>
+                        </form>
                     </div>
                 </div>
+                <div class="col-lg-12 clearfix">
+                    <div id="scheduleViewer" class="timetable clearfix"></div>
+                </div>
+
                 <hr>
             </div>
         </div>
         <!-- /.container-fluid -->
     </div>
     <!-- /#page-wrapper -->
-    <%------------------------------------------------------------------%>
-    <div class="table table-striped" class="files" id="previews">
 
-        <div id="template" class="file-row">
-            <!-- This is used as the file preview template -->
-            <div>
-                <span class="preview"><img data-dz-thumbnail /></span>
-            </div>
-            <div>
-                <strong class="error text-danger" data-dz-errormessage></strong>
-            </div>
-        </div>
-    </div>
-    <%------------------------------------------------------------------------------------%>
 </div>
-<div class="modal fade" id="changeFilmTimeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Schedule</h4>
-            </div>
-            <div class="modal-body">
-                <form accept-charset="utf-8">
-                    <div class="form-group" style="display: none;">
-                        <label>Select date</label>
-                        <select id="modalScheduleDateSelector"  class="form-control">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                    <div class="form-group" style="display: none;" >
-                        <label>Select Film</label>
-                        <select id="modalFilmSelector"  class="form-control">
-                            <d:forEach var="film" items="${films}" >
-                                <option value="${film.id}" data-details='{"id":${film.id},"name":"${film.name}"}'>${film.name}</option>
-                            </d:forEach>
-                        </select>
-                    </div>
-                    <div class="form-group" >
-                        <label>Start time</label>
-                        <div class="input-group bootstrap-timepicker timepicker">
-                            <input id="modalStartTimePicker" type="time" class="form-control input-small">
-                         <%--   <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label>End time</label>
-                        <div class="input-group bootstrap-timepicker timepicker">
-                            <input id="modalEndTimePicker" type="time" class="form-control input-small">
-                            <%--<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <p id="changeFilmTimeModalStatusMsg" class="help-block"></p>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" onclick="updateFilmTime()" >Update</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <%-- Delveper Hidden Input --%>
 <input type="hidden" id="currentFilmTimeId" value="0" />
@@ -230,8 +112,9 @@
 <%--Delveper Helper [ Vendor ]--%>
 <script type="text/javascript" src="<c:url value="/admin-resources/moment/moment.min.js" />" ></script>
 <%--Delveper JS--%>
-<script type="text/javascript" src="<c:url value="/admin-resources/developer/admin/film-scheduling/film-scheduling.js" />" ></script>
-
+    <%--Scheduling--%>
+<script type="text/javascript" src="<c:url value="/admin-resources/developer/admin/film-scheduling/film-scheduling-core.js" />" ></script>
+<script type="text/javascript" src="<c:url value="/admin-resources/developer/admin/film-scheduling/film-scheduling-view.js" />" ></script>
 <script>
     $(document).ready(function(){
         var date_input=$('input[name="date"]'); //our date input has the name "date"
