@@ -1,25 +1,89 @@
 package dao;
 
-import entity.VatSetting;
+import entity.FilmSchedule;
+import entity.FilmTime;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
- * Created by Sarwar on 1/11/2017.
+ * Created by mi on 1/25/17.
  */
 @Repository
-public class VatSettingDao extends BaseDao{
-    public void create(VatSetting vatSetting){
+public class FilmTimeDao extends BaseDao {
+    public boolean insert(FilmTime filmTime){
         Session session = null;
 
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            session.save(vatSetting);
+            session.save(filmTime);
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
+    public boolean update(FilmTime filmTime){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(filmTime);
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
+    public boolean delete(FilmTime filmTime){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.delete(filmTime);
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
+    public void insertOrUpdate(Set<FilmTime> filmTimeList){
+        Session session = null;
+
+        if(filmTimeList.size()==0){
+            return;
+        }
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            int i=0;
+            for(FilmTime filmTime:filmTimeList){
+                session.saveOrUpdate(filmTime);
+                if(i%15==0){
+                    session.flush();
+                    session.clear();
+                }
+                i++;
+            }
+
             session.getTransaction().commit();
         }catch (HibernateException hEx){
             // Insert to database exception log
@@ -28,68 +92,20 @@ public class VatSettingDao extends BaseDao{
             if(session!=null)session.close();
         }
     }
+    public FilmTime getById(int id){
+        Session session=this.sessionFactory.openSession();
 
-    public void update(VatSetting vatSetting){
-        Session session = null;
-
-        try {
-            session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            session.update(vatSetting);
-            session.getTransaction().commit();
-        }catch (HibernateException hEx){
-            // Insert to database exception log
-            hEx.printStackTrace();
-        }finally {
-            if(session!=null)session.close();
-        }
-    }
-
-    public VatSetting getVatSetting(){
-        Session session = null;
         try{
-            session = this.sessionFactory.openSession();
-            return (VatSetting) session.createQuery("from VatSetting ORDER  BY id DESC").setMaxResults(1).uniqueResult();
+            return (FilmTime)session.createQuery("FROM FilmTime filmSchedule" +
+                    " where id =:id")
+                    .setParameter("id",id)
+                    .uniqueResult();
+
         }catch (HibernateException hEx){
-            // Insert to database exception log
             hEx.printStackTrace();
         }finally{
             if(session!=null)session.close();
         }
         return null;
     }
-
-    public VatSetting getById(int id){
-
-        Session session = null;
-        try{
-            session = this.sessionFactory.openSession();
-            return (VatSetting) session.createQuery("FROM VatSetting where id = :id").setParameter("id", id).uniqueResult();
-        }catch (HibernateException hEx){
-            // Insert to database exception log
-            hEx.printStackTrace();
-        }finally{
-            if(session!=null)session.close();
-        }
-        return null;
-
-    }
-
-
-    public List<VatSetting> getAll(){
-        Session session = this.sessionFactory.openSession();
-        try{
-            session = this.sessionFactory.openSession();
-            return session.createQuery("FROM VatSetting")
-                    .list();
-        }catch (HibernateException hEx){
-            // Insert to database exception log
-            hEx.printStackTrace();
-        }finally{
-            if(session!=null)session.close();
-        }
-        return new ArrayList<VatSetting>();
-    }
-
-
 }

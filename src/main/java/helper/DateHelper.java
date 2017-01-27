@@ -2,6 +2,7 @@ package helper;
 
 import org.joda.time.DateTimeZone;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -81,5 +82,8 @@ public class DateHelper {
     public static Timestamp getSQLDateToTimeStamp(Date date){
         return new Timestamp(date.getTime());
 
+    }
+    public static Time getStringToTime(String timeStr)throws IllegalArgumentException{
+        return java.sql.Time.valueOf(timeStr);
     }
 }

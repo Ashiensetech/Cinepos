@@ -176,7 +176,8 @@ public class Distributor {
         if (address != null ? !address.equals(that.address) : that.address != null) return false;
         if (description != null ? !description.equals(that.description) : that.description != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
-        return updatedAt.equals(that.updatedAt);
+        return !(updatedAt != null ? !updatedAt.equals(that.updatedAt) : that.updatedAt != null);
+
     }
 
     @Override
@@ -192,7 +193,7 @@ public class Distributor {
         result = 31 * result + createdBy;
         result = 31 * result + updatedBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + updatedAt.hashCode();
+        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
         return result;
     }
 

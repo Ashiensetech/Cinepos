@@ -39,12 +39,13 @@
                     <div class="col-lg-6 center text-center">
                         <div class="form-group">
                             <label>Choose Screen</label>
-                            <select class="form-control">
-                                <option>Screen 1</option>
-                                <option>Screen 2</option>
+                            <select id="screenSelector" class="form-control" >
+                                <d:forEach var="screen" items="${screens}" >
+                                    <option value="${screen.id}">${screen.name}</option>
+                                </d:forEach>
                             </select>
                         </div>
-                        <button type="" class="btn btn-primary">Submit</button>
+                        <button type="" class="btn btn-primary" onclick="triggerSubmitCreateSchedule()">Submit</button>
                     </div>
                 </div>
                 <div class="col-lg-12 clearfix">
@@ -80,7 +81,7 @@
 
                             <button type="" class="btn btn-primary" onclick="createScheduling()">Create schedule</button>
                         </div>
-                        <div class="well">
+                        <div id="filmTimingAddForm" class="well">
                             <div class="form-group">
                                 <label>Select date</label>
                                 <select id="scheduleDateSelector" class="form-control">
@@ -89,9 +90,10 @@
                             </div>
                             <div class="form-group">
                                 <label>Select Film</label>
-                                <select class="form-control">
+                                <select id="filmSelector" class="form-control">
                                     <d:forEach var="film" items="${films}" >
-                                        <option value="${film.id}">${film.name}</option>
+                                        <option value="${film.id}" data-details='{"id":${film.id},
+                                                                                  "name":"${film.name}"}'>${film.name}</option>
                                     </d:forEach>
                                 </select>
                             </div>
@@ -110,20 +112,22 @@
                                 </div>
                             </div>
 
-                            <button type="" class="btn btn-primary">Add film to schedule</button>
+                            <button type="" class="btn btn-primary" onclick="addFilmToSchedule()">Add film to schedule</button>
                         </div>
                     </div>
 
-                    <div class="col-lg-6 schedule-show ">
+                    <div id="filmTimeDetails" class="col-lg-6 schedule-show" style="display: none">
                         <div class="well text-center">
                             <h4>Film Schedule</h4>
-                            <p>Screen 1</p>
-                            <p>24 Dec 2016, Saturday</p>
-                            <p class="f-name">X-MEN</p>
-                            <p>11:30 AM-1:00PM</p>
+                            <p id="screenName"></p>
+                            <p id="scheduleDate"></p>
+                            <p id="filmName" class="f-name"></p>
+                            <p><span id="startTimeSpan"></span>-<span id="endTimeSpan"></span></p>
                             <hr>
-                            <button type="" class="btn btn-danger">Remove this film</button>
-                            <button type="" class="btn btn-success">Change timetable</button>
+                            <p><span id="filmTimeDetailsStatusMsg"></span></p>
+                            <button type="" class="btn btn-danger" onclick="removeFilmTime()">Remove this film</button>
+                            <button onclick="showFilmTimeModal()" type="" class="btn btn-success">Change timetable</button>
+                            <button onclick="hideFilmTimeDetails()" type="" class="btn btn-success">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -148,6 +152,57 @@
     </div>
     <%------------------------------------------------------------------------------------%>
 </div>
+<div class="modal fade" id="changeFilmTimeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Schedule</h4>
+            </div>
+            <div class="modal-body">
+                <form accept-charset="utf-8">
+                    <div class="form-group" style="display: none;">
+                        <label>Select date</label>
+                        <select id="modalScheduleDateSelector"  class="form-control">
+                            <option value=""></option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: none;" >
+                        <label>Select Film</label>
+                        <select id="modalFilmSelector"  class="form-control">
+                            <d:forEach var="film" items="${films}" >
+                                <option value="${film.id}" data-details='{"id":${film.id},"name":"${film.name}"}'>${film.name}</option>
+                            </d:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group" >
+                        <label>Start time</label>
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <input id="modalStartTimePicker" type="time" class="form-control input-small">
+                         <%--   <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>End time</label>
+                        <div class="input-group bootstrap-timepicker timepicker">
+                            <input id="modalEndTimePicker" type="time" class="form-control input-small">
+                            <%--<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <p id="changeFilmTimeModalStatusMsg" class="help-block has-error"></p>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="updateFilmTime()" >Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%-- Delveper Hidden Input --%>
+<input type="hidden" id="currentFilmTimeId" value="0" />
+
 
 <jsp:directive.include file="../layouts/footer.jsp"/>
 <!-- dropzone JavaScript -->
@@ -156,7 +211,7 @@
 <%--<script src="<c:url value="/admin-resources/timetable/timetable.js" />"></script>--%>
 <!-- Timepicker @Overridden-->
 <script src="<c:url value="/admin-resources/developer/custom/vendor/timetable/timetable.js" />" ></script>
-file:///home/mi/Projects/j2ee/cinepos/src/main
+
 <!-- Timepicker -->
 <script src="<c:url value="/admin-resources/timepicker/bootstrap-timepicker.js" />" ></script>
 
@@ -168,7 +223,10 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
 
 <%--Delveper Helper [ Vendor ]--%>
 <script type="text/javascript" src="<c:url value="/admin-resources/moment/moment.min.js" />" ></script>
+<%--Delveper JS--%>
+<script type="text/javascript" src="<c:url value="/admin-resources/developer/admin/film-scheduling/film-scheduling.js" />" ></script>
 
+film-scheduling.js
 <script>
     $(document).ready(function(){
         var date_input=$('input[name="date"]'); //our date input has the name "date"
@@ -178,7 +236,11 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
             container: container,
             todayHighlight: true,
             autoclose: true,
-        })
+        });
+
+        /*Initially disabled */
+        /* Enable after schedule created*/
+        enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
     })
 </script>
 
@@ -186,123 +248,33 @@ file:///home/mi/Projects/j2ee/cinepos/src/main
 
 <!-- Time picker -->
 <script type="text/javascript">
-    $('#startTimePicker').timepicker();
-    $('#endTimePicker').timepicker();
+    $('#startTimePicker').timepicker(
+            {
+                showMeridian: false,
+                defaultTime: false
+            });
+    $('#endTimePicker').timepicker( {
+        showMeridian: false,
+        defaultTime: false
+    });
+    /**
+     * Modal Time picker
+    * */
+  /*  $('#modalStartTimePicker').timepicker(
+            {
+                showMeridian: false,
+                defaultTime: false
+            });
+    $('#modalSndTimePicker').timepicker( {
+        showMeridian: false,
+        defaultTime: false
+    });*/
 </script>
 
 <!-- Time picker -->
 
 <!-- Time table -->
-<script>
-    var filmScheduler = [];
-    function initTimeTable(){
 
-        var filmSchedule = new FilmSchedule();
-        filmSchedule.rowName="A";
-        var filmTime = new FilmTime();
-
-        filmTime.filmName = "Beautiful Mind";
-        filmTime.filmStartTime = new Date(2015,7,17,9,00);
-        filmTime.filmEndTime = new Date(2015,7,17,11,30);
-
-
-
-        filmTime.options = {
-            url: 'javascript:void(0)',
-            class: 'vip',
-            onclick:function(elem){
-                console.log(elem);
-            },
-            data: {
-                id: 0,
-                ticketType: 'VIP'
-            }
-        };
-        filmSchedule.filmTime.push(filmTime);
-        filmScheduler.push(filmSchedule);
-
-
-    }
-    function createScheduling(){
-        var startDate = $("#startDate").data('datepicker').getFormattedDate("yyyy-mm-dd");
-        var stopDate =$("#endDate").data('datepicker').getFormattedDate("yyyy-mm-dd");
-
-        var dates = getDates(startDate,stopDate);
-
-        filmScheduler = [];
-        $('#scheduleDateSelector').find("option").remove();
-        for(var i in dates){
-            var filmSchedule = new FilmSchedule();
-            filmSchedule.rowName = dates[i];
-            filmScheduler.push(filmSchedule);
-            $('#scheduleDateSelector').append($('<option>', {value:filmSchedule.rowName, text:filmSchedule.rowName}));
-        }
-        drawTimeTable();
-    }
-    function drawTimeTable(){
-
-
-
-        var timetable = new Timetable();
-
-        timetable.setScope(9,3);
-
-        var rowNames = [];
-        for(var r in filmScheduler){
-            rowNames.push(filmScheduler[r].rowName);
-        }
-        timetable.addLocations(rowNames);
-        for(var r in filmScheduler){
-            var rowName = filmScheduler[r].rowName;
-            var filmTimes = filmScheduler[r].filmTime;
-            for(var c in filmTimes){
-                timetable.addEvent(filmTimes[c].filmName, rowName,
-                        filmTimes[c].filmStartTime,
-                        filmTimes[c].filmEndTime,
-                        filmTimes[c].options);
-            }
-
-        }
-
-        var renderer = new Timetable.Renderer(timetable);
-        renderer.draw('.timetable');
-    }
-
-    function getDates(startDate, stopDate) {
-        //        date Format for startDate and stopDate 'YYYY-MM-DD'
-        var dateArray = [];
-        var currentDate = moment(startDate);
-        var endDate = moment(stopDate);
-        while (currentDate <= endDate   ) {
-            dateArray.push( moment(currentDate).format('MMMM Do YYYY'));
-            currentDate = moment(currentDate).add(1, 'days');
-        }
-        return dateArray;
-    }
-    function removeScheduleRow(elem){
-        console.log(elem);
-    }
-
-
-
-
-    var FilmSchedule = function(){
-        this.id = 0;
-        this.rowName = "";
-        this.filmTime = [];
-    };
-    var FilmTime=function(){
-      this.filmId=0;
-        this.filmName="";
-        this.filmStartTime = new Date();
-        this.filmEndTime = new Date();
-        this.options={
-
-        };
-    };
-
-    initTimeTable();
-</script>
 </body>
 
 </html>
