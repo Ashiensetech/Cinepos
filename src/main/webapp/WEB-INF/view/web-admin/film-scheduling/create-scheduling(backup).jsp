@@ -664,6 +664,8 @@
         if(endDate)
             postData['endDate'] = endDate;*/
         var postDataArray = getPostData();
+        enableDisableFormElement("page-wrapper",["input","button","select"],false);
+        $("#submitCreateScheduleMsg").html("Processing... ").show();
         submitCreateSchedule(postDataArray,false);
 
     }
@@ -676,6 +678,7 @@
             if(flag){
                 createScheduling();
             }
+
 
             return;
         }

@@ -93,12 +93,32 @@ function initializeFilmScheduler(data){
 }
 function createScheduling(){
 
-    enableDisableFormElement("filmTimingAddForm",["input","button","select"],true);
+  enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
   var startDate = $("#startDate").data('datepicker').getFormattedDate("yyyy-mm-dd");
   var endDate =$("#endDate").data('datepicker').getFormattedDate("yyyy-mm-dd");
   var screenId = $("#screenSelector").val();
-  //  var dates = getDates(startDate,endDate);
 
+
+  if(screenId=="" || parseInt(screenId)<=0){
+      enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
+    $("#createScheduleStatusMsg").html("Start date required");
+    return;
+  }
+  if(startDate==""){
+      enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
+    $("#createScheduleStatusMsg").html("Start date required");
+    return;
+  }
+  if(endDate==""){
+      enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
+    $("#createScheduleStatusMsg").html("End date required");
+    return;
+  }
+  if(moment(endDate).diff(moment(startDate), 'minutes') < 0){
+      enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
+    $("#createScheduleStatusMsg").html("Start date is greater then end  date");
+    return;
+  }
 
   $.ajax({
     url: BASEURL+'api/app/film-scheduling/get-all-in-date-range/'+screenId,
@@ -109,12 +129,14 @@ function createScheduling(){
         console.log("unauthorized");
         // showLoginModal();
         //enableDisableFormElement("createFilmForm",["input","button","select"],true);
+          $("#submitCreateScheduleMsg").html("Please login").show();
       },
       422: function (response) {
         console.log(response);
         $("#statusMsg").html("Error found").show();
         //  BindErrorsWithHtml("errorMsg_",response.responseJSON);
         //  enableDisableFormElement("createFilmForm",["input","button","select"],true);
+          $("#submitCreateScheduleMsg").html("Internal server error . Reload the page").show();
       },
       204:function(response){
         console.log("ASD");
@@ -129,7 +151,7 @@ function createScheduling(){
       }
 
       drawTimeTable();
-
+          enableDisableFormElement("filmTimingAddForm",["input","button","select"],true);
     }
   });
 
@@ -215,15 +237,20 @@ function getDates(startDate, stopDate) {
 
 var DISPLAY_DATE_FORMAT = "MMMM Do YYYY";
 function showFilmTimeModal(){
-  $("#changeFilmTimeModal").modal();
-  var elemId = $("#currentFilmTimeId").val();
-  var filmTimeDetails =$("#"+elemId).data();
+    $("#changeFilmTimeModal").modal();
+    var elemId = $("#currentFilmTimeId").val();
+    var filmTimeDetails =$("#"+elemId).data();
+    var startTime = filmTimeDetails.starttime;
+    startTime = ( startTime.split(":")[0].length==1 )?"0"+startTime:startTime;
 
-  $("#screenName").html(filmTimeDetails.screenname);
-  $("#modalScheduleDateSelector").val(filmTimeDetails.scheduleid);
-  $("#modalFilmSelector").val(filmTimeDetails.filmid);
-  $("#modalStartTimePicker").val(filmTimeDetails.starttime);
-  $("#modalEndTimePicker").val(filmTimeDetails.endtme);
+    var endTime = filmTimeDetails.endtme;
+    endTime = ( endTime.split(":")[0].length==1 )?"0"+endTime:endTime;
+
+    $("#screenName").html(filmTimeDetails.screenname);
+    $("#modalScheduleDateSelector").val(filmTimeDetails.scheduleid);
+    $("#modalFilmSelector").val(filmTimeDetails.filmid);
+    $("#modalStartTimePicker").val(startTime);
+    $("#modalEndTimePicker").val(endTime);
 }
 function hideFilmTimeDetails(){
     $("#filmTimeDetails").fadeOut(200);
@@ -425,6 +452,11 @@ function submitCreateSchedule(postDataArray,flag){
   }else{
     if(flag){
       createScheduling();
+      $("#submitCreateScheduleMsg").html("Successful updated").show();
+      setTimeout(function(){
+        $("#submitCreateScheduleMsg").html("").show();
+        enableDisableFormElement("page-wrapper",["input","button","select"],true);
+      },3000);
     }
 
     return;
@@ -488,6 +520,12 @@ function updateFilmTime(){
   enableDisableFormElement("changeFilmTimeModal",["input","button","select"],false);
 
   scheduleId = parseInt(scheduleId);
+    console.log(endTime,startTime,moment("2017-01-01 "+endTime).diff("2017-01-01 "+startTime,'minutes'))
+  if(moment("2017-01-01 "+endTime).diff("2017-01-01 "+startTime,'minutes')<0){
+      enableDisableFormElement("changeFilmTimeModal",["input","button","select"],true);
+      $("#changeFilmTimeModalStatusMsg").html("Start time is greater then end date");
+      return;
+  }
 
   if(scheduleId==0){
     return;
