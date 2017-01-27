@@ -177,14 +177,14 @@ Timetable.Renderer = function(tt) {
 			}
 			function appendEvent(event, node) {
 				var hasOptions = event.options !== undefined;
-				var hasURL, hasAdditionalClass, hasDataAttributes,hasClickEvent,hasId = true;
+				var hasURL, hasAdditionalClass, hasDataAttributes,hasClickEvent,hasHtmlId = true;
 
 				if(hasOptions) {
-					hasId = (event.options.id !== undefined) ? true : false;
 					hasURL = (event.options.url !== undefined) ? true : false;
 					hasAdditionalClass = (event.options.class !== undefined) ? true : false;
 					hasDataAttributes = (event.options.data !== undefined) ? true : false;
                     hasClickEvent = (event.options.onclick !== undefined) ? true : false;
+					hasHtmlId  = (event.options.data.htmlid !== undefined) ? true : false;
 				}
 
 				var elementType = hasURL ? 'a' : 'span';
@@ -200,8 +200,8 @@ Timetable.Renderer = function(tt) {
 						aNode.setAttribute('data-'+key, event.options.data[key]);
 					}
 				}
-				if(hasId){
-					aNode.setAttribute('id', event.options.id);
+				if(hasHtmlId){
+					aNode.setAttribute('id', event.options.data.htmlid);
 				}
 
 

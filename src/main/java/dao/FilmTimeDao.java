@@ -1,5 +1,6 @@
 package dao;
 
+import entity.FilmSchedule;
 import entity.FilmTime;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -30,10 +31,46 @@ public class FilmTimeDao extends BaseDao {
             if(session!=null)session.close();
         }
     }
+    public boolean update(FilmTime filmTime){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(filmTime);
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
+    public boolean delete(FilmTime filmTime){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.delete(filmTime);
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
     public void insertOrUpdate(Set<FilmTime> filmTimeList){
         Session session = null;
 
-
+        if(filmTimeList.size()==0){
+            return;
+        }
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
@@ -54,5 +91,21 @@ public class FilmTimeDao extends BaseDao {
         }finally {
             if(session!=null)session.close();
         }
+    }
+    public FilmTime getById(int id){
+        Session session=this.sessionFactory.openSession();
+
+        try{
+            return (FilmTime)session.createQuery("FROM FilmTime filmSchedule" +
+                    " where id =:id")
+                    .setParameter("id",id)
+                    .uniqueResult();
+
+        }catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
     }
 }

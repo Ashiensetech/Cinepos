@@ -3,6 +3,7 @@ package validator.admin.AdminFilmScheduleService.createOrMerge;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.List;
 
@@ -11,10 +12,23 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ScheduleForm{
-    private int id;
+
+    @NotNull(message = "Screen required")
+    Integer id;
+
+
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd")
     private Date date;
     private List<FilmTimeForm> filmTime;
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Date getDate() {
         return date;

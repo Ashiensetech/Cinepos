@@ -34,7 +34,41 @@ public class FilmScheduleDao   extends BaseDao {
             if(session!=null)session.close();
         }
     }
+    public boolean insertOrUpdate(FilmSchedule filmSchedule){
+        Session session = null;
 
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.saveOrUpdate(filmSchedule);
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
+    public FilmSchedule getById(int id){
+        Session session=this.sessionFactory.openSession();
+
+        try{
+            return (FilmSchedule)session.createQuery("select  distinct filmSchedule " +
+                    " FROM FilmSchedule filmSchedule left" +
+                    " join fetch filmSchedule.filmTimes  filmTimes " +
+                    " where filmSchedule.id =:id")
+                    .setParameter("id",id)
+                    .uniqueResult();
+
+        }catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+    }
     public List<FilmSchedule> getByDateRange(Integer screenId,Date sDate, Date eData){
         Session session=this.sessionFactory.openSession();
 
@@ -58,5 +92,26 @@ public class FilmScheduleDao   extends BaseDao {
         }
         return new ArrayList<>();
     }
+    public FilmSchedule getByDate(Integer screenId,Date date) {
+        Session session = this.sessionFactory.openSession();
 
+        try {
+            return (FilmSchedule) session.createQuery("select  distinct filmSchedule FROM FilmSchedule filmSchedule left" +
+                    " join fetch filmSchedule.filmTimes  filmTimes " +
+                    " where filmSchedule.screen.id =:screenId " +
+                    " and filmSchedule.date = :date " +
+                    " and filmSchedule.status = true " +
+                    " order by filmSchedule.date asc ")
+                    .setMaxResults(1)
+                    .setParameter("screenId", screenId)
+                    .setParameter("date", date)
+                    .uniqueResult();
+
+        } catch (HibernateException hEx) {
+            hEx.printStackTrace();
+        } finally {
+            if (session != null) session.close();
+        }
+        return null;
+    }
 }
