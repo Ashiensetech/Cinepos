@@ -385,20 +385,21 @@ function addFilmToSchedule(filmTimeData){
     if(!hasCollusion(index,filmTime)){
         filmTime.identifier = "ID"+filmScheduler[index].filmTime.length;
         filmScheduler[index].filmTime.push(filmTime);
+        if(isNew){
+            drawTimeTable();
+            var tempFilmTime = getFilmTimeByScheduleIdAndIdentifier(index,filmTime.identifier);
+            $("html, body").animate({ scrollTop: $("#"+tempFilmTime.htmlId).offset().top }, "slow");
+            $("#"+tempFilmTime.htmlId).removeClass("time-entry").addClass("recent-film-time-entry");
+            setTimeout(function(){
+                $("#"+tempFilmTime.htmlId).removeClass("recent-film-time-entry").addClass("time-entry");
+            },3000);
+
+            $("#addFilmToSchedulStatusMsg").html("").hide();
+
+        }
     }
 
-    if(isNew){
-        drawTimeTable();
-        var tempFilmTime = getFilmTimeByScheduleIdAndIdentifier(index,filmTime.identifier);
-        $("html, body").animate({ scrollTop: $("#"+tempFilmTime.htmlId).offset().top }, "slow");
-        $("#"+tempFilmTime.htmlId).removeClass("time-entry").addClass("recent-film-time-entry");
-        setTimeout(function(){
-            $("#"+tempFilmTime.htmlId).removeClass("recent-film-time-entry").addClass("time-entry");
-        },3000);
 
-        $("#addFilmToSchedulStatusMsg").html("").hide();
-
-    }
   }
 }
 function getFilmTimeByScheduleIdAndIdentifier(index,identifier){
@@ -439,7 +440,13 @@ function hasCollusion(index,filmTime){
         && filmTime.endTime >  currentFilmTime.endTime){
       continue;
     }else{
-      alert("cONFLICT");
+      alert("Scheduling clashed");
+        $("#"+currentFilmTime.htmlId).removeClass("time-entry").addClass("recent-film-time-entry-conflict");
+        $("html, body").animate({ scrollTop: $("#"+currentFilmTime.htmlId).offset().top }, "slow");
+        setTimeout(function(){
+            $("#"+currentFilmTime.htmlId).removeClass("recent-film-time-entry-conflict").addClass("time-entry");
+        },3000);
+
       return true;
     }
   }
@@ -532,7 +539,7 @@ function getPostData(){
 }
 
 function updateFilmTime(){
-
+    $("#changeFilmTimeModalStatusMsg").html("").show();
   var filmElemTimeId = $("#currentFilmTimeId").val();
   var filmTimeId =$("#"+filmElemTimeId).data("id");
   var filmTimeIdentifier =$("#"+filmElemTimeId).data("identifier");
@@ -545,6 +552,11 @@ function updateFilmTime(){
   enableDisableFormElement("changeFilmTimeModal",["input","button","select"],false);
 
   scheduleId = parseInt(scheduleId);
+    if(filmTimeId==0){
+        enableDisableFormElement("changeFilmTimeModal",["input","button","select"],true);
+        $("#changeFilmTimeModalStatusMsg").html("Can not update a unsaved schedule");
+        return;
+    }
   if(moment("2017-01-01 "+endTime).diff("2017-01-01 "+startTime,'minutes')<0){
       enableDisableFormElement("changeFilmTimeModal",["input","button","select"],true);
       $("#changeFilmTimeModalStatusMsg").html("Start time is greater then end date");

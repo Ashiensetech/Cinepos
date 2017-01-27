@@ -295,6 +295,22 @@
         border: 1px solid #e32c1b;
         transform-style: preserve-3d;
     }
+    .recent-film-time-entry-conflict{
+        background-color: #C1F04E;
+        transition: 200ms background-color;
+        height: 45px;
+        display: block;
+        position: absolute;
+        z-index: 2;
+        padding: 0 10px;
+        white-space: normal;
+        overflow: hidden;
+        color: #fff;
+        border: 1px solid #e32c1b;
+        transform-style: preserve-3d;
+    }
+
+
 
 </style>
 </body>

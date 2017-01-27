@@ -1,3 +1,35 @@
+
+function initializeFilmSchedulerView(data){
+  var startDate = $("#startDate").data('datepicker').getFormattedDate("yyyy-mm-dd");
+  var endDate =$("#endDate").data('datepicker').getFormattedDate("yyyy-mm-dd");
+  filmScheduler = [];
+
+
+
+  for(var i in data){
+    var tmpFilmSchedule = data[i];
+    var filmSchedule = new FilmSchedule();
+    var scheduleDateStr = getDateInDisplayFormat(tmpFilmSchedule.date);
+    /*Add Schedule*/
+    addSchedule(tmpFilmSchedule.id,scheduleDateStr);
+
+    for(var ftIndex in tmpFilmSchedule.filmTimes){
+      var filmTime = tmpFilmSchedule.filmTimes[ftIndex];
+      /*Add Film to schedule*/
+      addFilmToSchedule({
+        id:filmTime.id,
+        scheduleDateStr : scheduleDateStr,
+        startTime : filmTime.startTime,
+        endTime :filmTime.endTime,
+        film : {
+          id : filmTime.film.id,
+          name : filmTime.film.name
+        }
+      });
+    }
+
+  }
+}
 function showScheduling(){
 
   enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
@@ -7,22 +39,22 @@ function showScheduling(){
 
 
   if(screenId=="" || parseInt(screenId)<=0){
-    enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
+      enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
     $("#createScheduleStatusMsg").html("Start date required");
     return;
   }
   if(startDate==""){
-    enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
+      enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
     $("#createScheduleStatusMsg").html("Start date required");
     return;
   }
   if(endDate==""){
-    enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
+      enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
     $("#createScheduleStatusMsg").html("End date required");
     return;
   }
   if(moment(endDate).diff(moment(startDate), 'minutes') < 0){
-    enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
+      enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
     $("#createScheduleStatusMsg").html("Start date is greater then end  date");
     return;
   }
@@ -34,16 +66,16 @@ function showScheduling(){
     statusCode: {
       401: function (response) {
         console.log("unauthorized");
-        showLoginModal();
+         showLoginModal();
         enableDisableFormElement("createFilmForm",["input","button","select"],true);
-        $("#submitCreateScheduleMsg").html("Please login").show();
+          $("#submitCreateScheduleMsg").html("Please login").show();
       },
       422: function (response) {
         console.log(response);
         $("#statusMsg").html("Error found").show();
 
-        enableDisableFormElement("createFilmForm",["input","button","select"],true);
-        $("#submitCreateScheduleMsg").html("Internal server error . Reload the page").show();
+          enableDisableFormElement("createFilmForm",["input","button","select"],true);
+          $("#submitCreateScheduleMsg").html("Internal server error . Reload the page").show();
 
       },
       204:function(response){
@@ -64,3 +96,9 @@ function showScheduling(){
   });
 
 }
+
+
+
+
+
+
