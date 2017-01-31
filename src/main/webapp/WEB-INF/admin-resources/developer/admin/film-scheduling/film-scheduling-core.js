@@ -4,15 +4,16 @@ var FilmSchedule = function(){
   this.filmTime = [];
 };
 var FilmTime=function(){
-  this.id = 0;
-  this.identifier = "";
-  this.filmId=0;
-  this.filmName="";
-  this.startTime = new Date();
-  this.endTime = new Date();
-  this.options={
+    this.id = 0;
+    this.htmlId = "";
+    this.identifier = "";
+    this.filmId=0;
+    this.filmName="";
+    this.startTime = new Date();
+    this.endTime = new Date();
+    this.options={
 
-  };
+    };
 };
 
 var filmScheduler = [];
@@ -170,18 +171,25 @@ function drawTimeTable(){
   }
   timetable.addLocations(dates);
   var filmTimeHtmId=0;
-  var filmTimeHtmIdStr = "filmTime"+filmTimeHtmId++;
+  var filmTimeHtmIdPrefix = "filmTime";
+  var filmTimeHtmIdStr = filmTimeHtmIdPrefix+filmTimeHtmId++;
   for(var r in filmScheduler){
     var scheduleId = filmScheduler[r].id;
     var date = filmScheduler[r].date;
     var scheduleDate = filmScheduler[r].date;
     var filmTimes = filmScheduler[r].filmTime;
     for(var c in filmTimes){
-      filmTimeHtmIdStr = "filmTime"+filmTimeHtmId++;
+        if(filmTimes[c].id==0){
+            filmTimeHtmIdPrefix ="filmTimeNew";
+        }else{
+            filmTimeHtmIdPrefix = "filmTime";
+        }
+      filmTimeHtmIdStr = filmTimeHtmIdPrefix+filmTimeHtmId++;
+      filmTimes[c].htmlId = filmTimeHtmIdStr;
       filmTimes[c].options = {id:"film_"+filmTimes[c].filmId,
         data:{
           //camelCase does not work
-          htmlid:filmTimeHtmIdStr,
+          htmlid:filmTimes[c].htmlId,
           id:filmTimes[c].id,
           identifier:filmTimes[c].identifier,
           filmId:filmTimes[c].filmId,
@@ -307,6 +315,7 @@ function changeFilmTimeObj(filmTime,filmTimeData){
 }
 function addFilmToSchedule(filmTimeData){
   var isNew = false;
+  $("#addFilmToSchedulStatusMsg").html("").hide();
   if(filmTimeData==undefined){
     isNew = true;
     filmTimeData ={
@@ -320,6 +329,11 @@ function addFilmToSchedule(filmTimeData){
   var scheduleDateStr =filmTimeData.scheduleDateStr;
   var startTime = filmTimeData.startTime;
   var endTime = filmTimeData.endTime;
+
+  if(moment(endTime).diff(startTime,'minutes')<0){
+    $("#addFilmToSchedulStatusMsg").html("Stat time is greater then end date").show();
+      return;
+  }
 
   var film = {};
 
@@ -369,12 +383,23 @@ function addFilmToSchedule(filmTimeData){
   var index = getFilmScheduleRowBydate(scheduleDateStr);
   if(index>=0){
     if(!hasCollusion(index,filmTime)){
-      filmTime.identifier = "ID"+filmScheduler[index].filmTime.length;
-      filmScheduler[index].filmTime.push(filmTime);
+        filmTime.identifier = "ID"+filmScheduler[index].filmTime.length;
+        filmScheduler[index].filmTime.push(filmTime);
+        if(isNew){
+            drawTimeTable();
+            var tempFilmTime = getFilmTimeByScheduleIdAndIdentifier(index,filmTime.identifier);
+            $("html, body").animate({ scrollTop: $("#"+tempFilmTime.htmlId).offset().top }, "slow");
+            $("#"+tempFilmTime.htmlId).removeClass("time-entry").addClass("recent-film-time-entry");
+            setTimeout(function(){
+                $("#"+tempFilmTime.htmlId).removeClass("recent-film-time-entry").addClass("time-entry");
+            },3000);
+
+            $("#addFilmToSchedulStatusMsg").html("").hide();
+
+        }
     }
-  }
-  if(isNew){
-    drawTimeTable();
+
+
   }
 }
 function getFilmTimeByScheduleIdAndIdentifier(index,identifier){
@@ -415,7 +440,13 @@ function hasCollusion(index,filmTime){
         && filmTime.endTime >  currentFilmTime.endTime){
       continue;
     }else{
-      alert("cONFLICT");
+      alert("Scheduling clashed");
+        $("#"+currentFilmTime.htmlId).removeClass("time-entry").addClass("recent-film-time-entry-conflict");
+        $("html, body").animate({ scrollTop: $("#"+currentFilmTime.htmlId).offset().top }, "slow");
+        setTimeout(function(){
+            $("#"+currentFilmTime.htmlId).removeClass("recent-film-time-entry-conflict").addClass("time-entry");
+        },3000);
+
       return true;
     }
   }
@@ -441,6 +472,7 @@ function triggerSubmitCreateSchedule(){
    if(endDate)
    postData['endDate'] = endDate;*/
   var postDataArray = getPostData();
+    enableDisableFormElement("page-wrapper",["input","button","select"],false);
   submitCreateSchedule(postDataArray,false);
 
 }
@@ -454,7 +486,7 @@ function submitCreateSchedule(postDataArray,flag){
       createScheduling();
       $("#submitCreateScheduleMsg").html("Successful updated").show();
       setTimeout(function(){
-        $("#submitCreateScheduleMsg").html("").show();
+        $("#submitCreateScheduleMsg").html("").hide();
         enableDisableFormElement("page-wrapper",["input","button","select"],true);
       },3000);
     }
@@ -507,7 +539,7 @@ function getPostData(){
 }
 
 function updateFilmTime(){
-
+    $("#changeFilmTimeModalStatusMsg").html("").show();
   var filmElemTimeId = $("#currentFilmTimeId").val();
   var filmTimeId =$("#"+filmElemTimeId).data("id");
   var filmTimeIdentifier =$("#"+filmElemTimeId).data("identifier");
@@ -520,7 +552,11 @@ function updateFilmTime(){
   enableDisableFormElement("changeFilmTimeModal",["input","button","select"],false);
 
   scheduleId = parseInt(scheduleId);
-    console.log(endTime,startTime,moment("2017-01-01 "+endTime).diff("2017-01-01 "+startTime,'minutes'))
+    if(filmTimeId==0){
+        enableDisableFormElement("changeFilmTimeModal",["input","button","select"],true);
+        $("#changeFilmTimeModalStatusMsg").html("Can not update a unsaved schedule");
+        return;
+    }
   if(moment("2017-01-01 "+endTime).diff("2017-01-01 "+startTime,'minutes')<0){
       enableDisableFormElement("changeFilmTimeModal",["input","button","select"],true);
       $("#changeFilmTimeModalStatusMsg").html("Start time is greater then end date");

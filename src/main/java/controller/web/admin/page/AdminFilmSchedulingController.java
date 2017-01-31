@@ -35,7 +35,15 @@ public class AdminFilmSchedulingController {
     @Autowired
     ScreenDao screeDao;
 
-    @RequestMapping(value = "/create")
+    @RequestMapping(value = "/all")
+    public ModelAndView allSchedule(){
+        ModelAndView mav =  new ModelAndView("web-admin/film-scheduling/all-scheduling");
+
+        mav.addObject("screens", screeDao.getAllActivated());
+        mav.addObject("films",filmDao.getAllActive());
+        return mav;
+    }
+    @RequestMapping(value = "/manage")
     public ModelAndView createSchedule(){
         ModelAndView mav =  new ModelAndView("web-admin/film-scheduling/create-scheduling");
 

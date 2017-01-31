@@ -78,7 +78,7 @@
                                 </div>
                             </div>
 
-                            <p id="createScheduleStatusMsg" class="help-block error" ></p>
+                            <p id="createScheduleStatusMsg" class="help-block" ></p>
                             <button type="" class="btn btn-primary" onclick="createScheduling()">Show Schedule</button>
                         </div>
                         <div id="filmTimingAddForm" class="well">
@@ -111,12 +111,12 @@
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
                                 </div>
                             </div>
-
+                            <p id="addFilmToSchedulStatusMsg" class="help-block"></p>
                             <button type="" class="btn btn-primary" onclick="addFilmToSchedule()">Add film to schedule</button>
                          </div>
                         <div class="well">
                             <div class="form-group">
-                                <p id="submitCreateScheduleMsg" class="help-block error" ></p>
+                                <p id="submitCreateScheduleMsg" class="help-block" ></p>
                                 <button type="" class="btn btn-primary" onclick="triggerSubmitCreateSchedule()">Save changes</button>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                             <p id="filmName" class="f-name"></p>
                             <p><span id="startTimeSpan"></span>-<span id="endTimeSpan"></span></p>
                             <hr>
-                            <p  class="help-block error" id="filmTimeDetailsStatusMsg"></p>
+                            <p  class="help-block" id="filmTimeDetailsStatusMsg"></p>
                             <button type="" class="btn btn-danger" onclick="removeFilmTime()">Remove this film</button>
                             <button onclick="showFilmTimeModal()" type="" class="btn btn-success">Change timetable</button>
                             <button onclick="hideFilmTimeDetails()" type="" class="btn btn-success">Cancel</button>
@@ -198,7 +198,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <p id="changeFilmTimeModalStatusMsg" class="help-block error"></p>
+                <p id="changeFilmTimeModalStatusMsg" class="help-block"></p>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-primary" onclick="updateFilmTime()" >Update</button>
             </div>
@@ -230,7 +230,8 @@
 <%--Delveper Helper [ Vendor ]--%>
 <script type="text/javascript" src="<c:url value="/admin-resources/moment/moment.min.js" />" ></script>
 <%--Delveper JS--%>
-<script type="text/javascript" src="<c:url value="/admin-resources/developer/admin/film-scheduling/film-scheduling.js" />" ></script>
+    <%--Scheduling--%>
+<script type="text/javascript" src="<c:url value="/admin-resources/developer/admin/film-scheduling/film-scheduling-core.js" />" ></script>
 
 <script>
     $(document).ready(function(){
@@ -279,7 +280,39 @@
 <!-- Time picker -->
 
 <!-- Time table -->
+<style>
+    .recent-film-time-entry{
+        background-color: #5B66EC;
+        transition: 200ms background-color;
+        height: 45px;
+        display: block;
+        position: absolute;
+        z-index: 2;
+        padding: 0 10px;
+        white-space: normal;
+        overflow: hidden;
+        color: #fff;
+        border: 1px solid #e32c1b;
+        transform-style: preserve-3d;
+    }
+    .recent-film-time-entry-conflict{
+        background-color: #C1F04E;
+        transition: 200ms background-color;
+        height: 45px;
+        display: block;
+        position: absolute;
+        z-index: 2;
+        padding: 0 10px;
+        white-space: normal;
+        overflow: hidden;
+        color: #fff;
+        border: 1px solid #e32c1b;
+        transform-style: preserve-3d;
+    }
 
+
+
+</style>
 </body>
 
 </html>
