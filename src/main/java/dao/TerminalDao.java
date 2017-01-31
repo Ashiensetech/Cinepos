@@ -74,6 +74,21 @@ public class TerminalDao extends BaseDao {
         return null;
 
     }
+    public Terminal getByTerminalCode(String terminal_code){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (Terminal) session.createQuery("FROM Terminal where terminal_code = :terminal_code").setParameter("terminal_code", terminal_code).uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+
+    }
 
     public Terminal getLastId(){
 

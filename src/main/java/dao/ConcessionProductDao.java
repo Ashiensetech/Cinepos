@@ -74,6 +74,20 @@ public class ConcessionProductDao extends BaseDao{
 
     }
 
+    public  List<ConcessionProduct> getByCategoryId(int categoryId){
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (List<ConcessionProduct>) session.createQuery("FROM ConcessionProduct where category_id = :category_id").setParameter("category_id", categoryId).list();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<ConcessionProduct>();
+    }
+
 
 
 }

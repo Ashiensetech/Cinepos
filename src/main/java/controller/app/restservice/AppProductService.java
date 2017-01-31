@@ -4,6 +4,7 @@ import controller.app.AppUriPreFix;
 import dao.ConcessionProductCategoryDao;
 import dao.ConcessionProductDao;
 import entity.ConcessionProduct;
+import entity.ConcessionProductCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +20,14 @@ import java.util.List;
  * Created by Sarwar on 1/27/2017.
  */
 @RestController
-@RequestMapping(AppUriPreFix.apiUriPrefix +"/product-category")
-public class AppProductCategoryService {
+@RequestMapping(AppUriPreFix.apiUriPrefix +"/concession-product")
+public class AppProductService {
     @Autowired
     ConcessionProductCategoryDao concessionProductCategoryDao;
     @Autowired
     ConcessionProductDao concessionProductDao;
 
-    @RequestMapping(value = "/get-all-product", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/all", method = RequestMethod.GET)
     public ResponseEntity<?> getAllProduct(){
 
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
@@ -39,7 +40,7 @@ public class AppProductCategoryService {
         return ResponseEntity.status(HttpStatus.OK).body(concessionProductList);
     }
 
-    @RequestMapping(value = "/get-product-by-product-id/{product_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{product_id}", method = RequestMethod.GET)
     public ResponseEntity<?> getProductByProductId(@PathVariable(value = "product_id")Integer product_id){
 
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
@@ -50,15 +51,15 @@ public class AppProductCategoryService {
         return ResponseEntity.status(HttpStatus.OK).body(concessionProduct);
     }
 
-    @RequestMapping(value = "/get-products-by-category-id/{category_id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/category-id/{category_id}", method = RequestMethod.GET)
     public ResponseEntity<?> getProductsByCategoryId(@PathVariable(value = "category_id")Integer category_id){
 
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
-        ConcessionProduct concessionProduct=concessionProductDao.getById(category_id);
-        if(concessionProduct==null){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(concessionProduct);
+        List<ConcessionProduct> concessionProductList=concessionProductDao.getByCategoryId(category_id);
+        if(concessionProductList==null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(concessionProductList);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(concessionProduct);
+        return ResponseEntity.status(HttpStatus.OK).body(concessionProductList);
     }
 
 
