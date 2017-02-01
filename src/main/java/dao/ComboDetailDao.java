@@ -1,7 +1,6 @@
 package dao;
 
-import entity.Combo;
-import entity.ComboProduct;
+import entity.ComboDetails;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -11,8 +10,8 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public class ComboProductDao extends BaseDao{
-    public void insert(ComboProduct comboProduct){
+public class ComboDetailDao extends BaseDao{
+    public void insert(ComboDetails comboProduct){
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
@@ -27,12 +26,12 @@ public class ComboProductDao extends BaseDao{
         }
     }
 
-    public ComboProduct getById(int id){
+    public ComboDetails getById(int id){
 
         Session session = null;
         try{
             session = this.sessionFactory.openSession();
-            return (ComboProduct) session.createQuery("FROM ComboProduct where id = :id").setParameter("id", id).uniqueResult();
+            return (ComboDetails) session.createQuery("FROM ComboDetails where id = :id").setParameter("id", id).uniqueResult();
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();
@@ -43,11 +42,11 @@ public class ComboProductDao extends BaseDao{
 
     }
 
-    public ComboProduct getBycomboIdAndProductId(int combo_id,int concession_product_id){
+    public ComboDetails getBycomboIdAndProductId(int combo_id, int concession_product_id){
         Session session = null;
         try{
             session = this.sessionFactory.openSession();
-            return (ComboProduct) session.createQuery("FROM ComboProduct where combo_id = :combo_id and concession_product_id = :concession_product_id")
+            return (ComboDetails) session.createQuery("FROM ComboDetails where combo_id = :combo_id and concession_product_id = :concession_product_id")
                     .setParameter("combo_id", combo_id)
                     .setParameter("concession_product_id", concession_product_id)
                     .uniqueResult();
@@ -60,7 +59,7 @@ public class ComboProductDao extends BaseDao{
         return null;
     }
 
-    public ComboProduct deleteComboProduct(ComboProduct comboProduct){
+    public ComboDetails deleteComboProduct(ComboDetails comboProduct){
         Session session = null;
         System.out.println(comboProduct);
 

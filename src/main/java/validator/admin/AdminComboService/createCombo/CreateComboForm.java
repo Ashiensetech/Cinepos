@@ -36,6 +36,8 @@ public class CreateComboForm {
     @NotNull(message = "Product are  required")
     private String productIds;
 
+    private int seatTypeId;
+
     private List<Integer> productsIdArray = new ArrayList<>();
 
 
@@ -104,8 +106,13 @@ public class CreateComboForm {
     }
 
 
+    public Integer getSeatTypeId() {
+        return seatTypeId;
+    }
 
-
+    public void setSeatTypeId(Integer seatTypeId) {
+        this.seatTypeId = seatTypeId;
+    }
 
     public Date getFormattedStartDate() {
         return formattedStartDate;
@@ -142,6 +149,8 @@ public class CreateComboForm {
                 ", endDate='" + endDate + '\'' +
                 ", comboType='" + comboType + '\'' +
                 ", productIds='" + productIds + '\'' +
+                ", seatTypeId=" + seatTypeId +
+                ", productsIdArray=" + productsIdArray +
                 ", formattedStartDate=" + formattedStartDate +
                 ", formattedEndDate=" + formattedEndDate +
                 '}';

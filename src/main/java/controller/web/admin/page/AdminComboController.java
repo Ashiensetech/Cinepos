@@ -4,8 +4,11 @@ import com.sun.org.apache.xpath.internal.operations.Mod;
 import controller.web.admin.AdminUriPreFix;
 import dao.ComboDao;
 import dao.ConcessionProductDao;
+import dao.SeatTypeDao;
+import dao.reportDao.ProductSaleReportViewDao;
 import entity.Combo;
 import entity.ConcessionProduct;
+import entity.SeatType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +28,13 @@ public class AdminComboController {
     ConcessionProductDao concessionProductDao;
     @Autowired
     ComboDao comboDao;
+    @Autowired
+    SeatTypeDao seatTypeDao;
+
 
     @RequestMapping(value = "/all",method = RequestMethod.GET)
     public ModelAndView index(){
+
         List<Combo> comboList=comboDao.getAll();
         ModelAndView modelAndView=new ModelAndView("web-admin/combo/all-combo");
         modelAndView.addObject("comboList",comboList);
@@ -37,8 +44,10 @@ public class AdminComboController {
     @RequestMapping(value = "/create",method = RequestMethod.GET)
     public ModelAndView create(){
         List<ConcessionProduct> concessionProductList= concessionProductDao.getAll();
+        List<SeatType> seatTypeList=seatTypeDao.getAll();
         ModelAndView modelAndView=new ModelAndView("web-admin/combo/create-combo");
         modelAndView.addObject("concessionProductList",concessionProductList);
+        modelAndView.addObject("seatTypeList",seatTypeList);
         return modelAndView;
     }
 

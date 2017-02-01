@@ -7,8 +7,8 @@ import java.sql.Timestamp;
  * Created by Sarwar on 1/18/2017.
  */
 @Entity
-@Table(name = "combo_product")
-public class ComboProduct {
+@Table(name = "combo_details")
+public class ComboDetails {
     @javax.persistence.Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,6 +25,9 @@ public class ComboProduct {
     private Integer concessionProductId;
 
 
+    @Column(name = "seat_type_id")
+    private Integer seatTypeId;
+
     @Column(name = "ticket_id")
     private Integer ticketId;
 
@@ -37,6 +40,10 @@ public class ComboProduct {
     @OneToOne
     @JoinColumn(name = "concession_product_id",referencedColumnName = "id",insertable = false, updatable = false)
     private ConcessionProduct concessionProduct;
+
+    @OneToOne
+    @JoinColumn(name = "seat_type_id",referencedColumnName = "id",insertable = false, updatable = false)
+    private SeatType seatType;
 
     public int getId() {
         return Id;
@@ -68,6 +75,14 @@ public class ComboProduct {
 
     public void setConcessionProductId(Integer concessionProductId) {
         this.concessionProductId = concessionProductId;
+    }
+
+    public Integer getSeatTypeId() {
+        return seatTypeId;
+    }
+
+    public void setSeatTypeId(Integer seatTypeId) {
+        this.seatTypeId = seatTypeId;
     }
 
     public Integer getTicketId() {
@@ -102,12 +117,20 @@ public class ComboProduct {
         this.concessionProduct = concessionProduct;
     }
 
+    public SeatType getSeatType() {
+        return seatType;
+    }
+
+    public void setSeatType(SeatType seatType) {
+        this.seatType = seatType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ComboProduct that = (ComboProduct) o;
+        ComboDetails that = (ComboDetails) o;
 
         if (Id != that.Id) return false;
         if (createdBy != that.createdBy) return false;
@@ -116,9 +139,12 @@ public class ComboProduct {
             return false;
         if (concessionProductId != null ? !concessionProductId.equals(that.concessionProductId) : that.concessionProductId != null)
             return false;
+        if (seatTypeId != null ? !seatTypeId.equals(that.seatTypeId) : that.seatTypeId != null) return false;
         if (ticketId != null ? !ticketId.equals(that.ticketId) : that.ticketId != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
-        return concessionProduct != null ? concessionProduct.equals(that.concessionProduct) : that.concessionProduct == null;
+        if (concessionProduct != null ? !concessionProduct.equals(that.concessionProduct) : that.concessionProduct != null)
+            return false;
+        return seatType != null ? seatType.equals(that.seatType) : that.seatType == null;
     }
 
     @Override
@@ -127,24 +153,28 @@ public class ComboProduct {
         result = 31 * result + (comboId != null ? comboId.hashCode() : 0);
         result = 31 * result + (comboProductType != null ? comboProductType.hashCode() : 0);
         result = 31 * result + (concessionProductId != null ? concessionProductId.hashCode() : 0);
+        result = 31 * result + (seatTypeId != null ? seatTypeId.hashCode() : 0);
         result = 31 * result + (ticketId != null ? ticketId.hashCode() : 0);
         result = 31 * result + createdBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (concessionProduct != null ? concessionProduct.hashCode() : 0);
+        result = 31 * result + (seatType != null ? seatType.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "ComboProduct{" +
+        return "ComboDetails{" +
                 "Id=" + Id +
                 ", comboId=" + comboId +
                 ", comboProductType='" + comboProductType + '\'' +
                 ", concessionProductId=" + concessionProductId +
+                ", seatTypeId=" + seatTypeId +
                 ", ticketId=" + ticketId +
                 ", createdBy=" + createdBy +
                 ", createdAt=" + createdAt +
                 ", concessionProduct=" + concessionProduct +
+                ", seatType=" + seatType +
                 '}';
     }
 
