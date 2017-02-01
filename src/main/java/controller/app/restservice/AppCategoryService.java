@@ -23,7 +23,6 @@ import java.util.List;
 public class AppCategoryService {
     @Autowired
     ConcessionProductCategoryDao concessionProductCategoryDao;
-    @Autowired
 
     @RequestMapping(value = "/get/all", method = RequestMethod.GET)
     public ResponseEntity<?> getAllCategory(){

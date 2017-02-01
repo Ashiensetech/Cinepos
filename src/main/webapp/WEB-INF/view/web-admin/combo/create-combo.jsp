@@ -85,10 +85,16 @@
 
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <label>Ticket</label>
+                                    <label>Seat Type</label>
                                     <select class="form-control" id="tickets">
-                                        <option>Active</option>
-                                        <option>Inactive</option>
+                                        <option value="">Select  Seat Type</option>
+                                        <d:choose>
+                                            <d:when test="${not empty seatTypeList}">
+                                                <d:forEach var="varseatType" items="${seatTypeList}">
+                                                    <option value="${varseatType.id}" data-subtext="${varseatType.name}">${varseatType.name}</option>
+                                                </d:forEach>
+                                            </d:when>
+                                        </d:choose>
                                     </select>
                                     <p class="help-block error" id="errorMsg_tickets"></p>
 
@@ -239,6 +245,12 @@
                 var startDate=$("#startDate").val();
                 var endDate=$("#endDate").val();
 
+                var ticket=$("#tickets").val();
+
+                if(ticket==""){
+                    ticket=0;
+                }
+
                 enableDisableFormElement("createComboForm",["input","button","select","textarea"],false);
 
                 var pageData={
@@ -247,6 +259,7 @@
                     price:price,
                     startDate:startDate,
                     endDate:endDate,
+                    seatTypeId:ticket,
                     comboType:"product",
                 };
 

@@ -1,5 +1,6 @@
 package dao;
 
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import entity.Category;
 import entity.Circuit;
 import entity.Combo;
@@ -53,6 +54,19 @@ public class ComboDao extends  BaseDao{
 
         try{
             return session.createQuery("FROM Combo").list();
+
+        }catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<>();
+    }
+
+    public List<Combo> getAllProductCombo(String type){
+        Session session=this.sessionFactory.openSession();
+        try{
+            return session.createQuery("FROM Combo where type = :type").setParameter("type",type).list();
 
         }catch (HibernateException hEx){
             hEx.printStackTrace();
