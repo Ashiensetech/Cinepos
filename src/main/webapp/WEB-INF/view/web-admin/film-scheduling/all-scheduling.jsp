@@ -65,7 +65,6 @@
                                            id="endDate"
                                            name="date"
                                            placeholder="MM/DD/YYY"
-                                           type="text"
                                            onchange=""
                                             />
                                 </div>

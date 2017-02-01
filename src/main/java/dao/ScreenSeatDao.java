@@ -39,7 +39,23 @@ public class ScreenSeatDao  extends BaseDao {
         return null;
     }
 
+    public List<ScreenSeat> getByScreenId(Integer screenId){
 
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return session.createQuery("FROM ScreenSeat where screenId = :screenId")
+                    .setParameter("screenId", screenId)
+                    .list();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+        return null;
+    }
     public void update(ScreenSeat screenSeat){
         Session session = null;
         try {

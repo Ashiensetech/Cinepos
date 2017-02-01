@@ -74,7 +74,7 @@ public class AdminTicketService {
         /***************** Service  [Start] *************/
         Ticket ticket = new Ticket();
 
-        ticket.setName(createTicketForm.getName());
+
         ticket.setDescription(createTicketForm.getDescription());
         ticket.setAnnotation(createTicketForm.getAnnotation());
         ticket.setPrintedPrice(createTicketForm.getPrintedPrice());
@@ -127,7 +127,7 @@ public class AdminTicketService {
         /***************** Service  [Start] *************/
         Ticket ticket = ticketDao.getById(editTicketForm.getId());
 
-        ticket.setName(editTicketForm.getName());
+
         ticket.setDescription(editTicketForm.getDescription());
         ticket.setAnnotation(editTicketForm.getAnnotation());
         ticket.setPrintedPrice(editTicketForm.getPrintedPrice());

@@ -1,12 +1,9 @@
 package controller.web.admin.page;
 
 import controller.web.admin.AdminUriPreFix;
-import dao.SeatTypeDao;
-import dao.TicketDao;
-import dao.VatSettingDao;
-import entity.SeatType;
-import entity.Ticket;
-import entity.VatSetting;
+import dao.*;
+import entity.*;
+import helper.ScreenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.ejb.Schedule;
 import java.util.List;
 
 /**
@@ -33,11 +31,45 @@ public class AdminTicketController {
     @Autowired
     TicketDao ticketDao;
 
-    @RequestMapping(value = "/create")
-    public ModelAndView createTicket(){
+    @Autowired
+    FilmScheduleDao filmScheduleDao;
+
+    @Autowired
+    FilmTimeDao filmTimeDao;
+
+    @Autowired
+    ScreenDao screenDao;
+
+    @Autowired
+    ScreenSeatDao screenSeatDao;
+
+    @RequestMapping(value = "/create/{filmTimeId}")
+    public ModelAndView createTicket(@PathVariable Integer filmTimeId){
         List<SeatType> seatTypes = seatTypeDao.getAll();
+        List<Screen> screens = screenDao.getAllActivated();
         List<VatSetting> vats = vatSettingDao.getAll();
+        FilmTime filmTime = filmTimeDao.getById(filmTimeId);
+
+        if(filmTime == null){
+            // redirect
+        }
+        FilmSchedule filmSchedule = filmScheduleDao.getById(filmTime.getFilmScheduleId());
+        Screen screen = filmSchedule.getScreen();
+
+        if(screen == null){
+            // redirect
+        }
+
+        List<ScreenSeat> screenSeats = screenSeatDao.getByScreenId(screen.getId());
+        if(screenSeats == null){
+            // redirect
+        }
+
+        List< List<ScreenSeat>> screenSeatList = ScreenHelper.singleDimensionToTwoDimensionList(screenSeats, screen.getRowCount(), screen.getRowCount());
         ModelAndView mav =  new ModelAndView("web-admin/ticket/create-ticket");
+
+        mav.addObject("screens", screens);
+        mav.addObject("screenSeatList",screenSeatList);
         mav.addObject("seatTypes",seatTypes);
         mav.addObject("vats",vats);
         return mav;

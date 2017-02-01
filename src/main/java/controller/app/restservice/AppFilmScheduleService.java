@@ -77,8 +77,11 @@ public class AppFilmScheduleService {
         }else{
             serviceResponse.setValidationError("endDate", "End date required");
         }
-        System.out.println(sDate);
-        System.out.println(eDate);
+
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
         List<FilmSchedule> filmSchedules = filmScheduleDao.getByDateRange(screenId,sDate,eDate);
 
         if(filmSchedules==null || filmSchedules.size()==0){
@@ -86,5 +89,44 @@ public class AppFilmScheduleService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(filmSchedules);
     }
+    @RequestMapping(value = "/get-by-date/{screenId}", method = RequestMethod.POST)
+    public ResponseEntity<?> getByDate(@PathVariable(value = "screenId")Integer screenId,
+                                    @RequestParam(value = "startDate") String startDate) {
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+        Date sDate = null;
+        if(startDate!=null){
+            try {
+                sDate = DateHelper.getStringToDate(startDate,"yyyy-MM-dd");
+            } catch (ParseException e) {
+                serviceResponse.setValidationError("startDate", e.getMessage());
+            }
+        }else{
+            serviceResponse.setValidationError("startDate", "Start date required");
+        }
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
 
+
+        FilmSchedule filmSchedules = filmScheduleDao.getByDate(screenId, sDate);
+
+        if(filmSchedules==null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(filmSchedules);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(filmSchedules);
+    }
+    @RequestMapping(value = "/get/{id}", method = RequestMethod.POST)
+    public ResponseEntity<?> getById(@PathVariable(value = "id")Integer id) {
+        if(id==null){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body( ServiceResponse.getMsg("Id required"));
+        }
+
+
+        FilmSchedule filmSchedules = filmScheduleDao.getById(id);
+
+        if(filmSchedules==null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(filmSchedules);
+    }
 }

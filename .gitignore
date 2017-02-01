@@ -6,3 +6,4 @@ src/main/java/resources/hibernate.cfg.xml
 src/main/webapp/WEB-INF/resource-config/liveConfig.properties
 src/main/webapp/WEB-INF/resource-config/localConfig.properties
 src/main/webapp/WEB-INF/resource-config/uriConfig.properties
+deploy

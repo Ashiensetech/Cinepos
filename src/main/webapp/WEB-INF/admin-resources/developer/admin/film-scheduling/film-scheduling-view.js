@@ -79,6 +79,7 @@ function showScheduling(){
 
       },
       204:function(response){
+        $("#scheduleViewer").html("No scheduling information found");
         console.log("ASD");
       }
     },success: function(data,textStatus, xhr){

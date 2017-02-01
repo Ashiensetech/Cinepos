@@ -41,9 +41,6 @@ public class Ticket {
                     nullable = false, updatable = false) })
     private Set<SellsChannel> sellsChannels;
 
-    @Basic
-    @Column(name = "name")
-    private String name;
 
     @Basic
     @Column(name = "description")
@@ -64,6 +61,19 @@ public class Ticket {
     public void setVat(VatSetting vat) {
         this.vat = vat;
     }
+
+
+    @Basic
+    @Column(name = "sell_on_web")
+    private boolean sellOnWeb;
+
+    @Basic
+    @Column(name = "sell_on_kiosk")
+    private boolean sellOnKiosk;
+
+    @Basic
+    @Column(name = "sell_on_pos")
+    private boolean sellOnPos;
 
     @Basic
     @Column(name = "is_child")
@@ -100,12 +110,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Set<SellsChannel> getSellsChannels() {
+        return sellsChannels;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setSellsChannels(Set<SellsChannel> sellsChannels) {
+        this.sellsChannels = sellsChannels;
     }
 
 
@@ -133,12 +143,28 @@ public class Ticket {
         this.printedPrice = printedPrice;
     }
 
-    public Set<SellsChannel> getSellsChannels() {
-        return sellsChannels;
+    public boolean isSellOnWeb() {
+        return sellOnWeb;
     }
 
-    public void setSellsChannels(Set<SellsChannel> sellsChannels) {
-        this.sellsChannels = sellsChannels;
+    public void setSellOnWeb(boolean sellOnWeb) {
+        this.sellOnWeb = sellOnWeb;
+    }
+
+    public boolean isSellOnKiosk() {
+        return sellOnKiosk;
+    }
+
+    public void setSellOnKiosk(boolean sellOnKiosk) {
+        this.sellOnKiosk = sellOnKiosk;
+    }
+
+    public boolean isSellOnPos() {
+        return sellOnPos;
+    }
+
+    public void setSellOnPos(boolean sellOnPos) {
+        this.sellOnPos = sellOnPos;
     }
 
     public boolean isChild() {
@@ -149,7 +175,7 @@ public class Ticket {
         this.isChild = isChild;
     }
 
-    public boolean getIsAdult() {
+    public boolean isAdult() {
         return isAdult;
     }
 
@@ -157,7 +183,7 @@ public class Ticket {
         this.isAdult = isAdult;
     }
 
-    public boolean getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
@@ -205,6 +231,9 @@ public class Ticket {
         Ticket ticket = (Ticket) o;
 
         if (id != ticket.id) return false;
+        if (sellOnWeb != ticket.sellOnWeb) return false;
+        if (sellOnKiosk != ticket.sellOnKiosk) return false;
+        if (sellOnPos != ticket.sellOnPos) return false;
         if (isChild != ticket.isChild) return false;
         if (isAdult != ticket.isAdult) return false;
         if (status != ticket.status) return false;
@@ -212,7 +241,6 @@ public class Ticket {
         if (vat != null ? !vat.equals(ticket.vat) : ticket.vat != null) return false;
         if (sellsChannels != null ? !sellsChannels.equals(ticket.sellsChannels) : ticket.sellsChannels != null)
             return false;
-        if (name != null ? !name.equals(ticket.name) : ticket.name != null) return false;
         if (description != null ? !description.equals(ticket.description) : ticket.description != null) return false;
         if (annotation != null ? !annotation.equals(ticket.annotation) : ticket.annotation != null) return false;
         if (printedPrice != null ? !printedPrice.equals(ticket.printedPrice) : ticket.printedPrice != null)
@@ -220,7 +248,7 @@ public class Ticket {
         if (startDate != null ? !startDate.equals(ticket.startDate) : ticket.startDate != null) return false;
         if (endDate != null ? !endDate.equals(ticket.endDate) : ticket.endDate != null) return false;
         if (createdBy != null ? !createdBy.equals(ticket.createdBy) : ticket.createdBy != null) return false;
-        return createdAt != null ? createdAt.equals(ticket.createdAt) : ticket.createdAt == null;
+        return !(createdAt != null ? !createdAt.equals(ticket.createdAt) : ticket.createdAt != null);
 
     }
 
@@ -230,10 +258,12 @@ public class Ticket {
         result = 31 * result + (seatType != null ? seatType.hashCode() : 0);
         result = 31 * result + (vat != null ? vat.hashCode() : 0);
         result = 31 * result + (sellsChannels != null ? sellsChannels.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (annotation != null ? annotation.hashCode() : 0);
         result = 31 * result + (printedPrice != null ? printedPrice.hashCode() : 0);
+        result = 31 * result + (sellOnWeb ? 1 : 0);
+        result = 31 * result + (sellOnKiosk ? 1 : 0);
+        result = 31 * result + (sellOnPos ? 1 : 0);
         result = 31 * result + (isChild ? 1 : 0);
         result = 31 * result + (isAdult ? 1 : 0);
         result = 31 * result + (status ? 1 : 0);
@@ -242,26 +272,5 @@ public class Ticket {
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Ticket{" +
-                "id=" + id +
-                ", seatType=" + seatType +
-                ", vat=" + vat +
-                ", ticketChannels=" + sellsChannels +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", annotation='" + annotation + '\'' +
-                ", printedPrice=" + printedPrice +
-                ", isChild=" + isChild +
-                ", isAdult=" + isAdult +
-                ", status=" + status +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", createdBy=" + createdBy +
-                ", createdAt=" + createdAt +
-                '}';
     }
 }
