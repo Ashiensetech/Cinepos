@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Feb 02, 2017 at 06:42 PM
+-- Generation Time: Feb 02, 2017 at 07:16 PM
 -- Server version: 5.6.33-0ubuntu0.14.04.1
 -- PHP Version: 5.6.23-1+deprecated+dontuse+deb.sury.org~trusty+1
 
@@ -27,9 +27,9 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `ticket` (
-  `id` bigint(100) NOT NULL AUTO_INCREMENT,
-  `screen_seat_id` int(11) NOT NULL,
-  `film_time_id` int(11) NOT NULL,
+  `id` bigint(15) NOT NULL AUTO_INCREMENT,
+  `screen_seat_id` int(11) DEFAULT NULL,
+  `film_time_id` int(11) DEFAULT NULL,
   `description` text,
   `annotation` varchar(100) DEFAULT NULL,
   `printed_price` decimal(8,2) NOT NULL,
@@ -47,8 +47,21 @@ CREATE TABLE IF NOT EXISTS `ticket` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `seat_type_id` (`screen_seat_id`),
-  KEY `film_schedule_id` (`film_time_id`)
+  KEY `film_schedule_id` (`film_time_id`),
+  KEY `screen_seat_id` (`screen_seat_id`),
+  KEY `film_time_id` (`film_time_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `ticket`
+--
+ALTER TABLE `ticket`
+  ADD CONSTRAINT `ticket_film_time_id` FOREIGN KEY (`film_time_id`) REFERENCES `film_time` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `ticket_screen_seat_id` FOREIGN KEY (`screen_seat_id`) REFERENCES `screen_seat` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

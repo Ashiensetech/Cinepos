@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -16,7 +17,7 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
 
     @OneToOne
     @JoinColumn(name = "film_time_id",referencedColumnName = "id")
@@ -103,11 +104,11 @@ public class Ticket {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -281,7 +282,7 @@ public class Ticket {
 
     @Override
     public int hashCode() {
-        int result = id;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (filmTime != null ? filmTime.hashCode() : 0);
         result = 31 * result + (screenSeat != null ? screenSeat.hashCode() : 0);
         result = 31 * result + (vat != null ? vat.hashCode() : 0);
