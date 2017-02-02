@@ -1,8 +1,6 @@
 package dao;
 
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
-import entity.Category;
-import entity.Circuit;
+
 import entity.Combo;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

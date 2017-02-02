@@ -1,5 +1,6 @@
 package dao.reportDao;
 
+import dao.BaseDao;
 import entity.Combo;
 import entity.reportEntity.ProductSaleReportView;
 import org.hibernate.HibernateException;

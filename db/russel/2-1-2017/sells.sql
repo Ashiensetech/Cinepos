@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `selling_details`
+-- Table structure for table `sells_details`
 --
 
-CREATE TABLE `selling_details` (
+CREATE TABLE `sells_details` (
   `id` int(11) NOT NULL,
   `sell_id` int(11) DEFAULT NULL,
   `concession_product_id` int(11) DEFAULT NULL,
@@ -62,9 +62,9 @@ CREATE TABLE `sells` (
 --
 
 --
--- Indexes for table `selling_details`
+-- Indexes for table `sells_details`
 --
-ALTER TABLE `selling_details`
+ALTER TABLE `sells_details`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -78,9 +78,9 @@ ALTER TABLE `sells`
 --
 
 --
--- AUTO_INCREMENT for table `selling_details`
+-- AUTO_INCREMENT for table `sells_details`
 --
-ALTER TABLE `selling_details`
+ALTER TABLE `sells_details`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `sells`

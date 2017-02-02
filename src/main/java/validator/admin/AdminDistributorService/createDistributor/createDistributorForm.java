@@ -11,7 +11,7 @@ public class createDistributorForm {
 
     @NotBlank(message = "Distributor name are required")
     @Length(max = 30,message = "Distributor name too large")
-   private String name;
+     private String name;
 
     @NotBlank(message = "Primary email are required")
     @Email(message = "Primary email is not valid")
@@ -22,14 +22,14 @@ public class createDistributorForm {
     @NotBlank(message = "Secondary email are required")
     @Email(message = "Secondary email is not valid")
     @Length(max = 35,message = "Secondary email is too large")
-   private String secondaryEmail;
+    private String secondaryEmail;
 
     @NotBlank(message = "Phone are required")
     @Length(max = 30,message = "Phone is too large")
-   private String phone;
+    private String phone;
 
     @NotBlank(message = "Address are required")
-   private String address;
+    private String address;
 
     @NotBlank(message = "Description are required")
     @Size.List ({
