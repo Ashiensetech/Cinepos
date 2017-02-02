@@ -25,6 +25,7 @@ class Animal{
     }
 }
 class Dog extends Animal{
+    public String belt = "YELLOW";
     public void sound(){
         System.out.println("Sound Like Dog");
     }
@@ -48,15 +49,7 @@ public class IfaceTest {
 
 
     public static void main(String[] args) {
-       Time before =  DateHelper.getStringToTime("01:00:00");
-        Time after =   DateHelper.getStringToTime("02:00:00");
-
-        if(after.after(before)){
-            out.println("After");
-        }
-        if(before.before(after)){
-            out.println("before");
-        }
+       Dog d =(Dog) new Animal();
     }
 
 

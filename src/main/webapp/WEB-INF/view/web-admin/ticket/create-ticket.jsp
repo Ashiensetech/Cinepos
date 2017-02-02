@@ -69,95 +69,22 @@
                                                 />
                                     </div>
                                 </div>
-                                <button type="" class="btn btn-primary" onclick="return showScheduling()">Show Schedule</button>
+                                <button type="" class="btn btn-primary" onclick="return showSchedulingToGenerateTicket()">Show Schedule</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-12 clearfix">
-                <div id="scheduleViewer" class="timetable clearfix"></div>
-            </div>
-            <div id="screenSeats" class="row">
-
-            </div>
-
             <div class="row">
-                <div class="col-lg-6">
-                    <form id="createTicketForm">
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input id="name" class="form-control">
-                            <p class="help-block error" id="errorMsg_name"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <input id="description" class="form-control">
-                            <p class="help-block error" id="errorMsg_description"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Annotation</label>
-                            <input id="annotation" class="form-control">
-                            <p class="help-block error" id="errorMsg_annotation"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>Seat</label>
-                            <select class="form-control" id="seatTypeId" >
-                                <d:forEach var="seat" items="${seatTypes}" >
-                                    <option value="${seat.id}" data-adult-price="${seat.adultPrice}" data-child-price="${seat.childPrice}">${seat.name}</option>
-                                </d:forEach>
-                            </select>
-                            <p class="help-block error" id="errorMsg_seatTypeId"></p>
-                        </div>
+                <div class="col-lg-12 clearfix">
+                    <div id="scheduleViewer" class="timetable clearfix"></div>
+                </div>
+                <div id="screenSeats" class="col-lg-12 clearfix row">
 
-                        <div class="form-group">
-                            <label>Vat</label>
-                            <select class="form-control" id="vatId" >
-                                <d:forEach var="vat" items="${vats}" >
-                                    <option value="${vat.id}" data-price = ${vat.amount}>${vat.name}</option>
-                                </d:forEach>
-                            </select>
-                            <p class="help-block error" id="errorMsg_vatId"></p>
-                        </div>
+                </div>
+            </div>
+            <div  class="row">
+                <div id="createTicketFormDiv" class="col-lg-6">
 
-                        <div class="form-group">
-                            <label>Is Child</label><br>
-                            <label class="checkbox-inline">
-                                <input type="checkbox" id="isChild">Yes
-                            </label>
-                            <p class="help-block error" id="errorMsg_isChild"></p>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Printed Price</label>
-                            <input id="printedPrice" class="form-control">
-                            <p class="help-block error" id="errorMsg_printedPrice"></p>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Start Date</label>
-                            <div class='input-group date'>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                <input id="startDate" type='text' class="form-control" name="date" placeholder="MM/DD/YYY" />
-
-                            </div>
-                            <p class="help-block error" id="errorMsg_startDate"></p>
-                        </div>
-                        <div class="form-group">
-                            <label>End Date</label>
-                            <div class='input-group date'>
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                <input type='text' class="form-control" id="endDate" name="date" placeholder="MM/DD/YYY" />
-
-                            </div>
-                            <p class="help-block error" id="errorMsg_endDate"></p>
-                        </div>
-
-                        <br>
-                        <p class="help-block" id="statusMsg"></p>
-                        <button class="btn btn-primary" onclick="return submitTicketData()">Create Ticket</button>
-                    </form>
                 </div>
             </div>
         </div>
@@ -198,7 +125,41 @@
         /*Initially disabled */
         /* Enable after schedule created*/
         enableDisableFormElement("filmTimingAddForm",["input","button","select"],false);
-    })
+    });
+
+
+    function getTicketSeatInfByFilmIdAndSeatId(filmTimeId,seatId){
+        console.log("Getting Seats");
+        $.ajax({
+            url: BASEURL+'admin/ticket/partial/ticket-create/'+filmTimeId+"/"+seatId,
+            type: 'GET',
+            statusCode: {
+                401: function (response) {
+                    console.log("unauthorized");
+                    showLoginModal();
+                    enableDisableFormElement("createFilmForm",["input","button","select"],true);
+                    $("#submitCreateScheduleMsg").html("Please login").show();
+                },
+                422: function (response) {
+                    console.log(response);
+                    $("#statusMsg").html("Error found").show();
+
+                    enableDisableFormElement("createFilmForm",["input","button","select"],true);
+                    $("#submitCreateScheduleMsg").html("Internal server error . Reload the page").show();
+
+                },
+                204:function(response){
+                    $("#scheduleViewer").html("No scheduling information found");
+                    console.log("ASD");
+                }
+            },success: function(data,textStatus, xhr){
+                //$("#statusMsg").html("Film Rental created successfully").show();
+                console.log(data,textStatus, xhr.status);
+                $("#createTicketFormDiv").html(data);
+
+            }
+        });
+    }
 </script>
 
 <!-- Date picker -->
@@ -235,23 +196,24 @@
 
         $("#statusMsg").html("").hide();
 
-        var seatTypeId =$("#seatTypeId").val();
-        var vatId =$("#vatId").val();
-        var startDate =$("#startDate").val();
+        var seatId =$("#seatId").val();
+        var filmTimeId =$("#filmTimeId").val();
+        var ticketId =$("#ticketId").val();
+        var vatId = $("vatId").val();
         var endDate =$("#endDate").val();
+
         var isChild = $("#isChild").prop("checked");
         var isAdult = true;
         if(isChild)
             isAdult=false;
         var printedPrice =$("#printedPrice").val();
-        var name =$("#name").val();
         var description =$("#description").val();
         var annotation =$("#annotation").val();
         enableDisableFormElement("createTicketForm",["input","button","select"],false);
         var postData={
-            seatTypeId:seatTypeId,
-            name:name,
-            description:description,
+            seatId:seatId,
+            filmTimeId:filmTimeId,
+            ticketId:ticketId,
             annotation:annotation,
             printedPrice:printedPrice,
             vatId:vatId,

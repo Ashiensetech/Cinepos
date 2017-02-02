@@ -8,8 +8,14 @@ import java.sql.Date;
  */
 public class CreateTicketForm {
 
-    @NotNull(message = "Name is required")
-    private String name;
+    @NotNull(message = "Seat Id required")
+    private Integer seatId;
+
+    @NotNull(message = "Film Time Id is required")
+    private Integer filmTimeId;
+
+    @NotNull(message = "Ticket Id is required")
+    private Integer ticketId;
 
     @NotNull(message = "Description is required")
     private String description;
@@ -42,12 +48,68 @@ public class CreateTicketForm {
 
     private Boolean status;
 
+    public Integer getSeatId() {
+        return seatId;
+    }
+
+    public void setSeatId(Integer seatId) {
+        this.seatId = seatId;
+    }
+
+    public Integer getFilmTimeId() {
+        return filmTimeId;
+    }
+
+    public void setFilmTimeId(Integer filmTimeId) {
+        this.filmTimeId = filmTimeId;
+    }
+
+    public Integer getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAnnotation() {
+        return annotation;
+    }
+
+    public void setAnnotation(String annotation) {
+        this.annotation = annotation;
+    }
+
+    public Double getPrintedPrice() {
+        return printedPrice;
+    }
+
+    public void setPrintedPrice(Double printedPrice) {
+        this.printedPrice = printedPrice;
+    }
+
     public Integer getSeatTypeId() {
         return seatTypeId;
     }
 
     public void setSeatTypeId(Integer seatTypeId) {
         this.seatTypeId = seatTypeId;
+    }
+
+    public Integer getVatId() {
+        return vatId;
+    }
+
+    public void setVatId(Integer vatId) {
+        this.vatId = vatId;
     }
 
     public String getStartDate() {
@@ -82,60 +144,20 @@ public class CreateTicketForm {
         this.formattedEndDate = formattedEndDate;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAnnotation() {
-        return annotation;
-    }
-
-    public void setAnnotation(String annotation) {
-        this.annotation = annotation;
-    }
-
-    public Double getPrintedPrice() {
-        return printedPrice;
-    }
-
-    public void setPrintedPrice(Double printedPrice) {
-        this.printedPrice = printedPrice;
-    }
-
-    public Integer getVatId() {
-        return vatId;
-    }
-
-    public void setVatId(Integer vatId) {
-        this.vatId = vatId;
-    }
-
     public Boolean getIsChild() {
         return isChild;
     }
 
-    public void setisChild(Boolean child) {
-        isChild = child;
+    public void setIsChild(Boolean isChild) {
+        this.isChild = isChild;
     }
 
     public Boolean getIsAdult() {
         return isAdult;
     }
 
-    public void setIsAdult(Boolean adult) {
-        isAdult = adult;
+    public void setIsAdult(Boolean isAdult) {
+        this.isAdult = isAdult;
     }
 
     public Boolean getStatus() {
@@ -149,7 +171,9 @@ public class CreateTicketForm {
     @Override
     public String toString() {
         return "CreateTicketForm{" +
-                "name='" + name + '\'' +
+                "seatId=" + seatId +
+                ", filmTimeId=" + filmTimeId +
+                ", ticketId=" + ticketId +
                 ", description='" + description + '\'' +
                 ", annotation='" + annotation + '\'' +
                 ", printedPrice=" + printedPrice +

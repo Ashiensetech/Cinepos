@@ -3,6 +3,7 @@ package controller.web.admin.page;
 import controller.web.admin.AdminUriPreFix;
 import dao.*;
 import entity.*;
+import entity.jspView.TicketSeat;
 import helper.ScreenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.ejb.Schedule;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by sunno on 1/25/17.
@@ -43,35 +46,13 @@ public class AdminTicketController {
     @Autowired
     ScreenSeatDao screenSeatDao;
 
-    @RequestMapping(value = "/create/{filmTimeId}")
-    public ModelAndView createTicket(@PathVariable Integer filmTimeId){
-        List<SeatType> seatTypes = seatTypeDao.getAll();
+    @RequestMapping(value = "/create")
+    public ModelAndView createTicket(){
         List<Screen> screens = screenDao.getAllActivated();
-        List<VatSetting> vats = vatSettingDao.getAll();
-        FilmTime filmTime = filmTimeDao.getById(filmTimeId);
 
-        if(filmTime == null){
-            // redirect
-        }
-        FilmSchedule filmSchedule = filmScheduleDao.getById(filmTime.getFilmScheduleId());
-        Screen screen = filmSchedule.getScreen();
-
-        if(screen == null){
-            // redirect
-        }
-
-        List<ScreenSeat> screenSeats = screenSeatDao.getByScreenId(screen.getId());
-        if(screenSeats == null){
-            // redirect
-        }
-
-        List< List<ScreenSeat>> screenSeatList = ScreenHelper.singleDimensionToTwoDimensionList(screenSeats, screen.getRowCount(), screen.getRowCount());
         ModelAndView mav =  new ModelAndView("web-admin/ticket/create-ticket");
 
         mav.addObject("screens", screens);
-        mav.addObject("screenSeatList",screenSeatList);
-        mav.addObject("seatTypes",seatTypes);
-        mav.addObject("vats",vats);
         return mav;
     }
 
@@ -92,6 +73,79 @@ public class AdminTicketController {
         mav.addObject("seatTypes",seatTypes);
         mav.addObject("vats",vats);
         mav.addObject("ticket",ticket);
+        return mav;
+    }
+    @RequestMapping(value = "/partial/ticket-create/{filmTimeId}/{seatId}")
+    public ModelAndView partialGetCreateTicketForm(@PathVariable Integer filmTimeId,
+                                                   @PathVariable Integer seatId){
+        List<SeatType> seatTypes = seatTypeDao.getAll();
+        List<Screen> screens = screenDao.getAllActivated();
+        VatSetting vat = vatSettingDao.getFirst();
+        FilmTime filmTime = filmTimeDao.getById(filmTimeId);
+        Ticket ticket = ticketDao.getByFilmTimeAndSeatId(filmTimeId, seatId);
+        if(vat==null){
+            vat = new VatSetting();
+            vat.setAmount(0f);
+        }
+        if(ticket==null){
+            ticket = new Ticket();
+        }
+        if(filmTime==null){
+            // Redirect
+        }
+        ModelAndView mav =  new ModelAndView("web-admin/ticket/partial-create-ticket-form");
+
+        mav.addObject("ticket",ticket);
+        mav.addObject("seatId",seatId);
+        mav.addObject("filmTime",filmTime);
+
+        mav.addObject("screens", screens);
+        mav.addObject("seatTypes",seatTypes);
+        mav.addObject("vat",vat);
+        return mav;
+    }
+    @RequestMapping(value = "/seat/partial/{filmTimeId}")
+    public ModelAndView partialGetScreenSeat(@PathVariable Integer filmTimeId){
+        FilmTime filmTime = filmTimeDao.getById(filmTimeId);
+        FilmSchedule filmSchedule = filmScheduleDao.getById(filmTime.getFilmScheduleId());
+        Screen screen = filmSchedule.getScreen();
+
+
+        if(screen.getSeats() == null || screen.getSeats().size()==0){
+            // redirect
+        }
+
+        List< List<ScreenSeat>> screenSeatList = ScreenHelper.singleDimensionToTwoDimensionList(screen.getSeats(), screen.getRowCount(), screen.getRowCount());
+        List<Ticket> tickets = ticketDao.getByFilmTimeId(filmTimeId);
+        System.out.println(tickets);
+        List<TicketSeat> ticketSeats = new ArrayList<>();
+        for(List<ScreenSeat> seatRow : screenSeatList){
+            for(ScreenSeat seat : seatRow){
+               TicketSeat ticket =new TicketSeat(seat);
+               Optional<Ticket> optionalTicket = null;
+                if(tickets!=null && tickets.size()>0){
+                    optionalTicket = tickets.stream().filter(t->t.getScreenSeat().getId()==seat.getId()).findFirst();
+                }
+
+                if(optionalTicket!=null && optionalTicket.isPresent()){
+                    String currentState = optionalTicket.get().getCurrentState();
+
+                    System.out.println("currentState "+currentState);
+                    ticket.setCurrentState(currentState);
+                }
+                ticketSeats.add(ticket);
+
+            }
+        }
+
+
+
+        List< List<TicketSeat>> ticketSeatList =  ScreenHelper.singleDimensionToTwoDimensionListForTicketSeat(ticketSeats, screen.getRowCount(), screen.getRowCount());
+
+        ModelAndView mav =  new ModelAndView("web-admin/ticket/partial-screen-seats");
+
+        mav.addObject("filmTimeId",filmTimeId);
+        mav.addObject("ticketSeatList",ticketSeatList);
         return mav;
     }
 

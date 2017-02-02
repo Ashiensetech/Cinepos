@@ -157,9 +157,24 @@ function createScheduling(){
   });
 
 }
-function drawTimeTable(){
+function drawTimeTable(callBackFn){
+
+  if(callBackFn==undefined && typeof callBackFn !="function"){
+    callBackFn = function(elem){
+      console.log($(elem));
 
 
+      var filmTimeDetails = $(elem).data();
+      $("#currentFilmTimeId").val($(elem).attr("id"));
+      $("#filmTimeDetails").show();
+      $("#screenName").html(filmTimeDetails.screenname);
+      $("#scheduleDate").html(filmTimeDetails.scheduledate);
+      $("#filmName").html(filmTimeDetails.filmname);
+      $("#startTimeSpan").html(filmTimeDetails.starttime);
+      $("#endTimeSpan").html(filmTimeDetails.endtme);
+
+    };
+  }
 
   var timetable = new Timetable();
 
@@ -200,20 +215,7 @@ function drawTimeTable(){
           scheduledate:scheduleDate,
           scheduleid:scheduleId
         },
-        onclick:function(elem){
-          console.log($(elem));
-
-
-          var filmTimeDetails = $(elem).data();
-          $("#currentFilmTimeId").val($(elem).attr("id"));
-          $("#filmTimeDetails").show();
-          $("#screenName").html(filmTimeDetails.screenname);
-          $("#scheduleDate").html(filmTimeDetails.scheduledate);
-          $("#filmName").html(filmTimeDetails.filmname);
-          $("#startTimeSpan").html(filmTimeDetails.starttime);
-          $("#endTimeSpan").html(filmTimeDetails.endtme);
-
-        }
+        onclick:callBackFn
       };
       timetable.addEvent(filmTimes[c].filmName, date,
           filmTimes[c].startTime,

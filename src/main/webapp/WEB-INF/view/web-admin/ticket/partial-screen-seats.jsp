@@ -15,16 +15,27 @@
       <tbody>
       <d:set var="newSeatCount" value="${0}"></d:set>
       <d:set var="newSeatId" value=""></d:set>
-      <d:forEach var="screenRow" items="${screenSeatList}">
+      <d:forEach var="screenRow" items="${ticketSeatList}">
         <tr>
           <d:forEach  var="seat" items="${screenRow}" >
+            <d:set var="newSeatClass" value=""></d:set>
+
+            <d:if test="${seat.currentState.equals('AVAILABLE')}" >
+              <d:set var="newSeatClass" value="seat-single-grey"></d:set>
+            </d:if>
+            <d:if test="${seat.currentState.equals('BOOKED')}" >
+              <d:set var="newSeatClass" value="seat-single-g"></d:set>
+            </d:if>
+            <d:if test="${seat.currentState.equals('SOLD')}" >
+              <d:set var="newSeatClass" value="seat-single-s"></d:set>
+            </d:if>
             <d:if test="${seat.id==0}" >
               <d:set var="newSeatCount" value="${newSeatCount+1}"></d:set>
               <d:set var="newSeatId" value="new_${newSeatCount}"></d:set>
             </d:if>
             <td>
-              <div class="seat-single">
-                <a class="seatInfHolder" id="seat_${newSeatId}${seat.id}" href="#" onclick="showSeatDetailsModal(this)"
+              <div class="seat-single ${newSeatClass}">
+                <a class="seatInfHolder" id="seat_${newSeatId}${seat.id}" href="javascript:void(0)" onclick="getTicketSeatInfByFilmIdAndSeatId(${filmTimeId},${seat.id})"
                    data-seat='{"id":${seat.id},
                                                         "name":"${seat.name}",
                                                         "seatType":{"id":${seat.seatType.id}}}'

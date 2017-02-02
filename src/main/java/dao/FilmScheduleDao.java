@@ -51,7 +51,7 @@ public class FilmScheduleDao   extends BaseDao {
             if(session!=null)session.close();
         }
     }
-    public FilmSchedule getById(int id){
+    public FilmSchedule getById(Integer id){
         Session session=this.sessionFactory.openSession();
 
         try{

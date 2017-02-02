@@ -2,6 +2,7 @@ package helper;
 
 import entity.ScreenSeat;
 import entity.SeatType;
+import entity.jspView.TicketSeat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,23 @@ public class ScreenHelper {
             }
         }
         printSears(twoDimensionList);
+        return twoDimensionList;
+    }
+    public  static List<List<TicketSeat>> singleDimensionToTwoDimensionListForTicketSeat(List<TicketSeat> singleDimensionList,int rows,int cols){
+        List<List<TicketSeat>> twoDimensionList  = new ArrayList<>();
+
+
+
+        List<TicketSeat> colList = new ArrayList<>();
+        for(int  i=0;i<singleDimensionList.size();i++){
+            colList.add(singleDimensionList.get(i));
+
+            if((i+1)%cols == 0){
+                twoDimensionList.add(colList);
+                colList = new ArrayList<>();
+            }
+        }
+        printSearsForTicketSeat(twoDimensionList);
         return twoDimensionList;
     }
     public  static List<ScreenSeat>  twoDimensionListToSingleDimension(List<List<ScreenSeat>> list2D){
@@ -174,6 +192,14 @@ public class ScreenHelper {
     private static void printSears( List<List<ScreenSeat>> screenSeats){
         for(List<ScreenSeat> screenSeatsRow : screenSeats){
             for(ScreenSeat seat : screenSeatsRow){
+                out.print(seat.getName()+" ");
+            }
+            out.println("");
+        }
+    }
+    private static void printSearsForTicketSeat( List<List<TicketSeat>> screenSeats){
+        for(List<TicketSeat> screenSeatsRow : screenSeats){
+            for(TicketSeat seat : screenSeatsRow){
                 out.print(seat.getName()+" ");
             }
             out.println("");

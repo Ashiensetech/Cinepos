@@ -90,6 +90,20 @@ public class VatSettingDao extends BaseDao{
         }
         return new ArrayList<VatSetting>();
     }
-
+    public VatSetting getFirst(){
+        Session session = this.sessionFactory.openSession();
+        try{
+            session = this.sessionFactory.openSession();
+            return (VatSetting)session.createQuery("FROM VatSetting")
+                    .setFirstResult(1)
+                    .uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+    }
 
 }
