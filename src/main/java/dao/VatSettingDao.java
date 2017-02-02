@@ -95,7 +95,7 @@ public class VatSettingDao extends BaseDao{
         try{
             session = this.sessionFactory.openSession();
             return (VatSetting)session.createQuery("FROM VatSetting")
-                    .setFirstResult(1)
+                    .setMaxResults(1)
                     .uniqueResult();
         }catch (HibernateException hEx){
             // Insert to database exception log

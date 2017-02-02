@@ -17,25 +17,25 @@ public class CreateTicketForm {
     @NotNull(message = "Ticket Id is required")
     private Integer ticketId;
 
-    @NotNull(message = "Description is required")
+    //@NotNull(message = "Description is required")
     private String description;
 
-    @NotNull(message = "Annotation is required")
+   // @NotNull(message = "Annotation is required")
     private String annotation;
 
     @NotNull(message = "Printed price is required")
     private Double printedPrice;
 
-    @NotNull(message = "Seat type is required")
+    //@NotNull(message = "Seat type is required")
     private Integer seatTypeId;
 
     @NotNull(message = "Vat is required")
     private Integer vatId;
 
-    @NotNull(message = "Start Date is required")
+   // @NotNull(message = "Start Date is required")
     private String startDate;
 
-    @NotNull(message = "End Date is required")
+   // @NotNull(message = "End Date is required")
     private String endDate;
 
     private Date formattedStartDate;

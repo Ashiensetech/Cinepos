@@ -13,6 +13,13 @@
   <div class="seats-container">
     <table class="seat-table">
       <tbody>
+      <d:if test="${ticketSeatList==null || ticketSeatList.size()==0}">
+            <tr>
+                <td>
+                    Seats are not created for this screen
+                </td>
+            </tr>
+      </d:if>
       <d:set var="newSeatCount" value="${0}"></d:set>
       <d:set var="newSeatId" value=""></d:set>
       <d:forEach var="screenRow" items="${ticketSeatList}">
@@ -36,11 +43,7 @@
             <td>
               <div class="seat-single ${newSeatClass}">
                 <a class="seatInfHolder" id="seat_${newSeatId}${seat.id}" href="javascript:void(0)" onclick="getTicketSeatInfByFilmIdAndSeatId(${filmTimeId},${seat.id})"
-                   data-seat='{"id":${seat.id},
-                                                        "name":"${seat.name}",
-                                                        "seatType":{"id":${seat.seatType.id}}}'
-
-                        >${seat.name}</a>
+                   data-seat='{"id":${seat.id}, "name":"${seat.name}","seatType":{"id":${seat.seatType.id}}}'>${seat.name}</a>
               </div>
             </td>
             <d:set var="newSeatId" value=""></d:set>

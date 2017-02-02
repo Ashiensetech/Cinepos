@@ -81,6 +81,7 @@ public class AdminTicketController {
         List<SeatType> seatTypes = seatTypeDao.getAll();
         List<Screen> screens = screenDao.getAllActivated();
         VatSetting vat = vatSettingDao.getFirst();
+        System.out.println(vat);
         FilmTime filmTime = filmTimeDao.getById(filmTimeId);
         Ticket ticket = ticketDao.getByFilmTimeAndSeatId(filmTimeId, seatId);
         if(vat==null){

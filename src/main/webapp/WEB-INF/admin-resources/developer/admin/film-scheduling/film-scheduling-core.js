@@ -196,10 +196,12 @@ function drawTimeTable(callBackFn){
     for(var c in filmTimes){
         if(filmTimes[c].id==0){
             filmTimeHtmIdPrefix ="filmTimeNew";
+            filmTimeHtmIdStr = filmTimeHtmIdPrefix+filmTimeHtmId++;
         }else{
             filmTimeHtmIdPrefix = "filmTime";
+            filmTimeHtmIdStr = filmTimeHtmIdPrefix+filmTimes[c].id;
         }
-      filmTimeHtmIdStr = filmTimeHtmIdPrefix+filmTimeHtmId++;
+
       filmTimes[c].htmlId = filmTimeHtmIdStr;
       filmTimes[c].options = {id:"film_"+filmTimes[c].filmId,
         data:{

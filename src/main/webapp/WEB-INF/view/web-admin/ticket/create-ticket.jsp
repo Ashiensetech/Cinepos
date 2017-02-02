@@ -199,13 +199,13 @@
         var seatId =$("#seatId").val();
         var filmTimeId =$("#filmTimeId").val();
         var ticketId =$("#ticketId").val();
-        var vatId = $("vatId").val();
-        var endDate =$("#endDate").val();
-
+        var vatId = $("#vatId").val();
         var isChild = $("#isChild").prop("checked");
+
         var isAdult = true;
         if(isChild)
             isAdult=false;
+
         var printedPrice =$("#printedPrice").val();
         var description =$("#description").val();
         var annotation =$("#annotation").val();
@@ -214,17 +214,13 @@
             seatId:seatId,
             filmTimeId:filmTimeId,
             ticketId:ticketId,
+            description:description,
             annotation:annotation,
             printedPrice:printedPrice,
             vatId:vatId,
             isChild:isChild,
             isAdult : isAdult
         };
-
-        if(startDate)
-            postData['startDate'] = startDate;
-        if(endDate)
-            postData['endDate'] = endDate;
 
         $.ajax({
             url: BASEURL+'api/admin/ticket/create',
@@ -245,8 +241,12 @@
                 }
             },success: function(data){
                 $("#statusMsg").html("Ticket created successfully").show();
+                $("#filmTime"+filmTimeId).trigger("click");
+               // enableDisableFormElement("createTicketForm",["input","button","select"],true);
+
+
                 setTimeout(function(){
-                    window.location = BASEURL+"admin/ticket/all";
+                    getTicketSeatInfByFilmIdAndSeatId(data.filmTime.id,data.screenSeat.id);
                 },2000);
             }
         });

@@ -9,12 +9,12 @@
 <form id="createTicketForm">
     <%--Developer Hidden Inputs--%>
         <input id="ticketId" type="hidden" value="${ticket.id}" />
-        <input id="filmTimeId" type="hidden" value="${filmTime}" />
+        <input id="filmTimeId" type="hidden" value="${filmTime.id}" />
         <input id="seatId" type="hidden" value="${seatId}" />
         <input id="vatId" type="hidden" value="${vat.id}" />
     <div class="form-group">
         <label>Current Status : </label>
-        <label>
+        <label id="ticketCurrentStatus">
             <d:if test="${ticket.currentState==null}" >
                 TICKET NO YET CREATED
             </d:if>
@@ -58,7 +58,7 @@
 
     <div class="form-group">
         <label>Printed Price</label>
-        <input id="printedPrice"  value="${ticket.printedPrice}" class="form-control">
+        <input type="number" id="printedPrice"  value="${ticket.printedPrice}" class="form-control">
         <p class="help-block error" id="errorMsg_printedPrice"></p>
     </div>
 
@@ -85,5 +85,8 @@
 
   <br>
   <p class="help-block" id="statusMsg"></p>
-  <button class="btn btn-primary" onclick="return submitTicketData()">Create Ticket</button>
+  <button class="btn btn-primary" onclick="return submitTicketData()">
+      <d:if test="${ticket.id==0}" >Create</d:if>
+      <d:if test="${ticket.id>0}" >Update</d:if>
+      Ticket</button>
 </form>
