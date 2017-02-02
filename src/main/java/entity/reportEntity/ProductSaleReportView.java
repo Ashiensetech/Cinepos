@@ -7,7 +7,7 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "viewproductsales")
-public class ProductSaleReportView {
+public class ProductSaleReportView{
 
     @javax.persistence.Id
     @Column(name = "id")

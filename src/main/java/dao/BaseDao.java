@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * Created by mi on 12/22/16.
  */
 
-class BaseDao {
+public class BaseDao {
     protected SessionFactory sessionFactory;
     public SessionFactory getSessionFactory() {
         return sessionFactory;
