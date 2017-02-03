@@ -30,8 +30,6 @@ CREATE TABLE IF NOT EXISTS `ticket_channels` (
   `id` bigint(15) NOT NULL AUTO_INCREMENT,
   `ticket_id` bigint(15) DEFAULT NULL,
   `channel_id` int(11) DEFAULT NULL,
-  `created_by` int(11) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `channel_id` (`channel_id`),
   KEY `ticket_id` (`ticket_id`),

@@ -2,12 +2,11 @@ package controller.web.admin.restservice;
 
 import controller.web.admin.AdminUriPreFix;
 import dao.*;
-import entity.FilmTime;
-import entity.ScreenSeat;
-import entity.Ticket;
+import entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +18,10 @@ import validator.admin.AdminTicketService.editTicket.EditTicketForm;
 import validator.admin.AdminTicketService.editTicket.EditTicketValidator;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by sunno on 1/25/17.
@@ -47,11 +50,15 @@ public class AdminTicketService {
     @Autowired
     ScreenSeatDao screenSeatDao;
 
+    @Autowired
+    SellsChannelDao sellsChannelDao;
+
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseEntity<?> createTicket(@Valid CreateTicketForm createTicketForm, BindingResult result){
+    public ResponseEntity<?> createTicket(Authentication authentication,
+                                          @Valid CreateTicketForm createTicketForm, BindingResult result){
 
         System.out.println(createTicketForm);
-
+        AuthCredential authCredential = (AuthCredential)authentication.getPrincipal();
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
         /***************** Validation  [Start] *************/
@@ -74,6 +81,13 @@ public class AdminTicketService {
         if(serviceResponse.hasErrors()){
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
+
+        Map<String,Boolean> saleChannel = new HashMap<>();
+
+        saleChannel.put("web",createTicketForm.getScWeb()==null?false:createTicketForm.getScWeb());
+        saleChannel.put("kiosk",createTicketForm.getScKiosk()==null?false:createTicketForm.getScKiosk());
+        saleChannel.put("pos",createTicketForm.getScPos()==null?false:createTicketForm.getScPos());
+        System.out.println(createTicketForm);
         /***************** Validation  [End] *************/
 
 
@@ -88,7 +102,7 @@ public class AdminTicketService {
             ticket = new Ticket();
             ticket.setStatus(true);
             ticket.setCurrentState("AVAILABLE");
-            ticket.setCreatedBy(1);
+            ticket.setCreatedBy(authCredential.getId());
             ticket.setFilmTime(filmTime);
             ticket.setScreenSeat(screenSeat);
         }
@@ -97,18 +111,53 @@ public class AdminTicketService {
         ticket.setDescription(createTicketForm.getDescription());
         ticket.setAnnotation(createTicketForm.getAnnotation());
         ticket.setPrintedPrice(createTicketForm.getPrintedPrice());
+
+        ticket.setSellOnWeb(saleChannel.get("web"));
+        ticket.setSellOnPos(saleChannel.get("pos"));
+        ticket.setSellOnKiosk(saleChannel.get("kiosk"));
+
        /* ticket.setStartDate(createTicketForm.getFormattedStartDate());
         ticket.setEndDate(createTicketForm.getFormattedEndDate());*/
         ticket.setIsAdult(createTicketForm.getIsAdult());
         ticket.setIsChild(createTicketForm.getIsChild());
         ticket.setVat(vatSettingDao.getById(createTicketForm.getVatId()));
 
+        Set<SellsChannel> sellsChannelSet = (ticket.getSellsChannels() == null)?new HashSet<>():ticket.getSellsChannels();
+
+        SellsChannel web = sellsChannelDao.getWeb();
+        SellsChannel pos = sellsChannelDao.getPos();
+        SellsChannel kiosk = sellsChannelDao.getKiosk();
+
+        if(ticket.getSellOnWeb()){
+            if(!sellsChannelSet.contains(web)){
+                sellsChannelSet.add(web);
+            }
+        }else{
+            sellsChannelSet.remove(web);
+        }
+
+        if(ticket.getSellOnPos()){
+            if(!sellsChannelSet.contains(pos)){
+                sellsChannelSet.add(pos);
+            }
+        }else{
+            sellsChannelSet.remove(pos);
+        }
+
+        if(ticket.getSellOnKiosk()){
+            if(!sellsChannelSet.contains(kiosk)){
+                sellsChannelSet.add(kiosk);
+            }
+        }else{
+            sellsChannelSet.remove(kiosk);
+        }
+        ticket.setSellsChannels(sellsChannelSet);
         /***************** Service  [Ends] *************/
 
         ticketDao.insertOrUpdate(ticket);
 
 
-        return ResponseEntity.status(HttpStatus.OK).body(ticket);
+        return ResponseEntity.status(HttpStatus.OK).body(ticketDao.getById(ticket.getId()));
 
     }
 

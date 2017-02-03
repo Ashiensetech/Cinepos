@@ -1,10 +1,7 @@
 package validator.admin.AdminFilmScheduleService.createOrMerge;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dao.FilmDao;
-import dao.FilmRentalDao;
-import dao.FilmScheduleDao;
-import dao.ScreenDao;
+import dao.*;
 import entity.Film;
 import entity.FilmSchedule;
 import entity.FilmTime;
@@ -33,6 +30,8 @@ public class CreateOrMergeValidator implements Validator {
     @Autowired
     FilmScheduleDao filmScheduleDao;
 
+    @Autowired
+    FilmTimeDao filmTimeDao;
     @Override
     public void validate(Object obj, Errors errors) {
         CreateOrMergeForm createOrMergeForm = (CreateOrMergeForm) obj;
@@ -80,6 +79,7 @@ public class CreateOrMergeValidator implements Validator {
                 errors.rejectValue("scheduleJson", "Start date is greater then end time");
                 break;
             }
+
         }
 
 

@@ -23,14 +23,6 @@ public class TicketChannels {
     @Column(name = "channel_id")
     private Integer channelId;
 
-    @Basic
-    @Column(name = "created_by")
-    private Integer createdBy;
-
-    @Basic
-    @Column(name = "created_at")
-    private Timestamp createdAt;
-
     public int getId() {
         return id;
     }
@@ -55,22 +47,6 @@ public class TicketChannels {
         this.channelId = channelId;
     }
 
-    public Integer getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Integer createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Override
     public boolean equals(Object o) {
 
@@ -81,9 +57,7 @@ public class TicketChannels {
 
         if (id != that.id) return false;
         if (ticketId != null ? !ticketId.equals(that.ticketId) : that.ticketId != null) return false;
-        if (channelId != null ? !channelId.equals(that.channelId) : that.channelId != null) return false;
-        if (createdBy != null ? !createdBy.equals(that.createdBy) : that.createdBy != null) return false;
-        return !(createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null);
+        return !(channelId != null ? !channelId.equals(that.channelId) : that.channelId != null);
 
     }
 
@@ -92,8 +66,6 @@ public class TicketChannels {
         int result = id;
         result = 31 * result + (ticketId != null ? ticketId.hashCode() : 0);
         result = 31 * result + (channelId != null ? channelId.hashCode() : 0);
-        result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }
 
@@ -103,8 +75,6 @@ public class TicketChannels {
                 "id=" + id +
                 ", ticketId=" + ticketId +
                 ", channelId=" + channelId +
-                ", createdBy=" + createdBy +
-                ", createdAt=" + createdAt +
                 '}';
     }
 }

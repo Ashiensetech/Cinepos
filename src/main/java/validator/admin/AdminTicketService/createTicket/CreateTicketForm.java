@@ -15,7 +15,7 @@ public class CreateTicketForm {
     private Integer filmTimeId;
 
     @NotNull(message = "Ticket Id is required")
-    private Integer ticketId;
+    private Long ticketId;
 
     //@NotNull(message = "Description is required")
     private String description;
@@ -31,6 +31,12 @@ public class CreateTicketForm {
 
     @NotNull(message = "Vat is required")
     private Integer vatId;
+
+    private Boolean scWeb;
+
+    private Boolean scKiosk;
+
+    private Boolean scPos;
 
    // @NotNull(message = "Start Date is required")
     private String startDate;
@@ -64,11 +70,11 @@ public class CreateTicketForm {
         this.filmTimeId = filmTimeId;
     }
 
-    public Integer getTicketId() {
+    public Long getTicketId() {
         return ticketId;
     }
 
-    public void setTicketId(Integer ticketId) {
+    public void setTicketId(Long ticketId) {
         this.ticketId = ticketId;
     }
 
@@ -110,6 +116,30 @@ public class CreateTicketForm {
 
     public void setVatId(Integer vatId) {
         this.vatId = vatId;
+    }
+
+    public Boolean getScWeb() {
+        return scWeb;
+    }
+
+    public void setScWeb(Boolean scWeb) {
+        this.scWeb = scWeb;
+    }
+
+    public Boolean getScKiosk() {
+        return scKiosk;
+    }
+
+    public void setScKiosk(Boolean scKiosk) {
+        this.scKiosk = scKiosk;
+    }
+
+    public Boolean getScPos() {
+        return scPos;
+    }
+
+    public void setScPos(Boolean scPos) {
+        this.scPos = scPos;
     }
 
     public String getStartDate() {
@@ -179,6 +209,9 @@ public class CreateTicketForm {
                 ", printedPrice=" + printedPrice +
                 ", seatTypeId=" + seatTypeId +
                 ", vatId=" + vatId +
+                ", scWeb=" + scWeb +
+                ", scKiosk=" + scKiosk +
+                ", scPos=" + scPos +
                 ", startDate='" + startDate + '\'' +
                 ", endDate='" + endDate + '\'' +
                 ", formattedStartDate=" + formattedStartDate +

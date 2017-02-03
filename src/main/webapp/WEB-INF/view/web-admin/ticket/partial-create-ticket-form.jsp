@@ -48,14 +48,38 @@
         <label>Is Child</label><br>
         <label class="checkbox-inline">
             <input type="checkbox"
-            <d:if test="${ticket.child}" >
+            <d:if test="${ticket.isChild}" >
                    checked
             </d:if>
                    id="isChild">Yes
         </label>
         <p class="help-block error" id="errorMsg_isChild"></p>
     </div>
-
+        <div class="form-group">
+            <label>Sells channel</label><br>
+            <label class="checkbox-inline">
+                <input type="checkbox"
+                <d:if test="${ticket.sellOnWeb}" >
+                       checked
+                </d:if>
+                       id="isSellOnWeb">Web
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"
+                <d:if test="${ticket.sellOnKiosk}" >
+                       checked
+                </d:if>
+                       id="isSellOnKiosk">Kiosk
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox"
+                <d:if test="${ticket.sellOnPos}" >
+                       checked
+                </d:if>
+                       id="isSellOnPos">Pos
+            </label>
+            <p class="help-block error" id="errorMsg_isChild"></p>
+        </div>
     <div class="form-group">
         <label>Printed Price</label>
         <input type="number" id="printedPrice"  value="${ticket.printedPrice}" class="form-control">

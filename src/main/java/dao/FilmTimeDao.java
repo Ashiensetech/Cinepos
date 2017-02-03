@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Set;
 
@@ -100,6 +101,31 @@ public class FilmTimeDao extends BaseDao {
                     " where id =:id")
                     .setParameter("id",id)
                     .uniqueResult();
+
+        }catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+    }
+
+    public List<FilmTime> getByInBetweenTime(int id,int filmScheduleId,Time startTime,Time endTime){
+
+
+        Session session=this.sessionFactory.openSession();
+
+        try{
+            return session.createQuery("FROM FilmTime filmTime " +
+                    " where :startTime between filmTime.startTime and filmTime.endTime " +
+                    " and :endTime between filmTime.startTime and filmTime.endTime " +
+                    " and filmTime.filmScheduleId = :filmScheduleId" +
+                    " and filmTime.id !=:id")
+                    .setParameter("id",id)
+                    .setParameter("filmScheduleId", filmScheduleId)
+                    .setParameter("startTime",endTime )
+                    .setParameter("endTime",startTime)
+                    .list();
 
         }catch (HibernateException hEx){
             hEx.printStackTrace();

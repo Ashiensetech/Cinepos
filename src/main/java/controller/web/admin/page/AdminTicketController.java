@@ -65,7 +65,7 @@ public class AdminTicketController {
     }
 
     @RequestMapping(value = "/edit/{ticketId}")
-    public ModelAndView editTicket(Authentication authentication, @PathVariable Integer ticketId){
+    public ModelAndView editTicket(Authentication authentication, @PathVariable Long ticketId){
         Ticket ticket = ticketDao.getById(ticketId);
         List<SeatType> seatTypes = seatTypeDao.getAll();
         List<VatSetting> vats = vatSettingDao.getAll();
@@ -108,22 +108,19 @@ public class AdminTicketController {
     @RequestMapping(value = "/seat/partial/{filmTimeId}")
     public ModelAndView partialGetScreenSeat(@PathVariable Integer filmTimeId){
         FilmTime filmTime = filmTimeDao.getById(filmTimeId);
-        FilmSchedule filmSchedule = filmScheduleDao.getById(filmTime.getFilmScheduleId());
-        Screen screen = filmSchedule.getScreen();
-
-
-        if(screen.getSeats() == null || screen.getSeats().size()==0){
+        if(filmTime == null ){
             // redirect
         }
-
-        List< List<ScreenSeat>> screenSeatList = ScreenHelper.singleDimensionToTwoDimensionList(screen.getSeats(), screen.getRowCount(), screen.getRowCount());
+        FilmSchedule filmSchedule = filmScheduleDao.getById(filmTime.getFilmScheduleId());
+        Screen screen = filmSchedule.getScreen();
+        List< ScreenSeat> screenSeatList = screen.getSeats();
         List<Ticket> tickets = ticketDao.getByFilmTimeId(filmTimeId);
         System.out.println(tickets);
         List<TicketSeat> ticketSeats = new ArrayList<>();
-        for(List<ScreenSeat> seatRow : screenSeatList){
-            for(ScreenSeat seat : seatRow){
-               TicketSeat ticket =new TicketSeat(seat);
-               Optional<Ticket> optionalTicket = null;
+        if(screenSeatList!=null){
+            for(ScreenSeat seat : screenSeatList){
+                TicketSeat ticket =new TicketSeat(seat);
+                Optional<Ticket> optionalTicket = null;
                 if(tickets!=null && tickets.size()>0){
                     optionalTicket = tickets.stream().filter(t->t.getScreenSeat().getId()==seat.getId()).findFirst();
                 }
@@ -135,13 +132,10 @@ public class AdminTicketController {
                     ticket.setCurrentState(currentState);
                 }
                 ticketSeats.add(ticket);
-
             }
         }
 
-
-
-        List< List<TicketSeat>> ticketSeatList =  ScreenHelper.singleDimensionToTwoDimensionListForTicketSeat(ticketSeats, screen.getRowCount(), screen.getRowCount());
+        List< List<TicketSeat>> ticketSeatList =  ScreenHelper.singleDimensionToTwoDimensionListForTicketSeat(ticketSeats, screen.getRowCount(), screen.getColumnCount());
 
         ModelAndView mav =  new ModelAndView("web-admin/ticket/partial-screen-seats");
 

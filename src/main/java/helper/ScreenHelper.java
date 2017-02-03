@@ -69,6 +69,9 @@ public class ScreenHelper {
 
 
         List<ScreenSeat> colList = new ArrayList<>();
+        if(singleDimensionList==null){
+            return twoDimensionList;
+        }
         for(int  i=0;i<singleDimensionList.size();i++){
             colList.add(singleDimensionList.get(i));
 
