@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Sarwar on 2/2/2017.
  */
-public class createSellsForm {
+public class CreateSellsForm {
 
     @NotNull(message = "Selling Amount are required")
     private Float sellingAmount;
