@@ -30,24 +30,6 @@ public class OrderForm {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrderForm orderForm = (OrderForm) o;
-
-        if (terminalId != null ? !terminalId.equals(orderForm.terminalId) : orderForm.terminalId != null) return false;
-        return cartForms != null ? cartForms.equals(orderForm.cartForms) : orderForm.cartForms == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = terminalId != null ? terminalId.hashCode() : 0;
-        result = 31 * result + (cartForms != null ? cartForms.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public String toString() {
         return "OrderForm{" +
                 "terminalId=" + terminalId +
