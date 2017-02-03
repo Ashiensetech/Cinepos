@@ -2,9 +2,6 @@ package controller.app.restservice;
 
 import controller.app.AppUriPreFix;
 import dao.SellsDao;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +12,6 @@ import validator.admin.AdminSellsService.CreateSells.CreateOrMergeSellingForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Sarwar on 2/2/2017.
@@ -44,9 +39,6 @@ public class AppSellsService {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
-         //String stringToParse="";
-        //JSONParser parser = new JSONParser();
-        //JSONObject json = (JSONObject) parser.parse(createOrMergeSellingForm.getOrdersJson());
 
         System.out.println(createOrMergeSellingForm.getOrdersJson());
 

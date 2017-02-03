@@ -22,7 +22,7 @@ public class CreateOrMergeSellingForm {
     @NotBlank(message = "scheduleJson can't be empty")
     String ordersJson;
 
-    private OrderForm orderForm;
+    public OrderForm orderForm;
 
     public String getOrdersJson() {
         return ordersJson;
