@@ -31,7 +31,7 @@ public class Ticket {
     @JoinColumn(name = "vat_id",referencedColumnName = "id")
     private VatSetting vat;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "ticket_channels", joinColumns = {
             @JoinColumn(name = "ticket_id", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "channel_id",
@@ -160,7 +160,7 @@ public class Ticket {
         this.printedPrice = printedPrice;
     }
 
-    public boolean isSellOnWeb() {
+    public boolean getSellOnWeb() {
         return sellOnWeb;
     }
 
@@ -168,7 +168,7 @@ public class Ticket {
         this.sellOnWeb = sellOnWeb;
     }
 
-    public boolean isSellOnKiosk() {
+    public boolean getSellOnKiosk() {
         return sellOnKiosk;
     }
 
@@ -176,7 +176,7 @@ public class Ticket {
         this.sellOnKiosk = sellOnKiosk;
     }
 
-    public boolean isSellOnPos() {
+    public boolean getSellOnPos() {
         return sellOnPos;
     }
 
@@ -184,7 +184,7 @@ public class Ticket {
         this.sellOnPos = sellOnPos;
     }
 
-    public boolean isChild() {
+    public boolean getIsChild() {
         return isChild;
     }
 
@@ -192,7 +192,7 @@ public class Ticket {
         this.isChild = isChild;
     }
 
-    public boolean isAdult() {
+    public boolean getIsAdult() {
         return isAdult;
     }
 

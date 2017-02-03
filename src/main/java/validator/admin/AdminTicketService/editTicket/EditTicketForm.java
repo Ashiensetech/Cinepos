@@ -13,7 +13,7 @@ public class EditTicketForm {
     private String name;
 
     @NotNull(message = "Id is required")
-    private Integer id;
+    private Long id;
 
     @NotNull(message = "Description is required")
     private String description;
@@ -46,11 +46,11 @@ public class EditTicketForm {
 
     private Boolean status;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -134,6 +134,7 @@ public class AdminFilmScheduleService {
                 filmTime.setStartTime(filmTimeForm.getStartTime());
                 filmTime.setEndTime(filmTimeForm.getEndTime());
                 filmTime.setFilm(filmDao.getById(filmTimeForm.getFilmId()));
+                filmTime.setCreatedBy(loggedInUser.getId());
             }
 
 
@@ -177,16 +178,26 @@ public class AdminFilmScheduleService {
         if(serviceResponse.hasErrors()){
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
+        FilmTime filmTime = filmTimeDao.getById(filmTimeForm.getId());
+
+        List<FilmTime> collusionFilmTime = filmTimeDao.getByInBetweenTime(filmTime.getId(),filmTime.getFilmScheduleId(), filmTimeForm.getStartTime(), filmTimeForm.getEndTime());
+
+        if(collusionFilmTime!=null && collusionFilmTime.size()>0){
+            serviceResponse.setValidationError("scheduleJson","Film time collied");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
         /***************** Validation  [End] *************/
 
-        FilmTime filmTime = filmTimeDao.getById(filmTimeForm.getId());
-        Film film = filmDao.getById(filmTimeForm.getFilmId());
+
 
         /***************** Service [Started] *************/
+
+
+        Film film = filmDao.getById(filmTimeForm.getFilmId());
         filmTime.setFilm(film);
         filmTime.setFilmScheduleId(filmTimeForm.getScheduleId());
-        filmTime.setEndTime(filmTimeForm.getEndTime());
         filmTime.setStartTime(filmTimeForm.getStartTime());
+        filmTime.setEndTime(filmTimeForm.getEndTime());
         /***************** Service [Ends] *************/
 
 

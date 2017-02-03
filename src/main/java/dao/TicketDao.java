@@ -65,7 +65,7 @@ public class TicketDao extends BaseDao {
         return new ArrayList<Ticket>();
     }
 
-    public Ticket getById(Integer id){
+    public Ticket getById(Long id){
         Session session = null;
         try{
             session = this.sessionFactory.openSession();

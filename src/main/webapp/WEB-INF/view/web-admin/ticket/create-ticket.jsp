@@ -201,6 +201,9 @@
         var ticketId =$("#ticketId").val();
         var vatId = $("#vatId").val();
         var isChild = $("#isChild").prop("checked");
+        var isSellOnKiosk = $("#isSellOnKiosk").prop("checked");
+        var isSellOnWeb = $("#isSellOnWeb").prop("checked");
+        var isSellOnPos = $("#isSellOnPos").prop("checked");
 
         var isAdult = true;
         if(isChild)
@@ -219,7 +222,10 @@
             printedPrice:printedPrice,
             vatId:vatId,
             isChild:isChild,
-            isAdult : isAdult
+            isAdult : isAdult,
+            scKiosk:isSellOnKiosk,
+            scWeb :isSellOnWeb,
+            scPos : isSellOnPos
         };
 
         $.ajax({
