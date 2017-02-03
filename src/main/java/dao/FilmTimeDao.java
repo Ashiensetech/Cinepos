@@ -118,7 +118,7 @@ public class FilmTimeDao extends BaseDao {
         try{
             return session.createQuery("FROM FilmTime filmTime " +
                     " where :startTime between filmTime.startTime and filmTime.endTime " +
-                    " and :endTime between filmTime.startTime and filmTime.endTime " +
+                    " or :endTime between filmTime.startTime and filmTime.endTime " +
                     " and filmTime.filmScheduleId = :filmScheduleId" +
                     " and filmTime.id !=:id")
                     .setParameter("id",id)

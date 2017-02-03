@@ -249,6 +249,7 @@ function getDates(startDate, stopDate) {
 
 var DISPLAY_DATE_FORMAT = "MMMM Do YYYY";
 function showFilmTimeModal(){
+    UnBindErrors("errorMsg_");
     $("#changeFilmTimeModal").modal();
     var elemId = $("#currentFilmTimeId").val();
     var filmTimeDetails =$("#"+elemId).data();
@@ -543,6 +544,7 @@ function getPostData(){
 }
 
 function updateFilmTime(){
+    UnBindErrors("errorMsg_");
     $("#changeFilmTimeModalStatusMsg").html("").show();
   var filmElemTimeId = $("#currentFilmTimeId").val();
   var filmTimeId =$("#"+filmElemTimeId).data("id");
@@ -588,6 +590,7 @@ function updateFilmTime(){
       },
       422: function (response) {
         console.log(response);
+        BindErrorsWithHtml("errorMsg_", response.responseJSON);
         enableDisableFormElement("changeFilmTimeModal",["input","button","select"],true);
       },
       204:function(response){

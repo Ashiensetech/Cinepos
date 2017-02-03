@@ -183,7 +183,9 @@ public class AdminFilmScheduleService {
         List<FilmTime> collusionFilmTime = filmTimeDao.getByInBetweenTime(filmTime.getId(),filmTime.getFilmScheduleId(), filmTimeForm.getStartTime(), filmTimeForm.getEndTime());
 
         if(collusionFilmTime!=null && collusionFilmTime.size()>0){
-            serviceResponse.setValidationError("scheduleJson","Film time collied");
+            System.out.println(collusionFilmTime);
+            serviceResponse.setValidationError("sTime","Film time collied");
+            serviceResponse.setValidationError("eTime","Film time collied");
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
         /***************** Validation  [End] *************/
