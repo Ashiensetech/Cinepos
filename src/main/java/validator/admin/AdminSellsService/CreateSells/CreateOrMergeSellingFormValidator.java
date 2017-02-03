@@ -18,7 +18,6 @@ public class CreateOrMergeSellingFormValidator implements Validator {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             createOrMergeSellingForm.orderForm = objectMapper.readValue(createOrMergeSellingForm.getOrdersJson(), OrderForm.class);
-
         } catch (IOException e) {
             System.out.println(e.getMessage());
             errors.rejectValue("ordersJson", "Broken Json String");

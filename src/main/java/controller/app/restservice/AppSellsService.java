@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import utility.ServiceResponse;
 import validator.admin.AdminSellsService.CreateSells.CreateOrMergeSellingForm;
+import validator.admin.AdminSellsService.CreateSells.CreateOrMergeSellingFormValidator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,6 +22,8 @@ import javax.validation.Valid;
 public class AppSellsService {
     @Autowired
     SellsDao sellsDao;
+    @Autowired
+    CreateOrMergeSellingFormValidator createOrMergeSellingFormValidator;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<?> create(@Valid CreateOrMergeSellingForm createOrMergeSellingForm,
@@ -39,8 +42,26 @@ public class AppSellsService {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
+        /**
+         * Business logic validation
+         * */
+        createOrMergeSellingFormValidator.validate(createOrMergeSellingForm,result);
+        serviceResponse.bindValidationError(result);
 
-        System.out.println(createOrMergeSellingForm.getOrdersJson());
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
+        //System.out.println(createOrMergeSellingForm.orderForm.getTerminalId()+"Hello");
+        System.out.println(createOrMergeSellingForm.orderForm.getCartForms());
+
+
+        System.out.print(createOrMergeSellingForm.orderForm.getCartForms().size());
+
+
+
+
+        //System.out.println(createOrMergeSellingForm.getOrdersJson());
 
         return ResponseEntity.status(HttpStatus.OK).body(createOrMergeSellingForm.getOrdersJson());
 
