@@ -274,14 +274,24 @@ body {
   overflow-y: auto;
   overflow-x: auto;
 }
-.seat-single{
+.seat-single,.seat-single-g,.seat-single-s,.seat-single-grey{
   width: 80px;
   height: 80px;
   background: url(../images/chair.png)no-repeat;
-  background-size: cover;
+  background-size: cover !important;
   position: relative;
 }
-.seat-single:hover{
+.seat-single-g{
+  background:  url(../images/chair-available.png)no-repeat;
+}
+.seat-single-s{
+  background:  url(../images/chair-sold.png)no-repeat;
+}
+.seat-single-grey{
+  background:  url(../images/chair-grey.png)no-repeat;
+}
+
+.seat-single:hover,.seat-single-g:hover,.seat-single-grey:hover,.seat-single-s:hover{
   background-color: #ffe8a6;
 }
 .seat-single a{

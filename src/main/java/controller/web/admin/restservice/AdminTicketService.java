@@ -1,9 +1,9 @@
 package controller.web.admin.restservice;
 
 import controller.web.admin.AdminUriPreFix;
-import dao.SeatTypeDao;
-import dao.TicketDao;
-import dao.VatSettingDao;
+import dao.*;
+import entity.FilmTime;
+import entity.ScreenSeat;
 import entity.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +41,12 @@ public class AdminTicketService {
     @Autowired
     EditTicketValidator editTicketValidator;
 
+    @Autowired
+    FilmTimeDao filmTimeDao;
+
+    @Autowired
+    ScreenSeatDao screenSeatDao;
+
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseEntity<?> createTicket(@Valid CreateTicketForm createTicketForm, BindingResult result){
 
@@ -72,23 +78,34 @@ public class AdminTicketService {
 
 
         /***************** Service  [Start] *************/
-        Ticket ticket = new Ticket();
+        FilmTime filmTime = filmTimeDao.getById(createTicketForm.getFilmTimeId());
+        ScreenSeat screenSeat = screenSeatDao.getById(createTicketForm.getSeatId());
+        Ticket ticket =null;
+
+        if(createTicketForm.getTicketId()>0) {
+            ticket = ticketDao.getById(createTicketForm.getTicketId());
+        }else{
+            ticket = new Ticket();
+            ticket.setStatus(true);
+            ticket.setCurrentState("AVAILABLE");
+            ticket.setCreatedBy(1);
+            ticket.setFilmTime(filmTime);
+            ticket.setScreenSeat(screenSeat);
+        }
 
 
         ticket.setDescription(createTicketForm.getDescription());
         ticket.setAnnotation(createTicketForm.getAnnotation());
         ticket.setPrintedPrice(createTicketForm.getPrintedPrice());
-        ticket.setStartDate(createTicketForm.getFormattedStartDate());
-        ticket.setEndDate(createTicketForm.getFormattedEndDate());
+       /* ticket.setStartDate(createTicketForm.getFormattedStartDate());
+        ticket.setEndDate(createTicketForm.getFormattedEndDate());*/
         ticket.setIsAdult(createTicketForm.getIsAdult());
         ticket.setIsChild(createTicketForm.getIsChild());
-        ticket.setSeatType(seatTypeDao.getById(createTicketForm.getSeatTypeId()));
         ticket.setVat(vatSettingDao.getById(createTicketForm.getVatId()));
-        ticket.setStatus(true);
-        ticket.setCreatedBy(1);
+
         /***************** Service  [Ends] *************/
 
-        ticket = ticketDao.insert(ticket);
+        ticketDao.insertOrUpdate(ticket);
 
 
         return ResponseEntity.status(HttpStatus.OK).body(ticket);
@@ -135,7 +152,6 @@ public class AdminTicketService {
         ticket.setEndDate(editTicketForm.getFormattedEndDate());
         ticket.setIsAdult(editTicketForm.getIsAdult());
         ticket.setIsChild(editTicketForm.getIsChild());
-        ticket.setSeatType(seatTypeDao.getById(editTicketForm.getSeatTypeId()));
         ticket.setVat(vatSettingDao.getById(editTicketForm.getVatId()));
         ticket.setStatus(true);
         ticket.setCreatedBy(1);

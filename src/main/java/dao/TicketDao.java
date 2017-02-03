@@ -23,6 +23,24 @@ public class TicketDao extends BaseDao {
     public Ticket insert(Ticket ticket){
         return (Ticket) super.insert(ticket);
     }
+
+    public boolean insertOrUpdate(Ticket ticket){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.saveOrUpdate(ticket);
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
     public void update(Ticket ticket){
         super.update(ticket);
     }
@@ -85,6 +103,40 @@ public class TicketDao extends BaseDao {
             if(session!=null)session.close();
         }
 
+        return null;
+    }
+    public List<Ticket> getByFilmTimeId(Integer filmTimeId){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            return  session.createQuery("FROM Ticket where filmTime.id =:filmTimeId")
+                    .setParameter("filmTimeId", filmTimeId)
+                    .list();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+        return null;
+    }
+    public Ticket getByFilmTimeAndSeatId(int filmTimeId,int seatId){
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (Ticket) session.createQuery("FROM Ticket where filmTime.id = :filmTimeId and screenSeat.id = :seatId")
+                    .setParameter("filmTimeId", filmTimeId)
+                    .setParameter("seatId", seatId)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
         return null;
     }
 

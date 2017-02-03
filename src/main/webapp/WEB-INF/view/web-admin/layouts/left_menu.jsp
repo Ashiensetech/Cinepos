@@ -177,6 +177,9 @@
                     <li>
                         <a href="<c:url value="/admin/film-scheduling/manage" />">Manage</a>
                     </li>
+                    <li>
+                        <a href="<c:url value="/admin/ticket/create" />">Create ticket</a>
+                    </li>
                 </ul>
                 <!-- /.nav-second-level -->
             </li>

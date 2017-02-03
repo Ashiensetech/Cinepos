@@ -2,6 +2,7 @@ package entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Set;
@@ -16,19 +17,15 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
-
-    public SeatType getSeatType() {
-        return seatType;
-    }
-
-    public void setSeatType(SeatType seatType) {
-        this.seatType = seatType;
-    }
+    private long id;
 
     @OneToOne
-    @JoinColumn(name = "seat_type_id",referencedColumnName = "id")
-    private SeatType seatType;
+    @JoinColumn(name = "film_time_id",referencedColumnName = "id")
+    FilmTime filmTime;
+
+    @OneToOne
+    @JoinColumn(name = "screen_seat_id",referencedColumnName = "id")
+    ScreenSeat screenSeat;
 
     @OneToOne
     @JoinColumn(name = "vat_id",referencedColumnName = "id")
@@ -40,6 +37,7 @@ public class Ticket {
             inverseJoinColumns = { @JoinColumn(name = "channel_id",
                     nullable = false, updatable = false) })
     private Set<SellsChannel> sellsChannels;
+
 
 
     @Basic
@@ -88,6 +86,10 @@ public class Ticket {
     private boolean status;
 
     @Basic
+    @Column(name = "current_state")
+    private String currentState;
+
+    @Basic
     @Column(name = "start_date")
     private Date startDate;
 
@@ -102,12 +104,28 @@ public class Ticket {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
+    }
+
+    public FilmTime getFilmTime() {
+        return filmTime;
+    }
+
+    public void setFilmTime(FilmTime filmTime) {
+        this.filmTime = filmTime;
+    }
+
+    public ScreenSeat getScreenSeat() {
+        return screenSeat;
+    }
+
+    public void setScreenSeat(ScreenSeat screenSeat) {
+        this.screenSeat = screenSeat;
     }
 
     public Set<SellsChannel> getSellsChannels() {
@@ -117,7 +135,6 @@ public class Ticket {
     public void setSellsChannels(Set<SellsChannel> sellsChannels) {
         this.sellsChannels = sellsChannels;
     }
-
 
     public String getDescription() {
         return description;
@@ -191,6 +208,14 @@ public class Ticket {
         this.status = status;
     }
 
+    public String getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(String currentState) {
+        this.currentState = currentState;
+    }
+
     public Date getStartDate() {
         return startDate;
     }
@@ -237,13 +262,16 @@ public class Ticket {
         if (isChild != ticket.isChild) return false;
         if (isAdult != ticket.isAdult) return false;
         if (status != ticket.status) return false;
-        if (seatType != null ? !seatType.equals(ticket.seatType) : ticket.seatType != null) return false;
+        if (filmTime != null ? !filmTime.equals(ticket.filmTime) : ticket.filmTime != null) return false;
+        if (screenSeat != null ? !screenSeat.equals(ticket.screenSeat) : ticket.screenSeat != null) return false;
         if (vat != null ? !vat.equals(ticket.vat) : ticket.vat != null) return false;
         if (sellsChannels != null ? !sellsChannels.equals(ticket.sellsChannels) : ticket.sellsChannels != null)
             return false;
         if (description != null ? !description.equals(ticket.description) : ticket.description != null) return false;
         if (annotation != null ? !annotation.equals(ticket.annotation) : ticket.annotation != null) return false;
         if (printedPrice != null ? !printedPrice.equals(ticket.printedPrice) : ticket.printedPrice != null)
+            return false;
+        if (currentState != null ? !currentState.equals(ticket.currentState) : ticket.currentState != null)
             return false;
         if (startDate != null ? !startDate.equals(ticket.startDate) : ticket.startDate != null) return false;
         if (endDate != null ? !endDate.equals(ticket.endDate) : ticket.endDate != null) return false;
@@ -254,8 +282,9 @@ public class Ticket {
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (seatType != null ? seatType.hashCode() : 0);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (filmTime != null ? filmTime.hashCode() : 0);
+        result = 31 * result + (screenSeat != null ? screenSeat.hashCode() : 0);
         result = 31 * result + (vat != null ? vat.hashCode() : 0);
         result = 31 * result + (sellsChannels != null ? sellsChannels.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
@@ -267,10 +296,36 @@ public class Ticket {
         result = 31 * result + (isChild ? 1 : 0);
         result = 31 * result + (isAdult ? 1 : 0);
         result = 31 * result + (status ? 1 : 0);
+        result = 31 * result + (currentState != null ? currentState.hashCode() : 0);
         result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
         result = 31 * result + (createdBy != null ? createdBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", filmTime=" + filmTime +
+                ", screenSeat=" + screenSeat +
+                ", vat=" + vat +
+                ", sellsChannels=" + sellsChannels +
+                ", description='" + description + '\'' +
+                ", annotation='" + annotation + '\'' +
+                ", printedPrice=" + printedPrice +
+                ", sellOnWeb=" + sellOnWeb +
+                ", sellOnKiosk=" + sellOnKiosk +
+                ", sellOnPos=" + sellOnPos +
+                ", isChild=" + isChild +
+                ", isAdult=" + isAdult +
+                ", status=" + status +
+                ", currentState='" + currentState + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                '}';
     }
 }

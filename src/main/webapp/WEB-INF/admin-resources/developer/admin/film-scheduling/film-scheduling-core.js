@@ -157,9 +157,24 @@ function createScheduling(){
   });
 
 }
-function drawTimeTable(){
+function drawTimeTable(callBackFn){
+
+  if(callBackFn==undefined && typeof callBackFn !="function"){
+    callBackFn = function(elem){
+      console.log($(elem));
 
 
+      var filmTimeDetails = $(elem).data();
+      $("#currentFilmTimeId").val($(elem).attr("id"));
+      $("#filmTimeDetails").show();
+      $("#screenName").html(filmTimeDetails.screenname);
+      $("#scheduleDate").html(filmTimeDetails.scheduledate);
+      $("#filmName").html(filmTimeDetails.filmname);
+      $("#startTimeSpan").html(filmTimeDetails.starttime);
+      $("#endTimeSpan").html(filmTimeDetails.endtme);
+
+    };
+  }
 
   var timetable = new Timetable();
 
@@ -181,10 +196,12 @@ function drawTimeTable(){
     for(var c in filmTimes){
         if(filmTimes[c].id==0){
             filmTimeHtmIdPrefix ="filmTimeNew";
+            filmTimeHtmIdStr = filmTimeHtmIdPrefix+filmTimeHtmId++;
         }else{
             filmTimeHtmIdPrefix = "filmTime";
+            filmTimeHtmIdStr = filmTimeHtmIdPrefix+filmTimes[c].id;
         }
-      filmTimeHtmIdStr = filmTimeHtmIdPrefix+filmTimeHtmId++;
+
       filmTimes[c].htmlId = filmTimeHtmIdStr;
       filmTimes[c].options = {id:"film_"+filmTimes[c].filmId,
         data:{
@@ -200,20 +217,7 @@ function drawTimeTable(){
           scheduledate:scheduleDate,
           scheduleid:scheduleId
         },
-        onclick:function(elem){
-          console.log($(elem));
-
-
-          var filmTimeDetails = $(elem).data();
-          $("#currentFilmTimeId").val($(elem).attr("id"));
-          $("#filmTimeDetails").show();
-          $("#screenName").html(filmTimeDetails.screenname);
-          $("#scheduleDate").html(filmTimeDetails.scheduledate);
-          $("#filmName").html(filmTimeDetails.filmname);
-          $("#startTimeSpan").html(filmTimeDetails.starttime);
-          $("#endTimeSpan").html(filmTimeDetails.endtme);
-
-        }
+        onclick:callBackFn
       };
       timetable.addEvent(filmTimes[c].filmName, date,
           filmTimes[c].startTime,

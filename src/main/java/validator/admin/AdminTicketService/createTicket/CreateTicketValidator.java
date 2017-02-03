@@ -1,11 +1,7 @@
 package validator.admin.AdminTicketService.createTicket;
 
-import dao.SeatTypeDao;
-import dao.TicketDao;
-import dao.VatSettingDao;
-import entity.SeatType;
-import entity.Ticket;
-import entity.VatSetting;
+import dao.*;
+import entity.*;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +17,10 @@ import java.text.ParseException;
 public class CreateTicketValidator implements Validator {
 
     @Autowired
-    SeatTypeDao seatTypeDao;
+    FilmTimeDao filmTimeDao;
+
+    @Autowired
+    ScreenSeatDao screenSeatDao;
 
     @Autowired
     VatSettingDao vatSettingDao;
@@ -33,7 +32,7 @@ public class CreateTicketValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         CreateTicketForm createTicketForm = (CreateTicketForm) obj;
 
-        try {
+      /*  try {
             createTicketForm.setFormattedStartDate(DateHelper.getStringToDate(createTicketForm.getStartDate(), "MM/dd/yyyy"));
         } catch (ParseException e) {
             errors.rejectValue("startDate", "Start Date format miss matched");
@@ -43,24 +42,41 @@ public class CreateTicketValidator implements Validator {
             createTicketForm.setFormattedEndDate(DateHelper.getStringToDate(createTicketForm.getEndDate(), "MM/dd/yyyy"));
         } catch (ParseException e) {
             errors.rejectValue("endDate", "End Date format miss matched");
-        }
+        }*/
 
-        if (createTicketForm.getFormattedEndDate().before(createTicketForm.getFormattedStartDate())) {
+       /* if (createTicketForm.getFormattedEndDate().before(createTicketForm.getFormattedStartDate())) {
             errors.rejectValue("endDate", "End Date should be after start date");
-        }
-        SeatType seatType= seatTypeDao.getById(createTicketForm.getSeatTypeId());
-        if(seatType==null){
-            errors.rejectValue("seatTypeId", "Seat type does not exists");
-        }
+        }*/
+
+
+
 
         VatSetting vatSetting= vatSettingDao.getById(createTicketForm.getVatId());
         if(vatSetting==null){
             errors.rejectValue("vatId", "Vat does not exists");
         }
 
-        Ticket ticket= ticketDao.getBySeatAndDates(createTicketForm.getSeatTypeId(),createTicketForm.getFormattedStartDate(),createTicketForm.getFormattedEndDate());
+       /* Ticket ticket= ticketDao.getBySeatAndDates(createTicketForm.getSeatTypeId(),createTicketForm.getFormattedStartDate(),createTicketForm.getFormattedEndDate());
         if(ticket!=null){
             errors.rejectValue("startDate", "Start date or end date already exist");
+        }*/
+
+
+        FilmTime filmTime = filmTimeDao.getById(createTicketForm.getFilmTimeId());
+        if(filmTime==null){
+            errors.rejectValue("filmTimeId", "Film time does not exist");
+        }
+
+        ScreenSeat  screenSeat = screenSeatDao.getById(createTicketForm.getSeatId());
+        if(screenSeat==null){
+            errors.rejectValue("seatId", "Screen seat does not exist");
+        }
+
+        if(createTicketForm.getTicketId()>0){
+            Ticket ticket = ticketDao.getById(createTicketForm.getTicketId());
+            if(ticket==null){
+                errors.rejectValue("ticketId", "Ticket not found");
+            }
         }
     }
 
