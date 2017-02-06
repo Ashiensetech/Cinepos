@@ -27,6 +27,10 @@ public class SellDetailsDao extends BaseDao{
         }
     }
 
+
+
+
+
     public void update(SellsDetails sellsDetails){
         Session session = null;
         try {

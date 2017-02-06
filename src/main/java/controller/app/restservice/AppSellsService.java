@@ -1,10 +1,8 @@
 package controller.app.restservice;
 
 import controller.app.AppUriPreFix;
-import dao.SellDetailsDao;
-import dao.SellsDao;
-import entity.Sells;
-import entity.SellsDetails;
+import dao.*;
+import entity.*;
 import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +17,7 @@ import validator.admin.AdminSellsService.CreateSells.OrderForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,12 +34,20 @@ public class AppSellsService {
     CreateOrMergeSellingFormValidator createOrMergeSellingFormValidator;
     @Autowired
     SellDetailsDao sellDetailsDao;
+    @Autowired
+    ConcessionProductDao concessionProductDao;
+    @Autowired
+    ComboDao comboDao;
+    @Autowired
+    SeatTypeDao seatTypeDao;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<?> create(@Valid CreateOrMergeSellingForm createOrMergeSellingForm,
                                     BindingResult result,
                                     HttpServletRequest request) {
         String errorMsg="Order create successfully";
+        float totalPrice=0;
+        int totalQuantity=0;
 
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
         /***************** Validation  [Start] *************/
@@ -67,10 +74,10 @@ public class AppSellsService {
         System.out.println(createOrMergeSellingForm.orderForm.getCartForms());
 
         Sells sells=new Sells();
-        sells.setSellingAmount(1.5);
+        //sells.setSellingAmount(1.5);
         sells.setSellingComment("Testing comment for sells");
         sells.setCombo(true);
-        sells.setQuantity(5);
+       // sells.setQuantity(5);
         sells.setTerminalId(createOrMergeSellingForm.orderForm.getTerminalId());
         sells.setStatus(true);
         sells.setCreatedBy(1);
@@ -87,19 +94,54 @@ public class AppSellsService {
             SellsDetails sellsDetails=new SellsDetails();
 
             sellsDetails.setSellId(sells.getId());
-            sellsDetails.setConcessionProductId(targetItem.getId());
-            //sellsDetails.setComboId(1);
-           // sellsDetails.setSeatTypeId(1);
             sellsDetails.setUserId(1);
             sellsDetails.setUnitSellingAmount(targetItem.getPrice());
             sellsDetails.setQuantity(targetItem.getQuantity());
             sellsDetails.setSellingType(targetItem.getSellingType());
             sellsDetails.setCreatedBy(1);
 
+
+            if(targetItem.getSellingType().equals("product")){
+                ConcessionProduct concessionProduct=concessionProductDao.getById(targetItem.getId());
+                if(concessionProduct == null){
+                    serviceResponse.setValidationError("concessionProduct","Product "+concessionProduct.getName()+" not found");
+                    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+                }
+                sellsDetails.setConcessionProductId(targetItem.getId());
+            }else if (targetItem.getSellingType().equals("combo")){
+                Combo combo=comboDao.getById(targetItem.getId());
+                if(combo == null){
+                    serviceResponse.setValidationError("concessionProduct","Combo "+combo.getComboName()+" not found");
+                    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+                }
+                sellsDetails.setComboId(targetItem.getId());
+            }else{
+                SeatType seatType=seatTypeDao.getById(targetItem.getId());
+                if(seatType == null){
+                    serviceResponse.setValidationError("concessionProduct","Seat type "+seatType.getName()+" not found");
+                    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+                }
+                 sellsDetails.setSeatTypeId(targetItem.getId());
+            }
+
+            totalPrice+=targetItem.getPrice();
+            totalQuantity+=targetItem.getQuantity();
+
             sellDetailsDao.insert(sellsDetails);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(createOrMergeSellingForm.getOrdersJson());
+        System.out.println(totalQuantity);
+
+        Sells sellsUpdate=sellsDao.getById(sells.getId());
+
+        System.out.println(sellsUpdate);
+        sellsUpdate.setQuantity(totalQuantity);
+        sellsUpdate.setSellingAmount(totalPrice);
+
+        sellsDao.update(sellsUpdate);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
 
     }
 }

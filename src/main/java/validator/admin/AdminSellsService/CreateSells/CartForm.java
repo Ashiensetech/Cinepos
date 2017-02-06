@@ -1,6 +1,9 @@
 package validator.admin.AdminSellsService.CreateSells;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by Sarwar on 2/3/2017.
@@ -8,10 +11,17 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CartForm {
 
+     @NotNull(message = "Id is required")
      private Integer Id;
+
+     @NotNull(message = "Quantity is required")
      private int quantity;
+
+     @NotNull(message = "Price is required")
      private float price;
-     private String sellingType;
+
+    @NotBlank(message = "Selling type is required")
+    private String sellingType;
 
     public Integer getId() {
         return Id;

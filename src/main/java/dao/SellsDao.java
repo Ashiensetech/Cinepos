@@ -28,6 +28,8 @@ public class SellsDao extends  BaseDao{
     }
 
     public void update(Sells sells){
+
+        System.out.print(sells);
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
@@ -40,5 +42,19 @@ public class SellsDao extends  BaseDao{
         }finally {
             if(session!=null)session.close();
         }
+    }
+
+    public Sells getById(int id){
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (Sells) session.createQuery("FROM Sells where id = :id").setParameter("id", id).uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
     }
 }
