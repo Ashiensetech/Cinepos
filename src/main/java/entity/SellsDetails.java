@@ -3,9 +3,6 @@ package entity;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-/**
- * Created by Sarwar on 2/2/2017.
- */
 
 @Entity
 @Table(name = "sells_details")
@@ -38,11 +35,15 @@ public class SellsDetails {
 
     @Basic
     @Column(name = "unit_selling_amount")
-    private int unitSellingAmount;
+    private float unitSellingAmount;
 
     @Basic
     @Column(name = "quantity")
     private int quantity;
+
+    @Basic
+    @Column(name = "selling_type")
+    private String sellingType;
 
     @Basic
     @Column(name = "created_by")
@@ -63,7 +64,6 @@ public class SellsDetails {
     @OneToOne
     @JoinColumn(name = "seat_type_id",referencedColumnName = "id",insertable = false, updatable = false)
     private SeatType seatType;
-
 
     public int getId() {
         return id;
@@ -113,11 +113,11 @@ public class SellsDetails {
         this.userId = userId;
     }
 
-    public int getUnitSellingAmount() {
+    public float getUnitSellingAmount() {
         return unitSellingAmount;
     }
 
-    public void setUnitSellingAmount(int unitSellingAmount) {
+    public void setUnitSellingAmount(float unitSellingAmount) {
         this.unitSellingAmount = unitSellingAmount;
     }
 
@@ -127,6 +127,14 @@ public class SellsDetails {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getSellingType() {
+        return sellingType;
+    }
+
+    public void setSellingType(String sellingType) {
+        this.sellingType = sellingType;
     }
 
     public int getCreatedBy() {
@@ -177,7 +185,7 @@ public class SellsDetails {
         SellsDetails that = (SellsDetails) o;
 
         if (id != that.id) return false;
-        if (unitSellingAmount != that.unitSellingAmount) return false;
+        if (Float.compare(that.unitSellingAmount, unitSellingAmount) != 0) return false;
         if (quantity != that.quantity) return false;
         if (createdBy != that.createdBy) return false;
         if (sellId != null ? !sellId.equals(that.sellId) : that.sellId != null) return false;
@@ -186,6 +194,7 @@ public class SellsDetails {
         if (comboId != null ? !comboId.equals(that.comboId) : that.comboId != null) return false;
         if (seatTypeId != null ? !seatTypeId.equals(that.seatTypeId) : that.seatTypeId != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (sellingType != null ? !sellingType.equals(that.sellingType) : that.sellingType != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
         if (concessionProduct != null ? !concessionProduct.equals(that.concessionProduct) : that.concessionProduct != null)
             return false;
@@ -201,8 +210,9 @@ public class SellsDetails {
         result = 31 * result + (comboId != null ? comboId.hashCode() : 0);
         result = 31 * result + (seatTypeId != null ? seatTypeId.hashCode() : 0);
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        result = 31 * result + unitSellingAmount;
+        result = 31 * result + (unitSellingAmount != +0.0f ? Float.floatToIntBits(unitSellingAmount) : 0);
         result = 31 * result + quantity;
+        result = 31 * result + (sellingType != null ? sellingType.hashCode() : 0);
         result = 31 * result + createdBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (concessionProduct != null ? concessionProduct.hashCode() : 0);
@@ -210,6 +220,7 @@ public class SellsDetails {
         result = 31 * result + (seatType != null ? seatType.hashCode() : 0);
         return result;
     }
+
 
     @Override
     public String toString() {
@@ -222,6 +233,7 @@ public class SellsDetails {
                 ", userId=" + userId +
                 ", unitSellingAmount=" + unitSellingAmount +
                 ", quantity=" + quantity +
+                ", sellingType='" + sellingType + '\'' +
                 ", createdBy=" + createdBy +
                 ", createdAt=" + createdAt +
                 ", concessionProduct=" + concessionProduct +

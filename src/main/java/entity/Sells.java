@@ -18,7 +18,7 @@ public class Sells {
 
     @Basic
     @Column(name = "selling_amount")
-    private Float sellingAmount;
+    private double sellingAmount;
 
     @Basic
     @Column(name = "selling_comment")
@@ -60,11 +60,11 @@ public class Sells {
         this.id = id;
     }
 
-    public Float getSellingAmount() {
+    public double getSellingAmount() {
         return sellingAmount;
     }
 
-    public void setSellingAmount(Float sellingAmount) {
+    public void setSellingAmount(double sellingAmount) {
         this.sellingAmount = sellingAmount;
     }
 
@@ -100,6 +100,14 @@ public class Sells {
         this.terminalId = terminalId;
     }
 
+    public List<SellsDetails> getSellDetails() {
+        return SellDetails;
+    }
+
+    public void setSellDetails(List<SellsDetails> sellDetails) {
+        SellDetails = sellDetails;
+    }
+
     public boolean isStatus() {
         return status;
     }
@@ -129,29 +137,33 @@ public class Sells {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Sells sell = (Sells) o;
+        Sells sells = (Sells) o;
 
-        if (id != sell.id) return false;
-        if (isCombo != sell.isCombo) return false;
-        if (quantity != sell.quantity) return false;
-        if (terminalId != sell.terminalId) return false;
-        if (status != sell.status) return false;
-        if (createdBy != sell.createdBy) return false;
-        if (sellingAmount != null ? !sellingAmount.equals(sell.sellingAmount) : sell.sellingAmount != null)
+        if (id != sells.id) return false;
+        if (Double.compare(sells.sellingAmount, sellingAmount) != 0) return false;
+        if (isCombo != sells.isCombo) return false;
+        if (quantity != sells.quantity) return false;
+        if (terminalId != sells.terminalId) return false;
+        if (status != sells.status) return false;
+        if (createdBy != sells.createdBy) return false;
+        if (sellingComment != null ? !sellingComment.equals(sells.sellingComment) : sells.sellingComment != null)
             return false;
-        if (sellingComment != null ? !sellingComment.equals(sell.sellingComment) : sell.sellingComment != null)
-            return false;
-        return createdAt != null ? createdAt.equals(sell.createdAt) : sell.createdAt == null;
+        if (SellDetails != null ? !SellDetails.equals(sells.SellDetails) : sells.SellDetails != null) return false;
+        return createdAt != null ? createdAt.equals(sells.createdAt) : sells.createdAt == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (sellingAmount != null ? sellingAmount.hashCode() : 0);
+        int result;
+        long temp;
+        result = id;
+        temp = Double.doubleToLongBits(sellingAmount);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (sellingComment != null ? sellingComment.hashCode() : 0);
         result = 31 * result + (isCombo ? 1 : 0);
         result = 31 * result + quantity;
         result = 31 * result + terminalId;
+        result = 31 * result + (SellDetails != null ? SellDetails.hashCode() : 0);
         result = 31 * result + (status ? 1 : 0);
         result = 31 * result + createdBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
@@ -160,13 +172,14 @@ public class Sells {
 
     @Override
     public String toString() {
-        return "Sell{" +
+        return "Sells{" +
                 "id=" + id +
                 ", sellingAmount=" + sellingAmount +
                 ", sellingComment='" + sellingComment + '\'' +
                 ", isCombo=" + isCombo +
                 ", quantity=" + quantity +
                 ", terminalId=" + terminalId +
+                ", SellDetails=" + SellDetails +
                 ", status=" + status +
                 ", createdBy=" + createdBy +
                 ", createdAt=" + createdAt +

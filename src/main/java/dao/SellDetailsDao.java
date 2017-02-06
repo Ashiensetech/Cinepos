@@ -1,23 +1,23 @@
 package dao;
 
-import entity.Combo;
 import entity.Sells;
+import entity.SellsDetails;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**
- * Created by Sarwar on 2/2/2017.
+ * Created by Sarwar on 2/6/2017.
  */
 @Repository
-public class SellsDao extends  BaseDao{
+public class SellDetailsDao extends BaseDao{
 
-    public void insert(Sells sells){
+    public void insert(SellsDetails sellsDetails){
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            session.save(sells);
+            session.save(sellsDetails);
             session.getTransaction().commit();
         }catch (HibernateException hEx){
             // Insert to database exception log
@@ -27,12 +27,12 @@ public class SellsDao extends  BaseDao{
         }
     }
 
-    public void update(Sells sells){
+    public void update(SellsDetails sellsDetails){
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            session.update(sells);
+            session.update(sellsDetails);
             session.getTransaction().commit();
         }catch (HibernateException hEx){
             // Insert to database exception log

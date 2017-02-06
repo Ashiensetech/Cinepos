@@ -73,7 +73,6 @@ public class AdminComboService {
             combo.setEndDate(createComboForm.getFormattedEndDate());
             combo.setComboType(createComboForm.getComboType());
             combo.setStatus(1);
-
             combo.setCreatedBy(1);
 
             comboDao.insert(combo);
@@ -87,6 +86,7 @@ public class AdminComboService {
 
 
             List<Integer> productsIds = createComboForm.getProductsIdArray();
+
             for (Integer productsId :productsIds){
                 ConcessionProduct concessionProduct = concessionProductDao.getById(productsId);
                 if(concessionProduct!=null){
