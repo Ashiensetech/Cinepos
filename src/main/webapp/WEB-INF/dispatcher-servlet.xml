@@ -91,6 +91,8 @@
                 <value>entity.Ticket</value>
                 <value>entity.TicketChannels</value>
                 <value>entity.SellsChannel</value>
+                <value>entity.Sells</value>
+                <value>entity.SellsDetails</value>
                 <value>entity.reportEntity.ProductSaleReportView</value>
             </list>
         </property>
