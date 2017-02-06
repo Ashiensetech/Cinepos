@@ -185,6 +185,7 @@
                         <label>Start time</label>
                         <div class="input-group bootstrap-timepicker timepicker">
                             <input id="modalStartTimePicker" type="time" class="form-control input-small">
+                            <p class="help-block error" id="errorMsg_sTime"></p>
                          <%--   <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
                         </div>
                     </div>
@@ -193,6 +194,7 @@
                         <div class="input-group bootstrap-timepicker timepicker">
                             <input id="modalEndTimePicker" type="time" class="form-control input-small">
                             <%--<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>--%>
+                            <p class="help-block error" id="errorMsg_eTime"></p>
                         </div>
                     </div>
                 </form>
