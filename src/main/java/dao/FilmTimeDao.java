@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -114,17 +115,28 @@ public class FilmTimeDao extends BaseDao {
 
 
         Session session=this.sessionFactory.openSession();
-
+        System.out.println(startTime);
+        System.out.println(endTime);
         try{
             return session.createQuery("FROM FilmTime filmTime " +
-                    " where (:startTime between filmTime.startTime and filmTime.endTime " +
-                    " or :endTime between filmTime.startTime and filmTime.endTime )" +
+                    " where " +
+                    " ( " +
+                    "  ( " +
+                    "    :startTime between filmTime.startTime and filmTime.endTime " +
+                    "    or :endTime between filmTime.startTime and filmTime.endTime " +
+                    "   )" +
+                    "       or " +
+                    "  ( " +
+                    "   filmTime.startTime between  :startTime and  :endTime " +
+                    "   or filmTime.endTime between  :startTime and  :endTime " +
+                    "  ) " +
+                    " )" +
                     " and filmTime.filmScheduleId = :filmScheduleId" +
                     " and filmTime.id !=:id")
                     .setParameter("id",id)
                     .setParameter("filmScheduleId", filmScheduleId)
-                    .setParameter("startTime",endTime )
-                    .setParameter("endTime",startTime)
+                    .setParameter("startTime",startTime)
+                    .setParameter("endTime",endTime )
                     .list();
 
         }catch (HibernateException hEx){

@@ -183,6 +183,9 @@ public class AdminFilmScheduleService {
         List<FilmTime> collusionFilmTime = filmTimeDao.getByInBetweenTime(filmTime.getId(),filmTime.getFilmScheduleId(), filmTimeForm.getStartTime(), filmTimeForm.getEndTime());
 
         if(collusionFilmTime!=null && collusionFilmTime.size()>0){
+            for(FilmTime ft : collusionFilmTime){
+                System.out.println(ft);
+            }
             System.out.println("Inside collution");
             System.out.println(collusionFilmTime);
             serviceResponse.setValidationError("sTime","Film time collied");

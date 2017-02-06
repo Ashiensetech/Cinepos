@@ -141,4 +141,18 @@ public class FilmTime {
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "FilmTime{" +
+                "id=" + id +
+                ", filmScheduleId=" + filmScheduleId +
+                ", film=" + film +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", status=" + status +
+                ", createdBy=" + createdBy +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }
