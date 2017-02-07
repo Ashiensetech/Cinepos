@@ -1,5 +1,7 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -7,6 +9,7 @@ import java.sql.Timestamp;
 /**
  * Created by mi on 1/17/17.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "film_time")
 public class FilmTime {
