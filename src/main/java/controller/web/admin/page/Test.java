@@ -1,7 +1,7 @@
 package controller.web.admin.page;
 
 import dao.reportDao.ProductSaleReportViewDao;
-import entity.reportEntity.ProductSaleReportView;
+import entity.reportEntity.ProductReportView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +27,7 @@ public class Test {
     @RequestMapping(value = "/data-tester", method = RequestMethod.GET)
     public ModelAndView QueryTesting()
     {
-        List<ProductSaleReportView> productSaleReportView= productSaleReportViewDao.getAll();
+        List<ProductReportView> productSaleReportView= productSaleReportViewDao.getAll();
         System.out.println(productSaleReportView);
         return new ModelAndView("web-admin/test");
     }
