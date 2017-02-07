@@ -93,7 +93,14 @@
                 <value>entity.SellsChannel</value>
                 <value>entity.Sells</value>
                 <value>entity.SellsDetails</value>
+<<<<<<< HEAD
                 <value>entity.reportEntity.ProductReportView</value>
+=======
+                <value>entity.reportEntity.ProductSaleReportView</value>
+                <value>entity.entityView.BoxOfficeSchedulingView</value>
+                <value>entity.entityView.BoxOfficeFilmView</value>
+                <value>entity.entityView.BoxOfficeFilmTimeView</value>
+>>>>>>> 919c403f1a42fac265756b171c3921c93163a03a
             </list>
         </property>
         <property name="hibernateProperties">

@@ -7,9 +7,11 @@ import dao.FilmDao;
 import dao.FilmScheduleDao;
 import dao.FilmTimeDao;
 import dao.ScreenDao;
+import dao.viewDao.BoxOfficeSchedulingViewDao;
 import entity.AuthCredential;
 import entity.FilmSchedule;
 import entity.FilmTime;
+import entity.entityView.BoxOfficeSchedulingView;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -51,6 +53,8 @@ public class AppFilmScheduleService {
 
     @Autowired
     ScreenDao screenDao;
+    @Autowired
+    BoxOfficeSchedulingViewDao boxOfficeSchedulingViewDao;
 
     @RequestMapping(value = "/get-all-in-date-range/{screenId}", method = RequestMethod.POST)
     public ResponseEntity<?> getAll(@PathVariable(value = "screenId")Integer screenId,
@@ -128,5 +132,62 @@ public class AppFilmScheduleService {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(filmSchedules);
+    }
+    @RequestMapping(value = "/get-for-box-office", method = RequestMethod.POST)
+    public ResponseEntity<?> getForBoxOfficeByDate(@RequestParam(value = "screen_id")Integer screenId,
+                                                    @RequestParam(value = "date")String date) {
+        Date sDate = null;
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+        if(date!=null){
+            try {
+                sDate = DateHelper.getStringToDate(date,"yyyy-MM-dd");
+            } catch (ParseException e) {
+                serviceResponse.setValidationError("startDate", e.getMessage());
+            }
+        }else{
+            serviceResponse.setValidationError("startDate", "Start date required");
+        }
+
+        if(serviceResponse.hasErrors()){
+            ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
+        FilmSchedule filmSchedule = filmScheduleDao.getByDate(screenId,sDate);
+        if(filmSchedule==null){
+           return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ServiceResponse.getMsg("No scheduling information found"));
+        }
+
+        List<BoxOfficeSchedulingView> boxOfficeSchedulingView = boxOfficeSchedulingViewDao.getByScheduleId(filmSchedule.getId());
+
+        if(boxOfficeSchedulingView==null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ServiceResponse.getMsg("No film time found"));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(boxOfficeSchedulingView);
+    }
+    @RequestMapping(value = "/get-for-box-office/{scheduleId}", method = RequestMethod.POST)
+    public ResponseEntity<?> getForBoxOfficeByDate(@PathVariable(value = "scheduleId")Integer scheduleId) {
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+
+
+
+
+        FilmSchedule filmSchedule = filmScheduleDao.getById(scheduleId);
+        if(filmSchedule==null){
+            serviceResponse.setValidationError("scheduleId","No scheduling information found");
+        }
+
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(serviceResponse.getFormError());
+        }
+
+
+        List<BoxOfficeSchedulingView> boxOfficeSchedulingView = boxOfficeSchedulingViewDao.getByScheduleId(filmSchedule.getId());
+
+        if(boxOfficeSchedulingView==null){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ServiceResponse.getMsg("No film time found"));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(boxOfficeSchedulingView);
     }
 }
