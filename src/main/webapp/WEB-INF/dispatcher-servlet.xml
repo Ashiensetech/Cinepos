@@ -94,6 +94,9 @@
                 <value>entity.Sells</value>
                 <value>entity.SellsDetails</value>
                 <value>entity.reportEntity.ProductSaleReportView</value>
+                <value>entity.entityView.BoxOfficeSchedulingView</value>
+                <value>entity.entityView.BoxOfficeFilmView</value>
+                <value>entity.entityView.BoxOfficeFilmTimeView</value>
             </list>
         </property>
         <property name="hibernateProperties">
