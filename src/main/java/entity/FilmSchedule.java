@@ -1,5 +1,7 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -10,6 +12,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "film_schedule")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class FilmSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
