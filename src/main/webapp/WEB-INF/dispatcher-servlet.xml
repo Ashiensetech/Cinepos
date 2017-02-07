@@ -93,7 +93,7 @@
                 <value>entity.SellsChannel</value>
                 <value>entity.Sells</value>
                 <value>entity.SellsDetails</value>
-                <value>entity.reportEntity.ProductSaleReportView</value>
+                <value>entity.reportEntity.ProductReportView</value>
             </list>
         </property>
         <property name="hibernateProperties">
