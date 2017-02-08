@@ -127,6 +127,8 @@ public class AppSellsService {
             totalPrice+=targetItem.getPrice();
             totalQuantity+=targetItem.getQuantity();
 
+
+
             sellDetailsDao.insert(sellsDetails);
         }
 
