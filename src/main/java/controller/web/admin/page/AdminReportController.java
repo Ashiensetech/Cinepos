@@ -1,0 +1,43 @@
+package controller.web.admin.page;
+
+import controller.web.admin.AdminUriPreFix;
+import dao.DistributorDao;
+import dao.FilmDao;
+import dao.GenreDao;
+import dao.ScreenDimensionDao;
+import entity.Distributor;
+import entity.Film;
+import entity.Genre;
+import entity.ScreenDimension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+
+
+@Controller
+@RequestMapping(AdminUriPreFix.pageUriPrefix+"/report")
+public class AdminReportController {
+    @Autowired
+    FilmDao filmDao;
+
+    @Autowired
+    DistributorDao distributorDao;
+
+    @Autowired
+    ScreenDimensionDao screenDimensionDao;
+
+    @Autowired
+    GenreDao genreDao;
+
+
+    @RequestMapping(value = "/performance")
+    public ModelAndView performance(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/performance");
+        return mav;
+    }
+
+}
