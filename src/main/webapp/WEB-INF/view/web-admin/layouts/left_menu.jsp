@@ -202,7 +202,11 @@
             </li>
             <li>
                 <a href="#">Reports<span class="fa arrow"></span></a>
-
+                <ul class="nav nav-second-level">
+                    <li>
+                        <a href="<c:url value="/admin/report/performance"/>">Performance</a>
+                    </li>
+                </ul>
             </li>
         </ul>
 
