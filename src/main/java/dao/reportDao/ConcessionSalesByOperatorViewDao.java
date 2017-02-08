@@ -1,6 +1,7 @@
 package dao.reportDao;
 
 import dao.BaseDao;
+import entity.entityView.report.ConcessionSalesByOperatorView;
 import entity.entityView.report.ProductSummaryReportView;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -12,7 +13,7 @@ import java.util.List;
 @Repository
 public class ConcessionSalesByOperatorViewDao extends BaseDao{
 
-    public List<ConcessionSalesByOperatorViewDao> getAll(){
+    public List<ConcessionSalesByOperatorView> getAll(){
         Session session=this.sessionFactory.openSession();
         try{
             return session.createQuery("FROM ConcessionSalesByOperatorView").list();

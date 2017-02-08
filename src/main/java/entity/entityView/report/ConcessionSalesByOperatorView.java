@@ -32,7 +32,7 @@ public class ConcessionSalesByOperatorView {
     private String 	CreateDate;
 
     @OneToOne
-    @JoinColumn(name = "Oparetor",referencedColumnName = "id")
+    @JoinColumn(name = "Oparetor",referencedColumnName = "id",insertable = false, updatable = false)
     private AuthCredential authCredential;
 
     public int getSD_Id() {
