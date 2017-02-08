@@ -85,6 +85,21 @@ public class Test2Controller {
     public ResponseEntity<?> scheduleView(){
         return ResponseEntity.status(HttpStatus.OK).body(boxOfficeSchedulingViewDao.getByScheduleId(18 ));
     }
-
+    @RequestMapping(value="/sync")
+    public ResponseEntity<?> sync(){
+        System.out.println("Waiting for service");
+        synchronized (this){
+            System.out.println("Got Lock for service");
+            try {
+                System.out.println("Sleeping........");
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("About to get out........");
+        }
+        System.out.println("Out now");
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 
 }
