@@ -93,7 +93,7 @@
                 <value>entity.SellsChannel</value>
                 <value>entity.Sells</value>
                 <value>entity.SellsDetails</value>
-                <value>entity.reportEntity.ProductReportView</value>
+                <value>entity.entityReport.ProductSummaryReportView</value>
                 <value>entity.entityView.BoxOfficeSchedulingView</value>
                 <value>entity.entityView.BoxOfficeFilmView</value>
                 <value>entity.entityView.BoxOfficeFilmTimeView</value>

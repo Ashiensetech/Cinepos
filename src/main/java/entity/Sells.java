@@ -52,6 +52,7 @@ public class Sells {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+
     public int getId() {
         return id;
     }

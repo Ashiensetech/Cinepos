@@ -1,13 +1,11 @@
-package entity.reportEntity;
+package entity.entityReport;
 
 import javax.persistence.*;
 
-/**
- * Created by Sarwar on 2/1/2017.
- */
+
 @Entity
-@Table(name = "productsummeryview")
-public class ProductReportView{
+@Table(name = "product_summary_view")
+public class ProductSummaryReportView {
 
     @javax.persistence.Id
     @Column(name = "ProductId")
@@ -85,7 +83,7 @@ public class ProductReportView{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ProductReportView that = (ProductReportView) o;
+        ProductSummaryReportView that = (ProductSummaryReportView) o;
 
         if (Id != that.Id) return false;
         if (Float.compare(that.price, price) != 0) return false;
