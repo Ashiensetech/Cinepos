@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">EDI REPORTS</h1>
+                    <h1 class="page-header">Conc Sales By Operator</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
