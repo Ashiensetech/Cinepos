@@ -17,9 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.lang.model.element.NestingKind;
 import java.util.List;
+import java.util.Optional;
 
 
 @Controller
@@ -216,8 +220,12 @@ public class AdminReportController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/product-summary")
-    public ModelAndView productSummary(){
+    @RequestMapping(value = "/product-summary",method = RequestMethod.GET)
+    public ModelAndView productSummary(@RequestParam(value = "startDate",required = false) String startDate,
+                                       @RequestParam(value = "endDate",required = false) String endDate
+                                       ){
+
+        System.out.print(startDate);
         List<ProductSummaryReportView> productSummaryReportViewList=productSummaryReportViewDao.getAll();
 
         System.out.print(productSummaryReportViewList);

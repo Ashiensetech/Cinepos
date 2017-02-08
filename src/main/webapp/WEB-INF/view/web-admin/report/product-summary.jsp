@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Conc Sales By Operator</h1>
+                    <h1 class="page-header">Product Summary</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -35,10 +35,10 @@
                         <div class='input-group date'>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                            <input type='text' class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
-
+                                    <input type='text' class="form-control" id="fixed_date"  placeholder="YYYY-MM-DD" type="text" />
                         </div>
                     </div>
+                    <button class="btn-primary btn">Search</button>
                 </div>
                 <div class="col-md-6" style="margin-top: 25px;">
                     <button type="" class="btn btn-primary" >Print</button>
@@ -54,7 +54,7 @@
                         <div class='input-group date'>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                 </span>
-                            <input type='text' class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
+                            <input type='text' class="form-control" id="start_date" name="date" placeholder="YYYY-MM-DD" type="text" />
 
                         </div>
                     </div>
@@ -64,10 +64,13 @@
                     <div class='input-group date'>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                             </span>
-                        <input type='text' class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="text" />
+                        <input type='text' class="form-control" id="end_date" name="date" placeholder="YYYY-MM-DD" type="text" />
 
                     </div>
                 </div>
+
+                <button class="btn-primary btn">Search</button>
+
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -139,15 +142,15 @@
 <script src="<c:url value="/admin-resources/bootstrap/js/bootstrap-datepicker.1.4.1.min.js"/>"></script>
 <script>
     $(document).ready(function(){
-        var date_input=$('input[name="date"]'); //our date input has the name "date"
+        var date_input=$('#fixed_date,#start_date,#end_date'); //our date input has the name "date"
         var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
         date_input.datepicker({
-            format: 'mm/dd/yyyy',
+            format: 'yyyy-mm-dd',
             container: container,
             todayHighlight: true,
             autoclose: true,
         })
-    })
+    });
 </script>
 
 <!-- Include Date Range Picker -->

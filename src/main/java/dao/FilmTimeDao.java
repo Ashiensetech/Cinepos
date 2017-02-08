@@ -11,9 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by mi on 1/25/17.
- */
+
 @Repository
 public class FilmTimeDao extends BaseDao {
     public boolean insert(FilmTime filmTime){
