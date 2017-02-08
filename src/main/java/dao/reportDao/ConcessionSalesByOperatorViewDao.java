@@ -1,7 +1,8 @@
 package dao.reportDao;
 
 import dao.BaseDao;
-import entity.entityReport.ProductSummaryReportView;
+import entity.entityView.report.ConcessionSalesByOperatorView;
+import entity.entityView.report.ProductSummaryReportView;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -9,16 +10,13 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Repository
-public class ProductSaleReportViewDao extends BaseDao {
+public class ConcessionSalesByOperatorViewDao extends BaseDao{
 
-    public List<ProductSummaryReportView> getAll(){
+    public List<ConcessionSalesByOperatorView> getAll(){
         Session session=this.sessionFactory.openSession();
-
         try{
-            return session.createQuery("FROM ProductSummaryReportView").list();
-
+            return session.createQuery("FROM ConcessionSalesByOperatorView").list();
         }catch (HibernateException hEx){
             hEx.printStackTrace();
         }finally{

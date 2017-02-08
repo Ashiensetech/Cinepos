@@ -1,4 +1,4 @@
-package entity.entityReport;
+package entity.entityView.report;
 
 import javax.persistence.*;
 

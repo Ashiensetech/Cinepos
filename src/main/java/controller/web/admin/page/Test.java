@@ -1,7 +1,7 @@
 package controller.web.admin.page;
 
-import dao.reportDao.ProductSaleReportViewDao;
-import entity.entityReport.ProductSummaryReportView;
+import dao.reportDao.ProductSummaryReportViewDao;
+import entity.entityView.report.ProductSummaryReportView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequestMapping("/admin")
 public class Test {
     @Autowired
-    ProductSaleReportViewDao productSaleReportViewDao;
+    ProductSummaryReportViewDao productSaleReportViewDao;
 
     @RequestMapping(value = "/init", method = RequestMethod.GET)
     public ModelAndView init(){
