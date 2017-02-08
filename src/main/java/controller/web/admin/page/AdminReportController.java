@@ -6,11 +6,13 @@ import dao.FilmDao;
 import dao.GenreDao;
 import dao.ScreenDimensionDao;
 import dao.reportDao.ConcessionSalesByOperatorViewDao;
+import dao.reportDao.ProductSummaryReportViewDao;
 import entity.Distributor;
 import entity.Film;
 import entity.Genre;
 import entity.ScreenDimension;
 import entity.entityView.report.ConcessionSalesByOperatorView;
+import entity.entityView.report.ProductSummaryReportView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,12 +40,66 @@ public class AdminReportController {
     @Autowired
     ConcessionSalesByOperatorViewDao concessionSalesByOperatorViewDao;
 
+    @Autowired
+    ProductSummaryReportViewDao productSummaryReportViewDao;
+
 
     @RequestMapping(value = "/performance")
     public ModelAndView performance(){
         ModelAndView mav =  new ModelAndView("web-admin/report/performance");
         return mav;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @RequestMapping(value = "/distributor")
     public ModelAndView distributor(){
@@ -127,6 +183,20 @@ public class AdminReportController {
         modelAndView.addObject("productSalesByOperatorList",concessionSalesByOperatorList);
         return modelAndView;
     }
+
+    @RequestMapping(value = "/product-summary")
+    public ModelAndView productSummary(){
+        List<ProductSummaryReportView> ProductSummaryReportViewList=productSummaryReportViewDao.getAll();
+        ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-sale-by-operator");
+        modelAndView.addObject("ProductSummaryReportView",ProductSummaryReportViewList);
+        return modelAndView;
+    }
+
+
+
+
+
+
 
 
 }
