@@ -121,6 +121,18 @@ public class AdminReportController {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     @RequestMapping(value = "/distributor")
     public ModelAndView distributor(){
         ModelAndView mav =  new ModelAndView("web-admin/report/distributor");
