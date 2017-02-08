@@ -86,19 +86,19 @@ public class Test2Controller {
         return ResponseEntity.status(HttpStatus.OK).body(boxOfficeSchedulingViewDao.getByScheduleId(18 ));
     }
     @RequestMapping(value="/sync")
-    public ResponseEntity<?> sync(){
-        System.out.println("Waiting for service");
-        synchronized (this){
-            System.out.println("Got Lock for service");
+    public synchronized ResponseEntity<?> sync(){
+        System.out.println("Waiting for service "+Thread.currentThread().getName());
+
+            System.out.println("Got Lock for service"+Thread.currentThread().getName());
             try {
-                System.out.println("Sleeping........");
+                System.out.println("Sleeping........ "+Thread.currentThread().getName());
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println("About to get out........");
-        }
-        System.out.println("Out now");
+            System.out.println("About to get out........"+Thread.currentThread().getName());
+
+        System.out.println("Out now "+Thread.currentThread().getName());
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

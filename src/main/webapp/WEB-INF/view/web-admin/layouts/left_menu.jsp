@@ -5,28 +5,6 @@
                 <a href="index.html">Dashboard</a>
             </li>
             <li>
-                <a href="#">Admin<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li>
-                        <a href="<c:url value="/admin/user/all" />">All admin</a>
-                    </li>
-                    <li>
-                        <a href="<c:url value="/admin/user/create" />">Create admin</a>
-                    </li>
-
-                </ul>
-            </li>
-
-            <li>
-                <a href="<c:url value="/admin/circuit/index"/>">Circuit</a>
-            </li>
-
-            <li>
-                <a href="<c:url value="/admin/vat-setting/index"/>">Vat Setting</a>
-            </li>
-
-
-            <li>
                 <a href="#">Film Programming<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
@@ -67,6 +45,9 @@
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
+                        <a href="<c:url value="/admin/circuit/index"/>">Circuit</a>
+                    </li>
+                    <li>
                         <a href="#">Seat Type<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level collapse">
                             <li>
@@ -76,6 +57,18 @@
                                 <a href="<c:url value="/admin/seat-type/create" />">Create Seat Type</a>
                             </li>
 
+                        </ul>
+                        <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="#">Seat Price Shift<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level collapse">
+                            <li>
+                                <a href="<c:url value="/admin/seat-price-shift/all" />">All</a>
+                            </li>
+                            <li>
+                                <a href="<c:url value="/admin/seat-price-shift/create" />">Create</a>
+                            </li>
                         </ul>
                         <!-- /.nav-second-level -->
                     </li>
@@ -179,26 +172,38 @@
                     </li>
                  </ul>
             </li>
-
-
-
-
-
-
-             <li>
-                <a href="#">Seat Price Shift<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
+            <li>
+                <a href="#">System<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
                     <li>
-                        <a href="<c:url value="/admin/seat-price-shift/all" />">All</a>
+                        <a href="<c:url value="/admin/vat-setting/index"/>">Vat Setting</a>
                     </li>
                     <li>
-                        <a href="<c:url value="/admin/seat-price-shift/create" />">Create</a>
+                        <a href="#">Admin<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level collapse">
+                            <li>
+                                <a href="<c:url value="/admin/user/all" />">All admin</a>
+                            </li>
+                            <li>
+                                <a href="<c:url value="/admin/user/create" />">Create admin</a>
+                            </li>
+
+                        </ul>
                     </li>
                 </ul>
-                <!-- /.nav-second-level -->
             </li>
+            <li>
+                <a href="#">Promotion<span class="fa arrow"></span></a>
 
+            </li>
+            <li>
+                <a href="#">Finance<span class="fa arrow"></span></a>
 
+            </li>
+            <li>
+                <a href="#">Reports<span class="fa arrow"></span></a>
+
+            </li>
         </ul>
 
     </div>
