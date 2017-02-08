@@ -206,9 +206,11 @@ public class AdminReportController {
 
     @RequestMapping(value = "/product-summary")
     public ModelAndView productSummary(){
-        List<ProductSummaryReportView> ProductSummaryReportViewList=productSummaryReportViewDao.getAll();
-        ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-sale-by-operator");
-        modelAndView.addObject("ProductSummaryReportView",ProductSummaryReportViewList);
+        List<ProductSummaryReportView> productSummaryReportViewList=productSummaryReportViewDao.getAll();
+
+        System.out.print(productSummaryReportViewList);
+        ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-summary");
+        modelAndView.addObject("ProductSummaryReportView",productSummaryReportViewList);
         return modelAndView;
     }
 
