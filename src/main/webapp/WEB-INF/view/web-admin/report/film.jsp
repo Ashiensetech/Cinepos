@@ -94,13 +94,13 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th>Performance</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Attendance</th>
+                                    <th>Film</th>
+                                    <th>Rating</th>
+                                    <th>No of shows</th>
+                                    <th>Admissions</th>
                                     <th>Gross</th>
-                                    <th>Net</th>
-                                    <th>Vat</th>
+                                    <th>% in sale</th>
+                                    <th>% of shows</th>
                                 </tr>
                                 </thead>
                             </table>

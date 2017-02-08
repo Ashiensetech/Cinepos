@@ -74,7 +74,7 @@
                     <div class="panel panel-info">
                         <div class="panel-heading">
                             <h4 class="title">
-                                <span>Circuit name</span>
+                                <span>Complementay report</span>
                             </h4>
                         </div>
                         <div class="panel-body">
@@ -94,13 +94,12 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
+                                    <th>Product</th>
                                     <th>Performance</th>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Attendance</th>
-                                    <th>Gross</th>
-                                    <th>Net</th>
-                                    <th>Vat</th>
+                                    <th>Qty</th>
+                                    <th>Terminal</th>
+                                    <th>Operator</th>
+                                    <th>Reason</th>
                                 </tr>
                                 </thead>
                             </table>

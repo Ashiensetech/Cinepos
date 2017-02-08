@@ -94,13 +94,11 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th>Performance</th>
-                                    <th>Date</th>
                                     <th>Time</th>
-                                    <th>Attendance</th>
-                                    <th>Gross</th>
-                                    <th>Net</th>
-                                    <th>Vat</th>
+                                    <th>Performance</th>
+                                    <th>Screen</th>
+                                    <th>Duration</th>
+                                    <th>Rating</th>
                                 </tr>
                                 </thead>
                             </table>

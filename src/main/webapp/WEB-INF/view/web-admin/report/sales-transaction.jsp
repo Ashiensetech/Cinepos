@@ -94,13 +94,14 @@
                             <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
                                 <thead>
                                 <tr>
-                                    <th>Performance</th>
-                                    <th>Date</th>
+                                    <th>Transaction code</th>
                                     <th>Time</th>
-                                    <th>Attendance</th>
-                                    <th>Gross</th>
-                                    <th>Net</th>
-                                    <th>Vat</th>
+                                    <th>Operator</th>
+                                    <th>Terminal</th>
+                                    <th>Trans type</th>
+                                    <th>Qty</th>
+                                    <th>Tender type</th>
+                                    <th>Total</th>
                                 </tr>
                                 </thead>
                             </table>

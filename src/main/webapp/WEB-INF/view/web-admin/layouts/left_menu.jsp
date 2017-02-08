@@ -203,9 +203,85 @@
             <li>
                 <a href="#">Reports<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <li>
                         <a href="<c:url value="/admin/report/performance"/>">Performance</a>
                     </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/distributor"/>">Distributor</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/film"/>">Film</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/film"/>">Screen</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/complementary"/>">Complementary</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/hourly"/>">hourly</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/general-rating"/>">General / Rating</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/performance-listing"/>">Performance listing</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/ticket-type"/>">Ticket  type</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/sales-transaction"/>">Sales transaction</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/transaction-summary"/>">Transaction summary</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/ticket-sale-by-operator"/>">Ticket sale by operator</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/ticket-sale-by-operator"/>">Ticket sale by operator</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/advance-sale"/>">Advance sale</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/combo-sale"/>">Combo sale</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/product-sale"/>">Product sale</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/retails-per-hand"/>">Retails per hand</a>
+                    </li>
+
                 </ul>
             </li>
         </ul>
