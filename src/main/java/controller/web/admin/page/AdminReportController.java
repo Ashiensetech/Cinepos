@@ -49,6 +49,26 @@ public class AdminReportController {
         ModelAndView mav =  new ModelAndView("web-admin/report/performance");
         return mav;
     }
+    @RequestMapping(value = "/concession-sale-by-operator")
+    public ModelAndView concessionSaleByOperator(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/concession-sale-by-operator");
+        return mav;
+    }
+    @RequestMapping(value = "/top-grossing-film")
+    public ModelAndView topGrossingFilm(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/top-grossing-film");
+        return mav;
+    }
+    @RequestMapping(value = "/sale-by-terminal")
+    public ModelAndView saleByTerminal(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/sale-by-terminal");
+        return mav;
+    }
+    @RequestMapping(value = "/risk")
+    public ModelAndView risk(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/risk");
+        return mav;
+    }
 
 
 

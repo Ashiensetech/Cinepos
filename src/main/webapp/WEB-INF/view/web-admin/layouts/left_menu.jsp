@@ -281,6 +281,20 @@
                     <li>
                         <a href="<c:url value="/admin/report/retails-per-hand"/>">Retails per hand</a>
                     </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/concession-sale-by-operator"/>">Concession sale by operator</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/top-grossing-film"/>">Top grossing film</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/sale-by-terminal"/>">Sale by terminal</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/risk"/>">Risk</a>
+                    </li>
+
+
 
                 </ul>
             </li>
