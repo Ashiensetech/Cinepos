@@ -45,34 +45,6 @@ public class AdminReportController {
         return mav;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @RequestMapping(value = "/distributor")
     public ModelAndView distributor(){
         ModelAndView mav =  new ModelAndView("web-admin/report/distributor");
@@ -148,12 +120,10 @@ public class AdminReportController {
         ModelAndView mav =  new ModelAndView("web-admin/report/retails-per-hand");
         return mav;
     }
-
-
-    @RequestMapping(value = "/product-sells-by-operator")
+    @RequestMapping(value = "/product-sale-by-operator")
     public ModelAndView productSellsByOperator(){
         List<ConcessionSalesByOperatorView> concessionSalesByOperatorList=concessionSalesByOperatorViewDao.getAll();
-        ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-sells-by-operator");
+        ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-sale-by-operator");
         modelAndView.addObject("productSalesByOperatorList",concessionSalesByOperatorList);
         return modelAndView;
     }
