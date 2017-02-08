@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -70,7 +71,41 @@ public class AdminReportController {
         return mav;
     }
 
-
+    @RequestMapping(value = "/transaction-summary-audit")
+    public ModelAndView transactionSummaryAudit(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/transaction-summary-audit");
+        return mav;
+    }
+    @RequestMapping(value = "/promotion")
+    public ModelAndView promotion(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/promotion");
+        return mav;
+    }
+    @RequestMapping(value = "/end-of-the-day")
+    public ModelAndView endOfTheDay(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/end-of-the-day");
+        return mav;
+    }
+    @RequestMapping(value = "/end-of-the-day-operator-break-down")
+    public ModelAndView endOfTheDayOperatorBreakDown(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/end-of-the-day-operator-break-down");
+        return mav;
+    }
+    @RequestMapping(value = "/automatic-reporting")
+    public ModelAndView automaticReporting(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/automatic-reporting");
+        return mav;
+    }
+    @RequestMapping(value = "/tender")
+    public ModelAndView tender(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/tender");
+        return mav;
+    }
+    @RequestMapping(value = "/refund")
+    public ModelAndView refund(){
+        ModelAndView mav =  new ModelAndView("web-admin/report/refund");
+        return mav;
+    }
 
 
 

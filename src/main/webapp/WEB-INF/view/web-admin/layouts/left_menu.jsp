@@ -293,7 +293,27 @@
                     <li>
                         <a href="<c:url value="/admin/report/risk"/>">Risk</a>
                     </li>
-
+                    <li>
+                        <a href="<c:url value="/admin/report/transaction-summary-audit"/>">Transaction summary audit</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/promotion"/>">Promotion</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/end-of-the-day"/>">End of the day</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/end-of-the-day-operator-break-down"/>">End of the day operator break down</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/automatic-reporting"/>">Automatic reporting</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/tender"/>">Tender</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/refund"/>">Refund</a>
+                    </li>
 
 
                 </ul>
