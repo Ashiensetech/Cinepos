@@ -203,32 +203,12 @@
             <li>
                 <a href="#">Reports<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    <li>
+                        <a href="<c:url value="/admin/report/transaction-summary-audit"/>">Transaction summary audit</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/admin/report/product-summary"/>">Product sale summary</a>
+                    </li>
 
                     <li>
                         <a href="<c:url value="/admin/report/performance"/>">Performance</a>
@@ -293,9 +273,7 @@
                     <li>
                         <a href="<c:url value="/admin/report/risk"/>">Risk</a>
                     </li>
-                    <li>
-                        <a href="<c:url value="/admin/report/transaction-summary-audit"/>">Transaction summary audit</a>
-                    </li>
+
                     <li>
                         <a href="<c:url value="/admin/report/promotion"/>">Promotion</a>
                     </li>

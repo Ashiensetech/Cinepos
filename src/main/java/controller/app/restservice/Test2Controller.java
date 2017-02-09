@@ -7,12 +7,14 @@ import com.itextpdf.text.pdf.PdfWriter;
 import dao.CategoryDao;
 
 import dao.viewDao.BoxOfficeSchedulingViewDao;
+import entity.AuthCredential;
 import entity.entityView.BoxOfficeSchedulingView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +24,7 @@ import java.io.IOException;
  * Created by mi on 12/21/16.
  */
 @RestController
-@RequestMapping("/api/test")
+@RequestMapping("/api")
 public class Test2Controller {
     @Autowired
     CategoryDao categoryDao;
@@ -31,7 +33,8 @@ public class Test2Controller {
     BoxOfficeSchedulingViewDao boxOfficeSchedulingViewDao;
 
     @RequestMapping(value="/pdf/download")
-    public void generateSamplePdf(HttpServletResponse response){
+    public void generateSamplePdf(Authentication authintication,HttpServletResponse response){
+        System.out.println((AuthCredential) authintication.getPrincipal());
         String fileName = "report.pdf";
         Document document = new Document();
         // response.setContentType("application/force-download");
@@ -85,8 +88,9 @@ public class Test2Controller {
     public ResponseEntity<?> scheduleView(){
         return ResponseEntity.status(HttpStatus.OK).body(boxOfficeSchedulingViewDao.getByScheduleId(18 ));
     }
-    @RequestMapping(value="/sync")
-    public synchronized ResponseEntity<?> sync(){
+    @RequestMapping(value="/app/auth/sync")
+    public synchronized ResponseEntity<?> sync(Authentication authintication){
+        System.out.println((AuthCredential) authintication.getPrincipal());
         System.out.println("Waiting for service "+Thread.currentThread().getName());
 
             System.out.println("Got Lock for service"+Thread.currentThread().getName());

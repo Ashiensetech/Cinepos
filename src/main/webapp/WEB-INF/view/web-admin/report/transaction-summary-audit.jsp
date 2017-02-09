@@ -103,6 +103,30 @@
                                     <th>Total</th>
                                 </tr>
                                 </thead>
+                                <tbody>
+
+    `
+                                <d:forEach var="sell" items="${sells}" >
+                                    <tr>
+                                        <td>${sell.id}</td>
+                                        <td>${sell.createdAt}</td>
+                                        <td>${sell.createdBy}</td>
+                                        <td>${sell.terminalId}</td>
+                                        <td>
+                                            <ul>
+                                                <d:forEach var="sellDetails" items="${sell.sellDetails}" >
+                                                    <li>${sellDetails.concessionProduct.name} - Q X ${sellDetails.quantity}</li>
+                                                </d:forEach>
+                                            </ul>
+
+                                        </td>
+                                        <td>${sell.quantity}</td>
+                                        <td>${sell.sellingAmount}</td>
+                                    </tr>
+
+                                </d:forEach>
+
+                                </tbody>
                             </table>
                         </div>
                     </div>

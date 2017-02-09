@@ -54,14 +54,14 @@
 </http>
 
 <!-- Protected resources -->
-<http pattern="/api/auth/**"
+<http pattern="/api/app/auth/**"
       create-session="never"
       entry-point-ref="oauthAuthenticationEntryPoint"
       access-decision-manager-ref="accessDecisionManager"
       xmlns="http://www.springframework.org/schema/security">
     <anonymous enabled="false"/>
     <intercept-url pattern="/api/app/auth/**"
-                   access="ROLE_USER"/>
+                   access="ROLE_POS_USER"/>
     <custom-filter ref="resourceServerFilter"
                    before="PRE_AUTH_FILTER"/>
     <access-denied-handler
@@ -155,8 +155,8 @@
                   authorities="ROLE_CLIENT, ROLE_TRUSTED_CLIENT"
                   redirect-uri="/web"
                   scope="read,write,trust"
-                  access-token-validity="30"
-                  refresh-token-validity="600"/>
+                  access-token-validity="32400"
+                  refresh-token-validity="64800"/>
 
 </oauth:client-details-service>
 

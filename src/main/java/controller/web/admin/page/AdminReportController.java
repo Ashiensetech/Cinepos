@@ -1,10 +1,7 @@
 package controller.web.admin.page;
 
 import controller.web.admin.AdminUriPreFix;
-import dao.DistributorDao;
-import dao.FilmDao;
-import dao.GenreDao;
-import dao.ScreenDimensionDao;
+import dao.*;
 import dao.reportDao.ConcessionSalesByOperatorViewDao;
 import dao.reportDao.ProductSummaryReportViewDao;
 import entity.*;
@@ -51,6 +48,8 @@ public class AdminReportController {
     @Autowired
     ProductSummaryReportViewDao productSummaryReportViewDao;
 
+    @Autowired
+    SellsDao sellsDao;
 
     @RequestMapping(value = "/performance")
     public ModelAndView performance(){
@@ -79,8 +78,51 @@ public class AdminReportController {
     }
 
     @RequestMapping(value = "/transaction-summary-audit")
-    public ModelAndView transactionSummaryAudit(){
+    public ModelAndView transactionSummaryAudit(Authentication authentication,
+                                                @RequestParam(value = "startDate",required = false) String startDate,
+                                                @RequestParam(value = "endDate",required = false) String endDate){
+        List<Sells>  sells = new ArrayList<>();
+        AuthCredential authCredential =  (AuthCredential)authentication.getPrincipal();
+
+        Timestamp sDate = null;
+        Timestamp eDate = null;
+        if(startDate!=null && !startDate.trim().equals("")){
+            try {
+                sDate = DateHelper.getStringToTimeStamp(startDate + " 00:00:00", "yyyy-MM-dd H:m:s");
+                System.out.println(sDate);
+            } catch (ParseException e) {
+
+            }
+        }
+        if(endDate!=null && !endDate.trim().equals("")){
+            try {
+                eDate = DateHelper.getStringToTimeStamp(endDate + " 23:59:59", "yyyy-MM-dd H:m:s");
+                System.out.println(eDate);
+            } catch (ParseException e) {
+
+            }
+        }
+
+        if(sDate!=null && eDate!=null){
+            sells = sellsDao.getByDateRange(sDate,eDate);
+        }else if(sDate!=null) {
+            try {
+                Timestamp tmpSData = DateHelper.getStringToTimeStamp(startDate+ " 00:00:00", "yyyy-MM-dd H:m:s");
+                Timestamp tmpEData = DateHelper.getStringToTimeStamp(startDate + " 23:59:59", "yyyy-MM-dd H:m:s");
+                System.out.println(tmpSData);
+                System.out.println(tmpEData);
+                sells = sellsDao.getByDateRange(tmpSData, tmpEData);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+        }else{
+            sells = sellsDao.getAll();
+        }
+
+
         ModelAndView mav =  new ModelAndView("web-admin/report/transaction-summary-audit");
+        mav.addObject("sells",sells);
         return mav;
     }
     @RequestMapping(value = "/promotion")
