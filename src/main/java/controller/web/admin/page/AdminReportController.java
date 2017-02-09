@@ -260,8 +260,9 @@ public class AdminReportController {
                                        @RequestParam(value = "endDate",required = false) String endDate
                                        ){
 
-        System.out.print(startDate);
         List<ProductSummaryReportView> productSummaryReportViewList=productSummaryReportViewDao.getAll();
+
+        System.out.println(productSummaryReportViewList);
 
         System.out.print(productSummaryReportViewList);
         ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-summary");
