@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -77,6 +79,17 @@ public class AdminReportPdfController {
         }
 
 
+        Calendar calendar = new GregorianCalendar();
+
+        int year       = calendar.get(Calendar.YEAR);
+        int month      = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        String printingDate=year+"-"+month+"-"+dayOfMonth;
+        int printedTime  = calendar.get(Calendar.HOUR_OF_DAY);
+
+
+
         int counter = 1;
         try {
             PdfWriter.getInstance(document, response.getOutputStream());
@@ -89,9 +102,9 @@ public class AdminReportPdfController {
 
             document.add(p);
 
-            document.add(new Paragraph("Printed By: "));
-            document.add(new Paragraph("Date Printed: "));
-            document.add(new Paragraph("Time Printed: "));
+            document.add(new Paragraph("Printed By: "+authCredential.getUserName()));
+            document.add(new Paragraph("Date Printed: "+printingDate));
+            document.add(new Paragraph("Time Printed: "+printedTime));
             document.add(new Paragraph("Start Date: "+sDate));
             document.add(new Paragraph("End Date: "+eDate));
 

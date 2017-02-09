@@ -295,9 +295,9 @@ public class AdminReportController {
         if(sDate!=null && eDate!=null){
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
         }else if(sDate!=null) {
-            //fDate=sDate;
-           // sDate=null;
-            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, sDate);
+            fDate=sDate;
+            sDate=null;
+            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(fDate, fDate);
         }else{
             productSummaryReportViewList = productSummaryReportViewDao.getAll();
         }
