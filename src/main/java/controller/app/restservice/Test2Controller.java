@@ -22,7 +22,7 @@ import java.io.IOException;
  * Created by mi on 12/21/16.
  */
 @RestController
-@RequestMapping("/api/test/")
+@RequestMapping("/api/test")
 public class Test2Controller {
     @Autowired
     CategoryDao categoryDao;
