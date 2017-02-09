@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
 import java.util.List;
 
 /**
@@ -25,6 +24,8 @@ import java.util.List;
 public class AdminReportPdfController {
     @Autowired
     ProductSummaryReportViewDao productSummaryReportViewDao;
+
+
 
     @RequestMapping(value="/product-sale-summary/download")
     public void productSaleSummaryPdf(Authentication authentication,
@@ -50,11 +51,19 @@ public class AdminReportPdfController {
 
             document.add(p);
 
+            document.add(new Paragraph("Printed By: "));
+            document.add(new Paragraph("Date Printed: "));
+            document.add(new Paragraph("Time Printed: "));
+            document.add(new Paragraph("Start Date: "));
+            document.add(new Paragraph("End Date: "));
+
+            document.add(Chunk.NEWLINE);
             PdfPTable table = new PdfPTable(4);
            // table.setWidthPercentage(50);
             //table.setHorizontalAlignment(Element.ALIGN_LEFT);
             //table.setWidths(new int[]{1, 1});
             //table.getDefaultCell().setBorder(Rectangle.NO_BORDER);
+
             table.addCell("Product" );
             table.addCell("Unit Price");
             table.addCell("Unit");
