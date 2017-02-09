@@ -110,7 +110,7 @@
                                         <d:forEach var="ProductSummaryReportViewValue" items="${ProductSummaryReportView}">
                                             <d:set var="count" value="${count+1}" />
                                             <tr class="odd gradeC">
-                                                <td>${ProductSummaryReportViewValue.product}</td>
+                                                <td>${ProductSummaryReportViewValue.productName}</td>
                                                 <td>${ProductSummaryReportViewValue.salePrice}</td>
                                                 <td>${ProductSummaryReportViewValue.saleUnit}</td>
                                                 <td>${ProductSummaryReportViewValue.saleValue}</td>

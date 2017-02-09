@@ -32,7 +32,7 @@ public class ProductSummaryReportViewDao extends BaseDao {
 
         try{
             return session.createQuery("FROM ProductSummaryReportView " +
-                    " where CreateDate between :startDate and :endDate ")
+                    " where createAt between :startDate and :endDate ")
                     .setParameter("startDate", startDate)
                     .setParameter("endDate", endDate)
                     .list();
