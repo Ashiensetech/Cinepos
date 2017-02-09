@@ -7,20 +7,19 @@ import dao.GenreDao;
 import dao.ScreenDimensionDao;
 import dao.reportDao.ConcessionSalesByOperatorViewDao;
 import dao.reportDao.ProductSummaryReportViewDao;
-import entity.Distributor;
-import entity.Film;
-import entity.Genre;
-import entity.ScreenDimension;
+import entity.*;
 import entity.entityView.report.ConcessionSalesByOperatorView;
 import entity.entityView.report.ProductSummaryReportView;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import sun.net.www.protocol.http.AuthenticationInfo;
 
 import javax.lang.model.element.NestingKind;
 import java.sql.Date;
@@ -259,10 +258,12 @@ public class AdminReportController {
     }
 
     @RequestMapping(value = "/product-summary",method = RequestMethod.GET)
-    public ModelAndView productSummary(@RequestParam(value = "startDate",required = false) String startDate,
+    public ModelAndView productSummary(
+                                        Authentication authentication,
+                                        @RequestParam(value = "startDate",required = false) String startDate,
                                        @RequestParam(value = "endDate",required = false) String endDate
                                        ){
-
+        AuthCredential authCredential =  (AuthCredential)authentication.getPrincipal();
         System.out.print(startDate);
         Date sDate = null;
         Date eDate = null;
@@ -293,6 +294,8 @@ public class AdminReportController {
         }else{
             productSummaryReportViewList = productSummaryReportViewDao.getAll();
         }
+
+        System.out.println(productSummaryReportViewList);
 
         System.out.print(productSummaryReportViewList);
         ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-summary");

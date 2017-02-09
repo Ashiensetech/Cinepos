@@ -9,82 +9,72 @@ import java.sql.Date;
 public class ProductSummaryReportView {
 
     @javax.persistence.Id
-    @Column(name = "ProductId")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
-    @Column(name = "Product")
-    private String Product;
+    @Column(name = "product_name")
+    private String productName;
 
-    @Column(name = "Price")
-    private float price;
+    @Column(name = "selling_price")
+    private float salePrice;
 
-    @Column(name = "StockUnit")
-    private int StockUnit;
+    @Column(name = "qty")
+    private int saleUnit;
 
-    @Column(name = "StockValue")
-    private String StockValue;
+    @Column(name = "total")
+    private String saleValue;
 
-    @Column(name = "CreatedBy")
-    private Integer CreateBy;
 
-    @Column(name = "CreateDate")
-    private Date CreateDate;
+    @Column(name = "created_at")
+    private Date createDate;
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
-    public String getProduct() {
-        return Product;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct(String product) {
-        Product = product;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public float getPrice() {
-        return price;
+    public float getSalePrice() {
+        return salePrice;
     }
 
-    public void setPrice(float price) {
-        this.price = price;
+    public void setSalePrice(float salePrice) {
+        this.salePrice = salePrice;
     }
 
-    public int getStockUnit() {
-        return StockUnit;
+    public int getSaleUnit() {
+        return saleUnit;
     }
 
-    public void setStockUnit(int stockUnit) {
-        StockUnit = stockUnit;
+    public void setSaleUnit(int saleUnit) {
+        this.saleUnit = saleUnit;
     }
 
-    public String getStockValue() {
-        return StockValue;
+    public String getSaleValue() {
+        return saleValue;
     }
 
-    public void setStockValue(String stockValue) {
-        StockValue = stockValue;
-    }
-
-    public Integer getCreateBy() {
-        return CreateBy;
-    }
-
-    public void setCreateBy(Integer createBy) {
-        CreateBy = createBy;
+    public void setSaleValue(String saleValue) {
+        this.saleValue = saleValue;
     }
 
     public Date getCreateDate() {
-        return CreateDate;
+        return createDate;
     }
 
     public void setCreateDate(Date createDate) {
-        CreateDate = createDate;
+        this.createDate = createDate;
     }
 
     @Override
@@ -94,38 +84,35 @@ public class ProductSummaryReportView {
 
         ProductSummaryReportView that = (ProductSummaryReportView) o;
 
-        if (Id != that.Id) return false;
-        if (Float.compare(that.price, price) != 0) return false;
-        if (StockUnit != that.StockUnit) return false;
-        if (Product != null ? !Product.equals(that.Product) : that.Product != null) return false;
-        if (StockValue != null ? !StockValue.equals(that.StockValue) : that.StockValue != null) return false;
-        if (CreateBy != null ? !CreateBy.equals(that.CreateBy) : that.CreateBy != null) return false;
-        return !(CreateDate != null ? !CreateDate.equals(that.CreateDate) : that.CreateDate != null);
+        if (id != that.id) return false;
+        if (Float.compare(that.salePrice, salePrice) != 0) return false;
+        if (saleUnit != that.saleUnit) return false;
+        if (productName != null ? !productName.equals(that.productName) : that.productName != null) return false;
+        if (saleValue != null ? !saleValue.equals(that.saleValue) : that.saleValue != null) return false;
+        return !(createDate != null ? !createDate.equals(that.createDate) : that.createDate != null);
 
     }
 
     @Override
     public int hashCode() {
-        int result = Id;
-        result = 31 * result + (Product != null ? Product.hashCode() : 0);
-        result = 31 * result + (price != +0.0f ? Float.floatToIntBits(price) : 0);
-        result = 31 * result + StockUnit;
-        result = 31 * result + (StockValue != null ? StockValue.hashCode() : 0);
-        result = 31 * result + (CreateBy != null ? CreateBy.hashCode() : 0);
-        result = 31 * result + (CreateDate != null ? CreateDate.hashCode() : 0);
+        int result = id;
+        result = 31 * result + (productName != null ? productName.hashCode() : 0);
+        result = 31 * result + (salePrice != +0.0f ? Float.floatToIntBits(salePrice) : 0);
+        result = 31 * result + saleUnit;
+        result = 31 * result + (saleValue != null ? saleValue.hashCode() : 0);
+        result = 31 * result + (createDate != null ? createDate.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "ProductSummaryReportView{" +
-                "Id=" + Id +
-                ", Product='" + Product + '\'' +
-                ", price=" + price +
-                ", StockUnit=" + StockUnit +
-                ", StockValue='" + StockValue + '\'' +
-                ", CreateBy=" + CreateBy +
-                ", CreateDate=" + CreateDate +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", salePrice=" + salePrice +
+                ", saleUnit=" + saleUnit +
+                ", saleValue='" + saleValue + '\'' +
+                ", createDate=" + createDate +
                 '}';
     }
 }

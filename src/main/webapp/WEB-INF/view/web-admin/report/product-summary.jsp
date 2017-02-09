@@ -100,8 +100,8 @@
                                 <tr>
                                     <th>Products</th>
                                     <th>Price</th>
-                                    <th>Stock Unit</th>
-                                    <th>Stock Value</th>
+                                    <th>Sale Unit</th>
+                                    <th>Sale Value</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -111,9 +111,9 @@
                                             <d:set var="count" value="${count+1}" />
                                             <tr class="odd gradeC">
                                                 <td>${ProductSummaryReportViewValue.product}</td>
-                                                <td>${ProductSummaryReportViewValue.price}</td>
-                                                <td>${ProductSummaryReportViewValue.stockUnit}</td>
-                                                <td>${ProductSummaryReportViewValue.stockValue}</td>
+                                                <td>${ProductSummaryReportViewValue.salePrice}</td>
+                                                <td>${ProductSummaryReportViewValue.saleUnit}</td>
+                                                <td>${ProductSummaryReportViewValue.saleValue}</td>
                                             </tr>
                                         </d:forEach>
                                     </d:when>
