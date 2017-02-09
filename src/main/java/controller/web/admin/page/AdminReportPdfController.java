@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -66,7 +67,7 @@ public class AdminReportPdfController {
 
         List<ProductSummaryReportView> productSummaryReportViewList;
 
-        System.out.println(sDate);
+        //System.out.println(sDate);
 
         if(sDate!=null && eDate!=null){
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
@@ -79,14 +80,12 @@ public class AdminReportPdfController {
         }
 
 
-        Calendar calendar = new GregorianCalendar();
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
 
-        int year       = calendar.get(Calendar.YEAR);
-        int month      = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        String printingDate = formatDate.format( new java.util.Date());
+        String printedTime = formatTime.format( new java.util.Date());
 
-        String printingDate=year+"-"+month+"-"+dayOfMonth;
-        int printedTime  = calendar.get(Calendar.HOUR_OF_DAY);
 
 
 
@@ -143,9 +142,6 @@ public class AdminReportPdfController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        System.out.println(productSummaryReportViewList.size());
 
         document.close();
 
