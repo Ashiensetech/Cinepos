@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -44,12 +46,12 @@ public class AdminReportPdfController {
         Document document = new Document();
 
 
-        Date sDate = null;
-        Date eDate = null;
-        Date fDate=null;
+        Timestamp sDate = null;
+        Timestamp eDate = null;
+        Timestamp fDate=null;
         if(startDate!=null && !startDate.trim().equals("")){
             try {
-                sDate = DateHelper.getStringToDate(startDate+" 23:59:59", "yyyy-MM-dd H:m:s");
+                sDate = DateHelper.getStringToTimeStamp(startDate + " 23:59:59", "yyyy-MM-dd H:m:s");
                 System.out.print(sDate);
             } catch (ParseException e) {
 
@@ -57,7 +59,7 @@ public class AdminReportPdfController {
         }
         if(endDate!=null && !endDate.trim().equals("")){
             try {
-                eDate = DateHelper.getStringToDate(endDate+" 23:59:59", "yyyy-MM-dd H:m:s");
+                eDate = DateHelper.getStringToTimeStamp(endDate+" 23:59:59", "yyyy-MM-dd H:m:s");
             } catch (ParseException e) {
 
             }
@@ -66,7 +68,7 @@ public class AdminReportPdfController {
 
         List<ProductSummaryReportView> productSummaryReportViewList;
 
-        System.out.println(sDate);
+        //System.out.println(sDate);
 
         if(sDate!=null && eDate!=null){
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
@@ -79,14 +81,12 @@ public class AdminReportPdfController {
         }
 
 
-        Calendar calendar = new GregorianCalendar();
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
 
-        int year       = calendar.get(Calendar.YEAR);
-        int month      = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        String printingDate = formatDate.format( new java.util.Date());
+        String printedTime = formatTime.format( new java.util.Date());
 
-        String printingDate=year+"-"+month+"-"+dayOfMonth;
-        int printedTime  = calendar.get(Calendar.HOUR_OF_DAY);
 
 
 
@@ -143,9 +143,6 @@ public class AdminReportPdfController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
-        System.out.println(productSummaryReportViewList.size());
 
         document.close();
 

@@ -21,6 +21,7 @@ import sun.net.www.protocol.http.AuthenticationInfo;
 import javax.lang.model.element.NestingKind;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
@@ -316,7 +317,7 @@ public class AdminReportController {
         Timestamp sDate = null;
         Timestamp eDate = null;
 
-        Date fDate=null;
+        Timestamp fDate=null;
         if(startDate!=null && !startDate.trim().equals("")){
             try {
                 sDate = DateHelper.getStringToTimeStamp(startDate + " 00:00:00", "yyyy-MM-dd H:m:s");
@@ -360,21 +361,26 @@ public class AdminReportController {
             productSummaryReportViewList = productSummaryReportViewDao.getAll();
         }
 
-        Calendar calendar = new GregorianCalendar();
 
-        int year       = calendar.get(Calendar.YEAR);
-        int month      = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
 
-        String printingDate=year+"-"+month+"-"+dayOfMonth;
-        int printedTime  = calendar.get(Calendar.HOUR_OF_DAY);
+        String printingDate = formatDate.format( new java.util.Date());
+        String printedTime = formatTime.format(new java.util.Date());
+
+        System.out.print(printedTime);
+
+
+
+
+
 
         ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-summary");
         modelAndView.addObject("ProductSummaryReportView",productSummaryReportViewList);
         modelAndView.addObject("startDate",sDate);
         modelAndView.addObject("endDate",eDate);
         modelAndView.addObject("fDate",fDate);
-        modelAndView.addObject("printed_by",authCredential.getUserName());
+        modelAndView.addObject("printed_by",authCredential.getUserInf());
         modelAndView.addObject("printingDate",printingDate);
         modelAndView.addObject("printedTime",printedTime);
         return modelAndView;
