@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,14 +28,30 @@ public class ProductSummaryReportViewDao extends BaseDao {
         }
         return new ArrayList<>();
     }
-    public List<ProductSummaryReportView> getByDateRange(Date startDate,Date endDate){
+    public List<ProductSummaryReportView> getByDateRange(Timestamp startDate,Timestamp endDate){
         Session session=this.sessionFactory.openSession();
 
         try{
             return session.createQuery("FROM ProductSummaryReportView " +
-                    " where createAt between :startDate and :endDate ")
+                    " where createdAt between :startDate and :endDate ")
                     .setParameter("startDate", startDate)
                     .setParameter("endDate", endDate)
+                    .list();
+
+        }catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<>();
+    }
+    public List<ProductSummaryReportView> getByDate(Date startDate){
+        Session session=this.sessionFactory.openSession();
+
+        try{
+            return session.createQuery("FROM ProductSummaryReportView " +
+                    " where createdAt = :startDate  ")
+                    .setParameter("startDate", startDate)
                     .list();
 
         }catch (HibernateException hEx){

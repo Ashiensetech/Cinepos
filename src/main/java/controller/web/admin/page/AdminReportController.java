@@ -23,7 +23,9 @@ import sun.net.www.protocol.http.AuthenticationInfo;
 
 import javax.lang.model.element.NestingKind;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -264,50 +266,49 @@ public class AdminReportController {
                                        @RequestParam(value = "endDate",required = false) String endDate
                                        ){
         AuthCredential authCredential =  (AuthCredential)authentication.getPrincipal();
-        System.out.print(startDate);
-        Date sDate = null;
-        Date eDate = null;
+
+        Timestamp sDate = null;
+        Timestamp eDate = null;
         if(startDate!=null && !startDate.trim().equals("")){
             try {
-                sDate = DateHelper.getStringToDate(startDate+" 23:59:59", "yyyy-MM-dd H:m:s");
-                System.out.print(sDate);
+                sDate = DateHelper.getStringToTimeStamp(startDate + " 00:00:00", "yyyy-MM-dd H:m:s");
+                System.out.println(sDate);
             } catch (ParseException e) {
 
             }
         }
         if(endDate!=null && !endDate.trim().equals("")){
             try {
-                eDate = DateHelper.getStringToDate(endDate+" 23:59:59", "yyyy-MM-dd H:m:s");
+                eDate = DateHelper.getStringToTimeStamp(endDate + " 23:59:59", "yyyy-MM-dd H:m:s");
+                System.out.println(eDate);
             } catch (ParseException e) {
 
             }
         }
 
 
-        List<ProductSummaryReportView> productSummaryReportViewList;
+        List<ProductSummaryReportView> productSummaryReportViewList = new ArrayList<>();
 
 
         if(sDate!=null && eDate!=null){
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
         }else if(sDate!=null) {
-            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, sDate);
+            try {
+                Timestamp tmpSData = DateHelper.getStringToTimeStamp(startDate+ " 00:00:00", "yyyy-MM-dd H:m:s");
+                Timestamp tmpEData = DateHelper.getStringToTimeStamp(startDate + " 23:59:59", "yyyy-MM-dd H:m:s");
+                System.out.println(tmpSData);
+                System.out.println(tmpEData);
+                productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(tmpSData, tmpEData);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }else{
             productSummaryReportViewList = productSummaryReportViewDao.getAll();
         }
-
         System.out.println(productSummaryReportViewList);
-
-        System.out.print(productSummaryReportViewList);
         ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-summary");
         modelAndView.addObject("ProductSummaryReportView",productSummaryReportViewList);
         return modelAndView;
     }
-
-
-
-
-
-
-
-
 }

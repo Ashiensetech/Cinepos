@@ -1,7 +1,7 @@
 package entity.entityView.report;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 
 @Entity
@@ -27,7 +27,7 @@ public class ProductSummaryReportView {
 
 
     @Column(name = "created_at")
-    private Date createAt;
+    private Timestamp createdAt;
 
     public int getId() {
         return id;
@@ -69,12 +69,12 @@ public class ProductSummaryReportView {
         this.saleValue = saleValue;
     }
 
-    public Date getCreateAt() {
-        return createAt;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     @Override
@@ -89,7 +89,7 @@ public class ProductSummaryReportView {
         if (saleUnit != that.saleUnit) return false;
         if (productName != null ? !productName.equals(that.productName) : that.productName != null) return false;
         if (saleValue != null ? !saleValue.equals(that.saleValue) : that.saleValue != null) return false;
-        return !(createAt != null ? !createAt.equals(that.createAt) : that.createAt != null);
+        return !(createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null);
 
     }
 
@@ -100,7 +100,7 @@ public class ProductSummaryReportView {
         result = 31 * result + (salePrice != +0.0f ? Float.floatToIntBits(salePrice) : 0);
         result = 31 * result + saleUnit;
         result = 31 * result + (saleValue != null ? saleValue.hashCode() : 0);
-        result = 31 * result + (createAt != null ? createAt.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }
 
@@ -112,7 +112,7 @@ public class ProductSummaryReportView {
                 ", salePrice=" + salePrice +
                 ", saleUnit=" + saleUnit +
                 ", saleValue='" + saleValue + '\'' +
-                ", createAt=" + createAt +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }

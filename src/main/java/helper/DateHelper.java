@@ -41,7 +41,7 @@ public class DateHelper {
 
         return dateFormat.format(new Date());
     }
-    public static Timestamp getUtcTimeStamp(){
+    public static Timestamp getUtcTimeStamp() throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
@@ -61,16 +61,10 @@ public class DateHelper {
         }
     }
 
-    public static Timestamp getStringToTimeStamp(String strDate,String format){
+    public static Timestamp getStringToTimeStamp(String strDate,String format)throws ParseException{
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        try {
-            Date date = dateFormat.parse(strDate);
-            return new Timestamp(date.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
-
+        Date date = dateFormat.parse(strDate);
+        return new Timestamp(date.getTime());
     }
     public static java.sql.Date getStringToDate(String strDate,String format)throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);

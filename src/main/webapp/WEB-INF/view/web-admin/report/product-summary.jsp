@@ -43,8 +43,8 @@
                 <div class="col-md-6" style="margin-top: 25px;">
                     <button type="" class="btn btn-primary" >Print</button>
                     <button type="" class="btn btn-primary" >Export</button>
-                    <button type="" class="btn btn-primary" >Email</button>
-                    <button type="" class="btn btn-success" >Save</button>
+                   <%-- <button type="" class="btn btn-primary" >Email</button>
+                    <button type="" class="btn btn-success" >Save</button>--%>
                 </div>
             </div>
             <div class="row clearfix">
@@ -102,6 +102,7 @@
                                     <th>Price</th>
                                     <th>Sale Unit</th>
                                     <th>Sale Value</th>
+                                    <th>Date</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -114,6 +115,7 @@
                                                 <td>${ProductSummaryReportViewValue.salePrice}</td>
                                                 <td>${ProductSummaryReportViewValue.saleUnit}</td>
                                                 <td>${ProductSummaryReportViewValue.saleValue}</td>
+                                                <td>${ProductSummaryReportViewValue.createdAt}</td>
                                             </tr>
                                         </d:forEach>
                                     </d:when>
