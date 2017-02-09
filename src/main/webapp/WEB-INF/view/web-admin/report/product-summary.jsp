@@ -38,7 +38,7 @@
                                     <input type='text' class="form-control" id="fixed_date"  placeholder="YYYY-MM-DD" type="text" />
                         </div>
                     </div>
-                    <button class="btn-primary btn">Search</button>
+                    <button class="btn-primary btn" id="btnfixed">Search</button>
                 </div>
                 <div class="col-md-6" style="margin-top: 25px;">
                     <button type="" class="btn btn-primary" >Print</button>
@@ -69,7 +69,7 @@
                     </div>
                 </div>
 
-                <button class="btn-primary btn">Search</button>
+                <button class="btn-primary btn" id="searching">Search</button>
 
             </div>
             <div class="row">
@@ -149,8 +149,17 @@
             container: container,
             todayHighlight: true,
             autoclose: true,
-        })
+        });
     });
+
+
+        $("#btnfixed").click(function () {
+            var fixed_date=$("#fixed_date").val();
+            window.location = BASEURL + "/report/product-summary?startDate="+fixed_date;
+        });
+
+
+
 </script>
 
 <!-- Include Date Range Picker -->
@@ -165,8 +174,11 @@
             container: container,
             todayHighlight: true,
             autoclose: true,
-        })
-    })
+        });
+
+
+
+    }) ;
 </script>
 
 <!-- Date picker -->
