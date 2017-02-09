@@ -23,6 +23,9 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -309,8 +312,11 @@ public class AdminReportController {
                                        ){
         AuthCredential authCredential =  (AuthCredential)authentication.getPrincipal();
 
+
         Timestamp sDate = null;
         Timestamp eDate = null;
+
+        Date fDate=null;
         if(startDate!=null && !startDate.trim().equals("")){
             try {
                 sDate = DateHelper.getStringToTimeStamp(startDate + " 00:00:00", "yyyy-MM-dd H:m:s");
@@ -331,10 +337,15 @@ public class AdminReportController {
 
         List<ProductSummaryReportView> productSummaryReportViewList = new ArrayList<>();
 
+        System.out.println(sDate);
 
         if(sDate!=null && eDate!=null){
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
         }else if(sDate!=null) {
+            System.out.println(productSummaryReportViewList);
+            fDate=sDate;
+            sDate=null;
+            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(fDate, fDate);
             try {
                 Timestamp tmpSData = DateHelper.getStringToTimeStamp(startDate+ " 00:00:00", "yyyy-MM-dd H:m:s");
                 Timestamp tmpEData = DateHelper.getStringToTimeStamp(startDate + " 23:59:59", "yyyy-MM-dd H:m:s");
@@ -348,9 +359,24 @@ public class AdminReportController {
         }else{
             productSummaryReportViewList = productSummaryReportViewDao.getAll();
         }
-        System.out.println(productSummaryReportViewList);
+
+        Calendar calendar = new GregorianCalendar();
+
+        int year       = calendar.get(Calendar.YEAR);
+        int month      = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        String printingDate=year+"-"+month+"-"+dayOfMonth;
+        int printedTime  = calendar.get(Calendar.HOUR_OF_DAY);
+
         ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-summary");
         modelAndView.addObject("ProductSummaryReportView",productSummaryReportViewList);
+        modelAndView.addObject("startDate",sDate);
+        modelAndView.addObject("endDate",eDate);
+        modelAndView.addObject("fDate",fDate);
+        modelAndView.addObject("printed_by",authCredential.getUserName());
+        modelAndView.addObject("printingDate",printingDate);
+        modelAndView.addObject("printedTime",printedTime);
         return modelAndView;
     }
 }
