@@ -24,6 +24,9 @@ import sun.net.www.protocol.http.AuthenticationInfo;
 import javax.lang.model.element.NestingKind;
 import java.sql.Date;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -264,9 +267,10 @@ public class AdminReportController {
                                        @RequestParam(value = "endDate",required = false) String endDate
                                        ){
         AuthCredential authCredential =  (AuthCredential)authentication.getPrincipal();
-        System.out.print(startDate);
+
         Date sDate = null;
         Date eDate = null;
+        Date fDate=null;
         if(startDate!=null && !startDate.trim().equals("")){
             try {
                 sDate = DateHelper.getStringToDate(startDate+" 23:59:59", "yyyy-MM-dd H:m:s");
@@ -286,20 +290,36 @@ public class AdminReportController {
 
         List<ProductSummaryReportView> productSummaryReportViewList;
 
+        System.out.println(sDate);
 
         if(sDate!=null && eDate!=null){
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
         }else if(sDate!=null) {
+            //fDate=sDate;
+           // sDate=null;
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, sDate);
         }else{
             productSummaryReportViewList = productSummaryReportViewDao.getAll();
         }
 
-        System.out.println(productSummaryReportViewList);
+        Calendar calendar = new GregorianCalendar();
 
-        System.out.print(productSummaryReportViewList);
+        int year       = calendar.get(Calendar.YEAR);
+        int month      = calendar.get(Calendar.MONTH);
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+        String printingDate=year+"-"+month+"-"+dayOfMonth;
+        int printedTime  = calendar.get(Calendar.HOUR_OF_DAY);
+
+
         ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-summary");
         modelAndView.addObject("ProductSummaryReportView",productSummaryReportViewList);
+        modelAndView.addObject("startDate",sDate);
+        modelAndView.addObject("endDate",eDate);
+        modelAndView.addObject("fDate",fDate);
+        modelAndView.addObject("printed_by",authCredential.getUserName());
+        modelAndView.addObject("printingDate",printingDate);
+        modelAndView.addObject("printedTime",printedTime);
         return modelAndView;
     }
 

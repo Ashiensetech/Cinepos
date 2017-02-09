@@ -7,13 +7,17 @@ import controller.web.admin.AdminUriPreFix;
 import dao.reportDao.ProductSummaryReportViewDao;
 import entity.AuthCredential;
 import entity.entityView.report.ProductSummaryReportView;
+import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -29,15 +33,49 @@ public class AdminReportPdfController {
 
     @RequestMapping(value="/product-sale-summary/download")
     public void productSaleSummaryPdf(Authentication authentication,
-                                      HttpServletResponse response){
+                                      HttpServletResponse response,
+                                      @RequestParam(value = "startDate",required = false) String startDate,
+                                      @RequestParam(value = "endDate",required = false) String endDate){
 
         AuthCredential authCredential =  (AuthCredential)authentication.getPrincipal();
         String fileName = "product_sales_summary.pdf";
         Document document = new Document();
 
-        List<ProductSummaryReportView> productSummaryReportViewList=productSummaryReportViewDao.getAll();
 
-        System.out.println(productSummaryReportViewList);
+        Date sDate = null;
+        Date eDate = null;
+        Date fDate=null;
+        if(startDate!=null && !startDate.trim().equals("")){
+            try {
+                sDate = DateHelper.getStringToDate(startDate+" 23:59:59", "yyyy-MM-dd H:m:s");
+                System.out.print(sDate);
+            } catch (ParseException e) {
+
+            }
+        }
+        if(endDate!=null && !endDate.trim().equals("")){
+            try {
+                eDate = DateHelper.getStringToDate(endDate+" 23:59:59", "yyyy-MM-dd H:m:s");
+            } catch (ParseException e) {
+
+            }
+        }
+
+
+        List<ProductSummaryReportView> productSummaryReportViewList;
+
+        System.out.println(sDate);
+
+        if(sDate!=null && eDate!=null){
+            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
+        }else if(sDate!=null) {
+            //fDate=sDate;
+            // sDate=null;
+            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, sDate);
+        }else{
+            productSummaryReportViewList = productSummaryReportViewDao.getAll();
+        }
+
 
         int counter = 1;
         try {
@@ -54,8 +92,8 @@ public class AdminReportPdfController {
             document.add(new Paragraph("Printed By: "));
             document.add(new Paragraph("Date Printed: "));
             document.add(new Paragraph("Time Printed: "));
-            document.add(new Paragraph("Start Date: "));
-            document.add(new Paragraph("End Date: "));
+            document.add(new Paragraph("Start Date: "+sDate));
+            document.add(new Paragraph("End Date: "+eDate));
 
             document.add(Chunk.NEWLINE);
             PdfPTable table = new PdfPTable(4);

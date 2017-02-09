@@ -35,13 +35,14 @@
                         <div class='input-group date'>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                                    <input type='text' class="form-control" id="fixed_date"  placeholder="YYYY-MM-DD" type="text" />
+                                    <input type='text' class="form-control" value="${fDate}" id="fixed_date"  placeholder="YYYY-MM-DD" type="text" />
                         </div>
+                        <p class="help-block error" id="errorMsg_fixed_date"></p>
                     </div>
-                    <button class="btn-primary btn" id="btnfixed">Search</button>
+                    <button class="btn-primary btn" id="btn_fixed">Search</button>
                 </div>
                 <div class="col-md-6" style="margin-top: 25px;">
-                    <button type="" class="btn btn-primary" >Print</button>
+                    <button type="" class="btn btn-primary" id="btnPrint">Print</button>
                     <button type="" class="btn btn-primary" >Export</button>
                     <button type="" class="btn btn-primary" >Email</button>
                     <button type="" class="btn btn-success" >Save</button>
@@ -54,9 +55,10 @@
                         <div class='input-group date'>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                 </span>
-                            <input type='text' class="form-control" id="start_date" name="date" placeholder="YYYY-MM-DD" type="text" />
+                            <input type='text' class="form-control" id="start_date" value="${startDate}"  placeholder="YYYY-MM-DD" type="text" />
 
                         </div>
+                        <p class="help-block error" id="errorMsg_start_date"></p>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -64,12 +66,12 @@
                     <div class='input-group date'>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                             </span>
-                        <input type='text' class="form-control" id="end_date" name="date" placeholder="YYYY-MM-DD" type="text" />
-
+                        <input type='text' class="form-control" id="end_date" value="${endDate}"  placeholder="YYYY-MM-DD" type="text" />
                     </div>
+                    <p class="help-block error" id="errorMsg_end_date"></p>
                 </div>
 
-                <button class="btn-primary btn" id="searching">Search</button>
+                <button class="btn-primary btn" id="btn_search">Search</button>
 
             </div>
             <div class="row">
@@ -84,11 +86,11 @@
                         <div class="panel-body">
                             <div class="row clearfix">
                                 <div class="col-md-6">
-                                    <label>Printed By: Operator name</label><br>
-                                    <label>Date printed: now</label><br>
-                                    <label>Time printed: now</label><br>
-                                    <label>Start date: 12-10-2017</label><br>
-                                    <label>End date: 12-10-2017</label>
+                                    <label>Printed By: ${printed_by}</label><br>
+                                    <label>Date printed: ${printingDate}</label><br>
+                                    <label>Time printed: ${printedTime}</label><br>
+                                    <label>Start date: ${startDate}</label><br>
+                                    <label>End date: ${endDate}</label>
                                 </div>
                                 <div class="col-md-6">
                                     Seq Digital
@@ -140,8 +142,10 @@
 
 <!-- Include Date Range Picker -->
 <script src="<c:url value="/admin-resources/bootstrap/js/bootstrap-datepicker.1.4.1.min.js"/>"></script>
+
 <script>
     $(document).ready(function(){
+
         var date_input=$('#fixed_date,#start_date,#end_date'); //our date input has the name "date"
         var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
         date_input.datepicker({
@@ -153,10 +157,56 @@
     });
 
 
-        $("#btnfixed").click(function () {
+        $("#btn_fixed").click(function () {
             var fixed_date=$("#fixed_date").val();
-            window.location = BASEURL + "/report/product-summary?startDate="+fixed_date;
+
+            if(fixed_date==""){
+                $("#errorMsg_fixed_date").text("Date is requred!");
+                return false;
+            }
+            //window.location = BASEURL + "report/product-summary?startDate="+fixed_date;
+            window.location = "/admin/report/product-summary?startDate="+fixed_date;
         });
+
+    $("#btn_search").click(function () {
+
+        var start_date=$("#start_date").val();
+        var end_date=$("#end_date").val();
+
+        if(start_date==""){
+            $("#errorMsg_start_date").text("Start date is requred!");
+            return false;
+        }
+
+        if(end_date==""){
+            $("#errorMsg_end_date").text("End date is requred!");
+            return false;
+        }
+
+        //window.location = BASEURL + "report/product-summary?startDate="+fixed_date;
+        window.location = "/admin/report/product-summary?startDate="+start_date+"&endDate="+end_date;
+
+
+    });
+
+
+    $("#btnPrint").click(function () {
+
+        var start_date=$("#start_date").val();
+        var end_date=$("#end_date").val();
+        var fixed_date=$("#fixed_date").val();
+
+        if(start_date!="" && end_date!=""){
+            window.location = "/admin/report-pdf/product-sale-summary/download?startDate="+start_date+"&endDate="+end_date;
+
+        }else if(fixed_date!=""){
+            window.location = "/admin/report-pdf/product-sale-summary/download?startDate="+fixed_date;
+
+        }else{
+            window.location = "/admin/report-pdf/product-sale-summary/download";
+        }
+
+    });
 
 
 
