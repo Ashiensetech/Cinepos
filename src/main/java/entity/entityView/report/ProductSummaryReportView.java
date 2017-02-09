@@ -1,10 +1,11 @@
 package entity.entityView.report;
 
 import javax.persistence.*;
+import java.sql.Date;
 
 
 @Entity
-@Table(name = "product_summary_view")
+@Table(name = "PRODUCT_SUMMARY_VIEW")
 public class ProductSummaryReportView {
 
     @javax.persistence.Id
@@ -28,7 +29,7 @@ public class ProductSummaryReportView {
     private Integer CreateBy;
 
     @Column(name = "CreateDate")
-    private String 	CreateDate;
+    private Date CreateDate;
 
     public int getId() {
         return Id;
@@ -70,11 +71,19 @@ public class ProductSummaryReportView {
         StockValue = stockValue;
     }
 
-    public String getCreateDate() {
+    public Integer getCreateBy() {
+        return CreateBy;
+    }
+
+    public void setCreateBy(Integer createBy) {
+        CreateBy = createBy;
+    }
+
+    public Date getCreateDate() {
         return CreateDate;
     }
 
-    public void setCreateDate(String createDate) {
+    public void setCreateDate(Date createDate) {
         CreateDate = createDate;
     }
 
@@ -90,7 +99,9 @@ public class ProductSummaryReportView {
         if (StockUnit != that.StockUnit) return false;
         if (Product != null ? !Product.equals(that.Product) : that.Product != null) return false;
         if (StockValue != null ? !StockValue.equals(that.StockValue) : that.StockValue != null) return false;
-        return CreateDate != null ? CreateDate.equals(that.CreateDate) : that.CreateDate == null;
+        if (CreateBy != null ? !CreateBy.equals(that.CreateBy) : that.CreateBy != null) return false;
+        return !(CreateDate != null ? !CreateDate.equals(that.CreateDate) : that.CreateDate != null);
+
     }
 
     @Override
@@ -100,19 +111,21 @@ public class ProductSummaryReportView {
         result = 31 * result + (price != +0.0f ? Float.floatToIntBits(price) : 0);
         result = 31 * result + StockUnit;
         result = 31 * result + (StockValue != null ? StockValue.hashCode() : 0);
+        result = 31 * result + (CreateBy != null ? CreateBy.hashCode() : 0);
         result = 31 * result + (CreateDate != null ? CreateDate.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "ProductReportView{" +
+        return "ProductSummaryReportView{" +
                 "Id=" + Id +
                 ", Product='" + Product + '\'' +
                 ", price=" + price +
                 ", StockUnit=" + StockUnit +
                 ", StockValue='" + StockValue + '\'' +
-                ", CreateDate='" + CreateDate + '\'' +
+                ", CreateBy=" + CreateBy +
+                ", CreateDate=" + CreateDate +
                 '}';
     }
 }

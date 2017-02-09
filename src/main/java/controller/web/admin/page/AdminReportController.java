@@ -13,6 +13,7 @@ import entity.Genre;
 import entity.ScreenDimension;
 import entity.entityView.report.ConcessionSalesByOperatorView;
 import entity.entityView.report.ProductSummaryReportView;
+import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.lang.model.element.NestingKind;
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -261,7 +264,35 @@ public class AdminReportController {
                                        ){
 
         System.out.print(startDate);
-        List<ProductSummaryReportView> productSummaryReportViewList=productSummaryReportViewDao.getAll();
+        Date sDate = null;
+        Date eDate = null;
+        if(startDate!=null && !startDate.trim().equals("")){
+            try {
+                sDate = DateHelper.getStringToDate(startDate+" 23:59:59", "yyyy-MM-dd H:m:s");
+                System.out.print(sDate);
+            } catch (ParseException e) {
+
+            }
+        }
+        if(endDate!=null && !endDate.trim().equals("")){
+            try {
+                eDate = DateHelper.getStringToDate(endDate+" 23:59:59", "yyyy-MM-dd H:m:s");
+            } catch (ParseException e) {
+
+            }
+        }
+
+
+        List<ProductSummaryReportView> productSummaryReportViewList;
+
+
+        if(sDate!=null && eDate!=null){
+            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
+        }else if(sDate!=null) {
+            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, sDate);
+        }else{
+            productSummaryReportViewList = productSummaryReportViewDao.getAll();
+        }
 
         System.out.print(productSummaryReportViewList);
         ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-summary");
