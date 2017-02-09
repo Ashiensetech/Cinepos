@@ -3,6 +3,7 @@
 <%@ taglib  uri="http://java.sun.com/jsp/jstl/core" prefix="d" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,7 +36,8 @@
                         <div class='input-group date'>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                                    <input type='text' class="form-control" value="${fDate}" id="fixed_date"  placeholder="YYYY-MM-DD" type="text" />
+                                    <input type='text' class="form-control" value="<fmt:formatDate value="${fDate}" pattern="yyyy-MM-dd" />"
+                                            id="fixed_date"  placeholder="YYYY-MM-DD" type="text" />
                         </div>
                         <p class="help-block error" id="errorMsg_fixed_date"></p>
                     </div>
@@ -55,7 +57,7 @@
                         <div class='input-group date'>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                 </span>
-                            <input type='text' class="form-control" id="start_date" value="${startDate}"  placeholder="YYYY-MM-DD" type="text" />
+                            <input type='text' class="form-control" id="start_date" value="<fmt:formatDate value="${startDate}" pattern="yyyy-MM-dd" />"  placeholder="YYYY-MM-DD" type="text" />
 
                         </div>
                         <p class="help-block error" id="errorMsg_start_date"></p>
@@ -66,7 +68,7 @@
                     <div class='input-group date'>
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                             </span>
-                        <input type='text' class="form-control" id="end_date" value="${endDate}"  placeholder="YYYY-MM-DD" type="text" />
+                        <input type='text' class="form-control" id="end_date" value="<fmt:formatDate value="${endDate}" pattern="yyyy-MM-dd" />"  placeholder="YYYY-MM-DD" type="text" />
                     </div>
                     <p class="help-block error" id="errorMsg_end_date"></p>
                 </div>
@@ -89,8 +91,8 @@
                                     <label>Printed By: ${printed_by}</label><br>
                                     <label>Date printed: ${printingDate}</label><br>
                                     <label>Time printed: ${printedTime}</label><br>
-                                    <label>Start date: ${startDate}</label><br>
-                                    <label>End date: ${endDate}</label>
+                                    <label>Start date: <fmt:formatDate  value="${startDate}" pattern="yyyy-MM-dd" /><fmt:formatDate  value="${fDate}" pattern="yyyy-MM-dd" /></label><br>
+                                    <label>End date:<fmt:formatDate  value="${endDate}" pattern="yyyy-MM-dd" /><fmt:formatDate  value="${fDate}" pattern="yyyy-MM-dd" /></label>
                                 </div>
                                 <div class="col-md-6">
                                     Seq Digital
@@ -197,16 +199,19 @@
         var start_date=$("#start_date").val();
         var end_date=$("#end_date").val();
         var fixed_date=$("#fixed_date").val();
+        var pdfUrl="";
 
         if(start_date!="" && end_date!=""){
-            window.location = "/admin/report-pdf/product-sale-summary/download?startDate="+start_date+"&endDate="+end_date;
+            pdfUrl = "/admin/report-pdf/product-sale-summary/download?startDate="+start_date+"&endDate="+end_date;
 
         }else if(fixed_date!=""){
-            window.location = "/admin/report-pdf/product-sale-summary/download?startDate="+fixed_date;
+            pdfUrl = "/admin/report-pdf/product-sale-summary/download?startDate="+fixed_date;
 
         }else{
-            window.location = "/admin/report-pdf/product-sale-summary/download";
+            pdfUrl = "/admin/report-pdf/product-sale-summary/download";
         }
+
+        window.open(pdfUrl,'_blank');
 
     });
 

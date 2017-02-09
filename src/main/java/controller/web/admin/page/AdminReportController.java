@@ -113,8 +113,6 @@ public class AdminReportController {
             try {
                 Timestamp tmpSData = DateHelper.getStringToTimeStamp(startDate+ " 00:00:00", "yyyy-MM-dd H:m:s");
                 Timestamp tmpEData = DateHelper.getStringToTimeStamp(startDate + " 23:59:59", "yyyy-MM-dd H:m:s");
-                System.out.println(tmpSData);
-                System.out.println(tmpEData);
                 sells = sellsDao.getByDateRange(tmpSData, tmpEData);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -125,8 +123,21 @@ public class AdminReportController {
         }
 
 
+        SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
+
+        String printingDate = formatDate.format( new java.util.Date());
+        String printedTime = formatTime.format(new java.util.Date());
+
+
         ModelAndView mav =  new ModelAndView("web-admin/report/transaction-summary-audit");
         mav.addObject("sells",sells);
+        mav.addObject("startDate",sDate);
+        mav.addObject("endDate",eDate);
+        //mav.addObject("fDate",fDate);
+        mav.addObject("printed_by",authCredential.getUserName());
+        mav.addObject("printingDate",printingDate);
+        mav.addObject("printedTime",printedTime);
         return mav;
     }
     @RequestMapping(value = "/promotion")
@@ -368,6 +379,8 @@ public class AdminReportController {
         String printingDate = formatDate.format( new java.util.Date());
         String printedTime = formatTime.format(new java.util.Date());
 
+
+
         System.out.print(printedTime);
 
 
@@ -380,7 +393,7 @@ public class AdminReportController {
         modelAndView.addObject("startDate",sDate);
         modelAndView.addObject("endDate",eDate);
         modelAndView.addObject("fDate",fDate);
-        modelAndView.addObject("printed_by",authCredential.getUserInf());
+        modelAndView.addObject("printed_by",authCredential.getUserName());
         modelAndView.addObject("printingDate",printingDate);
         modelAndView.addObject("printedTime",printedTime);
         return modelAndView;
