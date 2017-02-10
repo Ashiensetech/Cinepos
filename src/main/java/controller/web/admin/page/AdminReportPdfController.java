@@ -56,6 +56,10 @@ public class AdminReportPdfController {
         Timestamp eDate = null;
 
         Timestamp fDate=null;
+
+        String sDateStr="";
+        String eDateStr="";
+
         if(startDate!=null && !startDate.trim().equals("")){
             try {
                 sDate = DateHelper.getStringToTimeStamp(startDate + " 00:00:00", "yyyy-MM-dd H:m:s");
@@ -81,15 +85,12 @@ public class AdminReportPdfController {
         if(sDate!=null && eDate!=null){
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
         }else if(sDate!=null) {
-            System.out.println(productSummaryReportViewList);
-            fDate=sDate;
-            sDate=null;
-            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(fDate, fDate);
+
+            productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, sDate);
+
             try {
                 Timestamp tmpSData = DateHelper.getStringToTimeStamp(startDate+ " 00:00:00", "yyyy-MM-dd H:m:s");
                 Timestamp tmpEData = DateHelper.getStringToTimeStamp(startDate + " 23:59:59", "yyyy-MM-dd H:m:s");
-                System.out.println(tmpSData);
-                System.out.println(tmpEData);
                 productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(tmpSData, tmpEData);
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -105,6 +106,14 @@ public class AdminReportPdfController {
 
         String printingDate = formatDate.format( new java.util.Date());
         String printedTime = formatTime.format( new java.util.Date());
+
+
+        if(sDate!=null)
+            sDateStr = formatDate.format(sDate);
+
+
+        if(eDate!=null)
+            eDateStr = formatDate.format(eDate);
 
 
 
@@ -125,8 +134,8 @@ public class AdminReportPdfController {
             document.add(new Paragraph("Printed By: "+authCredential.getUserName()));
             document.add(new Paragraph("Date Printed: "+printingDate));
             document.add(new Paragraph("Time Printed: "+printedTime));
-            document.add(new Paragraph("Start Date: "+sDate));
-            document.add(new Paragraph("End Date: "+eDate));
+            document.add(new Paragraph("Start Date: "+sDateStr));
+            document.add(new Paragraph("End Date: "+eDateStr));
 
             document.add(Chunk.NEWLINE);
             PdfPTable table = new PdfPTable(4);
@@ -183,6 +192,10 @@ public class AdminReportPdfController {
 
         Timestamp sDate = null;
         Timestamp eDate = null;
+
+        String sDateStr="";
+        String eDateStr="";
+
         if(startDate!=null && !startDate.trim().equals("")){
             try {
                 sDate = DateHelper.getStringToTimeStamp(startDate + " 00:00:00", "yyyy-MM-dd H:m:s");
@@ -223,6 +236,14 @@ public class AdminReportPdfController {
         String printingDate = formatDate.format( new java.util.Date());
         String printedTime = formatTime.format( new java.util.Date());
 
+        if(sDate!=null)
+             sDateStr = formatDate.format(sDate);
+
+
+        if(eDate!=null)
+             eDateStr = formatDate.format(eDate);
+
+
 
 
         int counter = 1;
@@ -242,8 +263,8 @@ public class AdminReportPdfController {
             document.add(new Paragraph("Printed By: "+authCredential.getUserName()));
             document.add(new Paragraph("Date Printed: "+printingDate));
             document.add(new Paragraph("Time Printed: "+printedTime));
-            document.add(new Paragraph("Start Date: "+sDate));
-            document.add(new Paragraph("End Date: "+eDate));
+            document.add(new Paragraph("Start Date: "+sDateStr));
+            document.add(new Paragraph("End Date: "+eDateStr));
 
             document.add(Chunk.NEWLINE);
             PdfPTable table = new PdfPTable(7);

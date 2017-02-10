@@ -382,14 +382,6 @@ public class AdminReportController {
         String printedTime = formatTime.format(new java.util.Date());
 
 
-
-        System.out.print(printedTime);
-
-
-
-
-
-
         ModelAndView modelAndView =  new ModelAndView("web-admin/report/product-summary");
         modelAndView.addObject("ProductSummaryReportView",productSummaryReportViewList);
         modelAndView.addObject("startDate",sDate);
