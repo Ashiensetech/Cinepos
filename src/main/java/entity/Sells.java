@@ -3,6 +3,7 @@ package entity;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Sarwar on 2/2/2017.
@@ -32,25 +33,19 @@ public class Sells {
     @Column(name = "quantity")
     private int quantity;
 
-//    @Basic
-//    @Column(name = "terminal_id")
-//    private int terminalId;
-
     @OneToOne
     @JoinColumn(name = "terminal_id",referencedColumnName = "id")
     private Terminal terminal;
 
     @OneToMany
     @JoinColumn(name = "sell_id",referencedColumnName = "id")
-    private List<SellsDetails> SellDetails;
+    private Set<SellsDetails> SellDetails;
 
     @Basic
     @Column(name = "status")
     private boolean status;
 
-//    @Basic
-//    @Column(name = "created_by")
-//    private int createdBy;
+
 
     @OneToOne
     @JoinColumn(name = "created_by",referencedColumnName = "id")
@@ -108,11 +103,11 @@ public class Sells {
         this.terminal = terminal;
     }
 
-    public List<SellsDetails> getSellDetails() {
+    public Set<SellsDetails> getSellDetails() {
         return SellDetails;
     }
 
-    public void setSellDetails(List<SellsDetails> sellDetails) {
+    public void setSellDetails(Set<SellsDetails> sellDetails) {
         SellDetails = sellDetails;
     }
 
@@ -139,7 +134,6 @@ public class Sells {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -180,5 +174,19 @@ public class Sells {
         return result;
     }
 
-
+    @Override
+    public String toString() {
+        return "Sells{" +
+                "id=" + id +
+                ", sellingAmount=" + sellingAmount +
+                ", sellingComment='" + sellingComment + '\'' +
+                ", isCombo=" + isCombo +
+                ", quantity=" + quantity +
+                ", terminal=" + terminal +
+                ", SellDetails=" + SellDetails +
+                ", status=" + status +
+                ", authCredential=" + authCredential +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }

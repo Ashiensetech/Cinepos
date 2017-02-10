@@ -17,17 +17,6 @@ public class SellsDetails {
     @Column(name = "sell_id")
     private Integer sellId;
 
-//    @Basic
-//    @Column(name = "concession_product_id")
-//    private Integer concessionProductId;
-//
-//    @Basic
-//    @Column(name = "combo_id")
-//    private Integer comboId;
-//
-//    @Basic
-//    @Column(name = "seat_type_id")
-//    private Integer seatTypeId;
 
     @Basic
     @Column(name = "user_id")
@@ -45,9 +34,11 @@ public class SellsDetails {
     @Column(name = "selling_type")
     private String sellingType;
 
-    @Basic
-    @Column(name = "created_by")
-    private int createdBy;
+
+    @OneToOne
+    @JoinColumn(name = "created_by",referencedColumnName = "id")
+    private AuthCredential authCredential;
+
 
     @Basic
     @Column(name = "created_at")
@@ -113,12 +104,12 @@ public class SellsDetails {
         this.sellingType = sellingType;
     }
 
-    public int getCreatedBy() {
-        return createdBy;
+    public AuthCredential getAuthCredential() {
+        return authCredential;
     }
 
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
+    public void setAuthCredential(AuthCredential authCredential) {
+        this.authCredential = authCredential;
     }
 
     public Timestamp getCreatedAt() {
@@ -163,10 +154,11 @@ public class SellsDetails {
         if (id != that.id) return false;
         if (Float.compare(that.unitSellingAmount, unitSellingAmount) != 0) return false;
         if (quantity != that.quantity) return false;
-        if (createdBy != that.createdBy) return false;
         if (sellId != null ? !sellId.equals(that.sellId) : that.sellId != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (sellingType != null ? !sellingType.equals(that.sellingType) : that.sellingType != null) return false;
+        if (authCredential != null ? !authCredential.equals(that.authCredential) : that.authCredential != null)
+            return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
         if (concessionProduct != null ? !concessionProduct.equals(that.concessionProduct) : that.concessionProduct != null)
             return false;
@@ -182,7 +174,7 @@ public class SellsDetails {
         result = 31 * result + (unitSellingAmount != +0.0f ? Float.floatToIntBits(unitSellingAmount) : 0);
         result = 31 * result + quantity;
         result = 31 * result + (sellingType != null ? sellingType.hashCode() : 0);
-        result = 31 * result + createdBy;
+        result = 31 * result + (authCredential != null ? authCredential.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (concessionProduct != null ? concessionProduct.hashCode() : 0);
         result = 31 * result + (combo != null ? combo.hashCode() : 0);
@@ -199,7 +191,7 @@ public class SellsDetails {
                 ", unitSellingAmount=" + unitSellingAmount +
                 ", quantity=" + quantity +
                 ", sellingType='" + sellingType + '\'' +
-                ", createdBy=" + createdBy +
+                ", authCredential=" + authCredential +
                 ", createdAt=" + createdAt +
                 ", concessionProduct=" + concessionProduct +
                 ", combo=" + combo +

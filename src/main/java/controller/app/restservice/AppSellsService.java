@@ -18,9 +18,7 @@ import validator.admin.AdminSellsService.CreateSells.OrderForm;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 @RestController
@@ -93,6 +91,7 @@ public class AppSellsService {
 
 
         List<SellsDetails> sellDetailsArray = new ArrayList<>();
+        Set<SellsDetails> sellDetails = new HashSet<>();
 
         List<CartForm> sellsDetailsCart=createOrMergeSellingForm.orderForm.getCartForms();
 
@@ -105,7 +104,7 @@ public class AppSellsService {
             sellsDetails.setUnitSellingAmount(targetItem.getPrice());
             sellsDetails.setQuantity(targetItem.getQuantity());
             sellsDetails.setSellingType(targetItem.getSellingType());
-            sellsDetails.setCreatedBy(1);
+            sellsDetails.setAuthCredential(authCredential);
 
 
             if(targetItem.getSellingType().equals("product")){
@@ -134,21 +133,18 @@ public class AppSellsService {
             totalPrice+=targetItem.getPrice();
             totalQuantity+=targetItem.getQuantity();
 
-
-
-            sellDetailsDao.insert(sellsDetails);
+            sellDetails.add(sellsDetails);
         }
 
-        System.out.println(totalQuantity);
+        sellDetailsDao.insertOrUpdate(sellDetails);
+
+        sells.setSellDetails(sellDetails);
 
         Sells sellsUpdate=sellsDao.getById(sells.getId());
-
-        System.out.println(sellsUpdate);
         sellsUpdate.setQuantity(totalQuantity);
         sellsUpdate.setSellingAmount(totalPrice);
 
         sellsDao.update(sellsUpdate);
-
 
         return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
 
