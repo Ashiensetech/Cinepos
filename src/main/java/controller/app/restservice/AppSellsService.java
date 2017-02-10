@@ -110,21 +110,21 @@ public class AppSellsService {
             if(targetItem.getSellingType().equals("product")){
                 ConcessionProduct concessionProduct=concessionProductDao.getById(targetItem.getId());
                 if(concessionProduct == null){
-                    serviceResponse.setValidationError("concessionProduct","Product "+concessionProduct.getName()+" not found");
+                    serviceResponse.setValidationError("concessionProduct","Product not found");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
                 sellsDetails.setConcessionProduct(concessionProduct);
             }else if (targetItem.getSellingType().equals("combo")){
                 Combo combo=comboDao.getById(targetItem.getId());
                 if(combo == null){
-                    serviceResponse.setValidationError("concessionProduct","Combo "+combo.getComboName()+" not found");
+                    serviceResponse.setValidationError("concessionProduct","Combo not found");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
                 sellsDetails.setCombo(combo);
             }else{
                 Ticket ticket=ticketDao.getById(Long.valueOf(targetItem.getId()));
                 if(ticket == null){
-                    serviceResponse.setValidationError("concessionProduct","Seat type "+ticket.getAnnotation()+" not found");
+                    serviceResponse.setValidationError("concessionProduct","Ticket not found");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
                  sellsDetails.setTicket(ticket);
