@@ -35,10 +35,10 @@ public class TestController {
     CategoryDao categoryDao;
     @RequestMapping(value="/all")
     public ResponseEntity<List<Category>> getAppCategory(Authentication authentication){
-        VelocityContext context = new VelocityContext();
-        /*Authentication a = SecurityContextHolder.getContext().getAuthentication();*/
-        CustomUserDetails currentUser = (CustomUserDetails)authentication.getPrincipal();
-        System.out.println(currentUser);
+//        VelocityContext context = new VelocityContext();
+//        /*Authentication a = SecurityContextHolder.getContext().getAuthentication();*/
+//        CustomUserDetails currentUser = (CustomUserDetails)authentication.getPrincipal();
+//        System.out.println(currentUser);
 
         return new ResponseEntity<List<Category>>(categoryDao.getAll(), HttpStatus.OK);
     }

@@ -29,7 +29,7 @@ public class AppScreenService {
 
         List<Screen> screens= screenDao.getAll();
 
-        if(screens==null && screens.size()==0){
+        if(screens==null || screens.size()==0){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(screens);
         }
 

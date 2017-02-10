@@ -62,7 +62,7 @@ public class ScreenDao extends BaseDao {
         Session session = this.sessionFactory.openSession();
         try{
             session = this.sessionFactory.openSession();
-            return session.createQuery("FROM Screen order by id desc ")
+            return session.createQuery("FROM Screen  order by id desc ")
                     .list();
         }catch (HibernateException hEx){
             // Insert to database exception log

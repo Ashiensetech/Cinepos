@@ -266,7 +266,8 @@ public class AdminReportPdfController {
                     table.addCell(sellsTgt.getAuthCredential().getUserName());
                     table.addCell(sellsTgt.getTerminal().getName());
                     for (SellsDetails sellsDetailsTgt:sellsTgt.getSellDetails()) {
-                        products+= sellsDetailsTgt.getConcessionProduct().getName()+"- Q X "+sellsDetailsTgt.getQuantity();
+                        if(sellsDetailsTgt.getConcessionProduct()!=null)
+                            products+= sellsDetailsTgt.getConcessionProduct().getName()+"- Q X "+sellsDetailsTgt.getQuantity();
                     }
                     table.addCell(products);
                     table.addCell(Integer.toString(sellsTgt.getQuantity()));

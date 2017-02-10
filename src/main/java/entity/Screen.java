@@ -1,5 +1,7 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -8,6 +10,7 @@ import java.util.List;
 /**
  * Created by mi on 1/5/17.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "screen", schema = "")
 public class Screen {
@@ -53,8 +56,8 @@ public class Screen {
     private Time closingTime;
 
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "screen_id",referencedColumnName = "id")
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "screen_id",referencedColumnName = "id",nullable = true)
     private List<ScreenSeat> seats;
 
     @Basic
