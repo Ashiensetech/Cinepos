@@ -64,10 +64,10 @@
                       <a href="<c:url value="/admin/seat-type/edit/${seatType.id}" />"
                          type="button"
                          class="btn btn-outline btn-primary" >Edit</a>
-                      <button data-seat-type-id="${seatType.id}"
+                   <%--   <button data-seat-type-id="${seatType.id}"
                               class="btn btn-outline btn-primary delete-seat-type" >
                         Delete
-                      </button>
+                      </button>--%>
 
                     </td>
 
