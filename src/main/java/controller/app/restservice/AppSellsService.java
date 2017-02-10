@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by Sarwar on 2/2/2017.
- */
+
 @RestController
 @RequestMapping(AppUriPreFix.apiUriPrefix +"/sells")
 public class AppSellsService {
@@ -40,6 +38,12 @@ public class AppSellsService {
     ComboDao comboDao;
     @Autowired
     SeatTypeDao seatTypeDao;
+    @Autowired
+    TerminalDao terminalDao;
+    @Autowired
+    AuthCredentialDao authCredentialDao;
+    @Autowired
+    TicketDao ticketDao;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<?> create(@Valid CreateOrMergeSellingForm createOrMergeSellingForm,
@@ -71,16 +75,19 @@ public class AppSellsService {
         }
 
         //System.out.println(createOrMergeSellingForm.orderForm.getTerminalId()+"Hello");
-        System.out.println(createOrMergeSellingForm.orderForm.getCartForms());
+        //System.out.println(createOrMergeSellingForm.orderForm.getCartForms());
+
+       Terminal terminal= terminalDao.getById(createOrMergeSellingForm.orderForm.getTerminalId());
+       AuthCredential authCredential=authCredentialDao.getById(1);
 
         Sells sells=new Sells();
         //sells.setSellingAmount(1.5);
         sells.setSellingComment("Testing comment for sells");
         sells.setCombo(true);
        // sells.setQuantity(5);
-        sells.setTerminalId(createOrMergeSellingForm.orderForm.getTerminalId());
+        sells.setTerminal(terminal);
         sells.setStatus(true);
-        sells.setCreatedBy(1);
+        sells.setAuthCredential(authCredential);
 
         sellsDao.insert(sells);
 
@@ -107,21 +114,21 @@ public class AppSellsService {
                     serviceResponse.setValidationError("concessionProduct","Product "+concessionProduct.getName()+" not found");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
-                sellsDetails.setConcessionProductId(targetItem.getId());
+                sellsDetails.setConcessionProduct(concessionProduct);
             }else if (targetItem.getSellingType().equals("combo")){
                 Combo combo=comboDao.getById(targetItem.getId());
                 if(combo == null){
                     serviceResponse.setValidationError("concessionProduct","Combo "+combo.getComboName()+" not found");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
-                sellsDetails.setComboId(targetItem.getId());
+                sellsDetails.setCombo(combo);
             }else{
-                SeatType seatType=seatTypeDao.getById(targetItem.getId());
-                if(seatType == null){
-                    serviceResponse.setValidationError("concessionProduct","Seat type "+seatType.getName()+" not found");
+                Ticket ticket=ticketDao.getById(Long.valueOf(targetItem.getId()));
+                if(ticket == null){
+                    serviceResponse.setValidationError("concessionProduct","Seat type "+ticket.getAnnotation()+" not found");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
-                 sellsDetails.setSeatTypeId(targetItem.getId());
+                 sellsDetails.setTicket(ticket);
             }
 
             totalPrice+=targetItem.getPrice();

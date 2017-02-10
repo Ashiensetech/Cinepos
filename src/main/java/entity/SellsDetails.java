@@ -17,17 +17,17 @@ public class SellsDetails {
     @Column(name = "sell_id")
     private Integer sellId;
 
-    @Basic
-    @Column(name = "concession_product_id")
-    private Integer concessionProductId;
-
-    @Basic
-    @Column(name = "combo_id")
-    private Integer comboId;
-
-    @Basic
-    @Column(name = "seat_type_id")
-    private Integer seatTypeId;
+//    @Basic
+//    @Column(name = "concession_product_id")
+//    private Integer concessionProductId;
+//
+//    @Basic
+//    @Column(name = "combo_id")
+//    private Integer comboId;
+//
+//    @Basic
+//    @Column(name = "seat_type_id")
+//    private Integer seatTypeId;
 
     @Basic
     @Column(name = "user_id")
@@ -54,16 +54,16 @@ public class SellsDetails {
     private Timestamp createdAt;
 
     @OneToOne
-    @JoinColumn(name = "concession_product_id",referencedColumnName = "id",insertable = false, updatable = false)
+    @JoinColumn(name = "concession_product_id",referencedColumnName = "id")
     private ConcessionProduct concessionProduct;
 
     @OneToOne
-    @JoinColumn(name = "combo_id",referencedColumnName = "id",insertable = false, updatable = false)
+    @JoinColumn(name = "combo_id",referencedColumnName = "id")
     private Combo combo;
 
     @OneToOne
-    @JoinColumn(name = "seat_type_id",referencedColumnName = "id",insertable = false, updatable = false)
-    private SeatType seatType;
+    @JoinColumn(name = "ticket_id",referencedColumnName = "id")
+    private Ticket ticket;
 
     public int getId() {
         return id;
@@ -79,30 +79,6 @@ public class SellsDetails {
 
     public void setSellId(Integer sellId) {
         this.sellId = sellId;
-    }
-
-    public Integer getConcessionProductId() {
-        return concessionProductId;
-    }
-
-    public void setConcessionProductId(Integer concessionProductId) {
-        this.concessionProductId = concessionProductId;
-    }
-
-    public Integer getComboId() {
-        return comboId;
-    }
-
-    public void setComboId(Integer comboId) {
-        this.comboId = comboId;
-    }
-
-    public Integer getSeatTypeId() {
-        return seatTypeId;
-    }
-
-    public void setSeatTypeId(Integer seatTypeId) {
-        this.seatTypeId = seatTypeId;
     }
 
     public Integer getUserId() {
@@ -169,12 +145,12 @@ public class SellsDetails {
         this.combo = combo;
     }
 
-    public SeatType getSeatType() {
-        return seatType;
+    public Ticket getTicket() {
+        return ticket;
     }
 
-    public void setSeatType(SeatType seatType) {
-        this.seatType = seatType;
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
     @Override
@@ -189,26 +165,19 @@ public class SellsDetails {
         if (quantity != that.quantity) return false;
         if (createdBy != that.createdBy) return false;
         if (sellId != null ? !sellId.equals(that.sellId) : that.sellId != null) return false;
-        if (concessionProductId != null ? !concessionProductId.equals(that.concessionProductId) : that.concessionProductId != null)
-            return false;
-        if (comboId != null ? !comboId.equals(that.comboId) : that.comboId != null) return false;
-        if (seatTypeId != null ? !seatTypeId.equals(that.seatTypeId) : that.seatTypeId != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (sellingType != null ? !sellingType.equals(that.sellingType) : that.sellingType != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
         if (concessionProduct != null ? !concessionProduct.equals(that.concessionProduct) : that.concessionProduct != null)
             return false;
         if (combo != null ? !combo.equals(that.combo) : that.combo != null) return false;
-        return seatType != null ? seatType.equals(that.seatType) : that.seatType == null;
+        return ticket != null ? ticket.equals(that.ticket) : that.ticket == null;
     }
 
     @Override
     public int hashCode() {
         int result = id;
         result = 31 * result + (sellId != null ? sellId.hashCode() : 0);
-        result = 31 * result + (concessionProductId != null ? concessionProductId.hashCode() : 0);
-        result = 31 * result + (comboId != null ? comboId.hashCode() : 0);
-        result = 31 * result + (seatTypeId != null ? seatTypeId.hashCode() : 0);
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (unitSellingAmount != +0.0f ? Float.floatToIntBits(unitSellingAmount) : 0);
         result = 31 * result + quantity;
@@ -217,19 +186,15 @@ public class SellsDetails {
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (concessionProduct != null ? concessionProduct.hashCode() : 0);
         result = 31 * result + (combo != null ? combo.hashCode() : 0);
-        result = 31 * result + (seatType != null ? seatType.hashCode() : 0);
+        result = 31 * result + (ticket != null ? ticket.hashCode() : 0);
         return result;
     }
-
 
     @Override
     public String toString() {
         return "SellsDetails{" +
                 "id=" + id +
                 ", sellId=" + sellId +
-                ", concessionProductId=" + concessionProductId +
-                ", comboId=" + comboId +
-                ", seatTypeId=" + seatTypeId +
                 ", userId=" + userId +
                 ", unitSellingAmount=" + unitSellingAmount +
                 ", quantity=" + quantity +
@@ -238,7 +203,7 @@ public class SellsDetails {
                 ", createdAt=" + createdAt +
                 ", concessionProduct=" + concessionProduct +
                 ", combo=" + combo +
-                ", seatType=" + seatType +
+                ", ticket=" + ticket +
                 '}';
     }
 }

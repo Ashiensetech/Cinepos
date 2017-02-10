@@ -29,9 +29,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-/**
- * Created by Sarwar on 2/9/2017.
- */
+
 @Controller
 @RequestMapping(AdminUriPreFix.pageUriPrefix+"/report-pdf")
 public class AdminReportPdfController {
@@ -265,8 +263,8 @@ public class AdminReportPdfController {
                     String products="";
                     table.addCell(Integer.toString(sellsTgt.getId()));
                     table.addCell(sellsTgt.getCreatedAt().toString());
-                    table.addCell(Integer.toString(sellsTgt.getCreatedBy()));
-                    table.addCell(Integer.toString(sellsTgt.getTerminalId()));
+                    table.addCell(sellsTgt.getAuthCredential().getUserName());
+                    table.addCell(sellsTgt.getTerminal().getName());
                     for (SellsDetails sellsDetailsTgt:sellsTgt.getSellDetails()) {
                         products+= sellsDetailsTgt.getConcessionProduct().getName()+"- Q X "+sellsDetailsTgt.getQuantity();
                     }

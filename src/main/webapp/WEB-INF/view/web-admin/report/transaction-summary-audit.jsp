@@ -115,9 +115,9 @@
                                 <d:forEach var="sell" items="${sells}" >
                                     <tr>
                                         <td>${sell.id}</td>
-                                        <td>${sell.createdAt}</td>
-                                        <td>${sell.createdBy}</td>
-                                        <td>${sell.terminalId}</td>
+                                        <td><fmt:formatDate  value="${sell.createdAt}" pattern="yyyy-MM-dd" />s</td>
+                                        <td>${sell.authCredential.userName}</td>
+                                        <td>${sell.terminal.name}</td>
                                         <td>
                                             <ul>
                                                 <d:forEach var="sellDetails" items="${sell.sellDetails}" >
@@ -175,7 +175,7 @@
             return false;
         }
         //window.location = BASEURL + "report/product-summary?startDate="+fixed_date;
-        window.location = "/admin/report/transaction-summary-audit?startDate="+fixed_date;
+        window.location = BASEURL+"admin/report/transaction-summary-audit?startDate="+fixed_date;
     });
 
     $("#btn_search").click(function () {
@@ -194,7 +194,7 @@
         }
 
         //window.location = BASEURL + "report/product-summary?startDate="+fixed_date;
-        window.location = "/admin/report/transaction-summary-audit?startDate="+start_date+"&endDate="+end_date;
+        window.location = BASEURL+"admin/report/transaction-summary-audit?startDate="+start_date+"&endDate="+end_date;
 
 
     });
@@ -208,16 +208,16 @@
         var pdfUrl="";
 
         if(start_date!="" && end_date!=""){
-            pdfUrl = "/admin/report-pdf/transaction-summary-audit/download?startDate="+start_date+"&endDate="+end_date;
+            pdfUrl = "admin/report-pdf/transaction-summary-audit/download?startDate="+start_date+"&endDate="+end_date;
 
         }else if(fixed_date!=""){
-            pdfUrl = "/admin/report-pdf/transaction-summary-audit/download?startDate="+fixed_date;
+            pdfUrl = "admin/report-pdf/transaction-summary-audit/download?startDate="+fixed_date;
 
         }else{
-            pdfUrl = "/admin/report-pdf/transaction-summary-audit/download";
+            pdfUrl = "admin/report-pdf/transaction-summary-audit/download";
         }
 
-        window.open(pdfUrl,'_blank');
+        window.open(BASEURL+pdfUrl,'_blank');
 
     });
 </script>

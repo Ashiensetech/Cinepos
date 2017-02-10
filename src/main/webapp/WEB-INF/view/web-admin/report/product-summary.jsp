@@ -169,7 +169,7 @@
                 return false;
             }
             //window.location = BASEURL + "report/product-summary?startDate="+fixed_date;
-            window.location = "/admin/report/product-summary?startDate="+fixed_date;
+            window.location = BASEURL+"admin/report/product-summary?startDate="+fixed_date;
         });
 
     $("#btn_search").click(function () {
@@ -188,7 +188,7 @@
         }
 
         //window.location = BASEURL + "report/product-summary?startDate="+fixed_date;
-        window.location = "/admin/report/product-summary?startDate="+start_date+"&endDate="+end_date;
+        window.location = BASEURL+"admin/report/product-summary?startDate="+start_date+"&endDate="+end_date;
 
 
     });
@@ -202,16 +202,16 @@
         var pdfUrl="";
 
         if(start_date!="" && end_date!=""){
-            pdfUrl = "/admin/report-pdf/product-sale-summary/download?startDate="+start_date+"&endDate="+end_date;
+            pdfUrl = "admin/report-pdf/product-sale-summary/download?startDate="+start_date+"&endDate="+end_date;
 
         }else if(fixed_date!=""){
-            pdfUrl = "/admin/report-pdf/product-sale-summary/download?startDate="+fixed_date;
+            pdfUrl = "admin/report-pdf/product-sale-summary/download?startDate="+fixed_date;
 
         }else{
-            pdfUrl = "/admin/report-pdf/product-sale-summary/download";
+            pdfUrl = "admin/report-pdf/product-sale-summary/download";
         }
 
-        window.open(pdfUrl,'_blank');
+        window.open(BASEURL+pdfUrl,'_blank');
 
     });
 

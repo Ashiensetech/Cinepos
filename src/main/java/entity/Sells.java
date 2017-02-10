@@ -32,26 +32,33 @@ public class Sells {
     @Column(name = "quantity")
     private int quantity;
 
-    @Basic
-    @Column(name = "terminal_id")
-    private int terminalId;
+//    @Basic
+//    @Column(name = "terminal_id")
+//    private int terminalId;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name = "sell_id")
+    @OneToOne
+    @JoinColumn(name = "terminal_id",referencedColumnName = "id")
+    private Terminal terminal;
+
+    @OneToMany
+    @JoinColumn(name = "sell_id",referencedColumnName = "id")
     private List<SellsDetails> SellDetails;
 
     @Basic
     @Column(name = "status")
     private boolean status;
 
-    @Basic
-    @Column(name = "created_by")
-    private int createdBy;
+//    @Basic
+//    @Column(name = "created_by")
+//    private int createdBy;
+
+    @OneToOne
+    @JoinColumn(name = "created_by",referencedColumnName = "id")
+    private AuthCredential authCredential;
 
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
-
 
     public int getId() {
         return id;
@@ -93,12 +100,12 @@ public class Sells {
         this.quantity = quantity;
     }
 
-    public int getTerminalId() {
-        return terminalId;
+    public Terminal getTerminal() {
+        return terminal;
     }
 
-    public void setTerminalId(int terminalId) {
-        this.terminalId = terminalId;
+    public void setTerminal(Terminal terminal) {
+        this.terminal = terminal;
     }
 
     public List<SellsDetails> getSellDetails() {
@@ -117,12 +124,12 @@ public class Sells {
         this.status = status;
     }
 
-    public int getCreatedBy() {
-        return createdBy;
+    public AuthCredential getAuthCredential() {
+        return authCredential;
     }
 
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
+    public void setAuthCredential(AuthCredential authCredential) {
+        this.authCredential = authCredential;
     }
 
     public Timestamp getCreatedAt() {
@@ -132,6 +139,7 @@ public class Sells {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
+
 
     @Override
     public boolean equals(Object o) {
@@ -144,12 +152,13 @@ public class Sells {
         if (Double.compare(sells.sellingAmount, sellingAmount) != 0) return false;
         if (isCombo != sells.isCombo) return false;
         if (quantity != sells.quantity) return false;
-        if (terminalId != sells.terminalId) return false;
         if (status != sells.status) return false;
-        if (createdBy != sells.createdBy) return false;
         if (sellingComment != null ? !sellingComment.equals(sells.sellingComment) : sells.sellingComment != null)
             return false;
+        if (terminal != null ? !terminal.equals(sells.terminal) : sells.terminal != null) return false;
         if (SellDetails != null ? !SellDetails.equals(sells.SellDetails) : sells.SellDetails != null) return false;
+        if (authCredential != null ? !authCredential.equals(sells.authCredential) : sells.authCredential != null)
+            return false;
         return createdAt != null ? createdAt.equals(sells.createdAt) : sells.createdAt == null;
     }
 
@@ -163,27 +172,13 @@ public class Sells {
         result = 31 * result + (sellingComment != null ? sellingComment.hashCode() : 0);
         result = 31 * result + (isCombo ? 1 : 0);
         result = 31 * result + quantity;
-        result = 31 * result + terminalId;
+        result = 31 * result + (terminal != null ? terminal.hashCode() : 0);
         result = 31 * result + (SellDetails != null ? SellDetails.hashCode() : 0);
         result = 31 * result + (status ? 1 : 0);
-        result = 31 * result + createdBy;
+        result = 31 * result + (authCredential != null ? authCredential.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Sells{" +
-                "id=" + id +
-                ", sellingAmount=" + sellingAmount +
-                ", sellingComment='" + sellingComment + '\'' +
-                ", isCombo=" + isCombo +
-                ", quantity=" + quantity +
-                ", terminalId=" + terminalId +
-                ", SellDetails=" + SellDetails +
-                ", status=" + status +
-                ", createdBy=" + createdBy +
-                ", createdAt=" + createdAt +
-                '}';
-    }
+
 }
