@@ -90,6 +90,7 @@ public class AdminReportController {
 
         Timestamp sDate = null;
         Timestamp eDate = null;
+        Timestamp fDate=null;
         if(startDate!=null && !startDate.trim().equals("")){
             try {
                 sDate = DateHelper.getStringToTimeStamp(startDate + " 00:00:00", "yyyy-MM-dd H:m:s");
@@ -114,6 +115,8 @@ public class AdminReportController {
                 Timestamp tmpSData = DateHelper.getStringToTimeStamp(startDate+ " 00:00:00", "yyyy-MM-dd H:m:s");
                 Timestamp tmpEData = DateHelper.getStringToTimeStamp(startDate + " 23:59:59", "yyyy-MM-dd H:m:s");
                 sells = sellsDao.getByDateRange(tmpSData, tmpEData);
+                fDate=tmpSData;
+                sDate=null;
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -134,7 +137,7 @@ public class AdminReportController {
         mav.addObject("sells",sells);
         mav.addObject("startDate",sDate);
         mav.addObject("endDate",eDate);
-        //mav.addObject("fDate",fDate);
+        mav.addObject("fDate",fDate);
         mav.addObject("printed_by",authCredential.getUserName());
         mav.addObject("printingDate",printingDate);
         mav.addObject("printedTime",printedTime);
@@ -354,7 +357,6 @@ public class AdminReportController {
         if(sDate!=null && eDate!=null){
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(sDate, eDate);
         }else if(sDate!=null) {
-            System.out.println(productSummaryReportViewList);
             fDate=sDate;
             sDate=null;
             productSummaryReportViewList = productSummaryReportViewDao.getByDateRange(fDate, fDate);
