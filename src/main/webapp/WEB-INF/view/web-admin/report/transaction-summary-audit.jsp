@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-md-6" style="margin-top: 25px;">
                     <button type="" class="btn btn-primary" id="btnPrint">Print</button>
-                    <button type="" class="btn btn-primary" >Export</button>
+                    <button type="" class="btn btn-primary" id="btnExport">Export</button>
                     <%-- <button type="" class="btn btn-primary" >Email</button>
                      <button type="" class="btn btn-success" >Save</button>--%>
                 </div>
@@ -200,7 +200,7 @@
     });
 
 
-    $("#btnPrint").click(function () {
+    $("#btnPrint,#btnExport").click(function () {
 
         var start_date=$("#start_date").val();
         var end_date=$("#end_date").val();
