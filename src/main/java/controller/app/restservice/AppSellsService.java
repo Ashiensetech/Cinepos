@@ -91,6 +91,7 @@ public class AppSellsService {
 
         List<SellsDetails> sellDetailsArray = new ArrayList<>();
         Set<SellsDetails> sellDetails = new HashSet<>();
+        Set<Ticket> ticketList = new HashSet<>();
 
         List<CartForm> sellsDetailsCart=createOrMergeSellingForm.orderForm.getCartForms();
 
@@ -107,26 +108,35 @@ public class AppSellsService {
 
 
             if(targetItem.getSellingType().equals("product")){
+
                 ConcessionProduct concessionProduct=concessionProductDao.getById(targetItem.getId());
                 if(concessionProduct == null){
-                    serviceResponse.setValidationError("concessionProduct","Product not found");
+                    serviceResponse.setValidationError("concessionProduct","Product not available");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
                 sellsDetails.setConcessionProduct(concessionProduct);
+
             }else if (targetItem.getSellingType().equals("combo")){
+
                 Combo combo=comboDao.getById(targetItem.getId());
                 if(combo == null){
-                    serviceResponse.setValidationError("concessionProduct","Combo not found");
+                    serviceResponse.setValidationError("concessionProduct","Combo not available");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
                 sellsDetails.setCombo(combo);
+
             }else{
+
                 Ticket ticket=ticketDao.getById(Long.valueOf(targetItem.getId()));
                 if(ticket == null){
-                    serviceResponse.setValidationError("concessionProduct","Ticket not found");
+                    serviceResponse.setValidationError("concessionProduct","Ticket not available");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
+
+                 String currentState="AVAILABLE";
                  sellsDetails.setTicket(ticket);
+                 ticket.setCurrentState(currentState);
+                 ticketList.add(ticket);
             }
 
             totalPrice+=targetItem.getPrice();

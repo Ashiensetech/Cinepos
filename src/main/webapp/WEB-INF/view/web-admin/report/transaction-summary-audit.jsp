@@ -90,7 +90,7 @@
                                     <label>Date printed: ${printingDate}</label><br>
                                     <label>Time printed: ${printedTime}</label><br>
                                     <label>Start date: <fmt:formatDate  value="${startDate}" pattern="yyyy-MM-dd" /><fmt:formatDate  value="${fDate}" pattern="yyyy-MM-dd" /></label><br>
-                                    <label>End date:<fmt:formatDate  value="${endDate}" pattern="yyyy-MM-dd" /><fmt:formatDate  value="${fDate}" pattern="yyyy-MM-dd" /></label>
+                                    <label>End date:<fmt:formatDate  value="${endDate}" pattern="yyyy-MM-dd" /></label>
                                 </div>
                                 <div class="col-md-6">
                                     Seq Digital
