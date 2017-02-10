@@ -110,12 +110,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-
-    `
                                 <d:forEach var="sell" items="${sells}" >
                                     <tr>
                                         <td>${sell.id}</td>
-                                        <td><fmt:formatDate  value="${sell.createdAt}" pattern="yyyy-MM-dd" />s</td>
+                                        <td><fmt:formatDate  value="${sell.createdAt}" pattern="yyyy-MM-dd" /></td>
                                         <td>${sell.authCredential.userName}</td>
                                         <td>${sell.terminal.name}</td>
                                         <td>

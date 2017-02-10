@@ -164,6 +164,8 @@
             <version>5.5.10</version>
         </dependency>
 
+
+
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itext-pdfa</artifactId>
@@ -181,6 +183,33 @@
             <artifactId>xmlworker</artifactId>
             <version>5.5.10</version>
         </dependency>
+
+<!--
+
+        &lt;!&ndash; https://mvnrepository.com/artifact/org.aspectj/aspectjrt &ndash;&gt;
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.6.8</version>
+        </dependency>
+
+        &lt;!&ndash; https://mvnrepository.com/artifact/aspectj/aspectjweaver &ndash;&gt;
+        <dependency>
+            <groupId>aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.5.2a</version>
+        </dependency>
+
+        &lt;!&ndash; https://mvnrepository.com/artifact/org.springframework/spring-aop &ndash;&gt;
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>4.1.4.RELEASE</version>
+        </dependency>
+
+-->
+
+
 
     </dependencies>
 
