@@ -1,9 +1,12 @@
 package controller.app.restservice;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import controller.app.AppUriPreFix;
 import dao.ScreenDao;
 import entity.ConcessionProduct;
 import entity.Screen;
+import entity.iface.ScreenShortIfaceApp;
+import entity.iface.ScreenSummaryIfaceApp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +27,24 @@ public class AppScreenService {
     @Autowired
     ScreenDao screenDao;
 
+    @JsonView(ScreenSummaryIfaceApp.class)
     @RequestMapping(value = "/get/all", method = RequestMethod.GET)
     public ResponseEntity<?> getAllScreen(){
 
-        List<Screen> screens= screenDao.getAll();
+        List<ScreenSummaryIfaceApp> screens= screenDao.getSummaryAll();
+
+        if(screens==null || screens.size()==0){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(screens);
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(screens);
+    }
+
+    @JsonView(ScreenShortIfaceApp.class)
+    @RequestMapping(value = "/get/all/short", method = RequestMethod.GET)
+    public ResponseEntity<?> getAllShortScreen(){
+
+        List<ScreenShortIfaceApp> screens= screenDao.getShortAll();
 
         if(screens==null || screens.size()==0){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(screens);

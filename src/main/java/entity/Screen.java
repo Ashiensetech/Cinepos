@@ -1,19 +1,23 @@
 package entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import entity.iface.ScreenShortIfaceApp;
+import entity.iface.ScreenSummaryIfaceApp;
 
 import javax.persistence.*;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by mi on 1/5/17.
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
+
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_EMPTY)
 @Entity
 @Table(name = "screen", schema = "")
-public class Screen {
+public class Screen implements ScreenShortIfaceApp,ScreenSummaryIfaceApp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -30,7 +34,7 @@ public class Screen {
     @Column(name = "no_of_seat")
     private int noOfSeat;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "screen_dimension_id",referencedColumnName = "id")
     private ScreenDimension screenDimension;
 
@@ -56,8 +60,8 @@ public class Screen {
     private Time closingTime;
 
 
-    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinColumn(name = "screen_id",referencedColumnName = "id",nullable = true)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "screen_id",referencedColumnName = "id")
     private List<ScreenSeat> seats;
 
     @Basic
@@ -155,7 +159,9 @@ public class Screen {
 
 
     public List<ScreenSeat> getSeats() {
-        return seats;
+        System.out.println("GET SEATS");
+        System.out.println(seats);
+        return (seats==null)?new ArrayList<>():seats;
     }
 
     public void setSeats(List<ScreenSeat> screenSeats) {

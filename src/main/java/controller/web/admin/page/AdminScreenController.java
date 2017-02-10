@@ -36,7 +36,7 @@ public class AdminScreenController {
     @RequestMapping(value = "/all")
     public ModelAndView allScreenPage(){
         ModelAndView mav =  new ModelAndView("web-admin/screen/all-screen");
-        mav.addObject("screens",screenDao.getAll());
+        mav.addObject("screens",screenDao.getSummaryAll());
         return mav;
     }
 

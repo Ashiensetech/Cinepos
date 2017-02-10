@@ -1,6 +1,8 @@
 package dao;
 
 import entity.Screen;
+import entity.iface.ScreenShortIfaceApp;
+import entity.iface.ScreenSummaryIfaceApp;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
@@ -58,7 +60,22 @@ public class ScreenDao extends BaseDao {
         }
         return null;
     }
-    public List<Screen> getAll(){
+    public List<ScreenSummaryIfaceApp> getSummaryAll(){
+        Session session = this.sessionFactory.openSession();
+        try{
+            session = this.sessionFactory.openSession();
+            return session.createQuery("FROM Screen  order by id desc ")
+                    .list();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<>();
+
+    }
+    public List<ScreenShortIfaceApp> getShortAll(){
         Session session = this.sessionFactory.openSession();
         try{
             session = this.sessionFactory.openSession();

@@ -1,5 +1,6 @@
 package controller.web.admin.restservice;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import controller.web.admin.AdminUriPreFix;
 
 import dao.AuthCredentialDao;
@@ -50,7 +51,7 @@ public class AdminUserService {
     @Autowired
     EditAdminUserValidator editAdminUserValidator;
 
-    //@JsonView(AppCredential.class)
+    @JsonView(AppCredential.class)
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseEntity<?> createUser(@Valid CreateAdminUserForm createAdminUserForm,BindingResult result){
         ServiceResponse serviceResponse = ServiceResponse.getInstance();

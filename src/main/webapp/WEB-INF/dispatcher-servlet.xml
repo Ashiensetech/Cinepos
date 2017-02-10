@@ -10,7 +10,20 @@
 
 
     <mvc:annotation-driven/>
-<!--    <aop:aspectj-autoproxy />-->
+    <!--<mvc:annotation-driven>
+        <mvc:message-converters>
+            &lt;!&ndash;json.MappingJackson2HttpMessageConverter &ndash;&gt;
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean class="json.HibernateAwareObjectMapper" >
+                        <property name="serializationInclusion" value="NON_NULL" />
+                    </bean>
+                </property>
+
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <aop:aspectj-autoproxy />-->
 
     <context:component-scan base-package="controller,dao,utility,validator,authuser,helper"   />
 
