@@ -277,6 +277,8 @@ public class AdminReportPdfController {
             table.addCell("Qty");
             table.addCell("Total");
 
+            System.out.println(sells);
+
 
 
             if(sells!=null && sells.size()>0){
