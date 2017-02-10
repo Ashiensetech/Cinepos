@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by sunno on 1/25/17.
@@ -138,6 +139,35 @@ public class TicketDao extends BaseDao {
             if(session!=null)session.close();
         }
         return null;
+    }
+
+    public boolean updateSet(Set<Ticket> ticketSet){
+
+        Session session = null;
+
+        if(ticketSet.size()==0){
+            return false;
+        }
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            int i=0;
+            for(Ticket ticket:ticketSet){
+                session.saveOrUpdate(ticket);
+                if(i%15==0){
+                    session.flush();
+                    session.clear();
+                }
+                i++;
+            }
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
     }
 
 }
