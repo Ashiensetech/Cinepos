@@ -30,11 +30,11 @@ public class SellDetailsDao extends BaseDao{
     }
 
 
-    public void insertOrUpdate(Set<SellsDetails> sellsDetailsList){
+    public boolean insertOrUpdate(Set<SellsDetails> sellsDetailsList){
         Session session = null;
 
         if(sellsDetailsList.size()==0){
-            return;
+            return false;
         }
         try {
             session = this.sessionFactory.openSession();
@@ -48,19 +48,15 @@ public class SellDetailsDao extends BaseDao{
                 }
                 i++;
             }
-
             session.getTransaction().commit();
+            return true;
         }catch (HibernateException hEx){
             // Insert to database exception log
-            hEx.printStackTrace();
+            return false;
         }finally {
             if(session!=null)session.close();
         }
     }
-
-
-
-
 
     public void update(SellsDetails sellsDetails){
         Session session = null;
@@ -72,6 +68,33 @@ public class SellDetailsDao extends BaseDao{
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
+
+    public boolean delete(Set<SellsDetails> sellsDetailList){
+
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            int i=0;
+            for(SellsDetails sellsDetails:sellsDetailList){
+                session.delete(sellsDetails);
+                if(i%15==0){
+                    session.flush();
+                    session.clear();
+                }
+                i++;
+            }
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
         }finally {
             if(session!=null)session.close();
         }

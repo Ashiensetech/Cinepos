@@ -7,6 +7,7 @@ import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import utility.ServiceResponse;
@@ -44,12 +45,14 @@ public class AppSellsService {
     TicketDao ticketDao;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<?> create(@Valid CreateOrMergeSellingForm createOrMergeSellingForm,
+    public ResponseEntity<?> create(Authentication authentication,
+                                    @Valid CreateOrMergeSellingForm createOrMergeSellingForm,
                                     BindingResult result,
                                     HttpServletRequest request) {
         String errorMsg="Order create successfully";
         float totalPrice=0;
         int totalQuantity=0;
+
 
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
         /***************** Validation  [Start] *************/
@@ -72,20 +75,16 @@ public class AppSellsService {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
-        //System.out.println(createOrMergeSellingForm.orderForm.getTerminalId()+"Hello");
-        //System.out.println(createOrMergeSellingForm.orderForm.getCartForms());
 
        Terminal terminal= terminalDao.getById(createOrMergeSellingForm.orderForm.getTerminalId());
-       AuthCredential authCredential=authCredentialDao.getById(1);
+       AuthCredential authCredentialUser=authCredentialDao.getById(1);
 
         Sells sells=new Sells();
-        //sells.setSellingAmount(1.5);
-        sells.setSellingComment("Testing comment for sells");
+        sells.setSellingComment("Dummy comment for sells");
         sells.setCombo(true);
-       // sells.setQuantity(5);
         sells.setTerminal(terminal);
         sells.setStatus(true);
-        sells.setAuthCredential(authCredential);
+        sells.setAuthCredential(authCredentialUser);
 
         sellsDao.insert(sells);
 
@@ -104,7 +103,7 @@ public class AppSellsService {
             sellsDetails.setUnitSellingAmount(targetItem.getPrice());
             sellsDetails.setQuantity(targetItem.getQuantity());
             sellsDetails.setSellingType(targetItem.getSellingType());
-            sellsDetails.setAuthCredential(authCredential);
+            sellsDetails.setAuthCredential(authCredentialUser);
 
 
             if(targetItem.getSellingType().equals("product")){
@@ -136,15 +135,21 @@ public class AppSellsService {
             sellDetails.add(sellsDetails);
         }
 
-        sellDetailsDao.insertOrUpdate(sellDetails);
 
-        sells.setSellDetails(sellDetails);
+        if(sellDetailsDao.insertOrUpdate(sellDetails)){
+            sells.setSellDetails(sellDetails);
 
-        Sells sellsUpdate=sellsDao.getById(sells.getId());
-        sellsUpdate.setQuantity(totalQuantity);
-        sellsUpdate.setSellingAmount(totalPrice);
+            Sells sellsUpdate=sellsDao.getById(sells.getId());
+            sellsUpdate.setQuantity(totalQuantity);
+            sellsUpdate.setSellingAmount(totalPrice);
 
-        sellsDao.update(sellsUpdate);
+            sellsDao.update(sellsUpdate);
+        }else{
+            sellsDao.delete(sells);
+            sellDetailsDao.delete(sellDetails);
+        }
+
+
 
         return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
 

@@ -91,4 +91,22 @@ public class SellsDao extends  BaseDao{
         }
         return new ArrayList<>();
     }
+
+    public boolean delete(Sells Sells){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.delete(Sells);
+            session.getTransaction().commit();
+            return true;
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
 }
