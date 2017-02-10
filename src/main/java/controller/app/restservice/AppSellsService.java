@@ -111,7 +111,7 @@ public class AppSellsService {
 
                 ConcessionProduct concessionProduct=concessionProductDao.getById(targetItem.getId());
                 if(concessionProduct == null){
-                    serviceResponse.setValidationError("concessionProduct","Product not available");
+                    serviceResponse.setValidationError("sellProduct","Product not available");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
                 sellsDetails.setConcessionProduct(concessionProduct);
@@ -120,7 +120,7 @@ public class AppSellsService {
 
                 Combo combo=comboDao.getById(targetItem.getId());
                 if(combo == null){
-                    serviceResponse.setValidationError("concessionProduct","Combo not available");
+                    serviceResponse.setValidationError("sellProduct","Combo not available");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
                 sellsDetails.setCombo(combo);
@@ -128,12 +128,13 @@ public class AppSellsService {
             }else{
 
                 Ticket ticket=ticketDao.getById(Long.valueOf(targetItem.getId()));
-                if(ticket == null){
-                    serviceResponse.setValidationError("concessionProduct","Ticket not available");
+
+                if(ticket == null || ticket.getCurrentState().equals("BOOKED" )|| ticket.getCurrentState().equals("SOLD")){
+                    serviceResponse.setValidationError("sellProduct","Ticket not available");
                     return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
 
-                 String currentState="AVAILABLE";
+                 String currentState="SOLD";
                  sellsDetails.setTicket(ticket);
                  ticket.setCurrentState(currentState);
                  ticketList.add(ticket);
@@ -154,6 +155,11 @@ public class AppSellsService {
             sellsUpdate.setSellingAmount(totalPrice);
 
             sellsDao.update(sellsUpdate);
+
+            for(Ticket ticket:ticketList){
+                ticketDao.insertOrUpdate(ticket);
+            }
+
         }else{
             sellsDao.delete(sells);
             sellDetailsDao.delete(sellDetails);
