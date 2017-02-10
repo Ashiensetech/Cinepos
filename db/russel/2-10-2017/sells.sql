@@ -42,8 +42,6 @@ CREATE TABLE `sells` (
 -- Dumping data for table `sells`
 --
 
-INSERT INTO `sells` (`id`, `selling_amount`, `selling_comment`, `is_combo`, `quantity`, `terminal_id`, `status`, `created_by`, `created_at`) VALUES
-(13, '90.00', 'Testing comment for sells', 1, 9, 1, 1, 1, '2017-02-10 07:17:13');
 
 --
 -- Indexes for dumped tables
