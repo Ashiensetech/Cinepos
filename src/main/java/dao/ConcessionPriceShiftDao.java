@@ -46,6 +46,7 @@ public class ConcessionPriceShiftDao extends BaseDao{
         return new ArrayList<ConcessionPriceShift>();
     }
 
+
     public ConcessionPriceShift getById(Integer id){
         Session session = null;
         try{
@@ -64,9 +65,8 @@ public class ConcessionPriceShiftDao extends BaseDao{
         return null;
     }
 
-
-
     public ConcessionPriceShift getByProductAndDates(Integer productId,Date startDate, Date endDate){
+
         Session session = null;
         ConcessionProduct concessionProduct = concessionProductDao.getById(productId);
         try{
