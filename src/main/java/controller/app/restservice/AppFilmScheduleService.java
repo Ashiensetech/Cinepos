@@ -1,6 +1,7 @@
 package controller.app.restservice;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import controller.app.AppUriPreFix;
 import controller.web.admin.AdminUriPreFix;
 import dao.FilmDao;
@@ -12,6 +13,7 @@ import entity.AuthCredential;
 import entity.FilmSchedule;
 import entity.FilmTime;
 import entity.entityView.BoxOfficeSchedulingView;
+import entity.iface.film.schedule.FilmScheduleSummaryIface;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -89,7 +91,7 @@ public class AppFilmScheduleService {
         List<FilmSchedule> filmSchedules = filmScheduleDao.getByDateRange(screenId,sDate,eDate);
 
         if(filmSchedules==null || filmSchedules.size()==0){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(filmSchedules);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(filmSchedules);
     }

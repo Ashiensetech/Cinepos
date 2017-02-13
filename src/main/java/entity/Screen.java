@@ -1,5 +1,6 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import entity.iface.ScreenShortIfaceApp;
 import entity.iface.ScreenSummaryIfaceApp;
@@ -34,7 +35,7 @@ public class Screen implements ScreenShortIfaceApp,ScreenSummaryIfaceApp {
     @Column(name = "no_of_seat")
     private int noOfSeat;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "screen_dimension_id",referencedColumnName = "id")
     private ScreenDimension screenDimension;
 
@@ -60,6 +61,7 @@ public class Screen implements ScreenShortIfaceApp,ScreenSummaryIfaceApp {
     private Time closingTime;
 
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "screen_id",referencedColumnName = "id")
     private List<ScreenSeat> seats;

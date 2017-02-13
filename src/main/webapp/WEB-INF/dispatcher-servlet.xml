@@ -9,10 +9,10 @@
        http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-    <mvc:annotation-driven/>
-    <!--<mvc:annotation-driven>
+    <!--<mvc:annotation-driven/>-->
+    <mvc:annotation-driven>
         <mvc:message-converters>
-            &lt;!&ndash;json.MappingJackson2HttpMessageConverter &ndash;&gt;
+            <!--json.MappingJackson2HttpMessageConverter -->
             <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="objectMapper">
                     <bean class="json.HibernateAwareObjectMapper" >
@@ -23,7 +23,9 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
-    <aop:aspectj-autoproxy />-->
+
+
+  <!--  <aop:aspectj-autoproxy />-->
 
     <context:component-scan base-package="controller,dao,utility,validator,authuser,helper"   />
 

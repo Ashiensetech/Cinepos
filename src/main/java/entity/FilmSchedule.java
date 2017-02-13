@@ -1,6 +1,8 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import entity.iface.film.schedule.FilmScheduleSummaryIface;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -21,6 +23,7 @@ public class FilmSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "screen_id",referencedColumnName = "id")
     private Screen screen;
 
