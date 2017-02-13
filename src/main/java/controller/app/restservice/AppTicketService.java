@@ -3,6 +3,7 @@ package controller.app.restservice;
 import controller.app.AppUriPreFix;
 import dao.FilmScheduleDao;
 import dao.FilmTimeDao;
+import dao.SeatTypeDao;
 import dao.TicketDao;
 import entity.*;
 import entity.jspView.TicketSeat;
@@ -34,6 +35,10 @@ public class AppTicketService {
 
     @Autowired
     TicketDao ticketDao;
+
+    @Autowired
+    SeatTypeDao seatTypeDao;
+
 
     @RequestMapping(value = "/seats/get-by-film-time/{filmTimeId}", method = RequestMethod.GET)
     public ResponseEntity<?> getTicketSeatByFilmTimeId(@PathVariable int filmTimeId){
@@ -134,5 +139,15 @@ public class AppTicketService {
          * Return Ticket  JSON
          * */
         return ResponseEntity.status(HttpStatus.OK).body(tickets);
+    }
+    @RequestMapping(value = "/get-by-film-time/{filmTimeId}/{seatId}")
+    public ResponseEntity<?> getTicketByFilmTimeAndSeatId(@PathVariable Integer filmTimeId,
+                                                   @PathVariable Integer seatId){
+
+        Ticket ticket = ticketDao.getByFilmTimeAndSeatId(filmTimeId, seatId);
+        if(ticket==null ){
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(ticket);
     }
 }

@@ -1,5 +1,7 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -96,6 +98,8 @@ public class Ticket {
     @Basic
     @Column(name = "end_date")
     private Date endDate;
+
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
