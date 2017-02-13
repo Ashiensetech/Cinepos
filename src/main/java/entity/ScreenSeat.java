@@ -1,5 +1,7 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -27,6 +29,7 @@ public class ScreenSeat {
     private String name;
 
     @Basic
+    @JsonIgnore
     @Column(name = "created_by")
     private Integer createdBy;
 

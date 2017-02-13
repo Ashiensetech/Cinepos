@@ -1,6 +1,8 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.iface.film.schedule.FilmScheduleSummaryIface;
 
 import javax.persistence.*;
 import java.sql.Time;

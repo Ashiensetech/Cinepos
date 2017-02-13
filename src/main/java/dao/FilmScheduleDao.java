@@ -73,8 +73,8 @@ public class FilmScheduleDao   extends BaseDao {
         Session session=this.sessionFactory.openSession();
 
         try{
-            return session.createQuery("select  distinct filmSchedule FROM FilmSchedule filmSchedule left" +
-                    " join fetch filmSchedule.filmTimes  filmTimes " +
+            return session.createQuery("select  distinct filmSchedule FROM FilmSchedule filmSchedule " +
+                    " left join fetch filmSchedule.filmTimes  filmTimes " +
                     " where filmSchedule.screen.id =:screenId " +
                     " and filmSchedule.date >= :sDate " +
                     " and filmSchedule.date <= :eData " +

@@ -85,6 +85,12 @@
     <script type="text/javascript" src="<c:url value="/resources/js/helper/ErrorMessaging.js"/>"></script>
     <script>
         var BASEURL = "<c:url value="/" />";
+        try{
+            BASEURL = BASEURL.split(";")[0];
+        }catch(ex){
+            console.log(ex);
+            BASEURL = "<c:url value="/" />";
+        }
         function doLogin(){
             $("#loginError").html("").hide();
             $("#progressStatus").html("Processing...").show();

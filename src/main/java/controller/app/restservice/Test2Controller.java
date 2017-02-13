@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by mi on 12/21/16.
@@ -83,7 +85,19 @@ public class Test2Controller {
 
         document.close();
     }
+    @RequestMapping(value="/gc")
+    public ResponseEntity<?> gc(){
+        Runtime rt = Runtime.getRuntime();
 
+
+        Map<String,Long> gcInfo = new HashMap<>();
+        gcInfo.put("Total_JVM_Memory",rt.totalMemory());
+        gcInfo.put("Before_GC_Memory",rt.freeMemory());
+        rt.gc();
+        gcInfo.put("After_GC_Memory",rt.freeMemory());
+
+        return ResponseEntity.status(HttpStatus.OK).body(gcInfo);
+    }
     @RequestMapping(value="/schedule_view")
     public ResponseEntity<?> scheduleView(){
         return ResponseEntity.status(HttpStatus.OK).body(boxOfficeSchedulingViewDao.getByScheduleId(18 ));
