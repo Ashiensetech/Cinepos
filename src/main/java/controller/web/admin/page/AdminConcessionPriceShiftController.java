@@ -30,7 +30,7 @@ public class AdminConcessionPriceShiftController {
 
     @RequestMapping(value = "/create")
     public ModelAndView createConcessionPriceShift(){
-        List<ConcessionProduct> concessionProducts = concessionProductDao.getAll();
+        List<ConcessionProduct> concessionProducts = concessionProductDao.getAllToPriceShift();
         ModelAndView mav =  new ModelAndView("web-admin/concession-price-shift/create-concession-price-shift");
         mav.addObject("concessionProducts",concessionProducts);
         return mav;
@@ -48,7 +48,7 @@ public class AdminConcessionPriceShiftController {
     public ModelAndView editSeatPriceShiftPage(Authentication authentication, @PathVariable Integer concessionProductPriceShiftId){
         ModelAndView mav =  new ModelAndView("web-admin/concession-price-shift/edit-concession-price-shift");
         ConcessionPriceShift concessionPriceShift = concessionPriceShiftDao.getById(concessionProductPriceShiftId);
-        List<ConcessionProduct> concessionProducts= concessionProductDao.getAll();
+        List<ConcessionProduct> concessionProducts= concessionProductDao.getAllToPriceShift();
         mav.addObject("concessionProducts",concessionProducts);
         mav.addObject("concessionPriceShift",concessionPriceShift);
         return mav;
