@@ -24,7 +24,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-lg-12">
-          <h1 class="page-header">Add admin</h1>
+          <h1 class="page-header">Edit Screen</h1>
         </div>
         <!-- /.col-lg-12 -->
       </div>
@@ -109,6 +109,21 @@
     var closingTime = $("#closingTime").val();
     openingTime = (openingTime=="")?null:openingTime;
     closingTime = (closingTime=="")?null:closingTime;
+
+    var sDateSpliter=openingTime.split(":");
+    var cDateSpliter=closingTime.split(":");
+
+
+      if(sDateSpliter.length==2){
+          openingTime = openingTime+":00";
+      }
+
+      if(cDateSpliter.length==2){
+          closingTime = closingTime+":00";
+      }
+
+
+
 
     enableDisableFormElement("updateScreenForm",["input","button","select"],false);
 

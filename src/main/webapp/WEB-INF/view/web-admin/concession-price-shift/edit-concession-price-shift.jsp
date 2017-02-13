@@ -46,7 +46,7 @@
 
                         <div class="form-group">
                             <label>Price</label>
-                            <input id="price" class="form-control" value="${concessionPriceShift.price}">
+                            <input id="price" type="number" min="0" class="form-control" value="${concessionPriceShift.price}">
                             <p class="help-block error" id="errorMsg_price"></p>
                         </div>
 

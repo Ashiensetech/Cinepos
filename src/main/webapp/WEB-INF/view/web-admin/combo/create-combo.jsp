@@ -46,7 +46,7 @@
 
                                 <div class="form-group">
                                     <label>Price</label>
-                                    <input type="number" name="" id="price" class="form-control">
+                                    <input type="number" min="0" name="" id="price" class="form-control">
                                     <p class="help-block error" id="errorMsg_price"></p>
                                 </div>
 

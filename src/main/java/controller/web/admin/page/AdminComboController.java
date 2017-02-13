@@ -41,7 +41,7 @@ public class AdminComboController {
 
     @RequestMapping(value = "/create",method = RequestMethod.GET)
     public ModelAndView create(){
-        List<ConcessionProduct> concessionProductList= concessionProductDao.getAll();
+        List<ConcessionProduct> concessionProductList= concessionProductDao.getAllToIsCombo();
         List<SeatType> seatTypeList=seatTypeDao.getAll();
         ModelAndView modelAndView=new ModelAndView("web-admin/combo/create-combo");
         modelAndView.addObject("concessionProductList",concessionProductList);

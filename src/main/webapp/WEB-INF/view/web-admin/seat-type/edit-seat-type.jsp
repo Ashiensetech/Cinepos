@@ -39,23 +39,38 @@
             </div>
             <div class="form-group">
               <label>Adult Price</label>
-              <input class="form-control" type="number" id="adultPrice" value="${seatType.adultPrice}" >
+              <input class="form-control" type="number" min="0" id="adultPrice" value="${seatType.adultPrice}" >
               <p class="help-block error" id="errorMsg_adultPrice"></p>
             </div>
             <div class="form-group">
-              <label>Adult Price</label>
-              <input class="form-control" type="number" id="childPrice" value="${seatType.childPrice}">
+              <label>Child Price</label>
+              <input class="form-control" type="number"  min="0" id="childPrice" value="${seatType.childPrice}">
               <p class="help-block error" id="errorMsg_childPrice"></p>
             </div>
 
-            <div class="form-group">
-              <label>Is Default</label>
-              <input class="form-control check-box" type="checkbox"
-                <d:if test="${seatType.isDefault == true}" >
-                       checked
-                </d:if>
-                     id="isDefault" >
-              <p class="help-block error" id="errorMsg_isDefault"></p>
+            <%--<div class="form-group">--%>
+              <%--<label>Is Default</label>--%>
+              <%--<input class="form-control check-box" type="checkbox"--%>
+                <%--<d:if test="${seatType.isDefault == true}" >--%>
+                       <%--checked--%>
+                <%--</d:if>--%>
+                     <%--id="isDefault" >--%>
+              <%--<p class="help-block error" id="errorMsg_isDefault"></p>--%>
+            <%--</div>--%>
+
+
+            <div class="form-group clearfix">
+              <label class="pull-left">Is Combo?</label>
+              <div class="col-md-6">
+                <div class="onoffswitch">
+                  <input type="checkbox" ${(seatType.isDefault==true)?"checked":""} value="${concessionProduct.isCombo}" name="isDefault" class="onoffswitch-checkbox" id="isDefault">
+                  <label class="onoffswitch-label" for="isDefault">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                  </label>
+                </div>
+                <p class="help-block error" id="errorMsg_isDefault"></p>
+              </div>
             </div>
 
             <br>

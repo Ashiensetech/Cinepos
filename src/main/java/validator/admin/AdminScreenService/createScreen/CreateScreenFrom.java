@@ -3,6 +3,7 @@ package validator.admin.AdminScreenService.createScreen;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Time;
 
@@ -19,9 +20,11 @@ public class CreateScreenFrom {
     private Integer screenTypeId;
 
     @NotNull(message = "Row count required")
+    @Min(value = 1, message = "The Row must be positive")
     private Integer  rowCount;
 
     @NotNull(message = "Column count required")
+    @Min(value = 1, message = "The Column must be positive")
     private Integer columnCount;
 
     @NotNull(message = "Seat count required")

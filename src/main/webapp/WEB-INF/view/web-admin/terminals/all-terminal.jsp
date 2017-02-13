@@ -37,8 +37,8 @@
                             <th>Name</th>
                             <th>Ip Address</th>
                             <th>Terminal Code</th>
-                            <th>Email 2</th>
-                            <th>Type</th>
+                            <th>Terminal Type</th>
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                         </thead>

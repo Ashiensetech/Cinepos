@@ -135,7 +135,6 @@ public class AdminSeatTypeService {
         seatType.setIsDefault(editSeatTypeForm.getIsDefault());
 //        seatType.setCreatedBy(1);
         /***************** Service  [Ends] *************/
-
         seatTypeDao.update(seatType);
 
         return ResponseEntity.status(HttpStatus.OK).body(seatType);

@@ -42,8 +42,6 @@ public class AdminConcessionPriceShiftService {
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseEntity<?> createConcessionPriceShift(@Valid CreateConcessionPriceShiftForm createConcessionPriceShiftForm, BindingResult result){
 
-        System.out.println(createConcessionPriceShiftForm);
-
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
         /***************** Validation  [Start] *************/

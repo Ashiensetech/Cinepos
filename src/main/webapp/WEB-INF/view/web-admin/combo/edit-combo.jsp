@@ -48,7 +48,7 @@
 
                                 <div class="form-group">
                                     <label>Price</label>
-                                    <input type="number" value="${combos.price}" name="" id="price" class="form-control">
+                                    <input type="number" min="0" value="${combos.price}" name="" id="price" class="form-control">
                                     <p class="help-block error" id="errorMsg_price"></p>
                                 </div>
 

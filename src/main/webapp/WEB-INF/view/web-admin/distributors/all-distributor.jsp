@@ -50,7 +50,7 @@
                             <d:when test="${not empty distributors}">
                                 <d:forEach var="distributorValue" items="${distributors}">
                                     <d:set var="count" value="${count+1}" />
-                                    <tr class="odd gradeC" id="distributorRow${distributorValue.id}">
+                                    <tr class="odd gradeC distributorRowCls" data-distributor="${distributorValue.id}" id="distributorRow${distributorValue.id}">
                                         <td>${count}</td>
                                         <td>${distributorValue.name}</td>
                                         <td>${distributorValue.primaryEmail}</td>
@@ -105,6 +105,8 @@
 
 <script type="application/javascript">
 
+
+
     function statusUpdateDistributorData(parentElementId,statusMsgElemId,elementId,statusTd,distributorId){
 
         $("#"+statusMsgElemId).html("").hide();
@@ -139,7 +141,13 @@
 
                 $("#"+elementId).html(btnText);
                 $("#"+elementId).data("status",data.status);
-                $("#"+statusTd).html(statusTdText);
+                $("#"+statusTd).text(statusTdText);
+
+                $("#"+distributorId).next("tr").find(".dtr-data:eq( 1 )").text(statusTdText);
+
+                console.log(statusTd);
+
+
                 enableDisableFormElement(parentElementId,["input","button","select","a"],true);
                 $("#"+statusMsgElemId).html("Status updated").fadeIn(1000,function(){
                     $(this).fadeOut(1000,function(){
@@ -149,6 +157,9 @@
             }
         });
         return false;
+
+
+
     }
 </script>
 </body>

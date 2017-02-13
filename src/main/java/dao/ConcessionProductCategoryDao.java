@@ -61,7 +61,7 @@ public class ConcessionProductCategoryDao extends BaseDao{
         Session session = this.sessionFactory.openSession();
         try{
             session = this.sessionFactory.openSession();
-            return session.createQuery("FROM ConcessionProductCategory").list();
+            return session.createQuery("FROM ConcessionProductCategory  where status=:status").setParameter("status",1).list();
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();

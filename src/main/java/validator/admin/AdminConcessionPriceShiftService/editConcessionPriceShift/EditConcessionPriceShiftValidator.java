@@ -25,6 +25,7 @@ public class EditConcessionPriceShiftValidator implements Validator {
 
     @Override
     public void validate(Object obj, Errors errors) {
+
         EditConcessionPriceShiftForm concessionPriceShiftForm = (EditConcessionPriceShiftForm) obj;
 
 

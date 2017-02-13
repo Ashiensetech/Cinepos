@@ -5,6 +5,7 @@ import entity.iface.ScreenShortIfaceApp;
 import entity.iface.ScreenSummaryIfaceApp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
