@@ -1,8 +1,7 @@
 package dao.viewDao;
 
 import dao.BaseDao;
-import entity.Category;
-import entity.entityView.BoxOfficeSchedulingView;
+import entity.tableview.BoxOfficeSchedulingView;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;

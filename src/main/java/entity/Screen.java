@@ -1,12 +1,10 @@
 package entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import entity.iface.ScreenShortIfaceApp;
-import entity.iface.ScreenSummaryIfaceApp;
+import entity.app.jsonview.screen.ScreenJsonView;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -19,60 +17,77 @@ import java.util.List;
 @JsonSerialize(include= JsonSerialize.Inclusion.NON_EMPTY)
 @Entity
 @Table(name = "screen", schema = "")
-public class Screen implements ScreenShortIfaceApp,ScreenSummaryIfaceApp {
+public class Screen{
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView(ScreenJsonView.Basic.class)
     private int id;
+
+
+
     @Basic
     @Column(name = "name")
+    @JsonView(ScreenJsonView.Basic.class)
     private String name;
 
     @Basic
     @Column(name = "is_seat_plan_complete")
+    @JsonView(ScreenJsonView.Basic.class)
     boolean isSeatPlanComplete;
 
     @Basic
     @Column(name = "no_of_seat")
+    @JsonView(ScreenJsonView.Basic.class)
     private int noOfSeat;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "screen_dimension_id",referencedColumnName = "id")
+    @JsonView(ScreenJsonView.Summary.class)
     private ScreenDimension screenDimension;
 
     @Basic
     @Column(name = "active")
+    @JsonView(ScreenJsonView.Summary.class)
     private boolean active;
 
     @Basic
     @Column(name = "row_count")
+    @JsonView(ScreenJsonView.Summary.class)
     private int rowCount;
 
 
     @Basic
     @Column(name = "column_count")
+    @JsonView(ScreenJsonView.Summary.class)
     private int columnCount;
 
     @Basic
     @Column(name = "opening_time")
+    @JsonView(ScreenJsonView.Summary.class)
     private Time openingTime;
 
     @Basic
     @Column(name = "closing_time")
+    @JsonView(ScreenJsonView.Summary.class)
     private Time closingTime;
 
 
-    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "screen_id",referencedColumnName = "id")
+    @JsonView(ScreenJsonView.Details.class)
     private List<ScreenSeat> seats;
 
     @Basic
     @Column(name = "created_by")
+    @JsonView(ScreenJsonView.Summary.class)
     private Integer createdBy;
 
     @Basic
     @Column(name = "created_at")
+    @JsonView(ScreenJsonView.Summary.class)
     private Timestamp createdAt;
 
 

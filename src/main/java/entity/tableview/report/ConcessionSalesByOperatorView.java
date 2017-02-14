@@ -1,4 +1,4 @@
-package entity.entityView.report;
+package entity.tableview.report;
 import entity.AuthCredential;
 
 import javax.persistence.*;

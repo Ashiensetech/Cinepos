@@ -112,11 +112,11 @@
                 <value>entity.SellsChannel</value>
                 <value>entity.Sells</value>
                 <value>entity.SellsDetails</value>
-                <value>entity.entityView.report.ProductSummaryReportView</value>
-                <value>entity.entityView.BoxOfficeSchedulingView</value>
-                <value>entity.entityView.BoxOfficeFilmView</value>
-                <value>entity.entityView.BoxOfficeFilmTimeView</value>
-                <value>entity.entityView.report.ConcessionSalesByOperatorView</value>
+                <value>entity.tableview.report.ProductSummaryReportView</value>
+                <value>entity.tableview.BoxOfficeSchedulingView</value>
+                <value>entity.tableview.BoxOfficeFilmView</value>
+                <value>entity.tableview.BoxOfficeFilmTimeView</value>
+                <value>entity.tableview.report.ConcessionSalesByOperatorView</value>
             </list>
         </property>
         <property name="hibernateProperties">

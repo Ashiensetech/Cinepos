@@ -2,7 +2,8 @@ package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import entity.iface.film.schedule.FilmScheduleSummaryIface;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.film.FilmScheduleJsonView;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -16,38 +17,49 @@ import java.util.Set;
 @Table(name = "film_schedule")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FilmSchedule {
+
+    @JsonView(FilmScheduleJsonView.Basic.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
+    @JsonView(FilmScheduleJsonView.Basic.class)
+    @Basic
+    @Column(name = "date")
+    private Date date;
+
+
+    @JsonView(FilmScheduleJsonView.CompositeScreen.class)
     @OneToOne
-    @JsonIgnore
     @JoinColumn(name = "screen_id",referencedColumnName = "id")
     private Screen screen;
 
+
+    @JsonView(FilmScheduleJsonView.Summary.class)
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name="film_schedule_id",referencedColumnName = "id")
     private Set<FilmTime> filmTimes;
 
+    @JsonView(FilmScheduleJsonView.Summary.class)
     @Basic
     @Column(name = "status")
     private boolean status;
 
 
-    @Basic
-    @Column(name = "date")
-    private Date date;
 
+    @JsonView(FilmScheduleJsonView.Summary.class)
     @Basic
     @Column(name = "week_day")
     private int weekDay;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
 
+
+    @JsonView(FilmScheduleJsonView.Summary.class)
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

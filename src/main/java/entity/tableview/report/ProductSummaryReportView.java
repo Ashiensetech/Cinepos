@@ -1,4 +1,4 @@
-package entity.entityView.report;
+package entity.tableview.report;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

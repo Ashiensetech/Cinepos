@@ -5,30 +5,22 @@ import dao.*;
 import dao.reportDao.ConcessionSalesByOperatorViewDao;
 import dao.reportDao.ProductSummaryReportViewDao;
 import entity.*;
-import entity.entityView.report.ConcessionSalesByOperatorView;
-import entity.entityView.report.ProductSummaryReportView;
+import entity.tableview.report.ConcessionSalesByOperatorView;
+import entity.tableview.report.ProductSummaryReportView;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import sun.net.www.protocol.http.AuthenticationInfo;
 
-import javax.lang.model.element.NestingKind;
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller

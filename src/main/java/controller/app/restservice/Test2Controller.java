@@ -8,7 +8,6 @@ import dao.CategoryDao;
 
 import dao.viewDao.BoxOfficeSchedulingViewDao;
 import entity.AuthCredential;
-import entity.entityView.BoxOfficeSchedulingView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
