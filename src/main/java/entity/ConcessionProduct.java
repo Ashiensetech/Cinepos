@@ -30,7 +30,7 @@ public class ConcessionProduct {
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private ConcessionProductCategory concessionProductCategory;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "concession_product_id",referencedColumnName = "id")
     private List<ConcessionProductImage> concessionProductImages;
 
@@ -190,6 +190,7 @@ public class ConcessionProduct {
         this.createdAt = createdAt;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -213,9 +214,27 @@ public class ConcessionProduct {
             return false;
         if (sellingPrice != null ? !sellingPrice.equals(that.sellingPrice) : that.sellingPrice != null) return false;
         if (buyingPrice != null ? !buyingPrice.equals(that.buyingPrice) : that.buyingPrice != null) return false;
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
+        return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
+    }
 
-        return true;
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (annotation != null ? annotation.hashCode() : 0);
+        result = 31 * result + (concessionProductCategory != null ? concessionProductCategory.hashCode() : 0);
+        result = 31 * result + (concessionProductImages != null ? concessionProductImages.hashCode() : 0);
+        result = 31 * result + unit;
+        result = 31 * result + remotePrint;
+        result = 31 * result + isCombo;
+        result = 31 * result + status;
+        result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
+        result = 31 * result + (buyingPrice != null ? buyingPrice.hashCode() : 0);
+        result = 31 * result + isPriceShift;
+        result = 31 * result + createdBy;
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -237,27 +256,5 @@ public class ConcessionProduct {
                 ", createdBy=" + createdBy +
                 ", createdAt=" + createdAt +
                 '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (annotation != null ? annotation.hashCode() : 0);
-        result = 31 * result + (concessionProductCategory != null ? concessionProductCategory.hashCode() : 0);
-        result = 31 * result + (concessionProductImages != null ? concessionProductImages.hashCode() : 0);
-        result = 31 * result + unit;
-        result = 31 * result + remotePrint;
-        result = 31 * result + isCombo;
-        result = 31 * result + status;
-        result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
-        result = 31 * result + (buyingPrice != null ? buyingPrice.hashCode() : 0);
-        result = 31 * result + isPriceShift;
-        result = 31 * result + createdBy;
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        return result;
-
-
     }
 }

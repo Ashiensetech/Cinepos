@@ -30,7 +30,8 @@ public class AdminConcessionProductController {
     public ModelAndView index(){
 
         List<ConcessionProduct> concessionProductList=concessionProductDao.getAll();
-        System.out.println(concessionProductList);
+
+
         ModelAndView modelAndView=new ModelAndView("web-admin/concession-product/all-concession-product");
         modelAndView.addObject("concessionProductList",concessionProductList);
         return modelAndView;

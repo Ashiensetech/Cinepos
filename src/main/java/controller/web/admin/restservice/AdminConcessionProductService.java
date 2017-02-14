@@ -79,6 +79,7 @@ public class AdminConcessionProductService {
             concessionProductImages.setCreatedBy(1);
             try {
                 String filePath = fileUtil.moveProductFileFromTemp(concessionProduct.getId(),createConcessionProductForm.getProductImageToken());
+                System.out.println(filePath);
                 concessionProductImages.setFilePath(filePath);
                 productImages.add(concessionProductImages);
             } catch (FileNotFoundException e) {
@@ -88,6 +89,8 @@ public class AdminConcessionProductService {
             }
 
             concessionProduct.setConcessionProductImages(productImages);
+
+            System.out.println(concessionProduct);
 
             concessionProductDao.update(concessionProduct);
 
