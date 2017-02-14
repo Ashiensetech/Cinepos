@@ -87,19 +87,28 @@ public class AdminComboService {
 
             List<Integer> productsIds = createComboForm.getProductsIdArray();
 
+            System.out.println(productsIds);
+
             for (Integer productsId :productsIds){
                 ConcessionProduct concessionProduct = concessionProductDao.getById(productsId);
+
                 if(concessionProduct!=null){
+
                     ComboDetails comboDetail=new ComboDetails();
                     comboDetail.setComboId(combo.getId());
                     comboDetail.setComboProductType(createComboForm.getComboType());
                     comboDetail.setConcessionProductId(concessionProduct.getId());
-                    comboDetail.setSeatTypeId(seatTypeDao.getById(createComboForm.getSeatTypeId()).getId());
+                    if(seatTypeDao.getById(createComboForm.getSeatTypeId())==null){
+                        comboDetail.setSeatTypeId(0);
+                    }else{
+                        comboDetail.setSeatTypeId(seatTypeDao.getById(createComboForm.getSeatTypeId()).getId());
+                    }
+                    comboDetail.setCreatedBy(1);
                     comboProductArray.add(comboDetail);
                 }
             }
             combo.setComboDetails(comboProductArray);
-
+            System.out.println(combo);
 
             /**
              * Updating Combo

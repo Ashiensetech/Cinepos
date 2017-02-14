@@ -141,6 +141,23 @@ public class TicketDao extends BaseDao {
         return null;
     }
 
+    public Ticket getBySeatId(int seatId){
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (Ticket) session.createQuery("FROM Ticket where screenSeat.id = :seatId")
+                    .setParameter("seatId", seatId)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+        return null;
+    }
+
     public boolean updateSet(Set<Ticket> ticketSet){
 
         Session session = null;

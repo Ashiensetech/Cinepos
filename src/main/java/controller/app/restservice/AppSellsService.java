@@ -43,6 +43,8 @@ public class AppSellsService {
     AuthCredentialDao authCredentialDao;
     @Autowired
     TicketDao ticketDao;
+    @Autowired
+    ScreenSeatDao screenSeatDao;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<?> create(Authentication authentication,
@@ -110,18 +112,53 @@ public class AppSellsService {
             if(targetItem.getSellingType().equals("product")){
 
                 ConcessionProduct concessionProduct=concessionProductDao.getById(targetItem.getId());
-                if(concessionProduct == null){
+                if(concessionProduct == null || concessionProduct.getUnit()<targetItem.getQuantity()){
                     serviceResponse.setValidationError("sellProduct","Product not available");
-                    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+                }else{
+                    sellsDetails.setConcessionProduct(concessionProduct);
+                    //concessionProduct.setUnit(concessionProduct.getUnit()-targetItem.getQuantity());
+                    //concessionProductDao.update(concessionProduct);
                 }
-                sellsDetails.setConcessionProduct(concessionProduct);
 
             }else if (targetItem.getSellingType().equals("combo")){
 
                 Combo combo=comboDao.getById(targetItem.getId());
+
                 if(combo == null){
                     serviceResponse.setValidationError("sellProduct","Combo not available");
-                    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+                    ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+                }
+
+                for (ComboDetails tgtComboDetails:combo.getComboDetails()){
+
+                    if(tgtComboDetails.getConcessionProductId()>0){
+
+                        ConcessionProduct concessionProduct=concessionProductDao.getById(tgtComboDetails.getConcessionProductId());
+
+                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getQuantity()){
+                            serviceResponse.setValidationError("sellProduct","Product not available");
+                        }else{
+                            sellsDetails.setConcessionProduct(concessionProduct);
+                        }
+                    }
+
+                    if(tgtComboDetails.getSeatTypeId()>0){
+                        ScreenSeat screenSeat= screenSeatDao.getBySeatTypeAndScreenIdAndSeatName(7,12,"H-8");
+                        Ticket ticket=ticketDao.getBySeatId(screenSeat.getId());
+
+                        if(ticket == null || ticket.getCurrentState().equals("BOOKED" )|| ticket.getCurrentState().equals("SOLD")){
+                            serviceResponse.setValidationError("sellProduct","Ticket not available");
+                            ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+                        }
+
+                        String currentState="SOLD";
+                        sellsDetails.setTicket(ticket);
+                        ticket.setCurrentState(currentState);
+                        ticketList.add(ticket);
+
+                    }
+
+
                 }
                 sellsDetails.setCombo(combo);
 
@@ -131,7 +168,7 @@ public class AppSellsService {
 
                 if(ticket == null || ticket.getCurrentState().equals("BOOKED" )|| ticket.getCurrentState().equals("SOLD")){
                     serviceResponse.setValidationError("sellProduct","Ticket not available");
-                    return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+                    ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
 
                  String currentState="SOLD";
@@ -144,6 +181,12 @@ public class AppSellsService {
             totalQuantity+=targetItem.getQuantity();
 
             sellDetails.add(sellsDetails);
+        }
+
+        if(serviceResponse.hasErrors()){
+          sellsDao.delete(sells);
+          sellDetailsDao.delete(sellDetails);
+          return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
 
@@ -160,12 +203,7 @@ public class AppSellsService {
                 ticketDao.insertOrUpdate(ticket);
             }
 
-        }else{
-            sellsDao.delete(sells);
-            sellDetailsDao.delete(sellDetails);
         }
-
-
 
         return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
 

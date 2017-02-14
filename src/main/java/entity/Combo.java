@@ -26,7 +26,7 @@ public class Combo {
     private String comboType;
 
     @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name = "combo_id")
+    @JoinColumn(name = "combo_id",referencedColumnName = "id")
     private List<ComboDetails> comboDetails;
 
     @Column(name = "start_date")

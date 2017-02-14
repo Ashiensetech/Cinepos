@@ -50,7 +50,7 @@
                             <div class='input-group date'>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                                <input id="startDate" type='text' class="form-control" name="date" placeholder="MM/DD/YYY" />
+                                <input id="startDate" type='text' class="form-control" name="startDate" placeholder="MM/DD/YYY" />
 
                             </div>
                             <p class="help-block error" id="errorMsg_startDate"></p>
@@ -60,7 +60,7 @@
                             <div class='input-group date'>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
-                                <input type='text' class="form-control" id="endDate" name="date" placeholder="MM/DD/YYY" />
+                                <input type='text' class="form-control" id="endDate" name="endDate" placeholder="MM/DD/YYY" />
 
                             </div>
                             <p class="help-block error" id="errorMsg_endDate"></p>
@@ -82,6 +82,19 @@
 <jsp:directive.include file="../layouts/footer.jsp" />
 
 <script>
+
+    $(document).ready(function(){
+        var date_input=$('#startDate,#endDate'); //our date input has the name "date"
+        var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+            format: 'mm/dd/yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+            startDate: new Date()
+        });
+    });
+
     function submitPriceShiftData(){
 
         $("#statusMsg").html("").hide();
@@ -93,7 +106,6 @@
         enableDisableFormElement("createConcessionPriceShiftForm",["input","button","select"],false);
         var postData={
             concessionProductId:productId,
-//            concessionProductId:1,
             price:price
         };
 

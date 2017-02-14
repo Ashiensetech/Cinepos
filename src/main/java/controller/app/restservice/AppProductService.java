@@ -17,9 +17,7 @@ import utility.ServiceResponse;
 
 import java.util.List;
 
-/**
- * Created by Sarwar on 1/27/2017.
- */
+
 @RestController
 @RequestMapping(AppUriPreFix.apiUriPrefix +"/concession-product")
 public class AppProductService {

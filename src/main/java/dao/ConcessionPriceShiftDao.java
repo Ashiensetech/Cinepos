@@ -20,15 +20,99 @@ public class ConcessionPriceShiftDao extends BaseDao{
     @Autowired
     ConcessionProductDao concessionProductDao;
 
-    public ConcessionPriceShift insert(ConcessionPriceShift concessionPriceShift){
-        return (ConcessionPriceShift) super.insert(concessionPriceShift);
-    }
-    public void update(ConcessionPriceShift concessionPriceShift){
-        super.update(concessionPriceShift);
+//    public ConcessionPriceShift insert(ConcessionPriceShift concessionPriceShift){
+//        return (ConcessionPriceShift) super.insert(concessionPriceShift);
+//    }
+
+
+    public void insert(ConcessionPriceShift concessionPriceShift){
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+
+            if(concessionPriceShift.getStatus()){
+                ConcessionPriceShift priceShiftStatus = getActivePriceShift(concessionPriceShift.getConcessionProduct().getId());
+                if(priceShiftStatus!=null){
+                    priceShiftStatus.setStatus(false);
+                    update(priceShiftStatus);
+                }
+            }
+            session.save(concessionPriceShift);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
     }
 
+
+
+//    public void update(ConcessionPriceShift concessionPriceShift){
+//        super.update(concessionPriceShift);
+//    }
+
+    public void update(ConcessionPriceShift concessionPriceShift){
+
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+
+            if(concessionPriceShift.getStatus()){
+                ConcessionPriceShift priceShiftStatus = getActivePriceShift(concessionPriceShift.getConcessionProduct().getId());
+                if(priceShiftStatus!=null){
+                    priceShiftStatus.setStatus(false);
+                    update(priceShiftStatus);
+                }
+            }
+            session.update(concessionPriceShift);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+    }
+
+
+
+//    public boolean delete(ConcessionPriceShift concessionPriceShift){
+//        return super.delete(concessionPriceShift);
+//    }
+
     public boolean delete(ConcessionPriceShift concessionPriceShift){
-        return super.delete(concessionPriceShift);
+        Session session = null;
+
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.delete(concessionPriceShift);
+            session.getTransaction().commit();
+
+            if(concessionPriceShift.getStatus()){
+                ConcessionPriceShift priceShiftStatus = getInActivePriceShift(concessionPriceShift.getConcessionProduct().getId());
+                System.out.println(priceShiftStatus);
+                if(priceShiftStatus!=null){
+                    priceShiftStatus.setStatus(true);
+                    update(priceShiftStatus);
+                }
+            }
+            return true;
+
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+            return false;
+        }finally {
+            if(session!=null)session.close();
+        }
     }
 
     public List<ConcessionPriceShift> getAll(){
@@ -38,7 +122,6 @@ public class ConcessionPriceShiftDao extends BaseDao{
             return session.createQuery("FROM ConcessionPriceShift")
                     .list();
         }catch (HibernateException hEx){
-            // Insert to database exception log
             hEx.printStackTrace();
         }finally{
             if(session!=null)session.close();
@@ -53,6 +136,47 @@ public class ConcessionPriceShiftDao extends BaseDao{
             session = this.sessionFactory.openSession();
             return (ConcessionPriceShift) session.createQuery("FROM ConcessionPriceShift where id = :id")
                     .setParameter("id", id)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+        return null;
+    }
+
+
+    public ConcessionPriceShift getActivePriceShift(Integer id){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (ConcessionPriceShift) session.createQuery("FROM ConcessionPriceShift where concessionProduct.id=:id and status=:status ORDER BY id DESC")
+                    .setParameter("id", id)
+                    .setParameter("status", true)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        }
+        catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+
+        return null;
+    }
+
+    public ConcessionPriceShift getInActivePriceShift(Integer id){
+
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (ConcessionPriceShift) session.createQuery("FROM ConcessionPriceShift where concessionProduct.id=:id and status=:status ORDER BY id DESC")
+                    .setParameter("id", id)
+                    .setParameter("status", false)
                     .setMaxResults(1)
                     .uniqueResult();
         }
