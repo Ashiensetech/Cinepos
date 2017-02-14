@@ -3,9 +3,7 @@ package entity;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-/**
- * Created by Sarwar on 1/13/2017.
- */
+
 @Entity
 @Table(name = "concession_product_image")
 public class ConcessionProductImage {
