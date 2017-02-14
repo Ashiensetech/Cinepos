@@ -9,24 +9,20 @@ import dao.reportDao.ProductSummaryReportViewDao;
 import entity.AuthCredential;
 import entity.Sells;
 import entity.SellsDetails;
-import entity.entityView.report.ProductSummaryReportView;
+import entity.tableview.report.ProductSummaryReportView;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 

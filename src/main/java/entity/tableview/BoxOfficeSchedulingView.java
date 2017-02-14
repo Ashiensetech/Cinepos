@@ -1,11 +1,9 @@
-package entity.entityView;
+package entity.tableview;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import entity.Film;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by mi on 2/7/17.

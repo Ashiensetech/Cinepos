@@ -1,13 +1,10 @@
 package authuser;
 
 import entity.AuthCredential;
-import entity.UserInf;
-import entity.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.sql.Timestamp;
 import java.util.Collection;
 
 /**

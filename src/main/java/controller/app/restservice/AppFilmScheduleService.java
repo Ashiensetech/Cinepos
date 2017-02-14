@@ -3,36 +3,26 @@ package controller.app.restservice;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import controller.app.AppUriPreFix;
-import controller.web.admin.AdminUriPreFix;
 import dao.FilmDao;
 import dao.FilmScheduleDao;
 import dao.FilmTimeDao;
 import dao.ScreenDao;
 import dao.viewDao.BoxOfficeSchedulingViewDao;
-import entity.AuthCredential;
 import entity.FilmSchedule;
-import entity.FilmTime;
-import entity.entityView.BoxOfficeSchedulingView;
-import entity.iface.film.schedule.FilmScheduleSummaryIface;
+import entity.app.jsonview.film.FilmScheduleJsonView;
+import entity.app.jsonview.screen.ScreenJsonView;
+import entity.tableview.BoxOfficeSchedulingView;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import utility.ServiceResponse;
-import validator.admin.AdminFilmScheduleService.createOrMerge.CreateOrMergeForm;
 import validator.admin.AdminFilmScheduleService.createOrMerge.CreateOrMergeValidator;
-import validator.admin.AdminFilmScheduleService.createOrMerge.FilmTimeForm;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.sql.Date;
 import java.text.ParseException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by mi on 1/2/17.
@@ -58,6 +48,7 @@ public class AppFilmScheduleService {
     @Autowired
     BoxOfficeSchedulingViewDao boxOfficeSchedulingViewDao;
 
+    @JsonView(FilmScheduleJsonView.Summary.class)
     @RequestMapping(value = "/get-all-in-date-range/{screenId}", method = RequestMethod.POST)
     public ResponseEntity<?> getAll(@PathVariable(value = "screenId")Integer screenId,
                                     @RequestParam(value = "startDate") String startDate,
@@ -95,6 +86,7 @@ public class AppFilmScheduleService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(filmSchedules);
     }
+    @JsonView(FilmScheduleJsonView.Details.class)
     @RequestMapping(value = "/get-by-date/{screenId}", method = RequestMethod.POST)
     public ResponseEntity<?> getByDate(@PathVariable(value = "screenId")Integer screenId,
                                     @RequestParam(value = "startDate") String startDate) {
@@ -117,10 +109,11 @@ public class AppFilmScheduleService {
         FilmSchedule filmSchedules = filmScheduleDao.getByDate(screenId, sDate);
 
         if(filmSchedules==null){
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(filmSchedules);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(filmSchedules);
     }
+    @JsonView(FilmScheduleJsonView.Details.class)
     @RequestMapping(value = "/get/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> getById(@PathVariable(value = "id")Integer id) {
         if(id==null){

@@ -1,7 +1,7 @@
 package dao.reportDao;
 
 import dao.BaseDao;
-import entity.entityView.report.ProductSummaryReportView;
+import entity.tableview.report.ProductSummaryReportView;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;

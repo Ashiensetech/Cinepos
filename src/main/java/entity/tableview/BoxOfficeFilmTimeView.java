@@ -1,4 +1,4 @@
-package entity.entityView;
+package entity.tableview;
 
 import org.hibernate.annotations.Immutable;
 
