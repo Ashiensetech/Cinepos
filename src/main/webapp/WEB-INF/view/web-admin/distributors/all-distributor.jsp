@@ -58,7 +58,7 @@
                                         <td>${distributorValue.phone}</td>
                                         <td>${distributorValue.address}</td>
                                         <td>${distributorValue.description}</td>
-                                        <td id="statusTd${distributorValue.id}">${(distributorValue.status==1)?"Active":"Deactive"}</td>
+                                        <td id="statusTd${distributorValue.id}">${(distributorValue.status==1)?"Active":"Inactive"}</td>
                                         <td>
                                             <button id="statusChangeBtn${distributorValue.id}"
                                                     data-status="${distributorValue.status}"
@@ -107,7 +107,7 @@
 
 
 
-    function statusUpdateDistributorData(parentElementId,statusMsgElemId,elementId,statusTd,distributorId){
+        function statusUpdateDistributorData(parentElementId,statusMsgElemId,elementId,statusTd,distributorId){
 
         $("#"+statusMsgElemId).html("").hide();
 
@@ -137,13 +137,22 @@
             },success: function(data){
 
                 var btnText = (data.status)?"Deactivate":"Activate";
-                var statusTdText = (data.status)?"Activate":"Inactivate";
+                var statusTdText = (data.status)?"Active":"Inactive";
 
                 $("#"+elementId).html(btnText);
                 $("#"+elementId).data("status",data.status);
-                $("#"+statusTd).text(statusTdText);
+                if($("#"+statusTd).length >0){
+                    $("#"+statusTd).text(statusTdText);
+                }else{
+                    $("#"+parentElementId).next().find("span.dtr-title").each(function(){
+                        if($(this).text().trim()=="Status:"){
+                            $(this).next().html(statusTdText);
+                        }
+                    });
+                }
 
-                $("#"+distributorId).next("tr").find(".dtr-data:eq( 1 )").text(statusTdText);
+
+                //$("#"+distributorId).next("tr").find(".dtr-data:eq( 1 )").text(statusTdText);
 
                 console.log(statusTd);
 
