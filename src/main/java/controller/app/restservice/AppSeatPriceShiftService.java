@@ -33,6 +33,8 @@ public class AppSeatPriceShiftService {
     public ResponseEntity<?> getAllProductCombo(@PathVariable Integer seat_type_id){
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
+        System.out.println("dsdsdd");
+
         Calendar calendar = Calendar.getInstance();
         Date today = new Date(calendar.getTimeInMillis());
         Date sDate=today;

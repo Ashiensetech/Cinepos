@@ -207,11 +207,6 @@
             products=[];
             pListPrice=$(".plistPrice");
 
-            var employees = [];
-            employees.push({id:100,name:'Yashwant',age:30});
-            employees.push({id:200,name:'Mahesh',age:35});
-
-
             pListPrice.each(function (index) {
 
                 products.push($(this ).data('proids'));
