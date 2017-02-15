@@ -128,6 +128,9 @@ function showSchedulingToGenerateTicket(){
     return;
   }
 
+
+  $("#screenSeats").html("");
+
   $.ajax({
     url: BASEURL+'api/app/film-scheduling/get-all-in-date-range/'+screenId,
     type: 'POST',
