@@ -110,8 +110,6 @@ public class ConcessionProductDao extends BaseDao{
         return null;
 
     }
-
-
     public  List<ConcessionProduct> getByCategoryId(int categoryId){
         Session session = null;
         try{
