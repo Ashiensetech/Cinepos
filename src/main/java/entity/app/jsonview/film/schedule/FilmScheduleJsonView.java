@@ -1,5 +1,6 @@
-package entity.app.jsonview.film;
+package entity.app.jsonview.film.schedule;
 
+import entity.FilmTime;
 import entity.app.jsonview.screen.ScreenJsonView;
 
 /**
@@ -9,6 +10,6 @@ public class FilmScheduleJsonView {
     public interface CompositeScreen extends ScreenJsonView.Basic{}
 
     public interface Basic {}
-    public interface Summary extends Basic {}
+    public interface Summary extends Basic, FilmTimeJsonView.Summary {}
     public interface Details extends  Summary,CompositeScreen{}
 }

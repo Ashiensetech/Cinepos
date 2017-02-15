@@ -1,5 +1,9 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.film.GenreJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -9,19 +13,24 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "genre")
 public class Genre {
+
+    @JsonView(GenreJsonView.Basic.class)
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonView(GenreJsonView.Basic.class)
     @Basic
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private int createdBy;
 
+    @JsonView(GenreJsonView.Basic.class)
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

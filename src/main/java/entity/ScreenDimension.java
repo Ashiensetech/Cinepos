@@ -1,5 +1,9 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.screen.ScreenDimensionJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -10,19 +14,23 @@ import java.sql.Timestamp;
 @Table(name = "screen_dimension")
 public class ScreenDimension {
 
+    @JsonView(ScreenDimensionJsonView.Basic.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    @JsonView(ScreenDimensionJsonView.Basic.class)
     @Basic
     @Column(name = "name")
     private String name;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

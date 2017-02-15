@@ -1,6 +1,9 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.film.schedule.FilmTimeJsonView;
 
 import javax.persistence.*;
 import java.sql.Time;
@@ -14,35 +17,44 @@ import java.sql.Timestamp;
 @Table(name = "film_time")
 public class FilmTime {
 
+    @JsonView(FilmTimeJsonView.Basic.class)
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonView(FilmTimeJsonView.Basic.class)
     @Basic
     @Column(name = "film_schedule_id")
     private Integer filmScheduleId;
 
+//    @JsonView({FilmTimeJsonView.Summary.class,FilmTimeJsonView.Details.class})
+    @JsonView(FilmTimeJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "film_id" , referencedColumnName = "id")
     private Film film;
 
+    @JsonView(FilmTimeJsonView.Basic.class)
     @Basic
     @Column(name = "start_time")
     private Time startTime;
 
+    @JsonView(FilmTimeJsonView.Basic.class)
     @Basic
     @Column(name = "end_time")
     private Time endTime;
 
+    @JsonView(FilmTimeJsonView.Basic.class)
     @Basic
     @Column(name = "status")
     private boolean status;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

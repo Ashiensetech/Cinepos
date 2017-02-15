@@ -3,7 +3,7 @@ package entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
-import entity.app.jsonview.film.FilmScheduleJsonView;
+import entity.app.jsonview.film.schedule.FilmScheduleJsonView;
 
 import javax.persistence.*;
 import java.sql.Date;

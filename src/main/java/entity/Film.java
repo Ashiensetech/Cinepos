@@ -1,6 +1,10 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import entity.app.jsonview.film.FilmJsonView;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -11,86 +15,97 @@ import java.util.Set;
 /**
  * Created by mi on 1/10/17.
  */
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "film")
 public class Film {
 
+
+    @JsonView(FilmJsonView.Basic.class)
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonView(FilmJsonView.Basic.class)
     @Basic
     @Column(name = "name")
     private String name;
 
-    @OneToOne
+    @JsonView(FilmJsonView.Details.class)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "distributor_id",referencedColumnName = "id")
     private Distributor distributor;
 
-
-    @ManyToMany
+    @JsonView(FilmJsonView.Summary.class)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "film_genre", joinColumns = {
             @JoinColumn(name = "film_id", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "genre_id",
                     nullable = false, updatable = false) })
     private List<Genre> filmGenre;
 
-    @ManyToMany
+    @JsonView(FilmJsonView.Summary.class)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "film_screen_type", joinColumns = {
             @JoinColumn(name = "film_id", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "screen_dimension_id",
                     nullable = false, updatable = false) })
     private Set<ScreenDimension> screenDimensions;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @JsonView(FilmJsonView.Summary.class)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id",referencedColumnName = "id")
     private List<FilmImage> filmImages;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @JsonView(FilmJsonView.Summary.class)
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id",referencedColumnName = "id")
     private List<FilmTrailer> filmTrailers;
 
+    @JsonView(FilmJsonView.Basic.class)
     @Basic
     @Column(name = "rating")
     private float rating;
 
+    @JsonView(FilmJsonView.Basic.class)
     @Basic
     @Column(name = "duration_hour")
     private float durationHour;
 
-
+    @JsonView(FilmJsonView.Basic.class)
     @Basic
     @Column(name = "duration_min")
     private float durationMin;
 
 
-
+    @JsonView(FilmJsonView.Basic.class)
     @Basic
     @Column(name = "status")
     private Boolean status;
 
-
+    @JsonView(FilmJsonView.Basic.class)
     @Basic
     @Column(name = "start_date")
     private Date startDate;
 
-
+    @JsonView(FilmJsonView.Basic.class)
     @Basic
     @Column(name = "end_date")
     private Date endDate;
 
-
+    @JsonView(FilmJsonView.Basic.class)
     @Basic
     @Column(name = "is_price_shift")
     private boolean isPriceShift;
 
-
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
 
-
+    @JsonView(FilmJsonView.Basic.class)
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

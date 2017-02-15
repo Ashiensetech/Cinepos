@@ -31,7 +31,7 @@ public class FilmDao extends BaseDao {
         Session session = null;
         try{
             session = this.sessionFactory.openSession();
-            return (Film) session.createQuery("FROM Film where id = :id")
+            return (Film) session.createQuery(" FROM Film fetch all properties where id = :id")
                     .setParameter("id", id)
                     .setMaxResults(1)
                     .uniqueResult();
@@ -60,6 +60,7 @@ public class FilmDao extends BaseDao {
         return new ArrayList<>();
 
     }
+
     public List<Film> getAllActive(){
         Session session = this.sessionFactory.openSession();
         try{
@@ -76,4 +77,19 @@ public class FilmDao extends BaseDao {
 
     }
 
+    public List<Film> getAllActive(int limit,int offset){
+        Session session = this.sessionFactory.openSession();
+        try{
+            session = this.sessionFactory.openSession();
+            return session.createQuery("FROM Film  where status = true order by id desc ")
+                    .list();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<>();
+
+    }
 }
