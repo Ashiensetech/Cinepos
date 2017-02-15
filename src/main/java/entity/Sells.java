@@ -71,6 +71,7 @@ public class Sells {
         this.sellingAmount = sellingAmount;
     }
 
+
     public String getSellingComment() {
         return sellingComment;
     }

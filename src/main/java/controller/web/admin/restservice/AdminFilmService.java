@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import utility.FileUtil;
 import utility.ServiceResponse;
 import validator.admin.AdminFilmService.createFilm.CreateFilmForm;
@@ -25,7 +28,7 @@ import java.util.*;
  * Created by sunno on 1/11/17.
  */
 @RestController
-@RequestMapping(AdminUriPreFix.apiUriPrefix +"/film")
+@RequestMapping(AdminUriPreFix.apiUriPrefix + "/film")
 public class AdminFilmService {
 
     @Autowired
@@ -52,8 +55,8 @@ public class AdminFilmService {
     @Autowired
     FilmScreenTypeDao filmScreenTypeDao;
 
-    @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseEntity<?> createFilm(@Valid CreateFilmForm createFilmForm, BindingResult result){
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ResponseEntity<?> createFilm(@Valid CreateFilmForm createFilmForm, BindingResult result) {
 
         System.out.println(createFilmForm);
 
@@ -65,22 +68,21 @@ public class AdminFilmService {
          * Basic form validation
          * */
         serviceResponse.bindValidationError(result);
-        if(serviceResponse.hasErrors()){
+        if (serviceResponse.hasErrors()) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
         /**
          * Business logic validation
          * */
-        createFilmValidator.validate(createFilmForm,result);
+        createFilmValidator.validate(createFilmForm, result);
 
         serviceResponse.bindValidationError(result);
 
-        if(serviceResponse.hasErrors()){
+        if (serviceResponse.hasErrors()) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
         /***************** Validation  [End] *************/
-
 
 
         /***************** Service  [Start] *************/
@@ -100,17 +102,15 @@ public class AdminFilmService {
         film.setStatus(true);
 
 
-
-
         /**
          *  Film Screen dimension
          *  */
         Set<ScreenDimension> screenDimensions = new HashSet<>();
         List<Integer> screenDimensionIdList = createFilmForm.getScreenDimensionIdList();
 
-        for (Integer screenDimensionId :screenDimensionIdList){
+        for (Integer screenDimensionId : screenDimensionIdList) {
             ScreenDimension screenDimension = screenDimensionDao.getById(screenDimensionId);
-            if(screenDimension!=null){
+            if (screenDimension != null) {
                 screenDimensions.add(screenDimension);
             }
         }
@@ -122,9 +122,9 @@ public class AdminFilmService {
          *  */
         List<Genre> genres = new ArrayList<>();
         List<Integer> genreIds = createFilmForm.getFilmGenreIdList();
-        for (Integer genreId :genreIds){
+        for (Integer genreId : genreIds) {
             Genre genre = genreDao.getById(genreId);
-            if(genre!=null){
+            if (genre != null) {
                 genres.add(genre);
             }
         }
@@ -157,7 +157,7 @@ public class AdminFilmService {
         FilmImage filmBannerImage = new FilmImage();
         filmBannerImage.setIsBanner(true);
         try {
-            String filePath = fileUtil.moveFilmFileFromTemp(film.getId(),createFilmForm.getBannerImageToken());
+            String filePath = fileUtil.moveFilmFileFromTemp(film.getId(), createFilmForm.getBannerImageToken());
             filmBannerImage.setFilePath(filePath);
             filmImages.add(filmBannerImage);
         } catch (FileNotFoundException e) {
@@ -171,10 +171,10 @@ public class AdminFilmService {
          *  */
         List<Integer> otherImagesToken = createFilmForm.getOtherImagesTokenArray();
 
-        for(Integer token : otherImagesToken){
+        for (Integer token : otherImagesToken) {
             try {
                 FilmImage filmOtherImage = new FilmImage();
-                String filePath = fileUtil.moveFilmFileFromTemp(film.getId(),token);
+                String filePath = fileUtil.moveFilmFileFromTemp(film.getId(), token);
                 filmOtherImage.setFilePath(filePath);
 
                 filmImages.add(filmOtherImage);
@@ -190,26 +190,26 @@ public class AdminFilmService {
 
         /**
          * Updating Film
-        * */
+         * */
         filmDao.update(film);
-
 
 
         return ResponseEntity.status(HttpStatus.OK).body(film);
 
     }
-    @RequestMapping(value = "/edit/{filmId}",method = RequestMethod.POST)
+
+    @RequestMapping(value = "/edit/{filmId}", method = RequestMethod.POST)
     public ResponseEntity<?> editFilm(@PathVariable Integer filmId
-                                    ,@Valid EditFilmForm editFilmForm,
-                                      BindingResult result){
+            , @Valid EditFilmForm editFilmForm,
+                                      BindingResult result) {
 
 
         Film film = filmDao.getById(filmId);
 
         /***************** Film Existence *************/
-        ServiceResponse serviceResponse  = ServiceResponse.getInstance();
-        if(film==null){
-            serviceResponse.setValidationError("filmId","No film found");
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+        if (film == null) {
+            serviceResponse.setValidationError("filmId", "No film found");
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
@@ -220,46 +220,46 @@ public class AdminFilmService {
          * Basic form validation
          * */
         serviceResponse.bindValidationError(result);
-        if(serviceResponse.hasErrors()){
+        if (serviceResponse.hasErrors()) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
         /**
          * Business logic validation
          * */
-        editFilmValidator.validate(editFilmForm,result);
+        editFilmValidator.validate(editFilmForm, result);
 
         serviceResponse.bindValidationError(result);
 
-        if(serviceResponse.hasErrors()){
+        if (serviceResponse.hasErrors()) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
         /***************** Validation  [End] *************/
 
 
         /***************** Service  [Start] *************/
-        if(editFilmForm.getName()!=null)film.setName(editFilmForm.getName());
-        if(editFilmForm.getDistributorId()!=null)film.setDistributor(distributorDao.getById(editFilmForm.getDistributorId()));
-        if(editFilmForm.getDurationHour()!=null)film.setDurationHour(editFilmForm.getDurationHour());
-        if(editFilmForm.getDurationMin()!=null)film.setDurationMin(editFilmForm.getDurationMin());
-        if(editFilmForm.getRating()!=null)film.setRating(editFilmForm.getRating());
-        if(editFilmForm.getFormattedStartDate()!=null)film.setStartDate(editFilmForm.getFormattedStartDate());
-        if(editFilmForm.getFormattedEndDate()!=null)film.setEndDate(editFilmForm.getFormattedEndDate());
-
+        if (editFilmForm.getName() != null) film.setName(editFilmForm.getName());
+        if (editFilmForm.getDistributorId() != null)
+            film.setDistributor(distributorDao.getById(editFilmForm.getDistributorId()));
+        if (editFilmForm.getDurationHour() != null) film.setDurationHour(editFilmForm.getDurationHour());
+        if (editFilmForm.getDurationMin() != null) film.setDurationMin(editFilmForm.getDurationMin());
+        if (editFilmForm.getRating() != null) film.setRating(editFilmForm.getRating());
+        if (editFilmForm.getFormattedStartDate() != null) film.setStartDate(editFilmForm.getFormattedStartDate());
+        if (editFilmForm.getFormattedEndDate() != null) film.setEndDate(editFilmForm.getFormattedEndDate());
 
 
         /**
          *  Film Trailer
          *  */
-        if(editFilmForm.getTrailer()!=null){
+        if (editFilmForm.getTrailer() != null) {
             List<FilmTrailer> filmTrailerList = film.getFilmTrailers();
-            if(filmTrailerList == null){
+            if (filmTrailerList == null) {
                 filmTrailerList = new ArrayList<>();
             }
             Optional<FilmTrailer> optionalFilmTrailer = filmTrailerList.stream().findFirst();
 
             FilmTrailer filmTrailer = new FilmTrailer();
-            if(optionalFilmTrailer.isPresent()){
+            if (optionalFilmTrailer.isPresent()) {
                 filmTrailer = optionalFilmTrailer.get();
             }
             filmTrailer.setTrailerUrl(editFilmForm.getTrailer());
@@ -269,14 +269,13 @@ public class AdminFilmService {
         }
 
 
-
         /**
          *  Film Screen dimension
          ***/
         Set<Integer> screenDimensionIdList = editFilmForm.getScreenDimensionIdList();
-        if( screenDimensionIdList!=null && screenDimensionIdList.size()>0){
+        if (screenDimensionIdList != null && screenDimensionIdList.size() > 0) {
             Set<ScreenDimension> screenDimensions = new HashSet<>();
-            for (Integer screenDimensionId :screenDimensionIdList){
+            for (Integer screenDimensionId : screenDimensionIdList) {
                 ScreenDimension screenDimension = screenDimensionDao.getById(screenDimensionId);
                 screenDimensions.add(screenDimension);
             }
@@ -288,10 +287,10 @@ public class AdminFilmService {
          *  */
         List<Genre> genres = new ArrayList<>();
         List<Integer> genreIds = editFilmForm.getFilmGenreIdList();
-        if(genreIds!=null && genreIds.size()>0){
-            for (Integer genreId :genreIds){
+        if (genreIds != null && genreIds.size() > 0) {
+            for (Integer genreId : genreIds) {
                 Genre genre = genreDao.getById(genreId);
-                if(genre!=null){
+                if (genre != null) {
                     genres.add(genre);
                 }
             }
@@ -301,18 +300,18 @@ public class AdminFilmService {
         /**
          * Film Banner Image
          * */
-        if(editFilmForm.getBannerImageToken()!=null){
+        if (editFilmForm.getBannerImageToken() != null) {
             FilmImage filmBannerImage = new FilmImage();
 
             Optional<FilmImage> optionalBannerImage = film.getFilmImages().stream().filter(filmImage -> filmImage.getIsBanner()).findFirst();
 
-            if(optionalBannerImage.isPresent()){
+            if (optionalBannerImage.isPresent()) {
                 filmBannerImage = optionalBannerImage.get();
             }
 
             filmBannerImage.setIsBanner(true);
             try {
-                String filePath = fileUtil.moveFilmFileFromTemp(film.getId(),editFilmForm.getBannerImageToken());
+                String filePath = fileUtil.moveFilmFileFromTemp(film.getId(), editFilmForm.getBannerImageToken());
                 filmBannerImage.setFilePath(filePath);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -324,16 +323,16 @@ public class AdminFilmService {
         /**
          *  Film Other Images
          *  */
-        if(editFilmForm.getOtherImagesToken()!=null){
+        if (editFilmForm.getOtherImagesToken() != null) {
             List<Integer> otherImagesToken = editFilmForm.getOtherImagesTokenArray();
             List<FilmImage> filmImages = film.getFilmImages();
-            if(filmImages==null){
+            if (filmImages == null) {
                 filmImages = new ArrayList<>();
             }
-            for(Integer token : otherImagesToken){
+            for (Integer token : otherImagesToken) {
                 try {
                     FilmImage filmOtherImage = new FilmImage();
-                    String filePath = fileUtil.moveFilmFileFromTemp(film.getId(),token);
+                    String filePath = fileUtil.moveFilmFileFromTemp(film.getId(), token);
                     filmOtherImage.setFilePath(filePath);
 
                     filmImages.add(filmOtherImage);
@@ -351,19 +350,19 @@ public class AdminFilmService {
          *  Banner can't be removed
          *  */
         Set<FilmImage> deletedFilmImages = new HashSet<>();
-        if(editFilmForm.getDeletedImagesIdSet()!=null && editFilmForm.getDeletedImagesIdSet().size() >0){
+        if (editFilmForm.getDeletedImagesIdSet() != null && editFilmForm.getDeletedImagesIdSet().size() > 0) {
             Set<Integer> deleteImageSet = editFilmForm.getDeletedImagesIdSet();
 
             List<FilmImage> filmImages = film.getFilmImages();
 
-            for(Integer deletedImgId : deleteImageSet){
-                if(deletedImgId<=0)continue;
+            for (Integer deletedImgId : deleteImageSet) {
+                if (deletedImgId <= 0) continue;
 
-                Optional<FilmImage> optionalFilmImage =  filmImages.stream().filter(
-                        filmImage -> ( filmImage.getId() == deletedImgId && !filmImage.getIsBanner())
+                Optional<FilmImage> optionalFilmImage = filmImages.stream().filter(
+                        filmImage -> (filmImage.getId() == deletedImgId && !filmImage.getIsBanner())
                 ).findFirst();
 
-                if(optionalFilmImage.isPresent()){
+                if (optionalFilmImage.isPresent()) {
                     filmImages.remove(optionalFilmImage.get());
                     deletedFilmImages.add(optionalFilmImage.get());
                 }
@@ -382,7 +381,7 @@ public class AdminFilmService {
          * Deleting image from directory
          * */
 
-        for(FilmImage deletedImage : deletedFilmImages) {
+        for (FilmImage deletedImage : deletedFilmImages) {
             deletedImage.getFilePath();
 
             ImageHelper.removeFilmFile(deletedImage.getFilePath());

@@ -92,7 +92,7 @@ public class AppSellsService {
         AuthCredential authCredentialUser=authCredentialDao.getById(1);
 
         Sells sells=new Sells();
-        sells.setSellingComment("comment");
+        sells.setSellingComment(createOrMergeSellingForm.orderForm.getSellingComment());
         sells.setCombo(true);
         sells.setTerminal(terminal);
         sells.setStatus(true);
@@ -109,8 +109,6 @@ public class AppSellsService {
 
 
         List<CartForm> sellsDetailsCart=createOrMergeSellingForm.orderForm.getCartForms();
-
-
 
         for(CartForm targetItem : sellsDetailsCart){
 
@@ -141,7 +139,6 @@ public class AppSellsService {
                 Combo combo=comboDao.getById(targetItem.getId());
 
                 if(combo == null){
-
                     serviceResponse.setValidationError("sellProduct","Combo not available");
                 }
 
@@ -186,8 +183,6 @@ public class AppSellsService {
                             ticketList.add(ticket);
                         }
                     }
-
-
                 }
                 sellsDetails.setCombo(combo);
 
@@ -236,12 +231,8 @@ public class AppSellsService {
             for(ConcessionProduct productTgt:updateConcessionProduct){
                 concessionProductDao.update(productTgt);
             }
-
-
-
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(errorMsg);
-
     }
 }
