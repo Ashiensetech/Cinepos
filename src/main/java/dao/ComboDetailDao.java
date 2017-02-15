@@ -11,12 +11,29 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class ComboDetailDao extends BaseDao{
+
+
     public void insert(ComboDetails comboProduct){
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
             session.save(comboProduct);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
+
+    public void update(ComboDetails comboProduct){
+        Session session = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(comboProduct);
             session.getTransaction().commit();
         }catch (HibernateException hEx){
             // Insert to database exception log
@@ -42,13 +59,15 @@ public class ComboDetailDao extends BaseDao{
 
     }
 
-    public ComboDetails getBycomboIdAndProductId(int combo_id, int concession_product_id){
+
+    public ComboDetails getByComboIdAndProductId(int comboId, int concessionProductId){
+
         Session session = null;
         try{
             session = this.sessionFactory.openSession();
-            return (ComboDetails) session.createQuery("FROM ComboDetails where combo_id = :combo_id and concession_product_id = :concession_product_id")
-                    .setParameter("combo_id", combo_id)
-                    .setParameter("concession_product_id", concession_product_id)
+            return (ComboDetails) session.createQuery("FROM ComboDetails where comboId = :combo_id and concessionProductId = :concession_product_id")
+                    .setParameter("combo_id", comboId)
+                    .setParameter("concession_product_id", concessionProductId)
                     .uniqueResult();
         }catch (HibernateException hEx){
             // Insert to database exception log

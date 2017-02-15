@@ -1,5 +1,6 @@
 package validator.admin.AdminConcessionPriceShiftService.editConcessionPriceShift;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
@@ -89,6 +90,7 @@ public class EditConcessionPriceShiftForm {
     private Date formattedEndDate;
 
     @NotNull(message = "Price is required")
+    @Min(value = 0, message = "The Price must be positive")
     private Double price;
 
 //    @NotNull(message = "Status is required")

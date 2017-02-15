@@ -24,6 +24,9 @@ public class ComboDetails {
     @Column(name = "concession_product_id")
     private Integer concessionProductId;
 
+    @Column(name = "quantity")
+    private Integer quantity;
+
 
     @Column(name = "seat_type_id")
     private Integer seatTypeId;
@@ -75,6 +78,14 @@ public class ComboDetails {
 
     public void setConcessionProductId(Integer concessionProductId) {
         this.concessionProductId = concessionProductId;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public Integer getSeatTypeId() {
@@ -139,6 +150,7 @@ public class ComboDetails {
             return false;
         if (concessionProductId != null ? !concessionProductId.equals(that.concessionProductId) : that.concessionProductId != null)
             return false;
+        if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) return false;
         if (seatTypeId != null ? !seatTypeId.equals(that.seatTypeId) : that.seatTypeId != null) return false;
         if (ticketId != null ? !ticketId.equals(that.ticketId) : that.ticketId != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
@@ -153,6 +165,7 @@ public class ComboDetails {
         result = 31 * result + (comboId != null ? comboId.hashCode() : 0);
         result = 31 * result + (comboProductType != null ? comboProductType.hashCode() : 0);
         result = 31 * result + (concessionProductId != null ? concessionProductId.hashCode() : 0);
+        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
         result = 31 * result + (seatTypeId != null ? seatTypeId.hashCode() : 0);
         result = 31 * result + (ticketId != null ? ticketId.hashCode() : 0);
         result = 31 * result + createdBy;
@@ -169,6 +182,7 @@ public class ComboDetails {
                 ", comboId=" + comboId +
                 ", comboProductType='" + comboProductType + '\'' +
                 ", concessionProductId=" + concessionProductId +
+                ", quantity=" + quantity +
                 ", seatTypeId=" + seatTypeId +
                 ", ticketId=" + ticketId +
                 ", createdBy=" + createdBy +

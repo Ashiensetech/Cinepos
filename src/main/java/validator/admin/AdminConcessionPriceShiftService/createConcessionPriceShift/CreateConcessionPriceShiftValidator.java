@@ -45,10 +45,10 @@ public class CreateConcessionPriceShiftValidator implements Validator {
         }
 
 
-        ConcessionPriceShift concessionPriceShift  = concessionPriceShiftDao.getByProductAndDates(concessionPriceShiftForm.getConcessionProductId(),concessionPriceShiftForm.getFormattedStartDate(),concessionPriceShiftForm.getFormattedEndDate());
-        if(concessionPriceShift!=null){
-            errors.rejectValue("startDate", "Start date or end date already exist");
-        }
+//        ConcessionPriceShift concessionPriceShift  = concessionPriceShiftDao.getByProductAndDates(concessionPriceShiftForm.getConcessionProductId(),concessionPriceShiftForm.getFormattedStartDate(),concessionPriceShiftForm.getFormattedEndDate());
+//        if(concessionPriceShift!=null){
+//            errors.rejectValue("startDate", "Start date or end date already exist");
+//        }
 
         ConcessionProduct concessionProduct = concessionProductDao.getById(concessionPriceShiftForm.getConcessionProductId());
         if(concessionProduct==null){

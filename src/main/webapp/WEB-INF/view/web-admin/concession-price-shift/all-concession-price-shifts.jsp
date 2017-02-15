@@ -118,7 +118,11 @@
                   }
               },success: function(data){
                   $("#notification").html("Price Shift deleted successfully").show();
+
                   crntRow.remove();
+                  setTimeout(function(){
+                      window.location = BASEURL+"admin/concession-price-shift/all";
+                  },2000);
               }
           });
 

@@ -119,8 +119,6 @@
                             </div>
                         </div>
 
-
-
                         <div class="col-lg-6">
                             <div class="row clearfix">
                                 <label style="padding-left: 15px;font-size: 16px;">Products</label>
@@ -156,6 +154,7 @@
 
         var products = [];
         var radioOption=[];
+        var prodcutUnit=[];
 
         function addProductToCombo() {
             var productId=$("#concessionProduct").val();
@@ -209,9 +208,15 @@
             pListPrice=$(".plistPrice");
 
             pListPrice.each(function (index) {
+
                 products.push($(this ).data('proids'));
                 price+=parseFloat($(this ).data("price"));
+
             });
+
+
+
+
 
             $('#plistTotal').text("$"+price);
         }
@@ -247,9 +252,15 @@
 
                 var ticket=$("#tickets").val();
 
+                var comboType="";
+
                 if(ticket==""){
                     ticket=0;
+                    comboType="product";
+                }else{
+                    comboType="ticket";
                 }
+
 
                 enableDisableFormElement("createComboForm",["input","button","select","textarea"],false);
 
@@ -260,7 +271,7 @@
                     startDate:startDate,
                     endDate:endDate,
                     seatTypeId:ticket,
-                    comboType:"product",
+                    comboType:comboType,
                 };
 
                 (products.length<=0)? pageData['productIds']=null:  pageData['productIds']=JSON.stringify(products);
@@ -283,7 +294,7 @@
                     success: function(data){
                         $("#statusMsg").html("Combo created successfully").show();
                         setTimeout(function(){
-                            window.location = BASEURL+"admin/combo/all";
+                           // window.location = BASEURL+"admin/combo/all";
                         },2000);
                     }
                 });

@@ -70,7 +70,7 @@ public class ConcessionPriceShift {
         this.price = price;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 

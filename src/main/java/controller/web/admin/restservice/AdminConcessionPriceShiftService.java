@@ -84,7 +84,7 @@ public class AdminConcessionPriceShiftService {
 
         System.out.println(concessionPriceShift);
 
-        concessionPriceShift = concessionPriceShiftDao.insert(concessionPriceShift);
+        concessionPriceShiftDao.insert(concessionPriceShift);
 
         return ResponseEntity.status(HttpStatus.OK).body(concessionPriceShift);
 
