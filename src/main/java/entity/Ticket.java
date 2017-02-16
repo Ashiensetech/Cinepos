@@ -1,6 +1,8 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.ticket.TicketJsonView;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -16,23 +18,28 @@ import java.util.Set;
 @Table(name = "ticket")
 public class Ticket {
 
+    @JsonView(TicketJsonView.Basic.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
+    @JsonView(TicketJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "film_time_id",referencedColumnName = "id")
     FilmTime filmTime;
 
+    @JsonView(TicketJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "screen_seat_id",referencedColumnName = "id")
     ScreenSeat screenSeat;
 
+    @JsonView(TicketJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "vat_id",referencedColumnName = "id")
     private VatSetting vat;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "ticket_channels", joinColumns = {
             @JoinColumn(name = "ticket_id", nullable = false, updatable = false) },
@@ -41,15 +48,17 @@ public class Ticket {
     private Set<SellsChannel> sellsChannels;
 
 
-
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "description")
     private String description;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "annotation")
     private String annotation;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "printed_price")
     private Double printedPrice;
@@ -62,39 +71,47 @@ public class Ticket {
         this.vat = vat;
     }
 
-
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "sell_on_web")
     private boolean sellOnWeb;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "sell_on_kiosk")
     private boolean sellOnKiosk;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "sell_on_pos")
     private boolean sellOnPos;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "is_child")
     private boolean isChild;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "is_adult")
     private boolean isAdult;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "status")
     private boolean status;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "current_state")
     private String currentState;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "start_date")
     private Date startDate;
 
+    @JsonView(TicketJsonView.Summary.class)
     @Basic
     @Column(name = "end_date")
     private Date endDate;
@@ -104,6 +121,7 @@ public class Ticket {
     @Column(name = "created_by")
     private Integer createdBy;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

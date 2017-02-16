@@ -1,11 +1,13 @@
 package controller.app.restservice;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import controller.app.AppUriPreFix;
 import dao.FilmScheduleDao;
 import dao.FilmTimeDao;
 import dao.SeatTypeDao;
 import dao.TicketDao;
 import entity.*;
+import entity.app.jsonview.ticket.TicketJsonView;
 import entity.jspView.TicketSeat;
 import helper.ScreenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,7 @@ public class AppTicketService {
 
     @Autowired
     SeatTypeDao seatTypeDao;
+
 
 
     @RequestMapping(value = "/seats/get-by-film-time/{filmTimeId}", method = RequestMethod.GET)
@@ -107,6 +110,8 @@ public class AppTicketService {
         }
         return ResponseEntity.status(HttpStatus.OK).body(ticketSeatList);
     }
+
+    @JsonView(TicketJsonView.Summary.class)
     @RequestMapping(value = "/get-by-film-time/{filmTimeId}", method = RequestMethod.GET)
     public ResponseEntity<?> getTicketByFilmTimeId(@PathVariable int filmTimeId){
         /**
@@ -140,6 +145,8 @@ public class AppTicketService {
          * */
         return ResponseEntity.status(HttpStatus.OK).body(tickets);
     }
+
+    @JsonView(TicketJsonView.Summary.class)
     @RequestMapping(value = "/get-by-film-time/{filmTimeId}/{seatId}")
     public ResponseEntity<?> getTicketByFilmTimeAndSeatId(@PathVariable Integer filmTimeId,
                                                    @PathVariable Integer seatId){
