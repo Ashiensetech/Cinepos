@@ -27,8 +27,12 @@ public class SellsDetails {
     private float unitSellingAmount;
 
     @Basic
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "product_quantity")
+    private int productQuantity;
+
+    @Basic
+    @Column(name = "ticket_quantity")
+    private int 	ticketQuantity;
 
     @Basic
     @Column(name = "selling_type")
@@ -88,12 +92,20 @@ public class SellsDetails {
         this.unitSellingAmount = unitSellingAmount;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getProductQuantity() {
+        return productQuantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public int getTicketQuantity() {
+        return ticketQuantity;
+    }
+
+    public void setTicketQuantity(int ticketQuantity) {
+        this.ticketQuantity = ticketQuantity;
     }
 
     public String getSellingType() {
@@ -153,7 +165,8 @@ public class SellsDetails {
 
         if (id != that.id) return false;
         if (Float.compare(that.unitSellingAmount, unitSellingAmount) != 0) return false;
-        if (quantity != that.quantity) return false;
+        if (productQuantity != that.productQuantity) return false;
+        if (ticketQuantity != that.ticketQuantity) return false;
         if (sellId != null ? !sellId.equals(that.sellId) : that.sellId != null) return false;
         if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
         if (sellingType != null ? !sellingType.equals(that.sellingType) : that.sellingType != null) return false;
@@ -172,7 +185,8 @@ public class SellsDetails {
         result = 31 * result + (sellId != null ? sellId.hashCode() : 0);
         result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (unitSellingAmount != +0.0f ? Float.floatToIntBits(unitSellingAmount) : 0);
-        result = 31 * result + quantity;
+        result = 31 * result + productQuantity;
+        result = 31 * result + ticketQuantity;
         result = 31 * result + (sellingType != null ? sellingType.hashCode() : 0);
         result = 31 * result + (authCredential != null ? authCredential.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
@@ -189,7 +203,8 @@ public class SellsDetails {
                 ", sellId=" + sellId +
                 ", userId=" + userId +
                 ", unitSellingAmount=" + unitSellingAmount +
-                ", quantity=" + quantity +
+                ", productQuantity=" + productQuantity +
+                ", ticketQuantity=" + ticketQuantity +
                 ", sellingType='" + sellingType + '\'' +
                 ", authCredential=" + authCredential +
                 ", createdAt=" + createdAt +

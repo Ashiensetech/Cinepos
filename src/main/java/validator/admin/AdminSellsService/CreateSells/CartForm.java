@@ -14,8 +14,12 @@ public class CartForm {
      @NotNull(message = "Id is required")
      private Integer Id;
 
-     @NotNull(message = "Quantity is required")
-     private int quantity;
+     @NotNull(message = "Product quantity is required")
+     private int productQuantity;
+
+
+    @NotNull(message = "Ticket quantity is required")
+    private int ticketQuantity;
 
      @NotNull(message = "Price is required")
      private float price;
@@ -34,12 +38,20 @@ public class CartForm {
         Id = id;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getProductQuantity() {
+        return productQuantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public int getTicketQuantity() {
+        return ticketQuantity;
+    }
+
+    public void setTicketQuantity(int ticketQuantity) {
+        this.ticketQuantity = ticketQuantity;
     }
 
     public float getPrice() {
@@ -81,7 +93,8 @@ public class CartForm {
 
         CartForm cartForm = (CartForm) o;
 
-        if (quantity != cartForm.quantity) return false;
+        if (productQuantity != cartForm.productQuantity) return false;
+        if (ticketQuantity != cartForm.ticketQuantity) return false;
         if (Float.compare(cartForm.price, price) != 0) return false;
         if (screenId != cartForm.screenId) return false;
         if (ticketId != cartForm.ticketId) return false;
@@ -92,7 +105,8 @@ public class CartForm {
     @Override
     public int hashCode() {
         int result = Id != null ? Id.hashCode() : 0;
-        result = 31 * result + quantity;
+        result = 31 * result + productQuantity;
+        result = 31 * result + ticketQuantity;
         result = 31 * result + (price != +0.0f ? Float.floatToIntBits(price) : 0);
         result = 31 * result + screenId;
         result = 31 * result + ticketId;
@@ -104,7 +118,8 @@ public class CartForm {
     public String toString() {
         return "CartForm{" +
                 "Id=" + Id +
-                ", quantity=" + quantity +
+                ", productQuantity=" + productQuantity +
+                ", ticketQuantity=" + ticketQuantity +
                 ", price=" + price +
                 ", screenId=" + screenId +
                 ", ticketId=" + ticketId +

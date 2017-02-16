@@ -24,8 +24,11 @@ public class ComboDetails {
     @Column(name = "concession_product_id")
     private Integer concessionProductId;
 
-    @Column(name = "quantity")
-    private Integer quantity;
+    @Column(name = "product_quantity")
+    private Integer productQuantity;
+
+    @Column(name = "ticket_quantity")
+    private Integer ticketQuantity;
 
 
     @Column(name = "seat_type_id")
@@ -80,12 +83,20 @@ public class ComboDetails {
         this.concessionProductId = concessionProductId;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getProductQuantity() {
+        return productQuantity;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setProductQuantity(Integer productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public Integer getTicketQuantity() {
+        return ticketQuantity;
+    }
+
+    public void setTicketQuantity(Integer ticketQuantity) {
+        this.ticketQuantity = ticketQuantity;
     }
 
     public Integer getSeatTypeId() {
@@ -150,7 +161,10 @@ public class ComboDetails {
             return false;
         if (concessionProductId != null ? !concessionProductId.equals(that.concessionProductId) : that.concessionProductId != null)
             return false;
-        if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) return false;
+        if (productQuantity != null ? !productQuantity.equals(that.productQuantity) : that.productQuantity != null)
+            return false;
+        if (ticketQuantity != null ? !ticketQuantity.equals(that.ticketQuantity) : that.ticketQuantity != null)
+            return false;
         if (seatTypeId != null ? !seatTypeId.equals(that.seatTypeId) : that.seatTypeId != null) return false;
         if (ticketId != null ? !ticketId.equals(that.ticketId) : that.ticketId != null) return false;
         if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) return false;
@@ -165,7 +179,8 @@ public class ComboDetails {
         result = 31 * result + (comboId != null ? comboId.hashCode() : 0);
         result = 31 * result + (comboProductType != null ? comboProductType.hashCode() : 0);
         result = 31 * result + (concessionProductId != null ? concessionProductId.hashCode() : 0);
-        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
+        result = 31 * result + (productQuantity != null ? productQuantity.hashCode() : 0);
+        result = 31 * result + (ticketQuantity != null ? ticketQuantity.hashCode() : 0);
         result = 31 * result + (seatTypeId != null ? seatTypeId.hashCode() : 0);
         result = 31 * result + (ticketId != null ? ticketId.hashCode() : 0);
         result = 31 * result + createdBy;
@@ -182,7 +197,8 @@ public class ComboDetails {
                 ", comboId=" + comboId +
                 ", comboProductType='" + comboProductType + '\'' +
                 ", concessionProductId=" + concessionProductId +
-                ", quantity=" + quantity +
+                ", productQuantity=" + productQuantity +
+                ", ticketQuantity=" + ticketQuantity +
                 ", seatTypeId=" + seatTypeId +
                 ", ticketId=" + ticketId +
                 ", createdBy=" + createdBy +

@@ -37,7 +37,7 @@ public class CreateSellingValidator implements Validator {
             if(targetItem.getSellingType().equals("product")){
 
                 ConcessionProduct concessionProduct=concessionProductDao.getById(targetItem.getId());
-                if(concessionProduct == null || concessionProduct.getUnit()<targetItem.getQuantity()){
+                if(concessionProduct == null || concessionProduct.getUnit()<targetItem.getProductQuantity()){
                     errors.rejectValue("sellProduct","Product not available");
                     break;
                 }
@@ -55,7 +55,7 @@ public class CreateSellingValidator implements Validator {
 
                         ConcessionProduct concessionProduct=concessionProductDao.getById(tgtComboDetails.getConcessionProductId());
 
-                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getQuantity()){
+                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getProductQuantity()){
                             errors.rejectValue("sellProduct","Product not available");
                             break;
                         }
@@ -64,7 +64,7 @@ public class CreateSellingValidator implements Validator {
 
                         ConcessionProduct concessionProduct=concessionProductDao.getById(tgtComboDetails.getConcessionProductId());
 
-                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getQuantity()){
+                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getProductQuantity()){
                             errors.rejectValue("sellProduct","Product not available");
                             break;
                         }
