@@ -106,7 +106,8 @@ public class AdminComboService {
                         comboDetail.setComboId(combo.getId());
                         comboDetail.setComboProductType(createComboForm.getComboType());
                         comboDetail.setConcessionProductId(concessionProduct.getId());
-                        comboDetail.setQuantity(1);
+                        comboDetail.setProductQuantity(1);
+                        comboDetail.setTicketQuantity(1);
 
                         if(seatTypeDao.getById(createComboForm.getSeatTypeId())==null){
                             comboDetail.setSeatTypeId(0);

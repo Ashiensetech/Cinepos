@@ -76,13 +76,13 @@ public class AppSellsService {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
-        createSellingValidator.validate(createOrMergeSellingForm.orderForm,result);
-
-        serviceResponse.bindValidationError(result);
-
-        if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
-        }
+//        createSellingValidator.validate(createOrMergeSellingForm.orderForm,result);
+//
+//        serviceResponse.bindValidationError(result);
+//
+//        if(serviceResponse.hasErrors()){
+//            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+//        }
         /***************** Validation  [End] *************/
 
 
@@ -117,7 +117,8 @@ public class AppSellsService {
             sellsDetails.setSellId(sells.getId());
             sellsDetails.setUserId(1);
             sellsDetails.setUnitSellingAmount(targetItem.getPrice());
-            sellsDetails.setQuantity(targetItem.getQuantity());
+            sellsDetails.setProductQuantity(targetItem.getProductQuantity());
+            sellsDetails.setTicketQuantity(0);
             sellsDetails.setSellingType(targetItem.getSellingType());
             sellsDetails.setAuthCredential(authCredentialUser);
 
@@ -125,12 +126,12 @@ public class AppSellsService {
             if(targetItem.getSellingType().equals("product")){
 
                 ConcessionProduct concessionProduct=concessionProductDao.getById(targetItem.getId());
-                if(concessionProduct == null || concessionProduct.getUnit()<targetItem.getQuantity()){
+                if(concessionProduct == null || concessionProduct.getUnit()<targetItem.getProductQuantity()){
                     serviceResponse.setValidationError("sellProduct","Product not available");
                     break;
                 }else{
                     sellsDetails.setConcessionProduct(concessionProduct);
-                    concessionProduct.setUnit(concessionProduct.getUnit()-targetItem.getQuantity());
+                    concessionProduct.setUnit(concessionProduct.getUnit()-targetItem.getProductQuantity());
                     updateConcessionProduct.add(concessionProduct);
                 }
 
@@ -148,12 +149,12 @@ public class AppSellsService {
 
                         ConcessionProduct concessionProduct=concessionProductDao.getById(tgtComboDetails.getConcessionProductId());
 
-                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getQuantity()){
+                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getProductQuantity()){
                             serviceResponse.setValidationError("sellProduct","Product not available");
                             break;
                         }else{
-                            sellsDetails.setConcessionProduct(concessionProduct);
-                            concessionProduct.setUnit(concessionProduct.getUnit()-tgtComboDetails.getQuantity());
+                            //sellsDetails.setConcessionProduct(concessionProduct);
+                            concessionProduct.setUnit(concessionProduct.getUnit()-tgtComboDetails.getProductQuantity());
                             updateConcessionProduct.add(concessionProduct);
                         }
                     }
@@ -162,12 +163,12 @@ public class AppSellsService {
 
                         ConcessionProduct concessionProduct=concessionProductDao.getById(tgtComboDetails.getConcessionProductId());
 
-                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getQuantity()){
+                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getProductQuantity()){
                             serviceResponse.setValidationError("sellProduct","Product not available");
                             break;
                         }else{
-                            sellsDetails.setConcessionProduct(concessionProduct);
-                            concessionProduct.setUnit(concessionProduct.getUnit()-tgtComboDetails.getQuantity());
+                           // sellsDetails.setConcessionProduct(concessionProduct);
+                            concessionProduct.setUnit(concessionProduct.getUnit()-tgtComboDetails.getProductQuantity());
                             updateConcessionProduct.add(concessionProduct);
                         }
 
@@ -202,7 +203,7 @@ public class AppSellsService {
             }
 
             totalPrice+=targetItem.getPrice();
-            totalQuantity+=targetItem.getQuantity();
+            totalQuantity+=targetItem.getProductQuantity();
 
             sellDetails.add(sellsDetails);
         }
