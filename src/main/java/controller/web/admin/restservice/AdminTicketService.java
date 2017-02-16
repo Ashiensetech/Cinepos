@@ -1,8 +1,10 @@
 package controller.web.admin.restservice;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import controller.web.admin.AdminUriPreFix;
 import dao.*;
 import entity.*;
+import entity.app.jsonview.ticket.TicketJsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +55,7 @@ public class AdminTicketService {
     @Autowired
     SellsChannelDao sellsChannelDao;
 
+    @JsonView(TicketJsonView.Summary.class)
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseEntity<?> createTicket(Authentication authentication,
                                           @Valid CreateTicketForm createTicketForm, BindingResult result){
@@ -160,7 +163,7 @@ public class AdminTicketService {
         return ResponseEntity.status(HttpStatus.OK).body(ticketDao.getById(ticket.getId()));
 
     }
-
+    @JsonView(TicketJsonView.Summary.class)
     @RequestMapping(value = "/edit",method = RequestMethod.POST)
     public ResponseEntity<?> editTicket(@Valid EditTicketForm editTicketForm, BindingResult result){
 

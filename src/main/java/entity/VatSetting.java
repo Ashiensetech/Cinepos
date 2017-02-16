@@ -1,5 +1,9 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.vat.VatSettingsJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -7,27 +11,33 @@ import java.sql.Timestamp;
 @Table(name = "vat_settings")
 public class VatSetting {
 
+    @JsonView(VatSettingsJsonView.Basic.class)
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
+    @JsonView(VatSettingsJsonView.Basic.class)
     @Basic
     @Column(name = "name")
     private String name;
 
+    @JsonView(VatSettingsJsonView.Summary.class)
     @Basic
     @Column(name = "amount")
     private float amount;
 
+    @JsonView(VatSettingsJsonView.Summary.class)
     @Basic
     @Column(name = "description")
     private String description;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by",nullable = true)
     private int createdBy;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
