@@ -114,6 +114,7 @@
                                     </select>
                                     <button type="button" class="btn btn-primary" onclick="return addProductToCombo()">Add</button>
                                     <p class="help-block error" id="errorMsg_productIds"></p>
+                                    <p class="help-block error custome_error" id="productMsg"></p>
                                 </div>
 
                                 <div class="form-group">
@@ -166,12 +167,24 @@
         function addProductToCombo() {
             var productId=$("#concessionProduct").val();
             var productQuantity=$("#productQuantity").val();
-            if(productId==""){
-                  $("#errorMsg_concessionProduct").text("Concession product are required");
+
+            if(productId=="" || productId<=0){
+                  $("#productMsg").text("Concession product are required").show();
                   return false;
+            }else{
+                $("#productMsg").hide();
             }
+
+            if(productQuantity=="" || productQuantity<=0){
+                $("#productMsg").text("Product qunatity are required").show();
+                return false;
+            }else{
+                $("#productMsg").hide();
+            }
+
+
             $.ajax({
-                url: BASEURL+'api/admin/concession-product/getproductbyid/'+productId+"/"+productQuantity,
+                url: BASEURL+'api/admin/concession-product/getproductbyid/'+productId,
                 type: 'GET',
                 data: {
 
@@ -205,7 +218,7 @@
                     }
 
                     productHtml+='<li>'
-                    productHtml+=data.name+' <span class="plist-price plistPrice" data-quantity="'+productQuantity+'" data-price="'+productQuantity*data.sellingPrice+'" data-proids="'+data.id+'">$'+productQuantity*data.sellingPrice+'</span>'
+                    productHtml+=data.name+' <span class="plist-price plistPrice" data-quantity="'+productQuantity+'" data-price="'+productQuantity*data.sellingPrice+'" data-proids="'+data.id+'">('+productQuantity+' X $'+data.sellingPrice+')$'+productQuantity*data.sellingPrice+'</span>'
                     productHtml+='<span class="plist-remove" data-proid="'+data.id+'">X</span>'
                     productHtml+='</li>';
 
@@ -230,7 +243,7 @@
             pListPrice.each(function (index) {
                 products.push({"productId":$(this ).data('proids'),"quantity":$(this ).data('quantity')});
 
-                console.log(products);
+                console.log(typeof products);
 
                 price+=parseFloat($(this ).data("price"));
             });
@@ -292,6 +305,8 @@
 
                 (products.length<=0)? pageData['productIds']=null:  pageData['productIds']=JSON.stringify(products);
 
+                console.log(products+"Hello");
+
                 $.ajax({
                     url: BASEURL+'api/admin/combo/create',
                     type: 'POST',
@@ -316,6 +331,7 @@
                             enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
                             BindErrorsWithHtml("errorMsg_",response.responseJSON);
 
+
                             if(radioOption.hasOwnProperty('ticketRadio')){
                                 var ticket=$("#tickets").val();
                                 if(ticket==""){
@@ -329,7 +345,7 @@
                     success: function(data){
                         $("#statusMsg").html("Combo created successfully").show();
                         setTimeout(function(){
-                           // window.location = BASEURL+"admin/combo/all";
+                            window.location = BASEURL+"admin/combo/all";
                         },2000);
                     }
                 });

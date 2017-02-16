@@ -1,51 +1,47 @@
 package validator.admin.AdminComboService.createCombo;
 
-/**
- * Created by Sarwar on 2/15/2017.
- */
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.List;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ComboProductForm {
-    private Integer productId;
-    private Integer quantity;
 
-    public Integer getProductId() {
-        return productId;
+    public ComboProduct comboProduct;
+    private String productIds;
+
+    private List<ComboProduct> comboProducts;
+
+    public ComboProduct getComboProduct() {
+        return comboProduct;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setComboProduct(ComboProduct comboProduct) {
+        this.comboProduct = comboProduct;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public String getProductIds() {
+        return productIds;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setProductIds(String productIds) {
+        this.productIds = productIds;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ComboProductForm that = (ComboProductForm) o;
-
-        if (productId != null ? !productId.equals(that.productId) : that.productId != null) return false;
-        return quantity != null ? quantity.equals(that.quantity) : that.quantity == null;
+    public List<ComboProduct> getComboProducts() {
+        return comboProducts;
     }
 
-    @Override
-    public int hashCode() {
-        int result = productId != null ? productId.hashCode() : 0;
-        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
-        return result;
+    public void setComboProducts(List<ComboProduct> comboProducts) {
+        this.comboProducts = comboProducts;
     }
 
     @Override
     public String toString() {
         return "ComboProductForm{" +
-                "productId=" + productId +
-                ", quantity=" + quantity +
+                "comboProduct=" + comboProduct +
+                ", productIds='" + productIds + '\'' +
+                ", comboProducts=" + comboProducts +
                 '}';
     }
 }

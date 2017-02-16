@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminComboService.createCombo.ComboProductForm;
-import validator.admin.AdminComboService.createCombo.CreateComboForm;
-import validator.admin.AdminComboService.createCombo.CreateComboValidator;
+import validator.admin.AdminComboService.createCombo.*;
 import validator.admin.AdminDistributorService.editDistributor.editDistributorForm;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +36,9 @@ public class AdminComboService {
    CreateComboValidator createComboValidator;
 
    @Autowired
+   ComboProductValidator comboProductValidator;
+
+   @Autowired
    ConcessionProductDao concessionProductDao;
 
    @Autowired
@@ -46,11 +47,13 @@ public class AdminComboService {
    @Autowired
     SeatTypeDao seatTypeDao;
 
+
     @RequestMapping(value = "/create",method = RequestMethod.POST)
     public ResponseEntity<?> create(@Valid CreateComboForm createComboForm,
                                     BindingResult result,
                                     HttpServletRequest request){
         String errorMsg="Combo create successfully";
+
         try {
             ServiceResponse serviceResponse = ServiceResponse.getInstance();
             serviceResponse.bindValidationError(result);
@@ -66,6 +69,8 @@ public class AdminComboService {
                 return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
             }
 
+
+
             Combo combo=new Combo();
             combo.setComboName(createComboForm.getComboName());
             combo.setDetails(createComboForm.getDetails());
@@ -78,35 +83,25 @@ public class AdminComboService {
 
             comboDao.insert(combo);
 
-
-            /**
-             *  Combo product
-             *  */
-
             List<ComboDetails> comboProductArray = new ArrayList<>();
 
-
-            List<Integer> productsIds = createComboForm.getProductsIdArray();
-
-            List<ComboProductForm> comboProduct = new ArrayList<ComboProductForm>();
-
-            ComboProductForm comboProductForm = new ComboProductForm();
+            /**
+             * Get Combo Product
+             * */
+            List<ComboProduct>  comboProductsList= createComboForm.getComboProduct();
 
 
-            for (Integer productsId :productsIds){
+            for (ComboProduct tgtComboProduct :comboProductsList){
 
-                ConcessionProduct concessionProduct = concessionProductDao.getById(productsId);
+                ConcessionProduct concessionProduct = concessionProductDao.getById(tgtComboProduct.getProductId());
 
                 if(concessionProduct!=null){
-
-
-
 
                         ComboDetails comboDetail=new ComboDetails();
                         comboDetail.setComboId(combo.getId());
                         comboDetail.setComboProductType(createComboForm.getComboType());
                         comboDetail.setConcessionProductId(concessionProduct.getId());
-                        comboDetail.setProductQuantity(1);
+                        comboDetail.setProductQuantity(tgtComboProduct.getQuantity());
                         comboDetail.setTicketQuantity(1);
 
                         if(seatTypeDao.getById(createComboForm.getSeatTypeId())==null){
@@ -116,7 +111,6 @@ public class AdminComboService {
                         }
                         comboDetail.setCreatedBy(1);
                         comboProductArray.add(comboDetail);
-
                 }
             }
 
@@ -143,8 +137,9 @@ public class AdminComboService {
                                     BindingResult result,
                                     HttpServletRequest request,
                                     @PathVariable Integer comboId){
-        String errorMsg="Combo create successfully";
+        String errorMsg="Combo updated successfully";
         try {
+
             ServiceResponse serviceResponse = ServiceResponse.getInstance();
             serviceResponse.bindValidationError(result);
 
@@ -159,7 +154,6 @@ public class AdminComboService {
                 return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
             }
 
-            System.out.println(createComboForm);
 
             Combo combo=comboDao.getById(comboId);
             combo.setComboName(createComboForm.getComboName());
@@ -180,24 +174,33 @@ public class AdminComboService {
              *  */
 
             List<ComboDetails> comboProductArray = new ArrayList<>();
+            /**
+             * Get Combo Product
+             * */
+            List<ComboProduct>  comboProductsList= createComboForm.getComboProduct();
 
-            List<Integer> productsIds = createComboForm.getProductsIdArray();
-            for (Integer productsId :productsIds){
-                ComboDetails comboProductd= comboDetailDao.getByComboIdAndProductId(comboId,productsId);
+
+            for (ComboProduct tgtComboProduct :comboProductsList){
+
+                ComboDetails comboProductd= comboDetailDao.getByComboIdAndProductId(comboId,tgtComboProduct.getProductId());
                 comboProductArray.add(comboProductd);
                 if(comboProductd==null){
-                    ConcessionProduct concessionProduct = concessionProductDao.getById(productsId);
+                    ConcessionProduct concessionProduct = concessionProductDao.getById(tgtComboProduct.getProductId());
                     if(concessionProduct!=null){
-                        ComboDetails comboProduct=new ComboDetails();
-                        comboProduct.setComboId(combo.getId());
-                        comboProduct.setComboProductType(createComboForm.getComboType());
-                        comboProduct.setConcessionProductId(concessionProduct.getId());
-                        comboProductArray.add(comboProduct);
+                        ComboDetails comboDetails=new ComboDetails();
+                        comboDetails.setComboId(combo.getId());
+                        comboDetails.setComboProductType(createComboForm.getComboType());
+                        comboDetails.setConcessionProductId(concessionProduct.getId());
+                        comboDetails.setProductQuantity(tgtComboProduct.getQuantity());
+                        comboDetails.setTicketQuantity(1);
+
+                        comboProductArray.add(comboDetails);
                     }
                 }
-
             }
+
             combo.setComboDetails(comboProductArray);
+
             /**
              * Updating Combo
              * */

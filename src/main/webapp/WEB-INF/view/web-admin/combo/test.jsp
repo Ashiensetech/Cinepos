@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="d" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,17 +25,16 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Add Combo</h1>
+                    <h1 class="page-header">Edit Combo</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row clearfix">
-                <form id="createComboForm">
+                <form id="editComboForm">
+                    <input type="hidden" value="${combos.id}" id="comboId">
                     <div class="row clearfix">
                         <div class="col-lg-6">
                             <div class="col-lg-12">
-                                <input type="hidden" value="${combos.id}" id="comboId">
-
                                 <div class="form-group">
                                     <label>Combo name</label>
                                     <input type="text" value="${combos.comboName}" name="" id="comboName" class="form-control">
@@ -86,17 +86,11 @@
                             </div>
 
                             <div class="col-lg-12">
-                                <div class="form-group" id="ticketBlock">
-                                    <label>Seat Type</label>
+                                <div class="form-group">
+                                    <label>Ticket</label>
                                     <select class="form-control" id="tickets">
-                                        <option value="">Select  Seat Type</option>
-                                        <d:choose>
-                                            <d:when test="${not empty seatTypeList}">
-                                                <d:forEach var="varseatType" items="${seatTypeList}">
-                                                    <option  value="${varseatType.id}" data-subtext="${varseatType.name}">${varseatType.name}</option>
-                                                </d:forEach>
-                                            </d:when>
-                                        </d:choose>
+                                        <option>Active</option>
+                                        <option>Inactive</option>
                                     </select>
                                     <p class="help-block error" id="errorMsg_tickets"></p>
 
@@ -116,17 +110,11 @@
                                     </select>
                                     <button type="button" class="btn btn-primary" onclick="return addProductToCombo()">Add</button>
                                     <p class="help-block error" id="errorMsg_productIds"></p>
-                                    <p class="help-block error custome_error" id="productMsg"></p>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Quantity</label>
-                                    <input type="number" min="1" name="" id="productQuantity" class="form-control">
-                                    <p class="help-block error" id="errorMsg_productQuantity"></p>
                                 </div>
 
                             </div>
                         </div>
+
 
                         <%
                             float totalPrice=0;
@@ -137,24 +125,21 @@
                                 <div class="col-md-12">
                                     <div class="well">
                                         <ul class="prod-list" id="addedProductList">
-                                            <d:forEach var="comboProductValue" items="${combos.comboDetails}" >
+                                            <d:forEach var="comboProductValue" items="${combos.comboProducts}" >
                                                 <li>
-                                                        ${comboProductValue.concessionProduct.name}<span class="plist-price plistPrice" data-quantity="${comboProductValue.productQuantity}"
-                                                                                                         data-price="${comboProductValue.productQuantity*comboProductValue.concessionProduct.sellingPrice}"
-                                                                                                         data-proids="${comboProductValue.concessionProduct.id}">(${comboProductValue.productQuantity} X $${comboProductValue.concessionProduct.sellingPrice})$${comboProductValue.productQuantity*comboProductValue.concessionProduct.sellingPrice}</span>
+                                                        ${comboProductValue.concessionProduct.name}<span class="plist-price plistPrice" data-price="${comboProductValue.concessionProduct.sellingPrice}" data-proids="${comboProductValue.concessionProduct.id}">${comboProductValue.concessionProduct.sellingPrice}</span>
                                                     <span class="plist-remove" data-comboproductid="${comboProductValue.id}">X</span>
                                                 </li>
                                                 <d:set var="salary" scope="session" value="${totalPrice=comboProductValue.concessionProduct.sellingPrice+totalPrice}"/>
                                             </d:forEach>
                                         </ul>
                                         <div class="plist-total">
-                                            Total <span class="plist-price" id="plistTotal"><d:out value="$${totalPrice}"/></span>
+                                            Total <span class="plist-price" id="plistTotal"><d:out value="${totalPrice}"/></span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="col-lg-12 text-left" style="margin-top:30px;">
                         <p class="help-block" id="statusMsg"></p>
@@ -175,28 +160,13 @@
 
     var products = [];
     var radioOption=[];
-    var prodcutUnit=[];
-    var comboType="ticket";
 
     function addProductToCombo() {
         var productId=$("#concessionProduct").val();
-        var productQuantity=$("#productQuantity").val();
-
-        if(productId=="" || productId<=0){
-            $("#productMsg").text("Concession product are required").show();
+        if(productId==""){
+            $("#errorMsg_concessionProduct").text("Concession product are required");
             return false;
-        }else{
-            $("#productMsg").hide();
         }
-
-        if(productQuantity=="" || productQuantity<=0){
-            $("#productMsg").text("Product qunatity are required").show();
-            return false;
-        }else{
-            $("#productMsg").hide();
-        }
-
-
         $.ajax({
             url: BASEURL+'api/admin/concession-product/getproductbyid/'+productId,
             type: 'GET',
@@ -205,64 +175,42 @@
             },
             statusCode: {
                 401: function (response) {
+                    console.log("unauthorized");
+                    console.log(response);
                     enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
-                    BindErrorsWithHtml("errorMsg_",response.responseJSON);
+
                 },
                 422: function (response) {
+                    console.log(response);
                     enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
                     BindErrorsWithHtml("errorMsg_",response.responseJSON);
-
                 }
             },
             success: function(data){
-
                 var productHtml="";
                 var pListPrice="";
 
-                pListPrice=$(".plistPrice");
-
-                var flg=false;
-
-                if(pListPrice.length>0){
-                    pListPrice.each(function (index) {
-                        if(parseInt($(this ).data('proids'))==parseInt(productId)) {
-                            $(this).parent('li').remove();
-                        }
-                    });
-                }
-
                 productHtml+='<li>'
-                productHtml+=data.name+' <span class="plist-price plistPrice" data-quantity="'+productQuantity+'" data-price="'+productQuantity*data.sellingPrice+'" data-proids="'+data.id+'">('+productQuantity+' X $'+data.sellingPrice+')$'+productQuantity*data.sellingPrice+'</span>'
-                productHtml+='<span class="plist-remove" data-proid="'+data.id+'">X</span>'
+                productHtml+=data.name+' <span class="plist-price plistPrice" data-price="'+data.sellingPrice+'" data-proids="'+data.id+'">'+data.sellingPrice+'</span>'
+                productHtml+='<span class="plist-remove"  data-comboproductid="" data-proid="'+data.id+'">X</span>'
                 productHtml+='</li>';
 
                 $("#addedProductList").append(productHtml);
 
                 productListPrice();
 
-                $('.plist-remove').click(function () {
+                $('.plist-remove').unbind().bind("click",function () {
                     $(this).parent('li').remove();
+                    var comboProductId=$(this).data("comboproductid");
+
+                    if(comboProductId!=""){
+                        deleteCombo(comboProductId);
+                    }
+
                     productListPrice();
                 });
             }
         });
-    }
-
-    function productListPrice() {
-
-        var price=0;
-        products=[];
-        pListPrice=$(".plistPrice");
-
-        pListPrice.each(function (index) {
-            products.push({"productId":$(this ).data('proids'),"quantity":$(this ).data('quantity')});
-
-            console.log(typeof products);
-
-            price+=parseFloat($(this ).data("price"));
-        });
-
-        $('#plistTotal').text("$"+price);
     }
 
     function deleteCombo(comboProductId) {
@@ -294,10 +242,26 @@
         });
     }
 
+    function productListPrice() {
+        var price=0;
+        products=[];
+        pListPrice=$(".plistPrice");
+
+        pListPrice.each(function (index) {
+            if($(this ).data('proids')!=""){
+                products.push($(this ).data('proids'));
+            }
+            price+=parseFloat($(this ).data("price"));
+        });
+
+        console.log(products);
+
+        $('#plistTotal').text(price);
+    }
+
 
 
     $(document).ready(function () {
-
         productListPrice();
         $('.plist-remove').unbind().bind("click",function () {
             $(this).parent('li').remove();
@@ -309,44 +273,33 @@
             productListPrice();
         });
 
-        radioOption=[];
-        radioOption["ticketRadio"]="ticketRadio";
 
 
         $('input:radio[name=inlineRadioOptions]').click(function () {
             radioOption=[];
             radioOption[$(this).val()]=$(this).val();
             if (radioOption.hasOwnProperty('ticketRadio'))
-                $("#ticketBlock").show("slow");
+                $("#tickets").show("slow");
             else
-                $("#ticketBlock").hide("slow");
+                $("#tickets").hide("slow");
 
             console.log(radioOption);
         });
 
         $('#comboBtn').click(function () {
+            if(radioOption.hasOwnProperty('ticketRadio')){
+                $("#errorMsg_tickets").text("Tickets are required");
+                //BindErrorsWithHtml("errorMsg_",response.responseJSON);
+            }
 
             var comboName=$("#comboName").val();
             var details=$("#details").val();
             var price=$("#price").val();
             var startDate=$("#startDate").val();
             var endDate=$("#endDate").val();
-            var productQuantity=$("#productQuantity").val();
-
-            var ticket=$("#tickets").val();
-
             var comboId=$("#comboId").val();
 
-
-            if(ticket==""){
-                ticket=0;
-                comboType="product";
-            }else{
-                comboType="ticket";
-            }
-
-
-            enableDisableFormElement("createComboForm",["input","button","select","textarea"],false);
+            enableDisableFormElement("editComboForm",["input","button","select","textarea"],false);
 
             var pageData={
                 comboName:comboName,
@@ -354,14 +307,10 @@
                 price:price,
                 startDate:startDate,
                 endDate:endDate,
-                seatTypeId:ticket,
-                comboType:comboType,
-                productQuantity:productQuantity
+                comboType:"product",
             };
 
             (products.length<=0)? pageData['productIds']=null:  pageData['productIds']=JSON.stringify(products);
-
-            console.log(products+"Hello");
 
             $.ajax({
                 url: BASEURL+'api/admin/combo/edit/'+comboId,
@@ -369,33 +318,13 @@
                 data: pageData,
                 statusCode: {
                     401: function (response) {
-                        enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
-
-                        if(radioOption.hasOwnProperty('ticketRadio')){
-
-                            var ticket=$("#tickets").val();
-                            if(ticket==""){
-                                $("#errorMsg_tickets").text("Tickets are required").show();
-                            }else{
-                                $("#errorMsg_tickets").text("Tickets are required").hide();
-                            }
-                            //BindErrorsWithHtml("errorMsg_",response.responseJSON);
-                        }
+                        enableDisableFormElement("editComboForm",["input","button","select","textarea"],true);
 
                     },
                     422: function (response) {
-                        enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
+                        console.log(response);
+                        enableDisableFormElement("editComboForm",["input","button","select","textarea"],true);
                         BindErrorsWithHtml("errorMsg_",response.responseJSON);
-
-
-                        if(radioOption.hasOwnProperty('ticketRadio')){
-                            var ticket=$("#tickets").val();
-                            if(ticket==""){
-                                $("#errorMsg_tickets").text("Tickets are required").show();
-                            }else{
-                                $("#errorMsg_tickets").text("Tickets are required").hide();
-                            }
-                        }
                     }
                 },
                 success: function(data){

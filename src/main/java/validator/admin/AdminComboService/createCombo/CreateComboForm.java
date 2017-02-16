@@ -9,9 +9,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Sarwar on 1/19/2017.
- */
+
 public class CreateComboForm {
 
     @NotBlank(message = "Combo Name are required")
@@ -37,9 +35,8 @@ public class CreateComboForm {
     @NotNull(message = "Product are  required")
     private String productIds;
 
-    @NotNull(message = "Product quantity are  required")
-    @Min(value = 1, message = "Product quantity be positive")
-    private String productQuantity;
+    public List<ComboProduct> comboProduct;
+
 
     private int seatTypeId;
 
@@ -50,7 +47,6 @@ public class CreateComboForm {
     private Date formattedStartDate;
 
     private Date formattedEndDate;
-
 
     public String getComboName() {
         return comboName;
@@ -108,12 +104,12 @@ public class CreateComboForm {
         this.productIds = productIds;
     }
 
-    public String getProductQuantity() {
-        return productQuantity;
+    public List<ComboProduct> getComboProduct() {
+        return comboProduct;
     }
 
-    public void setProductQuantity(String productQuantity) {
-        this.productQuantity = productQuantity;
+    public void setComboProduct(List<ComboProduct> comboProduct) {
+        this.comboProduct = comboProduct;
     }
 
     public int getSeatTypeId() {
@@ -163,8 +159,7 @@ public class CreateComboForm {
         if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
         if (comboType != null ? !comboType.equals(that.comboType) : that.comboType != null) return false;
         if (productIds != null ? !productIds.equals(that.productIds) : that.productIds != null) return false;
-        if (productQuantity != null ? !productQuantity.equals(that.productQuantity) : that.productQuantity != null)
-            return false;
+        if (comboProduct != null ? !comboProduct.equals(that.comboProduct) : that.comboProduct != null) return false;
         if (productsIdArray != null ? !productsIdArray.equals(that.productsIdArray) : that.productsIdArray != null)
             return false;
         if (formattedStartDate != null ? !formattedStartDate.equals(that.formattedStartDate) : that.formattedStartDate != null)
@@ -181,7 +176,7 @@ public class CreateComboForm {
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
         result = 31 * result + (comboType != null ? comboType.hashCode() : 0);
         result = 31 * result + (productIds != null ? productIds.hashCode() : 0);
-        result = 31 * result + (productQuantity != null ? productQuantity.hashCode() : 0);
+        result = 31 * result + (comboProduct != null ? comboProduct.hashCode() : 0);
         result = 31 * result + seatTypeId;
         result = 31 * result + (productsIdArray != null ? productsIdArray.hashCode() : 0);
         result = 31 * result + (formattedStartDate != null ? formattedStartDate.hashCode() : 0);
@@ -199,7 +194,7 @@ public class CreateComboForm {
                 ", endDate='" + endDate + '\'' +
                 ", comboType='" + comboType + '\'' +
                 ", productIds='" + productIds + '\'' +
-                ", productQuantity='" + productQuantity + '\'' +
+                ", comboProduct=" + comboProduct +
                 ", seatTypeId=" + seatTypeId +
                 ", productsIdArray=" + productsIdArray +
                 ", formattedStartDate=" + formattedStartDate +
@@ -207,3 +202,4 @@ public class CreateComboForm {
                 '}';
     }
 }
+

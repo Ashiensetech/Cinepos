@@ -51,12 +51,18 @@ public class AdminComboController {
 
     @RequestMapping(value = "/edit/{comboId}",method = RequestMethod.GET)
     public ModelAndView edit(@PathVariable Integer comboId){
+
         Combo combos=comboDao.getById(comboId);
+        List<SeatType> seatTypeList=seatTypeDao.getAll();
+
         List<ConcessionProduct> concessionProductList= concessionProductDao.getAll();
+
         ModelAndView modelAndView=new ModelAndView("web-admin/combo/edit-combo");
+
         modelAndView.addObject("concessionProductList",concessionProductList);
         modelAndView.addObject("combos",combos);
-        System.out.println(combos);
+        modelAndView.addObject("seatTypeList",seatTypeList);
+
         return modelAndView;
     }
 }

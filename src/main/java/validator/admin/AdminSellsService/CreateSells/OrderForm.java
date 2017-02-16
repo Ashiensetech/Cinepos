@@ -10,6 +10,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderForm {
+
     private Integer terminalId;
     private String sellingComment;
     private List<CartForm> cartForms;

@@ -218,11 +218,10 @@ public class AdminConcessionProductService {
 
     }
 
-    @RequestMapping(value = "/getproductbyid/{productId}/{quantity}",method = RequestMethod.GET)
+    @RequestMapping(value = "/getproductbyid/{productId}",method = RequestMethod.GET)
     public ResponseEntity<?> getProductById(@Valid EditConcessionProductForm editConcessionProductForm,
                                             BindingResult result,
-                                            @PathVariable Integer productId,
-                                            @PathVariable Integer quantity){
+                                            @PathVariable Integer productId){
 
         ConcessionProduct concessionProduct=concessionProductDao.getById(productId);
 
@@ -231,10 +230,6 @@ public class AdminConcessionProductService {
 
         if(concessionProduct == null) {
             serviceResponse.setValidationError("productQuantity", "No Concession Product found");
-        }
-
-        if(concessionProduct.getUnit()<quantity){
-            serviceResponse.setValidationError("productQuantity", "Not enough product available");
         }
 
         if(serviceResponse.hasErrors()){

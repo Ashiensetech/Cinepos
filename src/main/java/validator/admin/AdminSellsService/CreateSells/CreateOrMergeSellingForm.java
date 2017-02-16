@@ -19,7 +19,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CreateOrMergeSellingForm {
 
-    @NotBlank(message = "scheduleJson can't be empty")
+    @NotBlank(message = "Orders can't be empty")
     String ordersJson;
 
     public OrderForm orderForm;

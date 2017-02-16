@@ -13,6 +13,7 @@ import org.springframework.validation.Validator;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,20 +45,44 @@ public class CreateComboValidator implements Validator {
         ObjectMapper objectMapper = new ObjectMapper();
         TypeReference<List<Integer>> tRef = new TypeReference<List<Integer>>() {};
 
+
         try {
-            createComboForm.setProductsIdArray(objectMapper.readValue(createComboForm.getProductIds(), tRef));
-            List<Integer> comboProductIdList = createComboForm.getProductsIdArray();
-            for (Integer comboProductId : comboProductIdList){
-                ConcessionProduct concessionProduct = concessionProductDao.getById(comboProductId);
-                if(concessionProduct==null){
-                    errors.rejectValue("productIds", "Product not found by id :"+comboProductId);
-                    break;
-                }
+
+            ComboProduct[] myObjects = objectMapper.readValue(createComboForm.getProductIds(), ComboProduct[].class);
+
+
+            if(myObjects==null){
+                errors.rejectValue("productIds", "Product cant be empty");
+            }
+
+            List<ComboProduct> comboProducts = Arrays.asList(myObjects);
+
+            for (ComboProduct tgtProduct:comboProducts){
+               ConcessionProduct concessionProduct= concessionProductDao.getById(tgtProduct.getProductId());
+
+               if(concessionProduct==null){
+                   errors.rejectValue("productIds", "Product no found");
+                   break;
+               }
+
+               for (ComboProduct tgtComboProduct:comboProducts){
+                   if( tgtComboProduct.getQuantity()<=0){
+                       errors.rejectValue("productQuantity", "Product quantity can't be 0");
+                       break;
+                   }
+               }
+
+                createComboForm.setComboProduct(comboProducts);
+
+
+
             }
 
 
+
         } catch (IOException e) {
-            errors.rejectValue("productIds","Broken String found");
+            errors.rejectValue("productIds", "Product json broken.Please add to list");
+            return;
         }
     }
 

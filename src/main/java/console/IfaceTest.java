@@ -49,7 +49,8 @@ public class IfaceTest {
 
 
     public static void main(String[] args) {
-       Dog d =(Dog) new Animal();
+       //Dog d =(Dog) new Animal();
+        Arrays.asList(null);
     }
 
 
