@@ -137,6 +137,7 @@
                                 <div class="col-md-12">
                                     <div class="well">
                                         <ul class="prod-list" id="addedProductList">
+                                            <d:set var="totalPrice"  value="0"/>
                                             <d:forEach var="comboProductValue" items="${combos.comboDetails}" >
                                                 <li>
                                                         ${comboProductValue.concessionProduct.name}<span class="plist-price plistPrice" data-quantity="${comboProductValue.productQuantity}"
@@ -144,7 +145,7 @@
                                                                                                          data-proids="${comboProductValue.concessionProduct.id}">(${comboProductValue.productQuantity} X $${comboProductValue.concessionProduct.sellingPrice})$${comboProductValue.productQuantity*comboProductValue.concessionProduct.sellingPrice}</span>
                                                     <span class="plist-remove" data-comboproductid="${comboProductValue.id}">X</span>
                                                 </li>
-                                                <d:set var="salary" scope="session" value="${totalPrice=comboProductValue.concessionProduct.sellingPrice+totalPrice}"/>
+                                                <d:set var="totalPrice"  value="${comboProductValue.concessionProduct.sellingPrice+totalPrice}"/>
                                             </d:forEach>
                                         </ul>
                                         <div class="plist-total">
