@@ -5,9 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by Sarwar on 2/3/2017.
- */
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CartForm {
 

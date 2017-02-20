@@ -16,7 +16,6 @@ import java.util.List;
 public class ComboDao extends  BaseDao{
 
     public void insert(Combo combo){
-        System.out.print(combo);
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
@@ -32,7 +31,6 @@ public class ComboDao extends  BaseDao{
     }
 
     public void update(Combo combo){
-        System.out.print(combo);
         Session session = null;
         try {
             session = this.sessionFactory.openSession();

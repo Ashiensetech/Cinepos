@@ -1,10 +1,7 @@
 package controller.web.admin.restservice;
 
 import controller.web.admin.AdminUriPreFix;
-import dao.ComboDao;
-import dao.ComboDetailDao;
-import dao.ConcessionProductDao;
-import dao.SeatTypeDao;
+import dao.*;
 import entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,6 +43,8 @@ public class AdminComboService {
 
    @Autowired
     SeatTypeDao seatTypeDao;
+   @Autowired
+    SellDetailsDao sellDetailsDao;
 
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
@@ -78,6 +77,7 @@ public class AdminComboService {
             combo.setStartDate(createComboForm.getFormattedStartDate());
             combo.setEndDate(createComboForm.getFormattedEndDate());
             combo.setComboType(createComboForm.getComboType());
+            combo.setSeatTypeId(createComboForm.getSeatTypeId());
             combo.setStatus(1);
             combo.setCreatedBy(1);
 
@@ -103,12 +103,7 @@ public class AdminComboService {
                         comboDetail.setConcessionProductId(concessionProduct.getId());
                         comboDetail.setProductQuantity(tgtComboProduct.getQuantity());
                         comboDetail.setTicketQuantity(1);
-
-                        if(seatTypeDao.getById(createComboForm.getSeatTypeId())==null){
-                            comboDetail.setSeatTypeId(0);
-                        }else{
-                            comboDetail.setSeatTypeId(seatTypeDao.getById(createComboForm.getSeatTypeId()).getId());
-                        }
+                        comboDetail.setSeatTypeId(combo.getSeatTypeId());
                         comboDetail.setCreatedBy(1);
                         comboProductArray.add(comboDetail);
                 }
@@ -162,51 +157,71 @@ public class AdminComboService {
             combo.setStartDate(createComboForm.getFormattedStartDate());
             combo.setEndDate(createComboForm.getFormattedEndDate());
             combo.setComboType(createComboForm.getComboType());
+            combo.setSeatTypeId(createComboForm.getSeatTypeId());
             combo.setStatus(1);
 
             combo.setCreatedBy(1);
-
-            comboDao.update(combo);
-
 
             /**
              *  Combo products
              *  */
 
-            List<ComboDetails> comboProductArray = new ArrayList<>();
+            List<ComboDetails> comboDetailArray = new ArrayList<>();
             /**
              * Get Combo Product
              * */
             List<ComboProduct>  comboProductsList= createComboForm.getComboProduct();
 
-
             for (ComboProduct tgtComboProduct :comboProductsList){
 
-                ComboDetails comboProductd= comboDetailDao.getByComboIdAndProductId(comboId,tgtComboProduct.getProductId());
-                comboProductArray.add(comboProductd);
-                if(comboProductd==null){
-                    ConcessionProduct concessionProduct = concessionProductDao.getById(tgtComboProduct.getProductId());
+                ConcessionProduct concessionProduct = concessionProductDao.getById(tgtComboProduct.getProductId());
+
+                ComboDetails comboDetails= comboDetailDao.getByComboIdAndProductId(comboId,tgtComboProduct.getProductId());
+
+                if(comboDetails==null){
+
                     if(concessionProduct!=null){
-                        ComboDetails comboDetails=new ComboDetails();
+
+                        ComboDetails comboDetail=new ComboDetails();
+                        comboDetail.setComboId(comboId);
+                        comboDetail.setComboProductType(createComboForm.getComboType());
+                        comboDetail.setConcessionProductId(concessionProduct.getId());
+                        comboDetail.setProductQuantity(tgtComboProduct.getQuantity());
+                        comboDetail.setTicketQuantity(1);
+                        comboDetail.setSeatTypeId(combo.getSeatTypeId());
+                        comboDetail.setCreatedBy(1);
+
+                       // comboDetailDao.insert(comboDetail);
+
+                        comboDetailArray.add(comboDetail);
+
+                    }
+
+                }else{
+
+                    if(concessionProduct!=null){
+
+                        System.out.println(comboDetails);
+
                         comboDetails.setComboId(combo.getId());
                         comboDetails.setComboProductType(createComboForm.getComboType());
                         comboDetails.setConcessionProductId(concessionProduct.getId());
                         comboDetails.setProductQuantity(tgtComboProduct.getQuantity());
                         comboDetails.setTicketQuantity(1);
-
-                        comboProductArray.add(comboDetails);
+                        comboDetails.setSeatTypeId(combo.getSeatTypeId());
+                        comboDetails.setCreatedBy(1);
+                        comboDetailArray.add(comboDetails);
                     }
                 }
             }
 
-            combo.setComboDetails(comboProductArray);
+            combo.setComboDetails(comboDetailArray);
+
 
             /**
              * Updating Combo
              * */
             comboDao.update(combo);
-
-
 
         }catch (Exception e){
 
@@ -218,23 +233,27 @@ public class AdminComboService {
 
     }
 
-    @RequestMapping(value = "delcomboproduct/{comboproductId}",method = RequestMethod.GET)
+    @RequestMapping(value = "delete/{comboDetailsId}",method = RequestMethod.GET)
     public ResponseEntity<?> delComboProduct(@Valid editDistributorForm editDistributorForm,
                                             BindingResult result,
-                                            @PathVariable Integer comboproductId){
+                                            @PathVariable Integer comboDetailsId){
 
-        ComboDetails comboProduct=comboDetailDao.getById(comboproductId);
+        ServiceResponse serviceResponse=ServiceResponse.getInstance();
 
-        System.out.println(comboproductId);
+        ComboDetails comboProduct=comboDetailDao.getById(comboDetailsId);
 
-        if(comboProduct == null) {
-            ServiceResponse serviceResponse=ServiceResponse.getInstance();
+       if(comboProduct == null) {
+            serviceResponse.setValidationError("ComboProductId", "No combo product found");
+           return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse);
+       }
 
-            serviceResponse.setValidationError("ComboProductId", "No Combo Product found");
+       SellsDetails sellsDetails=sellDetailsDao.getByComboId(comboProduct.getComboId());
 
+        if(sellsDetails!=null){
+            serviceResponse.setValidationError("ComboProductId", "You are not eligible to delete this product.");
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse);
-
         }
+
 
         comboDetailDao.deleteComboProduct(comboProduct);
 

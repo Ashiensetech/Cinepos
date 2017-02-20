@@ -99,4 +99,20 @@ public class SellDetailsDao extends BaseDao{
             if(session!=null)session.close();
         }
     }
+
+    public SellsDetails getByComboId(Integer comboId){
+        Session session = null;
+        try{
+            session = this.sessionFactory.openSession();
+            return (SellsDetails) session.createQuery("FROM ComboDetails where comboId = :combo_id").setParameter("combo_id", comboId).uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+    }
+
+
 }

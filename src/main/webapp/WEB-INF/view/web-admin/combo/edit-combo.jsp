@@ -70,7 +70,7 @@
                                         <input type='text' class="form-control" id="endDate" name="date"
                                                value="<fmt:formatDate  value="${combos.endDate}" pattern="MM/dd/yyy" />"  placeholder="MM/DD/YYYY"/>
                                     </div>
-                                    <p class="help-block error" id="errorMsg_endDate"></p>
+
                                 </div>
 
                             </div>
@@ -93,7 +93,7 @@
                                         <d:choose>
                                             <d:when test="${not empty seatTypeList}">
                                                 <d:forEach var="varseatType" items="${seatTypeList}">
-                                                    <option  value="${varseatType.id}" data-subtext="${varseatType.name}">${varseatType.name}</option>
+                                                    <option ${(combos.seatTypeId==varseatType.id)?"selected":""}  value="${varseatType.id}" data-subtext="${varseatType.name}">${varseatType.name}</option>
                                                 </d:forEach>
                                             </d:when>
                                         </d:choose>
@@ -112,7 +112,6 @@
                                                 </d:forEach>
                                             </d:when>
                                         </d:choose>
-
                                     </select>
                                     <button type="button" class="btn btn-primary" onclick="return addProductToCombo()">Add</button>
                                     <p class="help-block error" id="errorMsg_productIds"></p>
@@ -132,6 +131,7 @@
                             float totalPrice=0;
                         %>
                         <div class="col-lg-6">
+                            <p class="help-block error" id="errorMsg_ComboProductId"></p>
                             <div class="row clearfix">
                                 <label style="padding-left: 15px;font-size: 16px;">Products</label>
                                 <div class="col-md-12">
@@ -266,12 +266,12 @@
         $('#plistTotal').text("$"+price);
     }
 
-    function deleteCombo(comboProductId) {
+    function deleteCombo(comboDetailId) {
 
 
 
         $.ajax({
-            url: BASEURL+'api/admin/combo/delcomboproduct/'+comboProductId,
+            url: BASEURL+'api/admin/combo/delete/'+comboDetailId,
             type: 'GET',
             data: {
 
@@ -301,9 +301,11 @@
 
         productListPrice();
         $('.plist-remove').unbind().bind("click",function () {
+
             $(this).parent('li').remove();
 
             var comboProductId=$(this).data("comboproductid");
+
             if(comboProductId!=""){
                 deleteCombo(comboProductId);
             }
@@ -340,7 +342,7 @@
 
 
             if(ticket==""){
-                ticket=0;
+                ticket=null;
                 comboType="product";
             }else{
                 comboType="ticket";
