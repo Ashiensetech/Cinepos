@@ -90,18 +90,17 @@ public class AppSellsService {
         /***************** Service  [Start] *************/
         Terminal terminal= terminalDao.getById(createOrMergeSellingForm.orderForm.getTerminalId());
         AuthCredential authCredentialUser=authCredentialDao.getById(1);
+        boolean isCombo=true;
 
         Sells sells=new Sells();
         sells.setSellingComment(createOrMergeSellingForm.orderForm.getSellingComment());
         sells.setCombo(true);
         sells.setTerminal(terminal);
-        sells.setStatus(true);
         sells.setAuthCredential(authCredentialUser);
 
         sellsDao.insert(sells);
 
 
-        List<SellsDetails> sellDetailsArray = new ArrayList<>();
         Set<SellsDetails> sellDetails = new HashSet<>();
         Set<Ticket> ticketList = new HashSet<>();
 
@@ -126,10 +125,14 @@ public class AppSellsService {
             if(targetItem.getSellingType().equals("product")){
 
                 ConcessionProduct concessionProduct=concessionProductDao.getById(targetItem.getId());
-                if(concessionProduct == null || concessionProduct.getUnit()<targetItem.getProductQuantity()){
+                if(concessionProduct == null){
                     serviceResponse.setValidationError("sellProduct","Product not available");
                     break;
-                }else{
+                }else if(concessionProduct.getUnit()<targetItem.getProductQuantity()){
+                    serviceResponse.setValidationError("sellProduct","Not enough product are available");
+                    break;
+                } else{
+                    isCombo=false;
                     sellsDetails.setConcessionProduct(concessionProduct);
                     concessionProduct.setUnit(concessionProduct.getUnit()-targetItem.getProductQuantity());
                     updateConcessionProduct.add(concessionProduct);
@@ -141,16 +144,20 @@ public class AppSellsService {
 
                 if(combo == null){
                     serviceResponse.setValidationError("sellProduct","Combo not available");
+                    break;
                 }
 
                 for (ComboDetails tgtComboDetails:combo.getComboDetails()){
 
-                    if(tgtComboDetails.getConcessionProductId()>0 && (tgtComboDetails.getSeatTypeId()==0 || tgtComboDetails.getSeatTypeId()<0) ){
+                    if(tgtComboDetails.getConcessionProductId()>0 && tgtComboDetails.getSeatTypeId()<=0){
 
                         ConcessionProduct concessionProduct=concessionProductDao.getById(tgtComboDetails.getConcessionProductId());
 
-                        if(concessionProduct == null || concessionProduct.getUnit() < tgtComboDetails.getProductQuantity()){
+                        if(concessionProduct == null){
                             serviceResponse.setValidationError("sellProduct","Product not available");
+                            break;
+                        }else if(concessionProduct.getUnit() < tgtComboDetails.getProductQuantity()){
+                            serviceResponse.setValidationError("sellProduct","Not enough product are available");
                             break;
                         }else{
                             //sellsDetails.setConcessionProduct(concessionProduct);
@@ -185,20 +192,29 @@ public class AppSellsService {
                         }
                     }
                 }
+                isCombo=true;
                 sellsDetails.setCombo(combo);
 
             }else{
 
                 Ticket ticket=ticketDao.getById(Long.valueOf(targetItem.getId()));
 
-                if(ticket == null || ticket.getCurrentState().equals("BOOKED" )|| ticket.getCurrentState().equals("SOLD")){
+                if(ticket == null){
                     serviceResponse.setValidationError("sellProduct","Ticket not available");
                     break;
-                }else{
+                } else if(ticket.getCurrentState().equals("SOLD")){
+                    serviceResponse.setValidationError("sellProduct","Ticket is sold");
+                    break;
+                }else if(ticket.getCurrentState().equals("BOOKED")){
+                    serviceResponse.setValidationError("sellProduct","Ticket is booked");
+                    break;
+                } else{
                     String currentState="SOLD";
                     sellsDetails.setTicket(ticket);
                     ticket.setCurrentState(currentState);
                     ticketList.add(ticket);
+
+                    isCombo=false;
                 }
             }
 
@@ -210,7 +226,6 @@ public class AppSellsService {
 
         if(serviceResponse.hasErrors()){
             sellsDao.delete(sells);
-            sellDetailsDao.delete(sellDetails);
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
@@ -220,6 +235,8 @@ public class AppSellsService {
 
             Sells sellsUpdate=sellsDao.getById(sells.getId());
             sellsUpdate.setQuantity(totalQuantity);
+            sellsUpdate.setStatus(true);
+            sellsUpdate.setCombo(isCombo);
             sellsUpdate.setSellingAmount(totalPrice);
 
             sellsDao.update(sellsUpdate);
