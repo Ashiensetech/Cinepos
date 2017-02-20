@@ -305,8 +305,6 @@
 
                 (products.length<=0)? pageData['productIds']=null:  pageData['productIds']=JSON.stringify(products);
 
-                console.log(products+"Hello");
-
                 $.ajax({
                     url: BASEURL+'api/admin/combo/create',
                     type: 'POST',
@@ -345,7 +343,7 @@
                     success: function(data){
                         $("#statusMsg").html("Combo created successfully").show();
                         setTimeout(function(){
-                            window.location = BASEURL+"admin/combo/all";
+                            //window.location = BASEURL+"admin/combo/all";
                         },2000);
                     }
                 });

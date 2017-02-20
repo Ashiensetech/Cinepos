@@ -48,7 +48,7 @@ public class ComboDetails {
     private ConcessionProduct concessionProduct;
 
     @OneToOne
-    @JoinColumn(name = "seat_type_id",referencedColumnName = "id",insertable = false, updatable = false)
+    @JoinColumn(name = "seat_type_id",referencedColumnName = "id",insertable = false, updatable = false,nullable = true)
     private SeatType seatType;
 
     public int getId() {

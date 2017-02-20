@@ -77,7 +77,7 @@ public class AdminComboService {
             combo.setStartDate(createComboForm.getFormattedStartDate());
             combo.setEndDate(createComboForm.getFormattedEndDate());
             combo.setComboType(createComboForm.getComboType());
-            combo.setSeatTypeId(createComboForm.getSeatTypeId());
+            combo.setSeatTypeId(seatTypeDao.getById(createComboForm.getSeatTypeId()).getId());
             combo.setStatus(1);
             combo.setCreatedBy(1);
 
@@ -191,8 +191,6 @@ public class AdminComboService {
                         comboDetail.setSeatTypeId(combo.getSeatTypeId());
                         comboDetail.setCreatedBy(1);
 
-                       // comboDetailDao.insert(comboDetail);
-
                         comboDetailArray.add(comboDetail);
 
                     }
@@ -201,7 +199,6 @@ public class AdminComboService {
 
                     if(concessionProduct!=null){
 
-                        System.out.println(comboDetails);
 
                         comboDetails.setComboId(combo.getId());
                         comboDetails.setComboProductType(createComboForm.getComboType());
@@ -216,7 +213,6 @@ public class AdminComboService {
             }
 
             combo.setComboDetails(comboDetailArray);
-
 
             /**
              * Updating Combo
