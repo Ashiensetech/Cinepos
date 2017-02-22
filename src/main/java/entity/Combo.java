@@ -1,5 +1,9 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.combo.ComboJsonView;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -11,42 +15,54 @@ import java.util.List;
 @Entity
 @Table(name = "combo")
 public class Combo {
+    @JsonView(ComboJsonView.Basic.class)
     @javax.persistence.Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
+    @JsonView(ComboJsonView.Basic.class)
     @Column(name = "combo_name")
     private String comboName;
 
+    @JsonView(ComboJsonView.Summary.class)
     @Column(name = "details")
     private String details;
 
+    @JsonView(ComboJsonView.Summary.class)
     @Column(name="type")
     private String comboType;
 
+    @JsonView(ComboJsonView.Summary.class)
     @Column(name="seat_type_id")
     private Integer SeatTypeId;
 
+    @JsonView(ComboJsonView.Summary.class)
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "combo_id",referencedColumnName = "id")
     private List<ComboDetails> comboDetails;
 
+    @JsonView(ComboJsonView.Summary.class)
     @Column(name = "start_date")
     private Date startDate;
 
+    @JsonView(ComboJsonView.Summary.class)
     @Column(name = "end_date")
     private Date endDate;
 
+    @JsonView(ComboJsonView.Summary.class)
     @Column(name = "price")
     private float price;
 
+    @JsonView(ComboJsonView.Summary.class)
     @Column(name = "status")
     private int status;
 
+    @JsonIgnore
     @Column(name = "created_by")
     private int createdBy;
 
+    @JsonIgnore
     @Column(name = "created_at")
     private Timestamp createdAt;
 

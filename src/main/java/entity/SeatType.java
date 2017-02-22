@@ -1,5 +1,9 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.screen.ScreenSeatTypeJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -9,32 +13,39 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "seat_type")
 public class SeatType {
+
+    @JsonView(ScreenSeatTypeJsonView.Basic.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    @JsonView(ScreenSeatTypeJsonView.Basic.class)
     @Basic
     @Column(name = "name")
     private String name;
 
+    @JsonView(ScreenSeatTypeJsonView.Summary.class)
     @Basic
     @Column(name = "is_default")
     private boolean isDefault;
 
-
+    @JsonView(ScreenSeatTypeJsonView.Summary.class)
     @Basic
     @Column(name = "adult_price")
     private double adultPrice;
 
+    @JsonView(ScreenSeatTypeJsonView.Summary.class)
     @Basic
     @Column(name = "child_price")
     private double childPrice;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

@@ -85,7 +85,7 @@
                             <p class="help-block error" id="errorMsg_sellingPrice"></p>
 
                         </div>
-                        <div class="form-group clearfix">
+                       <%-- <div class="form-group clearfix">
                             <label class="pull-left">Remote Print</label>
                             <div class="col-md-6">
                                 <div class="onoffswitch">
@@ -125,7 +125,7 @@
                                 </div>
 
                             </div>
-                        </div>
+                        </div>--%>
                     </div>
 
                     <div class="col-lg-7">
@@ -238,14 +238,14 @@
             var unit=$("#unit").val();
             var buyingPrice=$("#buyingPrice").val();
             var sellingPrice=$("#sellingPrice").val();
-            var isPriceShiftSel=$("#isPriceShift");
-            var isComboSel=$("#isCombo");
-            var isPriceShiftSel=$("#isPriceShift");
-            var remotePrintSel=$("#remotePrint");
+           // var isPriceShiftSel=$("#isPriceShift");
+         //   var isComboSel=$("#isCombo");
+         //   var isPriceShiftSel=$("#isPriceShift");
+         //   var remotePrintSel=$("#remotePrint");
 
-            isPriceShiftSel.is(':checked') ? isPriceShiftSel.val(1) : isPriceShiftSel.val(0);
-            isComboSel.is(':checked') ? isComboSel.val(1) : isComboSel.val(0);
-            remotePrintSel.is(':checked') ? remotePrintSel.val(1) : remotePrintSel.val(0);
+//            isPriceShiftSel.is(':checked') ? isPriceShiftSel.val(1) : isPriceShiftSel.val(0);
+//            isComboSel.is(':checked') ? isComboSel.val(1) : isComboSel.val(0);
+//            remotePrintSel.is(':checked') ? remotePrintSel.val(1) : remotePrintSel.val(0);
 
 
             var postData={
@@ -256,10 +256,10 @@
                 unit:unit,
                 buyingPrice:buyingPrice,
                 sellingPrice:sellingPrice,
-                isPriceShift:isPriceShiftSel.val(),
-                isCombo:isComboSel.val(),
-                remotePrint:remotePrintSel.val(),
-                productImageToken : JSON.stringify(productImageToken),
+//                isPriceShift:isPriceShiftSel.val(),
+//                isCombo:isComboSel.val(),
+//                remotePrint:remotePrintSel.val(),
+                productImageToken : JSON.stringify(productImageToken)
 
             };
 

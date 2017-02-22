@@ -1,52 +1,70 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.combo.ComboDetailsJsonView;
+import entity.app.jsonview.combo.ComboJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
  * Created by Sarwar on 1/18/2017.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "combo_details")
 public class ComboDetails {
+
+    @JsonView(ComboDetailsJsonView.Basic.class)
     @javax.persistence.Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
+    @JsonView(ComboDetailsJsonView.Basic.class)
     @Column(name = "combo_id")
     private Integer comboId;
 
+    @JsonView(ComboDetailsJsonView.Basic.class)
     @Column(name="type")
     private String comboProductType;
 
-
+    @JsonView(ComboDetailsJsonView.Basic.class)
     @Column(name = "concession_product_id")
     private Integer concessionProductId;
 
+    @JsonView(ComboDetailsJsonView.Basic.class)
     @Column(name = "product_quantity")
     private Integer productQuantity;
 
+    @JsonView(ComboDetailsJsonView.Basic.class)
     @Column(name = "ticket_quantity")
     private Integer ticketQuantity;
 
-
+    @JsonView(ComboDetailsJsonView.Basic.class)
     @Column(name = "seat_type_id")
     private Integer seatTypeId;
 
+    @JsonView(ComboDetailsJsonView.Basic.class)
     @Column(name = "ticket_id")
     private Integer ticketId;
 
+    @JsonIgnore
     @Column(name = "created_by")
     private int createdBy;
 
+    @JsonIgnore
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @JsonView(ComboDetailsJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "concession_product_id",referencedColumnName = "id",insertable = false, updatable = false)
     private ConcessionProduct concessionProduct;
 
+    @JsonView(ComboDetailsJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "seat_type_id",referencedColumnName = "id",insertable = false, updatable = false,nullable = true)
     private SeatType seatType;

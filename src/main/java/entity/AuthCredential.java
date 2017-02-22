@@ -1,6 +1,8 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.authcredential.AuthCredentialJsonView;
 import entity.iface.AppCredential;
 
 import javax.persistence.*;
@@ -41,48 +43,58 @@ public class AuthCredential implements AppCredential {
         this.createdAt = createdAt;
     }
 
+    @JsonView(AuthCredentialJsonView.Basic.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    @JsonView(AuthCredentialJsonView.Basic.class)
     @Basic
     @Column(name = "is_admin")
     private boolean isAdmin;
 
+    @JsonView(AuthCredentialJsonView.Basic.class)
     @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "user_inf_id", referencedColumnName = "id", nullable = true)
     private UserInf userInf;
 
+    @JsonView(AuthCredentialJsonView.Basic.class)
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id",referencedColumnName = "id", nullable = true)
     private UserRole userRole;
 
+    @JsonView(AuthCredentialJsonView.Basic.class)
     @Basic
     @Column(name = "username")
     private String userName;
 
-
+    @JsonIgnore
     @Basic
     @Column(name = "password")
     private String password;
 
+    @JsonView(AuthCredentialJsonView.Summary.class)
     @Basic
     @Column(name = "activate")
     private boolean isActivated;
 
+    @JsonView(AuthCredentialJsonView.Summary.class)
     @Basic
     @Column(name = "email_confirmed")
     private boolean isEmailConfirmed;
 
+    @JsonView(AuthCredentialJsonView.Summary.class)
     @Basic
     @Column(name = "changed_defult_password")
     private boolean changedDefaultPassword;
 
+    @JsonView(AuthCredentialJsonView.Summary.class)
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
 
+    @JsonView(AuthCredentialJsonView.Summary.class)
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

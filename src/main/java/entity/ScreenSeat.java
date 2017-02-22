@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 /**
  * Created by mi on 1/9/17.
  */
+
 @Entity
 @Table(name = "screen_seat")
 public class ScreenSeat {

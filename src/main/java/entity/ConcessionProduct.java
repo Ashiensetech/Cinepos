@@ -1,5 +1,9 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.concession.product.ConcessionProductJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -9,59 +13,73 @@ import java.util.List;
 @Table(name = "concession_product")
 public class ConcessionProduct {
 
+    @JsonView(ConcessionProductJsonView.Basic.class)
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonView(ConcessionProductJsonView.Basic.class)
     @Basic
     @Column(name = "name")
     private String name;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "description")
     private String description;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "annotation")
     private String annotation;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "category_id",referencedColumnName = "id")
     private ConcessionProductCategory concessionProductCategory;
 
+    @JsonView(ConcessionProductJsonView.Details.class)
     @OneToMany(cascade=CascadeType.ALL)
     @JoinColumn(name = "concession_product_id",referencedColumnName = "id")
     private List<ConcessionProductImage> concessionProductImages;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "unit")
     private int unit;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "remote_print")
     private int remotePrint;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "is_combo")
     private int isCombo;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "status")
     private int status;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "selling_price")
     private Float sellingPrice;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "buying_price")
     private Float buyingPrice;
 
+    @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "is_price_shift")
     private int isPriceShift;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private int createdBy;

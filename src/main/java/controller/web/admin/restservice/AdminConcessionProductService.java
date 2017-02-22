@@ -4,11 +4,13 @@ import controller.web.admin.AdminUriPreFix;
 import custom_exception.TempFileException;
 import dao.ConcessionProductCategoryDao;
 import dao.ConcessionProductDao;
+import entity.AuthCredential;
 import entity.ConcessionProduct;
 import entity.ConcessionProductImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +39,10 @@ public class AdminConcessionProductService {
     FileUtil fileUtil;
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseEntity<?> create (@Valid CreateConcessionProductForm createConcessionProductForm, BindingResult result, HttpServletRequest request){
+    public ResponseEntity<?> create (Authentication authentication,
+            @Valid CreateConcessionProductForm createConcessionProductForm,
+            BindingResult result, HttpServletRequest request){
+        AuthCredential currentLoggedInUser = (AuthCredential) authentication.getPrincipal();
         String errorMsg="Concession product successfully created";
         try{
             ServiceResponse serviceResponse=ServiceResponse.getInstance();
@@ -57,11 +62,11 @@ public class AdminConcessionProductService {
             concessionProduct.setUnit(createConcessionProductForm.getUnit());
             concessionProduct.setBuyingPrice(createConcessionProductForm.getBuyingPrice());
             concessionProduct.setSellingPrice(createConcessionProductForm.getSellingPrice());
-            concessionProduct.setIsCombo(createConcessionProductForm.getIsCombo());
-            concessionProduct.setIsPriceShift(createConcessionProductForm.getIsPriceShift());
-            concessionProduct.setRemotePrint(createConcessionProductForm.getRemotePrint());
+            concessionProduct.setIsCombo(0);
+            concessionProduct.setIsPriceShift(0);
+            concessionProduct.setRemotePrint(0);
             concessionProduct.setStatus(1);
-            concessionProduct.setCreatedBy(1);
+            concessionProduct.setCreatedBy(currentLoggedInUser.getId());
 
             concessionProductDao.insert(concessionProduct);
 
@@ -107,9 +112,12 @@ public class AdminConcessionProductService {
 
 
     @RequestMapping(value = "/edit/{productId}",method = RequestMethod.POST)
-    public ResponseEntity<?> edit (@PathVariable Integer productId,
+    public ResponseEntity<?> edit (Authentication authentication,
+                                    @PathVariable Integer productId,
                                    @Valid EditConcessionProductForm editConcessionProductForm,
                                    BindingResult result){
+
+        AuthCredential currentLoggedInUser = (AuthCredential) authentication.getPrincipal();
         String errorMsg="Concession product successfully updated";
         try{
             ServiceResponse serviceResponse=ServiceResponse.getInstance();
@@ -122,28 +130,15 @@ public class AdminConcessionProductService {
             //ConcessionProduct concessionProduct=new ConcessionProduct();
 
             ConcessionProduct concessionProduct=concessionProductDao.getById(productId);
-
-
-            concessionProduct.setName(editConcessionProductForm.getName());
-            concessionProduct.setAnnotation(editConcessionProductForm.getAnnotation());
-            concessionProduct.setDescription(editConcessionProductForm.getDescription());
-            concessionProduct.setConcessionProductCategory(concessionProductCategoryDao.getById(editConcessionProductForm.getProductCategory()));
-            concessionProduct.setUnit(editConcessionProductForm.getUnit());
-            concessionProduct.setBuyingPrice(editConcessionProductForm.getBuyingPrice());
-            concessionProduct.setSellingPrice(editConcessionProductForm.getSellingPrice());
-            concessionProduct.setIsCombo(editConcessionProductForm.getIsCombo());
-            concessionProduct.setIsPriceShift(editConcessionProductForm.getIsPriceShift());
-            concessionProduct.setRemotePrint(editConcessionProductForm.getRemotePrint());
-            concessionProduct.setStatus(1);
-            concessionProduct.setCreatedBy(1);
-
-            concessionProductDao.update(concessionProduct);
-
+            if(concessionProduct==null){
+                serviceResponse.setValidationError("id","No concession product found");
+                return  ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+            }
 
             /**
-             * Film product Image
+             * Concession product Image
              * */
-            if(editConcessionProductForm.getProductImageToken()!=null){
+            if(editConcessionProductForm.getProductImageToken()!=null && editConcessionProductForm.getProductImageToken()>0){
 
                 ConcessionProductImage concessionProductImages = new ConcessionProductImage();
 
@@ -169,10 +164,29 @@ public class AdminConcessionProductService {
                     concessionProductImages.setFilePath(filePath);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
+                    serviceResponse.setValidationError("productImageToken","No file found associated with the token");
+                    return  ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 } catch (TempFileException e) {
                     e.printStackTrace();
+                    serviceResponse.setValidationError("productImageToken", "Token is not valid");
+                    return  ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
                 }
             }
+
+
+
+            concessionProduct.setName(editConcessionProductForm.getName());
+            concessionProduct.setAnnotation(editConcessionProductForm.getAnnotation());
+            concessionProduct.setDescription(editConcessionProductForm.getDescription());
+            concessionProduct.setConcessionProductCategory(concessionProductCategoryDao.getById(editConcessionProductForm.getProductCategory()));
+            concessionProduct.setUnit(editConcessionProductForm.getUnit());
+            concessionProduct.setBuyingPrice(editConcessionProductForm.getBuyingPrice());
+            concessionProduct.setSellingPrice(editConcessionProductForm.getSellingPrice());
+            concessionProduct.setIsCombo(0);
+            concessionProduct.setIsPriceShift(0);
+            concessionProduct.setRemotePrint(0);
+            concessionProduct.setStatus(1);
+            concessionProduct.setCreatedBy(currentLoggedInUser.getId());
 
             concessionProductDao.update(concessionProduct);
 

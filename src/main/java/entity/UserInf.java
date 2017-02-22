@@ -1,5 +1,10 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.authcredential.AuthCredentialJsonView;
+import entity.app.jsonview.user.UserInfJsonView;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -10,49 +15,59 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "user_inf")
 public class UserInf {
+
+    @JsonView(UserInfJsonView.Basic.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    @JsonView(UserInfJsonView.Basic.class)
     @Basic
     @Column(name = "first_name")
     private String firstName;
 
+    @JsonView(UserInfJsonView.Basic.class)
     @Basic
     @Column(name = "last_name")
     private String lastName;
 
+    @JsonView(UserInfJsonView.Summary.class)
     @Basic
     @Column(name = "email")
     private String email;
 
+    @JsonView(UserInfJsonView.Summary.class)
     @Basic
     @Column(name = "dob")
     private Date dob;
 
+    @JsonView(UserInfJsonView.Summary.class)
     @Basic
     @Column(name = "phone")
     private String phone;
 
+    @JsonView(UserInfJsonView.Summary.class)
     @Basic
     @Column(name = "address")
     private String address;
 
-
+    @JsonView(UserInfJsonView.Summary.class)
     @Basic
     @Column(name = "gender")
     private String gender;
 
+    @JsonView(UserInfJsonView.Summary.class)
     @Basic
     @Column(name = "status")
     private String status;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;

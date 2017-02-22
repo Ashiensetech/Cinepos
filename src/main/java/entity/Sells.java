@@ -1,8 +1,11 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.sells.SellsJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -12,45 +15,65 @@ import java.util.Set;
 @Table(name = "sells")
 public class Sells {
 
+    @JsonView(SellsJsonView.Basic.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    @JsonView(SellsJsonView.Basic.class)
     @Basic
     @Column(name = "selling_amount")
     private double sellingAmount;
 
+    @JsonView(SellsJsonView.Basic.class)
     @Basic
     @Column(name = "selling_comment")
     private String sellingComment;
 
+    @JsonView(SellsJsonView.Basic.class)
     @Basic
     @Column(name = "is_combo")
     private boolean isCombo;
 
+    @JsonView(SellsJsonView.Basic.class)
     @Basic
-    @Column(name = "quantity")
-    private int quantity;
+    @Column(name = "product_quantity")
+    private int productQuantity;
 
+    @JsonView(SellsJsonView.Basic.class)
+    @Basic
+    @Column(name = "ticket_quantity")
+    private int ticketQuantity;
+
+    @JsonView(SellsJsonView.Summary.class)
+    @OneToOne
+    @JoinColumn(name = "screen_id",referencedColumnName = "id")
+    private Screen screen;
+
+    @JsonView(SellsJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "terminal_id",referencedColumnName = "id")
     private Terminal terminal;
 
+    @JsonView(SellsJsonView.Summary.class)
     @OneToMany
     @JoinColumn(name = "sell_id",referencedColumnName = "id")
-    private Set<SellsDetails> SellDetails;
+    private Set<SellsDetails> sellDetails;
 
+    @JsonView(SellsJsonView.Summary.class)
     @Basic
     @Column(name = "status")
     private boolean status;
 
 
-
+    @JsonIgnore
+//    @JsonView(SellsJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "created_by",referencedColumnName = "id")
-    private AuthCredential authCredential;
+    private AuthCredential saleBy;
 
+    @JsonView(SellsJsonView.Summary.class)
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
@@ -88,12 +111,28 @@ public class Sells {
         isCombo = combo;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getProductQuantity() {
+        return productQuantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public int getTicketQuantity() {
+        return ticketQuantity;
+    }
+
+    public void setTicketQuantity(int ticketQuantity) {
+        this.ticketQuantity = ticketQuantity;
+    }
+
+    public Screen getScreen() {
+        return screen;
+    }
+
+    public void setScreen(Screen screen) {
+        this.screen = screen;
     }
 
     public Terminal getTerminal() {
@@ -105,11 +144,11 @@ public class Sells {
     }
 
     public Set<SellsDetails> getSellDetails() {
-        return SellDetails;
+        return sellDetails;
     }
 
     public void setSellDetails(Set<SellsDetails> sellDetails) {
-        SellDetails = sellDetails;
+        this.sellDetails = sellDetails;
     }
 
     public boolean isStatus() {
@@ -120,12 +159,12 @@ public class Sells {
         this.status = status;
     }
 
-    public AuthCredential getAuthCredential() {
-        return authCredential;
+    public AuthCredential getSaleBy() {
+        return saleBy;
     }
 
-    public void setAuthCredential(AuthCredential authCredential) {
-        this.authCredential = authCredential;
+    public void setSaleBy(AuthCredential saleBy) {
+        this.saleBy = saleBy;
     }
 
     public Timestamp getCreatedAt() {
@@ -146,15 +185,18 @@ public class Sells {
         if (id != sells.id) return false;
         if (Double.compare(sells.sellingAmount, sellingAmount) != 0) return false;
         if (isCombo != sells.isCombo) return false;
-        if (quantity != sells.quantity) return false;
+        if (productQuantity != sells.productQuantity) return false;
+        if (ticketQuantity != sells.ticketQuantity) return false;
         if (status != sells.status) return false;
         if (sellingComment != null ? !sellingComment.equals(sells.sellingComment) : sells.sellingComment != null)
             return false;
+        if (screen != null ? !screen.equals(sells.screen) : sells.screen != null) return false;
         if (terminal != null ? !terminal.equals(sells.terminal) : sells.terminal != null) return false;
-        if (SellDetails != null ? !SellDetails.equals(sells.SellDetails) : sells.SellDetails != null) return false;
-        if (authCredential != null ? !authCredential.equals(sells.authCredential) : sells.authCredential != null)
+        if (sellDetails != null ? !sellDetails.equals(sells.sellDetails) : sells.sellDetails != null) return false;
+        if (saleBy != null ? !saleBy.equals(sells.saleBy) : sells.saleBy != null)
             return false;
-        return createdAt != null ? createdAt.equals(sells.createdAt) : sells.createdAt == null;
+        return !(createdAt != null ? !createdAt.equals(sells.createdAt) : sells.createdAt != null);
+
     }
 
     @Override
@@ -166,11 +208,13 @@ public class Sells {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (sellingComment != null ? sellingComment.hashCode() : 0);
         result = 31 * result + (isCombo ? 1 : 0);
-        result = 31 * result + quantity;
+        result = 31 * result + productQuantity;
+        result = 31 * result + ticketQuantity;
+        result = 31 * result + (screen != null ? screen.hashCode() : 0);
         result = 31 * result + (terminal != null ? terminal.hashCode() : 0);
-        result = 31 * result + (SellDetails != null ? SellDetails.hashCode() : 0);
+        result = 31 * result + (sellDetails != null ? sellDetails.hashCode() : 0);
         result = 31 * result + (status ? 1 : 0);
-        result = 31 * result + (authCredential != null ? authCredential.hashCode() : 0);
+        result = 31 * result + (saleBy != null ? saleBy.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }
@@ -182,11 +226,13 @@ public class Sells {
                 ", sellingAmount=" + sellingAmount +
                 ", sellingComment='" + sellingComment + '\'' +
                 ", isCombo=" + isCombo +
-                ", quantity=" + quantity +
+                ", productQuantity=" + productQuantity +
+                ", ticketQuantity=" + ticketQuantity +
+                ", screen=" + screen +
                 ", terminal=" + terminal +
-                ", SellDetails=" + SellDetails +
+                ", sellDetails=" + sellDetails +
                 ", status=" + status +
-                ", authCredential=" + authCredential +
+                ", saleBy=" + saleBy +
                 ", createdAt=" + createdAt +
                 '}';
     }

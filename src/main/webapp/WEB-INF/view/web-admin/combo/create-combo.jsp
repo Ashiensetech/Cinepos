@@ -29,7 +29,7 @@
                 <!-- /.col-lg-12 -->
             </div>
             <div class="row clearfix">
-                <form id="createComboForm">
+                <form id="createComboForm" onsubmit="return submitComboData();">
                     <div class="row clearfix">
                         <div class="col-lg-6">
                             <div class="col-lg-12">
@@ -176,7 +176,7 @@
             }
 
             if(productQuantity=="" || productQuantity<=0){
-                $("#productMsg").text("Product qunatity are required").show();
+                $("#productMsg").text("Product quantity are required").show();
                 return false;
             }else{
                 $("#productMsg").hide();
@@ -217,9 +217,9 @@
                         });
                     }
 
-                    productHtml+='<li>'
+                    productHtml+='<li>';
                     productHtml+=data.name+' <span class="plist-price plistPrice" data-quantity="'+productQuantity+'" data-price="'+productQuantity*data.sellingPrice+'" data-proids="'+data.id+'">('+productQuantity+' X $'+data.sellingPrice+')$'+productQuantity*data.sellingPrice+'</span>'
-                    productHtml+='<span class="plist-remove" data-proid="'+data.id+'">X</span>'
+                    productHtml+='<span class="plist-remove" data-proid="'+data.id+'">X</span>';
                     productHtml+='</li>';
 
                     $("#addedProductList").append(productHtml);
@@ -270,85 +270,88 @@
                 console.log(radioOption);
             });
 
-            $('#comboBtn').click(function () {
 
-                var comboName=$("#comboName").val();
-                var details=$("#details").val();
-                var price=$("#price").val();
-                var startDate=$("#startDate").val();
-                var endDate=$("#endDate").val();
-                var productQuantity=$("#productQuantity").val();
+        });
 
-                var ticket=$("#tickets").val();
+        function submitComboData () {
 
+            var comboName=$("#comboName").val();
+            var details=$("#details").val();
+            var price=$("#price").val();
+            var startDate=$("#startDate").val();
+            var endDate=$("#endDate").val();
+            var productQuantity=$("#productQuantity").val();
 
-                if(ticket==""){
-                    ticket=0;
-                    comboType="product";
-                }else{
-                    comboType="ticket";
-                }
+            var ticket=$("#tickets").val();
 
 
-                enableDisableFormElement("createComboForm",["input","button","select","textarea"],false);
+            if(ticket==""){
+                ticket=0;
+                comboType="product";
+            }else{
+                comboType="ticket";
+            }
 
-                var pageData={
-                    comboName:comboName,
-                    details:details,
-                    price:price,
-                    startDate:startDate,
-                    endDate:endDate,
-                    seatTypeId:ticket,
-                    comboType:comboType,
-                    productQuantity:productQuantity
-                };
 
-                (products.length<=0)? pageData['productIds']=null:  pageData['productIds']=JSON.stringify(products);
+            enableDisableFormElement("createComboForm",["input","button","select","textarea"],false);
 
-                $.ajax({
-                    url: BASEURL+'api/admin/combo/create',
-                    type: 'POST',
-                    data: pageData,
-                    statusCode: {
-                        401: function (response) {
-                            enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
+            var pageData={
+                comboName:comboName,
+                details:details,
+                price:price,
+                startDate:startDate,
+                endDate:endDate,
+                seatTypeId:ticket,
+                comboType:comboType,
+                productQuantity:productQuantity
+            };
 
-                            if(radioOption.hasOwnProperty('ticketRadio')){
+            (products.length<=0)? pageData['productIds']=null:  pageData['productIds']=JSON.stringify(products);
 
-                                var ticket=$("#tickets").val();
-                                if(ticket==""){
-                                    $("#errorMsg_tickets").text("Tickets are required").show();
-                                }else{
-                                    $("#errorMsg_tickets").text("Tickets are required").hide();
-                                }
-                                //BindErrorsWithHtml("errorMsg_",response.responseJSON);
+            $.ajax({
+                url: BASEURL+'api/admin/combo/create',
+                type: 'POST',
+                data: pageData,
+                statusCode: {
+                    401: function (response) {
+                        enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
+
+                        if(radioOption.hasOwnProperty('ticketRadio')){
+
+                            var ticket=$("#tickets").val();
+                            if(ticket==""){
+                                $("#errorMsg_tickets").text("Tickets are required").show();
+                            }else{
+                                $("#errorMsg_tickets").text("Tickets are required").hide();
                             }
+                            //BindErrorsWithHtml("errorMsg_",response.responseJSON);
+                        }
 
-                        },
-                        422: function (response) {
-                            enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
-                            BindErrorsWithHtml("errorMsg_",response.responseJSON);
+                    },
+                    422: function (response) {
+                        enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
+                        BindErrorsWithHtml("errorMsg_",response.responseJSON);
 
 
-                            if(radioOption.hasOwnProperty('ticketRadio')){
-                                var ticket=$("#tickets").val();
-                                if(ticket==""){
-                                    $("#errorMsg_tickets").text("Tickets are required").show();
-                                }else{
-                                    $("#errorMsg_tickets").text("Tickets are required").hide();
-                                }
+                        if(radioOption.hasOwnProperty('ticketRadio')){
+                            var ticket=$("#tickets").val();
+                            if(ticket==""){
+                                $("#errorMsg_tickets").text("Tickets are required").show();
+                            }else{
+                                $("#errorMsg_tickets").text("Tickets are required").hide();
                             }
                         }
-                    },
-                    success: function(data){
-                        $("#statusMsg").html("Combo created successfully").show();
-                        setTimeout(function(){
-                            //window.location = BASEURL+"admin/combo/all";
-                        },2000);
                     }
-                });
+                },
+                success: function(data){
+                    $("#statusMsg").html("Combo created successfully").show();
+                    setTimeout(function(){
+                        window.location = BASEURL+"admin/combo/all";
+                    },2000);
+                }
             });
-        });
+            return false;
+        }
     </script>
 
     <!-- Date picker -->

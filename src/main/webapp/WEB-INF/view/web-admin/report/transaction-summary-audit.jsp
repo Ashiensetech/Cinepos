@@ -114,7 +114,7 @@
                                     <tr>
                                         <td>${sell.id}</td>
                                         <td><fmt:formatDate  value="${sell.createdAt}" pattern="yyyy-MM-dd" /></td>
-                                        <td>${sell.authCredential.userName}</td>
+                                        <td>${sell.saleBy.userName}</td>
                                         <td>${sell.terminal.name}</td>
                                         <td>
                                             <ul>

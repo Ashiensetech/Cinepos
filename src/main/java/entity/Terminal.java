@@ -2,46 +2,60 @@ package entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.terminal.TerminalJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "terminal")
 public class Terminal {
+
+    @JsonView(TerminalJsonView.Basic.class)
     @Basic
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
+    @JsonView(TerminalJsonView.Basic.class)
     @Basic
     @Column(name = "name")
     private String name;
 
+    @JsonView(TerminalJsonView.Summary.class)
     @Basic
     @Column(name = "ip_address")
     private String ipAddress;
 
+    @JsonIgnore
     @Basic
     @Column(name = "terminal_code")
     private String terminalCode;
 
+    @JsonView(TerminalJsonView.Summary.class)
     @Basic
     @Column(name = "type")
     private String type;
 
+    @JsonView(TerminalJsonView.Summary.class)
     @Basic
     @Column(name = "status")
     private int status;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private int createdBy;
 
+    @JsonIgnore
     @Basic
     @Column(name = "updated_by")
     private int updatedBy;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

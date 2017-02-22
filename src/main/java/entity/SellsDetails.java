@@ -1,61 +1,75 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.sells.SellsDetailsJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "sells_details")
 public class SellsDetails {
 
+    @JsonView(SellsDetailsJsonView.Basic.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
+    @JsonView(SellsDetailsJsonView.Basic.class)
     @Basic
     @Column(name = "sell_id")
     private Integer sellId;
 
-
+    @JsonView(SellsDetailsJsonView.Basic.class)
     @Basic
     @Column(name = "user_id")
     private Integer userId;
 
+    @JsonView(SellsDetailsJsonView.Basic.class)
     @Basic
     @Column(name = "unit_selling_amount")
     private float unitSellingAmount;
 
+    @JsonView(SellsDetailsJsonView.Basic.class)
     @Basic
     @Column(name = "product_quantity")
     private int productQuantity;
 
+    @JsonView(SellsDetailsJsonView.Basic.class)
     @Basic
     @Column(name = "ticket_quantity")
     private int 	ticketQuantity;
 
+    @JsonView(SellsDetailsJsonView.Basic.class)
     @Basic
     @Column(name = "selling_type")
     private String sellingType;
 
-
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "created_by",referencedColumnName = "id")
     private AuthCredential authCredential;
 
-
+    @JsonView(SellsDetailsJsonView.Basic.class)
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;
 
+    @JsonView(SellsDetailsJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "concession_product_id",referencedColumnName = "id")
     private ConcessionProduct concessionProduct;
 
+    @JsonView(SellsDetailsJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "combo_id",referencedColumnName = "id")
     private Combo combo;
 
+    @JsonView(SellsDetailsJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "ticket_id",referencedColumnName = "id")
     private Ticket ticket;

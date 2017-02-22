@@ -1,8 +1,11 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.concession.product.ConcessionProductCategoryJsonView;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * Created by Sarwar on 1/9/2017.
@@ -10,23 +13,29 @@ import java.util.List;
 @Entity
 @Table(name = "concession_product_category")
 public class ConcessionProductCategory {
+
+    @JsonView(ConcessionProductCategoryJsonView.Basic.class)
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @JsonView(ConcessionProductCategoryJsonView.Basic.class)
     @Basic
     @Column(name = "name")
     private String name;
 
+    @JsonView(ConcessionProductCategoryJsonView.Basic.class)
     @Basic
     @Column(name = "status")
     private int status;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by",nullable = true)
     private int createdBy;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

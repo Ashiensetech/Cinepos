@@ -15,7 +15,6 @@ public class EditConcessionProductForm {
 
     @NotBlank(message = "Product description are required")
     @Size.List ({
-            @Size(min=50, message="Description must be at least {min} characters"),
             @Size(max=250, message="Description must be less than {max} characters")
     })
     private String description;

@@ -52,6 +52,7 @@ public class SellDetailsDao extends BaseDao{
             return true;
         }catch (HibernateException hEx){
             // Insert to database exception log
+            hEx.printStackTrace();
             return false;
         }finally {
             if(session!=null)session.close();

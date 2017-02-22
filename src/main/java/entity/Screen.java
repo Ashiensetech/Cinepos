@@ -20,10 +20,10 @@ import java.util.List;
 public class Screen{
 
 
+    @JsonView(ScreenJsonView.Basic.class)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    @JsonView(ScreenJsonView.Basic.class)
     private int id;
 
 

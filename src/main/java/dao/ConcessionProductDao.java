@@ -38,7 +38,7 @@ public class ConcessionProductDao extends BaseDao{
         Session session = this.sessionFactory.openSession();
         try{
             session = this.sessionFactory.openSession();
-            return session.createQuery("FROM ConcessionProduct where isPriceShift = :isPriceShift AND status=:status").setParameter("isPriceShift",1).setParameter("status",1).list();
+            return session.createQuery("FROM ConcessionProduct where isPriceShift = :isPriceShift AND status=:status").setParameter("isPriceShift",1).setParameter("status", 1).list();
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();
@@ -63,7 +63,20 @@ public class ConcessionProductDao extends BaseDao{
         return new ArrayList<ConcessionProduct>();
 
     }
+    public List<ConcessionProduct> getAllActive(){
+        Session session = this.sessionFactory.openSession();
+        try{
+            session = this.sessionFactory.openSession();
+            return session.createQuery("FROM ConcessionProduct where status= 1").list();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<ConcessionProduct>();
 
+    }
 
     public void insert(ConcessionProduct concessionProduct){
         Session session = null;

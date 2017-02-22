@@ -19,7 +19,7 @@ public class CreateOrMergeSellingFormValidator implements Validator {
         try {
             createOrMergeSellingForm.orderForm = objectMapper.readValue(createOrMergeSellingForm.getOrdersJson(), OrderForm.class);
         } catch (IOException e) {
-            errors.rejectValue("ordersJson", "Order cant be empty");
+            errors.rejectValue("ordersJson", "Order can't be empty or broken");
             return;
         }
 

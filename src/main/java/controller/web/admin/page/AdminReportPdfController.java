@@ -282,14 +282,14 @@ public class AdminReportPdfController {
                     String products="";
                     table.addCell(Integer.toString(sellsTgt.getId()));
                     table.addCell(sellsTgt.getCreatedAt().toString());
-                    table.addCell(sellsTgt.getAuthCredential().getUserName());
+                    table.addCell(sellsTgt.getSaleBy().getUserName());
                     table.addCell(sellsTgt.getTerminal().getName());
                     for (SellsDetails sellsDetailsTgt:sellsTgt.getSellDetails()) {
                         if(sellsDetailsTgt.getConcessionProduct()!=null)
                             products+= sellsDetailsTgt.getConcessionProduct().getName()+"- Q X "+sellsDetailsTgt.getProductQuantity();
                     }
                     table.addCell(products);
-                    table.addCell(Integer.toString(sellsTgt.getQuantity()));
+                    table.addCell(Integer.toString(sellsTgt.getProductQuantity()));
                     table.addCell(Double.toString(sellsTgt.getSellingAmount()));
                 }
             }

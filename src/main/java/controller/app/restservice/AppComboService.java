@@ -30,7 +30,7 @@ public class AppComboService {
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
         List<Combo> comboList= comboDao.getAllProductCombo(type);
 
-        if(comboList==null && comboList.size()==0){
+        if(comboList==null || comboList.size()==0){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(comboList);
         }
 

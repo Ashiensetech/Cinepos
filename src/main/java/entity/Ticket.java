@@ -1,6 +1,7 @@
 package entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import entity.app.jsonview.ticket.TicketJsonView;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 /**
  * Created by mi on 1/24/17.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "ticket")
 public class Ticket {

@@ -58,6 +58,20 @@ public class ScreenDao extends BaseDao {
         }
         return null;
     }
+    public Screen getSummarById(int id){
+        Session session = null;
+
+        try{
+            session = this.sessionFactory.openSession();
+            return (Screen)session.createQuery("FROM Screen screen where screen.id = :id").setParameter("id", id).uniqueResult();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return null;
+    }
     public List<Screen> getSummaryAll(){
         Session session = this.sessionFactory.openSession();
         try{
