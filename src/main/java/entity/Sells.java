@@ -58,7 +58,7 @@ public class Sells {
 
     @JsonView(SellsJsonView.Summary.class)
     @OneToMany
-    @JoinColumn(name = "sell_id",referencedColumnName = "id")
+    @JoinColumn(name = "sell_id",referencedColumnName = "id",updatable = false)
     private Set<SellsDetails> sellDetails;
 
     @JsonView(SellsJsonView.Summary.class)

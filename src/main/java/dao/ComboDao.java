@@ -44,7 +44,20 @@ public class ComboDao extends  BaseDao{
             if(session!=null)session.close();
         }
     }
-
+    public void delete(Combo combo){
+        Session session = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(combo);
+            session.getTransaction().commit();
+        }catch (HibernateException hEx){
+            // Insert to database exception log
+            hEx.printStackTrace();
+        }finally {
+            if(session!=null)session.close();
+        }
+    }
     public List<Combo> getAll(){
         Session session=this.sessionFactory.openSession();
 

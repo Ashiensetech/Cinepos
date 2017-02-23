@@ -144,7 +144,7 @@
                     </div>
                     <div class="col-lg-12 text-left" style="margin-top:30px;">
                         <p class="help-block" id="statusMsg"></p>
-                        <button type="button" id="comboBtn" class="btn btn-lg btn-primary">Submit</button>
+                        <input type="submit" id="comboBtn" class="btn btn-lg btn-primary" value="Submit">
                     </div>
                 </form>
             </div>

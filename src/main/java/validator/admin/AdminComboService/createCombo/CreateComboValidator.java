@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.ConcessionProductDao;
 import entity.ConcessionProduct;
-import entity.Genre;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,16 +47,16 @@ public class CreateComboValidator implements Validator {
 
         try {
 
-            ComboProduct[] myObjects = objectMapper.readValue(createComboForm.getProductIds(), ComboProduct[].class);
+            ComboProductDetailsForm[] myObjects = objectMapper.readValue(createComboForm.getProductIds(), ComboProductDetailsForm[].class);
 
 
             if(myObjects==null){
                 errors.rejectValue("productIds", "Product cant be empty");
             }
 
-            List<ComboProduct> comboProducts = Arrays.asList(myObjects);
+            List<ComboProductDetailsForm> comboProductDetailsForms = Arrays.asList(myObjects);
 
-            for (ComboProduct tgtProduct:comboProducts){
+            for (ComboProductDetailsForm tgtProduct: comboProductDetailsForms){
                ConcessionProduct concessionProduct= concessionProductDao.getById(tgtProduct.getProductId());
 
                if(concessionProduct==null){
@@ -65,14 +64,14 @@ public class CreateComboValidator implements Validator {
                    break;
                }
 
-               for (ComboProduct tgtComboProduct:comboProducts){
-                   if( tgtComboProduct.getQuantity()<=0){
+               for (ComboProductDetailsForm tgtComboProductDetailsForm : comboProductDetailsForms){
+                   if( tgtComboProductDetailsForm.getQuantity()<=0){
                        errors.rejectValue("productQuantity", "Product quantity can't be 0");
                        break;
                    }
                }
 
-                createComboForm.setComboProduct(comboProducts);
+                createComboForm.setComboProductDetailsForm(comboProductDetailsForms);
 
 
 

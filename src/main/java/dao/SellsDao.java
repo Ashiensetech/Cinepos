@@ -33,7 +33,6 @@ public class SellsDao extends  BaseDao{
 
     public void update(Sells sells){
 
-        System.out.print(sells);
         Session session = null;
         try {
             session = this.sessionFactory.openSession();

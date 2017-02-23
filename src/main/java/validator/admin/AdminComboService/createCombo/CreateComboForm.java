@@ -3,7 +3,6 @@ package validator.admin.AdminComboService.createCombo;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class CreateComboForm {
     @NotNull(message = "Product are  required")
     private String productIds;
 
-    public List<ComboProduct> comboProduct;
+    public List<ComboProductDetailsForm> comboProductDetailsForm;
 
 
     private int seatTypeId;
@@ -104,12 +103,12 @@ public class CreateComboForm {
         this.productIds = productIds;
     }
 
-    public List<ComboProduct> getComboProduct() {
-        return comboProduct;
+    public List<ComboProductDetailsForm> getComboProductDetailsForm() {
+        return comboProductDetailsForm;
     }
 
-    public void setComboProduct(List<ComboProduct> comboProduct) {
-        this.comboProduct = comboProduct;
+    public void setComboProductDetailsForm(List<ComboProductDetailsForm> comboProductDetailsForm) {
+        this.comboProductDetailsForm = comboProductDetailsForm;
     }
 
     public int getSeatTypeId() {
@@ -159,7 +158,7 @@ public class CreateComboForm {
         if (endDate != null ? !endDate.equals(that.endDate) : that.endDate != null) return false;
         if (comboType != null ? !comboType.equals(that.comboType) : that.comboType != null) return false;
         if (productIds != null ? !productIds.equals(that.productIds) : that.productIds != null) return false;
-        if (comboProduct != null ? !comboProduct.equals(that.comboProduct) : that.comboProduct != null) return false;
+        if (comboProductDetailsForm != null ? !comboProductDetailsForm.equals(that.comboProductDetailsForm) : that.comboProductDetailsForm != null) return false;
         if (productsIdArray != null ? !productsIdArray.equals(that.productsIdArray) : that.productsIdArray != null)
             return false;
         if (formattedStartDate != null ? !formattedStartDate.equals(that.formattedStartDate) : that.formattedStartDate != null)
@@ -176,7 +175,7 @@ public class CreateComboForm {
         result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
         result = 31 * result + (comboType != null ? comboType.hashCode() : 0);
         result = 31 * result + (productIds != null ? productIds.hashCode() : 0);
-        result = 31 * result + (comboProduct != null ? comboProduct.hashCode() : 0);
+        result = 31 * result + (comboProductDetailsForm != null ? comboProductDetailsForm.hashCode() : 0);
         result = 31 * result + seatTypeId;
         result = 31 * result + (productsIdArray != null ? productsIdArray.hashCode() : 0);
         result = 31 * result + (formattedStartDate != null ? formattedStartDate.hashCode() : 0);
@@ -194,7 +193,7 @@ public class CreateComboForm {
                 ", endDate='" + endDate + '\'' +
                 ", comboType='" + comboType + '\'' +
                 ", productIds='" + productIds + '\'' +
-                ", comboProduct=" + comboProduct +
+                ", comboProduct=" + comboProductDetailsForm +
                 ", seatTypeId=" + seatTypeId +
                 ", productsIdArray=" + productsIdArray +
                 ", formattedStartDate=" + formattedStartDate +

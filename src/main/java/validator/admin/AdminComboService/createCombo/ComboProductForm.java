@@ -7,17 +7,17 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ComboProductForm {
 
-    public ComboProduct comboProduct;
+    public ComboProductDetailsForm comboProductDetailsForm;
     private String productIds;
 
-    private List<ComboProduct> comboProducts;
+    private List<ComboProductDetailsForm> comboProductDetailsForms;
 
-    public ComboProduct getComboProduct() {
-        return comboProduct;
+    public ComboProductDetailsForm getComboProductDetailsForm() {
+        return comboProductDetailsForm;
     }
 
-    public void setComboProduct(ComboProduct comboProduct) {
-        this.comboProduct = comboProduct;
+    public void setComboProductDetailsForm(ComboProductDetailsForm comboProductDetailsForm) {
+        this.comboProductDetailsForm = comboProductDetailsForm;
     }
 
     public String getProductIds() {
@@ -28,20 +28,20 @@ public class ComboProductForm {
         this.productIds = productIds;
     }
 
-    public List<ComboProduct> getComboProducts() {
-        return comboProducts;
+    public List<ComboProductDetailsForm> getComboProductDetailsForms() {
+        return comboProductDetailsForms;
     }
 
-    public void setComboProducts(List<ComboProduct> comboProducts) {
-        this.comboProducts = comboProducts;
+    public void setComboProductDetailsForms(List<ComboProductDetailsForm> comboProductDetailsForms) {
+        this.comboProductDetailsForms = comboProductDetailsForms;
     }
 
     @Override
     public String toString() {
         return "ComboProductForm{" +
-                "comboProduct=" + comboProduct +
+                "comboProduct=" + comboProductDetailsForm +
                 ", productIds='" + productIds + '\'' +
-                ", comboProducts=" + comboProducts +
+                ", comboProducts=" + comboProductDetailsForms +
                 '}';
     }
 }
