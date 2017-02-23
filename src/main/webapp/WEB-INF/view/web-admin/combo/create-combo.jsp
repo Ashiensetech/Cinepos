@@ -241,7 +241,7 @@
             pListPrice=$(".plistPrice");
 
             pListPrice.each(function (index) {
-                products.push({"productId":$(this ).data('proids'),"quantity":$(this ).data('quantity')});
+                products.push({"productId":$(this ).data('proids'),"quantity":$(this ).data('quantity'),"type":"PRODUCT"});
 
                 console.log(typeof products);
 
@@ -290,6 +290,7 @@
                 comboType="product";
             }else{
                 comboType="ticket";
+                products.push({"productId":parseInt(ticket),"quantity":1,"type":"TICKET"});
             }
 
 
