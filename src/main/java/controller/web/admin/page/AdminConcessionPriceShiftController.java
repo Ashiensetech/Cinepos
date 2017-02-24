@@ -30,7 +30,7 @@ public class AdminConcessionPriceShiftController {
 
     @RequestMapping(value = "/create")
     public ModelAndView createConcessionPriceShift(){
-        List<ConcessionProduct> concessionProducts = concessionProductDao.getAllToPriceShift();
+        List<ConcessionProduct> concessionProducts = concessionProductDao.getAllActive();
         ModelAndView mav =  new ModelAndView("web-admin/concession-price-shift/create-concession-price-shift");
         mav.addObject("concessionProducts",concessionProducts);
         return mav;

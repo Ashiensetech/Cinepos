@@ -36,9 +36,6 @@ public class CreateComboForm {
 
     public List<ComboProductDetailsForm> comboProductDetailsForm;
 
-
-    private int seatTypeId;
-
     private List<Integer> productsIdArray = new ArrayList<>();
 
 
@@ -111,13 +108,6 @@ public class CreateComboForm {
         this.comboProductDetailsForm = comboProductDetailsForm;
     }
 
-    public int getSeatTypeId() {
-        return seatTypeId;
-    }
-
-    public void setSeatTypeId(int seatTypeId) {
-        this.seatTypeId = seatTypeId;
-    }
 
     public List<Integer> getProductsIdArray() {
         return productsIdArray;
@@ -150,7 +140,6 @@ public class CreateComboForm {
 
         CreateComboForm that = (CreateComboForm) o;
 
-        if (seatTypeId != that.seatTypeId) return false;
         if (comboName != null ? !comboName.equals(that.comboName) : that.comboName != null) return false;
         if (details != null ? !details.equals(that.details) : that.details != null) return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
@@ -176,7 +165,6 @@ public class CreateComboForm {
         result = 31 * result + (comboType != null ? comboType.hashCode() : 0);
         result = 31 * result + (productIds != null ? productIds.hashCode() : 0);
         result = 31 * result + (comboProductDetailsForm != null ? comboProductDetailsForm.hashCode() : 0);
-        result = 31 * result + seatTypeId;
         result = 31 * result + (productsIdArray != null ? productsIdArray.hashCode() : 0);
         result = 31 * result + (formattedStartDate != null ? formattedStartDate.hashCode() : 0);
         result = 31 * result + (formattedEndDate != null ? formattedEndDate.hashCode() : 0);
@@ -194,7 +182,6 @@ public class CreateComboForm {
                 ", comboType='" + comboType + '\'' +
                 ", productIds='" + productIds + '\'' +
                 ", comboProduct=" + comboProductDetailsForm +
-                ", seatTypeId=" + seatTypeId +
                 ", productsIdArray=" + productsIdArray +
                 ", formattedStartDate=" + formattedStartDate +
                 ", formattedEndDate=" + formattedEndDate +

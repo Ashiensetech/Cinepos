@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+        <!DOCTYPE hibernate-configuration PUBLIC
+                "-//Hibernate/Hibernate Configuration DTD//EN"
+                "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+       <!-- a SessionFactory instance listed as /jndi/name -->
+       <session-factory
+               name="java:hibernate/SessionFactory">
+
+              <!-- properties -->
+              <property name="jdbc.driverClassName">com.mysql.jdbc.Driver</property>
+              <property name="jdbc.url">jdbc:mysql://localhost:3306/cinepos?zeroDateTimeBehavior=convertToNull</property>
+              <property name="jdbc.username">root</property>
+              <property name="jdbc.password"></property>
+              <property name="hibernate.jdbc.batch_size">20</property>
+              <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+              <property name="show_sql">true</property>
+
+
+
+       </session-factory>
+
+</hibernate-configuration>

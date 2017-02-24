@@ -79,7 +79,7 @@ public class CreateConcessionPriceShiftForm {
     private Date formattedEndDate;
 
     @NotNull(message = "Price is required")
-    @Min(value = 0, message = "The Price must be positive")
+    @Min(value = 1, message = "The Price must be greater then zero")
     private Double price;
 
 //    @NotNull(message = "Status is required")

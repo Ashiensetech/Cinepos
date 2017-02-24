@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public class ComboDao extends  BaseDao{
 
-    public void insert(Combo combo){
+    public boolean insert(Combo combo){
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
@@ -25,12 +25,14 @@ public class ComboDao extends  BaseDao{
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();
+            return false;
         }finally {
             if(session!=null)session.close();
         }
+        return true;
     }
 
-    public void update(Combo combo){
+    public boolean update(Combo combo){
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
@@ -43,6 +45,7 @@ public class ComboDao extends  BaseDao{
         }finally {
             if(session!=null)session.close();
         }
+        return true;
     }
     public void delete(Combo combo){
         Session session = null;

@@ -57,19 +57,22 @@ public class CreateComboValidator implements Validator {
             List<ComboProductDetailsForm> comboProductDetailsForms = Arrays.asList(myObjects);
 
             for (ComboProductDetailsForm tgtProduct: comboProductDetailsForms){
+                if(tgtProduct.getType()==null){
+                    errors.rejectValue("productIds", "Type missing");
+                }else if(tgtProduct.getType().equals("TICKET")){
+                    continue;
+                }
                ConcessionProduct concessionProduct= concessionProductDao.getById(tgtProduct.getProductId());
 
                if(concessionProduct==null){
-                   errors.rejectValue("productIds", "Product no found");
+                   errors.rejectValue("productIds", "No product  found with id "+tgtProduct.getProductId());
                    break;
                }
 
-               for (ComboProductDetailsForm tgtComboProductDetailsForm : comboProductDetailsForms){
-                   if( tgtComboProductDetailsForm.getQuantity()<=0){
-                       errors.rejectValue("productQuantity", "Product quantity can't be 0");
-                       break;
-                   }
-               }
+                if (tgtProduct.getQuantity() <= 0){
+                    errors.rejectValue("productQuantity", "Product quantity can't be 0");
+                    break;
+                }
 
                 createComboForm.setComboProductDetailsForm(comboProductDetailsForms);
 

@@ -45,7 +45,7 @@ public class AdminFilmController {
     }
     @RequestMapping(value = "/create")
     public ModelAndView createFilm(){
-        List<Distributor> distributors = distributorDao.getActiveDistrubutors();
+        List<Distributor> distributors = distributorDao.getActiveDistributors();
         List<ScreenDimension> screenDimensions = screenDimensionDao.getAll();
         ModelAndView mav =  new ModelAndView("web-admin/film/create-film");
         List<Genre> genres = genreDao.getAllAlphabetically();
@@ -56,7 +56,7 @@ public class AdminFilmController {
     }
     @RequestMapping(value = "/edit/{filmId}")
     public ModelAndView editFilm(@PathVariable Integer filmId){
-        List<Distributor> distributors = distributorDao.getAll();
+        List<Distributor> distributors = distributorDao.getActiveDistributors();
         List<ScreenDimension> screenDimensions = screenDimensionDao.getAll();
         Film film = filmDao.getById(filmId);
 

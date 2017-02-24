@@ -53,7 +53,7 @@ public class AdminComboController {
         Combo combos=comboDao.getById(comboId);
         List<SeatType> seatTypeList=seatTypeDao.getAll();
 
-        List<ConcessionProduct> concessionProductList= concessionProductDao.getAll();
+        List<ConcessionProduct> concessionProductList= concessionProductDao.getAllActive();
 
         ModelAndView modelAndView=new ModelAndView("web-admin/combo/edit-combo");
 

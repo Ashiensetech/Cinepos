@@ -66,7 +66,7 @@ public class ComboDetails {
 
     @JsonView(ComboDetailsJsonView.Summary.class)
     @OneToOne
-    @JoinColumn(name = "seat_type_id",referencedColumnName = "id",insertable = false, updatable = false,nullable = true)
+    @JoinColumn(name = "seat_type_id",referencedColumnName = "id",insertable = false, updatable = false)
     private SeatType seatType;
 
     public int getId() {

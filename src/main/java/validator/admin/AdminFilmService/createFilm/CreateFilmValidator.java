@@ -42,20 +42,26 @@ public class CreateFilmValidator implements Validator {
             errors.rejectValue("distributorId", "No distributor found");
         }
 
-
+        boolean excpFlag = false;
         try {
             createFilmForm.setFormattedStartDate(DateHelper.getStringToDate(createFilmForm.getStartDate(), "MM/dd/yyyy"));
         } catch (ParseException e) {
             errors.rejectValue("startDate", "Start Date format miss matched");
+            excpFlag=true;
         }
 
         try {
             createFilmForm.setFormattedEndDate(DateHelper.getStringToDate(createFilmForm.getEndDate(), "MM/dd/yyyy"));
         } catch (ParseException e) {
             errors.rejectValue("endDate", "End Date format miss matched");
+            excpFlag=true;
         }
 
-
+        if(!excpFlag){
+            if(createFilmForm.getFormattedStartDate().after(createFilmForm.getFormattedEndDate())){
+                errors.rejectValue("endDate", "End Date is past then start date");
+            }
+        }
 
         /**
          *Film Trailer

@@ -55,6 +55,13 @@ public class AdminFilmService {
     @Autowired
     FilmScreenTypeDao filmScreenTypeDao;
 
+    @Autowired
+    FilmImageDao filmImageDao;
+
+    @Autowired
+    FilmTrailerDao filmTrailerDao;
+
+
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<?> createFilm(@Valid CreateFilmForm createFilmForm, BindingResult result) {
 
@@ -143,11 +150,14 @@ public class AdminFilmService {
          *  */
         List<FilmTrailer> filmTrailerList = new ArrayList<>();
         FilmTrailer filmTrailer = new FilmTrailer();
-
+        filmTrailer.setFilmId(film.getId());
         filmTrailer.setTrailerUrl(createFilmForm.getTrailer());
         filmTrailerList.add(filmTrailer);
 
+        filmTrailerDao.insertBatch(filmTrailerList);
+
         film.setFilmTrailers(filmTrailerList);
+
 
         /**
          * Film Banner Image
@@ -155,6 +165,7 @@ public class AdminFilmService {
         List<FilmImage> filmImages = new ArrayList<>();
 
         FilmImage filmBannerImage = new FilmImage();
+        filmBannerImage.setFilmId(film.getId());
         filmBannerImage.setIsBanner(true);
         try {
             String filePath = fileUtil.moveFilmFileFromTemp(film.getId(), createFilmForm.getBannerImageToken());
@@ -166,6 +177,8 @@ public class AdminFilmService {
             e.printStackTrace();
         }
 
+        filmImageDao.insert(filmBannerImage);
+
         /**
          *  Film Other Images
          *  */
@@ -174,6 +187,7 @@ public class AdminFilmService {
         for (Integer token : otherImagesToken) {
             try {
                 FilmImage filmOtherImage = new FilmImage();
+                filmOtherImage.setFilmId(film.getId());
                 String filePath = fileUtil.moveFilmFileFromTemp(film.getId(), token);
                 filmOtherImage.setFilePath(filePath);
 
@@ -185,13 +199,15 @@ public class AdminFilmService {
             }
         }
 
+        filmImageDao.insertBatch(filmImages);
+
         film.setFilmImages(filmImages);
 
 
         /**
          * Updating Film
          * */
-        filmDao.update(film);
+        //filmDao.update(film);
 
 
         return ResponseEntity.status(HttpStatus.OK).body(film);
@@ -261,6 +277,8 @@ public class AdminFilmService {
             FilmTrailer filmTrailer = new FilmTrailer();
             if (optionalFilmTrailer.isPresent()) {
                 filmTrailer = optionalFilmTrailer.get();
+            }else{
+                filmTrailer.setFilmId(film.getId());
             }
             filmTrailer.setTrailerUrl(editFilmForm.getTrailer());
             filmTrailerList.add(filmTrailer);
@@ -296,7 +314,10 @@ public class AdminFilmService {
             }
             film.setFilmGenre(genres);
         }
-
+        /**
+         * Get Film Images
+         * */
+        List<FilmImage> filmImages = film.getFilmImages();
         /**
          * Film Banner Image
          * */
@@ -309,10 +330,18 @@ public class AdminFilmService {
                 filmBannerImage = optionalBannerImage.get();
             }
 
-            filmBannerImage.setIsBanner(true);
             try {
                 String filePath = fileUtil.moveFilmFileFromTemp(film.getId(), editFilmForm.getBannerImageToken());
+                filmBannerImage.setIsBanner(true);
                 filmBannerImage.setFilePath(filePath);
+
+                /**
+                 * In-case the banner image in not exist
+                 * */
+                if(filmBannerImage.getId()<=0){
+                    filmImages.add(filmBannerImage);
+                    filmBannerImage.setFilmId(film.getId());
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (TempFileException e) {
@@ -325,7 +354,7 @@ public class AdminFilmService {
          *  */
         if (editFilmForm.getOtherImagesToken() != null) {
             List<Integer> otherImagesToken = editFilmForm.getOtherImagesTokenArray();
-            List<FilmImage> filmImages = film.getFilmImages();
+
             if (filmImages == null) {
                 filmImages = new ArrayList<>();
             }
@@ -353,7 +382,6 @@ public class AdminFilmService {
         if (editFilmForm.getDeletedImagesIdSet() != null && editFilmForm.getDeletedImagesIdSet().size() > 0) {
             Set<Integer> deleteImageSet = editFilmForm.getDeletedImagesIdSet();
 
-            List<FilmImage> filmImages = film.getFilmImages();
 
             for (Integer deletedImgId : deleteImageSet) {
                 if (deletedImgId <= 0) continue;

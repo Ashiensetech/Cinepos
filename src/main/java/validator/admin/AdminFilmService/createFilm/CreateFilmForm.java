@@ -3,6 +3,7 @@ package validator.admin.AdminFilmService.createFilm;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -23,12 +24,15 @@ public class CreateFilmForm {
     private Integer distributorId;
 
     @NotNull(message = "Rating is required")
+    @Min(value = 0, message = "Rating can't be negative")
     private Float rating;
 
-    @NotNull(message = "Duration is required")
+    @NotNull(message = "Duration hour is required")
+    @Min(value = 0, message = "Duration hour can't be negative")
     private Integer durationHour;
 
-    @NotNull(message = "Duration is required")
+    @NotNull(message = "Duration min is required")
+    @Min(value = 0, message = "Duration min can't be negative")
     private Integer durationMin;
 
     @NotNull(message = "Status is required")

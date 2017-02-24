@@ -73,7 +73,7 @@ public class DistributorDao extends BaseDao{
          return new ArrayList<Distributor>();
     }
 
-    public List<Distributor> getActiveDistrubutors(){
+    public List<Distributor> getActiveDistributors(){
         Session session=this.sessionFactory.openSession();
 
          try{

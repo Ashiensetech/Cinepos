@@ -1,5 +1,6 @@
 package validator.admin.AdminSeatPriceShiftService.createSeatPriceShift;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.sql.Date;
 
@@ -7,7 +8,25 @@ import java.sql.Date;
  * Created by sunno on 1/16/17.
  */
 public class CreateSeatPriceShiftForm {
+    @NotNull(message = "Seat type is required")
+    private Integer seatTypeId;
 
+    @NotNull(message = "Start Date is required")
+    private String startDate;
+
+    @NotNull(message = "End Date is required")
+    private String endDate;
+
+    private Date formattedStartDate;
+
+    private Date formattedEndDate;
+
+    @NotNull(message = "Price is required")
+    @Min(value = 1, message = "The Price must be greater then zero")
+    private Double price;
+
+    //    @NotNull(message = "Status is required")
+    private boolean status;
 
     public String getStartDate() {
         return startDate;
@@ -65,24 +84,7 @@ public class CreateSeatPriceShiftForm {
         this.seatTypeId = seatTypeId;
     }
 
-    @NotNull(message = "Seat type is required")
-    private Integer seatTypeId;
 
-    @NotNull(message = "Start Date is required")
-    private String startDate;
-
-    @NotNull(message = "End Date is required")
-    private String endDate;
-
-    private Date formattedStartDate;
-
-    private Date formattedEndDate;
-
-    @NotNull(message = "Price is required")
-    private Double price;
-
-//    @NotNull(message = "Status is required")
-    private boolean status;
 
     @Override
     public String toString() {

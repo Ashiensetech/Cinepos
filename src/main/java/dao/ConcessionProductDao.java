@@ -74,7 +74,7 @@ public class ConcessionProductDao extends BaseDao{
         }finally{
             if(session!=null)session.close();
         }
-        return new ArrayList<ConcessionProduct>();
+        return new ArrayList<>();
 
     }
 
@@ -93,7 +93,7 @@ public class ConcessionProductDao extends BaseDao{
         }
     }
 
-    public void update(ConcessionProduct concessionProduct){
+    public boolean update(ConcessionProduct concessionProduct){
         Session session = null;
         try {
             session = this.sessionFactory.openSession();
@@ -103,9 +103,13 @@ public class ConcessionProductDao extends BaseDao{
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();
+
+            return false;
         }finally {
             if(session!=null)session.close();
         }
+
+        return true;
     }
 
     public ConcessionProduct getById(int id){

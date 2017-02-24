@@ -25,7 +25,7 @@ public class ConcessionPriceShiftDao extends BaseDao{
 //    }
 
 
-    public void insert(ConcessionPriceShift concessionPriceShift){
+    public boolean insert(ConcessionPriceShift concessionPriceShift){
         Session session = null;
 
         try {
@@ -44,9 +44,11 @@ public class ConcessionPriceShiftDao extends BaseDao{
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();
+            return false;
         }finally {
             if(session!=null)session.close();
         }
+        return true;
     }
 
 
@@ -95,17 +97,7 @@ public class ConcessionPriceShiftDao extends BaseDao{
             session.beginTransaction();
             session.delete(concessionPriceShift);
             session.getTransaction().commit();
-
-            if(concessionPriceShift.getStatus()){
-                ConcessionPriceShift priceShiftStatus = getInActivePriceShift(concessionPriceShift.getConcessionProduct().getId());
-                System.out.println(priceShiftStatus);
-                if(priceShiftStatus!=null){
-                    priceShiftStatus.setStatus(true);
-                    update(priceShiftStatus);
-                }
-            }
             return true;
-
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();

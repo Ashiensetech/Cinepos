@@ -105,7 +105,7 @@ public class SellDetailsDao extends BaseDao{
         Session session = null;
         try{
             session = this.sessionFactory.openSession();
-            return (SellsDetails) session.createQuery("FROM ComboDetails where comboId = :combo_id").setParameter("combo_id", comboId).uniqueResult();
+            return (SellsDetails) session.createQuery("FROM SellsDetails where combo.Id = :combo_id").setMaxResults(1).setParameter("combo_id", comboId).uniqueResult();
         }catch (HibernateException hEx){
             // Insert to database exception log
             hEx.printStackTrace();
