@@ -120,7 +120,19 @@ public class ConcessionPriceShiftDao extends BaseDao{
         }
         return new ArrayList<ConcessionPriceShift>();
     }
-
+    public List<ConcessionPriceShift> getAllOrderByIdDesc(){
+        Session session = this.sessionFactory.openSession();
+        try{
+            session = this.sessionFactory.openSession();
+            return session.createQuery("FROM ConcessionPriceShift order by id desc")
+                    .list();
+        }catch (HibernateException hEx){
+            hEx.printStackTrace();
+        }finally{
+            if(session!=null)session.close();
+        }
+        return new ArrayList<ConcessionPriceShift>();
+    }
 
     public ConcessionPriceShift getById(Integer id){
         Session session = null;

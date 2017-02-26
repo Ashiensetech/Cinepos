@@ -3,6 +3,7 @@ package validator.admin.AdminConcessionProductService.editConcessionProduct;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -27,12 +28,15 @@ public class EditConcessionProductForm {
     private Integer productCategory;
 
     @NotNull(message = "Product unit are required")
+    @Min(value = 1, message = "The unit must be greater then zero")
     private Integer unit;
 
     @NotNull(message = "Product selling price are required")
+    @Min(value = 0, message = "The selling price must be positive")
     private Float sellingPrice;
 
-    @NotNull(message = "Product selling price are required")
+    @NotNull(message = "Product buying price are required")
+    @Min(value = 0, message = "The buying price must be positive")
     private Float buyingPrice;
 
     private Integer isPriceShift;

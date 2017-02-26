@@ -28,7 +28,7 @@ public class CreateConcessionProductForm {
     private Integer productCategory;
 
     @NotNull(message = "Product unit are required")
-    @Min(value = 1, message = "The unit must be positive")
+    @Min(value = 1, message = "The unit must be greater then zero")
     private Integer unit;
 
     @NotNull(message = "Product selling price are required")

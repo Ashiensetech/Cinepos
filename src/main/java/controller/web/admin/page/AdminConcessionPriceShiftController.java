@@ -39,7 +39,7 @@ public class AdminConcessionPriceShiftController {
     @RequestMapping("/all")
     public ModelAndView allSeatTypePage(){
         ModelAndView mav = new ModelAndView("web-admin/concession-price-shift/all-concession-price-shifts");
-        List<ConcessionPriceShift> concessionPriceShifts = concessionPriceShiftDao.getAll();
+        List<ConcessionPriceShift> concessionPriceShifts = concessionPriceShiftDao.getAllOrderByIdDesc();
         mav.addObject("concessionPriceShifts",concessionPriceShifts);
         return mav;
     }

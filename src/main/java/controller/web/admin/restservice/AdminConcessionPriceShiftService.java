@@ -109,9 +109,20 @@ public class AdminConcessionPriceShiftService {
     @RequestMapping(value = "/update",method = RequestMethod.POST)
     public ResponseEntity<?> updateConcessionPriceShift(@Valid EditConcessionPriceShiftForm editConcessionPriceShiftForm, BindingResult result){
 
-        System.out.println(editConcessionPriceShiftForm);
-
         ServiceResponse serviceResponse = ServiceResponse.getInstance();
+        ConcessionPriceShift concessionPriceShift = concessionPriceShiftDao.getById(editConcessionPriceShiftForm.getId());
+
+        if(concessionPriceShift==null){
+            serviceResponse.setValidationError("id","No concession price shift found by ID :"+editConcessionPriceShiftForm.getId());
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
+
+        if(!concessionPriceShift.getStatus()){
+            serviceResponse.setValidationError("id","Can't update inactive concession price shift");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
 
         /***************** Validation  [Start] *************/
 
@@ -138,7 +149,6 @@ public class AdminConcessionPriceShiftService {
 
 
         /***************** Service  [Start] *************/
-        ConcessionPriceShift concessionPriceShift= concessionPriceShiftDao.getById(editConcessionPriceShiftForm.getId());
 
         System.out.println(editConcessionPriceShiftForm);
 

@@ -61,7 +61,7 @@
                     <td>${item.price}</td>
                     <td>${item.startDate} </td>
                     <td>${item.endDate}</td>
-                    <td>${item.status}</td>
+                    <td><d:if test="${item.status}">Valid</d:if><d:if test="${!item.status}">Invalid</d:if> </td>
                     <td >
                       <a href="<c:url value="/admin/concession-price-shift/edit/${item.id}" />"
                          type="button"

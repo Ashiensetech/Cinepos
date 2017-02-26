@@ -77,6 +77,7 @@
 
                         <br>
                         <p class="help-block" id="statusMsg"></p>
+                        <p class="help-block error" id="errorMsg_id"></p>
                         <button class="btn btn-primary" onclick="return submitPriceShiftData()">Update Product Price Shift</button>
                     </form>
                 </div>
