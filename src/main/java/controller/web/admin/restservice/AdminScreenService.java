@@ -16,18 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import utility.ServiceResponse;
-import validator.admin.AdminScreenService.createScreen.CreateScreenValidator;
-import validator.admin.AdminScreenService.createScreen.CreateScreenFrom;
-import validator.admin.AdminScreenService.editScreen.EditScreenValidator;
-import validator.admin.AdminScreenService.editScreen.EditScreenFrom;
+import validator.admin.restservice.screen.createScreen.CreateScreenValidator;
+import validator.admin.restservice.screen.createScreen.CreateScreenFrom;
+import validator.admin.restservice.screen.editScreen.EditScreenValidator;
+import validator.admin.restservice.screen.editScreen.EditScreenFrom;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import static java.lang.System.out;
 
 /**
  * Created by mi on 1/5/17.

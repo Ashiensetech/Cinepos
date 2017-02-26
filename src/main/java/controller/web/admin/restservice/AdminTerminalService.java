@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminTerminalService.createTerminal.createTerminalForm;
-import validator.admin.AdminTerminalService.editTerminal.editTerminalForm;
+import validator.admin.restservice.terminal.create.createTerminalForm;
+import validator.admin.restservice.terminal.edit.editTerminalForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

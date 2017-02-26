@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminFilmScheduleService.createOrMerge.CreateOrMergeForm;
-import validator.admin.AdminFilmScheduleService.createOrMerge.CreateOrMergeValidator;
-import validator.admin.AdminFilmScheduleService.createOrMerge.FilmTimeForm;
-import validator.admin.AdminFilmScheduleService.editFlimTime.EditFilmTimeValidator;
+import validator.admin.restservice.film.schedule.createOrMerge.CreateOrMergeForm;
+import validator.admin.restservice.film.schedule.createOrMerge.CreateOrMergeValidator;
+import validator.admin.restservice.film.schedule.createOrMerge.FilmTimeForm;
+import validator.admin.restservice.film.schedule.editFlimTime.EditFilmTimeValidator;
 
 import javax.validation.Valid;
 import java.util.HashSet;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminVatSettingService.createVatSetting.createVatSettingForm;
+import validator.admin.restservice.vatsetting.create.CreateVatSettingForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -27,7 +27,7 @@ public class AdminVatSettingService {
     VatSettingDao vatSettingDao;
 
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public ResponseEntity<?> create(@Valid createVatSettingForm createVatSettingForm, BindingResult result,
+    public ResponseEntity<?> create(@Valid CreateVatSettingForm CreateVatSettingForm, BindingResult result,
                                     HttpServletRequest request){
         String errorMsg="";
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -42,11 +42,11 @@ public class AdminVatSettingService {
             VatSetting vatSetting=new VatSetting();
 
 
-            if(createVatSettingForm.getId()==null){
+            if(CreateVatSettingForm.getId()==null){
                 errorMsg="Circuit successfully created";
-                vatSetting.setName(createVatSettingForm.getName());
-                vatSetting.setAmount(createVatSettingForm.getAmount());
-                vatSetting.setDescription(createVatSettingForm.getDescription());
+                vatSetting.setName(CreateVatSettingForm.getName());
+                vatSetting.setAmount(CreateVatSettingForm.getAmount());
+                vatSetting.setDescription(CreateVatSettingForm.getDescription());
                 vatSetting.setCreatedBy(1);
 
                 vatSettingDao.create(vatSetting);
@@ -54,10 +54,10 @@ public class AdminVatSettingService {
             }else{
 
                 errorMsg="Circuit successfully updated";
-                VatSetting vatSettingData = vatSettingDao.getById(createVatSettingForm.getId());
-                vatSettingData.setName(createVatSettingForm.getName());
-                vatSettingData.setAmount(createVatSettingForm.getAmount());
-                vatSettingData.setDescription(createVatSettingForm.getDescription());
+                VatSetting vatSettingData = vatSettingDao.getById(CreateVatSettingForm.getId());
+                vatSettingData.setName(CreateVatSettingForm.getName());
+                vatSettingData.setAmount(CreateVatSettingForm.getAmount());
+                vatSettingData.setDescription(CreateVatSettingForm.getDescription());
 
                 vatSettingDao.update(vatSettingData);
 

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminDistributorService.createDistributor.createDistributorForm;
-import validator.admin.AdminDistributorService.editDistributor.editDistributorForm;
+import validator.admin.restservice.distributor.createDistributor.createDistributorForm;
+import validator.admin.restservice.distributor.editDistributor.editDistributorForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

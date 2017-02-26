@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminTicketService.createTicket.CreateTicketForm;
-import validator.admin.AdminTicketService.createTicket.CreateTicketValidator;
-import validator.admin.AdminTicketService.editTicket.EditTicketForm;
-import validator.admin.AdminTicketService.editTicket.EditTicketValidator;
+import validator.admin.restservice.ticket.create.CreateTicketForm;
+import validator.admin.restservice.ticket.create.CreateTicketValidator;
+import validator.admin.restservice.ticket.edit.EditTicketForm;
+import validator.admin.restservice.ticket.edit.EditTicketValidator;
 
 import javax.validation.Valid;
 import java.util.HashMap;

@@ -16,11 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift.CreateConcessionPriceShiftForm;
-import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift.CreateConcessionPriceShiftValidator;
-import validator.admin.AdminConcessionPriceShiftService.editConcessionPriceShift.EditConcessionPriceShiftForm;
-import validator.admin.AdminConcessionPriceShiftService.editConcessionPriceShift.EditConcessionPriceShiftValidator;
-import validator.admin.AdminSeatPriceShiftService.editSeatPriceShift.EditSeatPriceShiftValidator;
+import validator.admin.restservice.concession.priceshift.create.CreateConcessionPriceShiftForm;
+import validator.admin.restservice.concession.priceshift.create.CreateConcessionPriceShiftValidator;
+import validator.admin.restservice.concession.priceshift.edit.EditConcessionPriceShiftForm;
+import validator.admin.restservice.concession.priceshift.edit.EditConcessionPriceShiftValidator;
 
 import javax.validation.Valid;
 

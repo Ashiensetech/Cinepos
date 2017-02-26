@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminCircuitService.createCircuit.createCircuitForm;
+import validator.admin.restservice.circuit.create.createCircuitForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utility.ServiceResponse;
-import validator.admin.AdminFilmScheduleService.createOrMerge.CreateOrMergeValidator;
+import validator.admin.restservice.film.schedule.createOrMerge.CreateOrMergeValidator;
 
 import java.sql.Date;
 import java.text.ParseException;

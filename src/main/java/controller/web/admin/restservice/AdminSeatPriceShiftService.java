@@ -1,11 +1,8 @@
 package controller.web.admin.restservice;
 
 import controller.web.admin.AdminUriPreFix;
-import dao.ConcessionPriceShiftDao;
-import dao.ConcessionProductDao;
 import dao.SeatPriceShiftDao;
 import dao.SeatTypeDao;
-import entity.ConcessionPriceShift;
 import entity.SeatPriceShift;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift.CreateConcessionPriceShiftForm;
-import validator.admin.AdminConcessionPriceShiftService.createConcessionPriceShift.CreateConcessionPriceShiftValidator;
-import validator.admin.AdminSeatPriceShiftService.createSeatPriceShift.CreateSeatPriceShiftForm;
-import validator.admin.AdminSeatPriceShiftService.createSeatPriceShift.CreateSeatPriceShiftValidator;
-import validator.admin.AdminSeatPriceShiftService.editSeatPriceShift.EditSeatPriceShiftForm;
-import validator.admin.AdminSeatPriceShiftService.editSeatPriceShift.EditSeatPriceShiftValidator;
+import validator.admin.restservice.seat.priceshift.createSeatPriceShift.CreateSeatPriceShiftForm;
+import validator.admin.restservice.seat.priceshift.createSeatPriceShift.CreateSeatPriceShiftValidator;
+import validator.admin.restservice.seat.priceshift.editSeatPriceShift.EditSeatPriceShiftForm;
+import validator.admin.restservice.seat.priceshift.editSeatPriceShift.EditSeatPriceShiftValidator;
 
 import javax.validation.Valid;
 

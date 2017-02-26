@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.FileUtil;
 import utility.ServiceResponse;
-import validator.admin.AdminConcessionProductService.createConcessionProduct.CreateConcessionProductForm;
-import validator.admin.AdminConcessionProductService.editConcessionProduct.EditConcessionProductForm;
+import validator.admin.restservice.concession.product.create.CreateConcessionProductForm;
+import validator.admin.restservice.concession.product.edit.EditConcessionProductForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

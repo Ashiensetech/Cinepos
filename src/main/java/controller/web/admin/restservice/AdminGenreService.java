@@ -5,7 +5,6 @@ import dao.GenreDao;
 import dao.SeatTypeDao;
 import entity.AuthCredential;
 import entity.Genre;
-import entity.SeatType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminGenreService.createGenre.CreateGenreForm;
-import validator.admin.AdminGenreService.createGenre.CreateGenreValidator;
-import validator.admin.AdminGenreService.editGenre.EditGenreForm;
-import validator.admin.AdminGenreService.editGenre.EditGenreValidator;
-import validator.admin.AdminSeatType.editSeatType.EditSeatTypeForm;
-import validator.admin.AdminSeatType.editSeatType.EditSeatTypeValidator;
+import validator.admin.restservice.genre.createGenre.CreateGenreForm;
+import validator.admin.restservice.genre.createGenre.CreateGenreValidator;
+import validator.admin.restservice.genre.editGenre.EditGenreForm;
+import validator.admin.restservice.genre.editGenre.EditGenreValidator;
 
 import javax.validation.Valid;
 

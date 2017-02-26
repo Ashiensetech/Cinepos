@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
-import validator.admin.AdminFilmRentalService.createFilmRental.CreateFilmRentalForm;
-import validator.admin.AdminFilmRentalService.createFilmRental.CreateFilmRentalValidator;
-import validator.admin.AdminFilmRentalService.editFilmRental.EditFilmRentalForm;
-import validator.admin.AdminFilmRentalService.editFilmRental.EditFilmRentalValidator;
+import validator.admin.restservice.film.rental.createFilmRental.CreateFilmRentalForm;
+import validator.admin.restservice.film.rental.createFilmRental.CreateFilmRentalValidator;
+import validator.admin.restservice.film.rental.editFilmRental.EditFilmRentalForm;
+import validator.admin.restservice.film.rental.editFilmRental.EditFilmRentalValidator;
 
 import javax.validation.Valid;
 

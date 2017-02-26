@@ -14,7 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import utility.ServiceResponse;
-import validator.admin.AdminAuthenticationService.LoginForm;
+import validator.admin.restservice.authentication.LoginForm;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

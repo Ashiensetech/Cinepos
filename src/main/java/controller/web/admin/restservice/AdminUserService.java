@@ -8,7 +8,6 @@ import dao.UserInfDao;
 import dao.UserRoleDao;
 
 import entity.AuthCredential;
-import entity.Screen;
 import entity.UserInf;
 
 import entity.iface.AppCredential;
@@ -22,11 +21,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMethod;
 import utility.ServiceResponse;
 
-import validator.admin.AdminScreenService.editScreen.EditScreenFrom;
-import validator.admin.AdminUserService.createUser.CreateAdminUserForm;
-import validator.admin.AdminUserService.createUser.CreateAdminUserValidator;
-import validator.admin.AdminUserService.editUser.EditAdminUserForm;
-import validator.admin.AdminUserService.editUser.EditAdminUserValidator;
+import validator.admin.restservice.user.create.CreateAdminUserForm;
+import validator.admin.restservice.user.create.CreateAdminUserValidator;
+import validator.admin.restservice.user.edit.EditAdminUserForm;
+import validator.admin.restservice.user.edit.EditAdminUserValidator;
 
 import javax.validation.Valid;
 

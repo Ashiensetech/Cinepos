@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.FileUtil;
 import utility.ServiceResponse;
-import validator.admin.AdminFilmService.createFilm.CreateFilmForm;
-import validator.admin.AdminFilmService.createFilm.CreateFilmValidator;
-import validator.admin.AdminFilmService.editFilm.EditFilmForm;
-import validator.admin.AdminFilmService.editFilm.EditFilmValidator;
+import validator.admin.restservice.film.createFilm.CreateFilmForm;
+import validator.admin.restservice.film.createFilm.CreateFilmValidator;
+import validator.admin.restservice.film.editFilm.EditFilmForm;
+import validator.admin.restservice.film.editFilm.EditFilmValidator;
 
 import javax.validation.Valid;
 import java.io.FileNotFoundException;
