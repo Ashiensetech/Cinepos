@@ -251,7 +251,20 @@
             $('#plistTotal').text("$"+price);
         }
 
+        function getSeatType(){
+            var ticket=$("#tickets").val();
 
+            if(ticket!=""){
+                for(var i=0;i<products.length;i++){
+                    var  product = products[i];
+                    if(product.type=="TICKET"){
+                        product.seatTypeId = parseInt(ticket);
+                        return;
+                    }
+                }
+                return {"seatTypeId":parseInt(ticket),"productId":0,"quantity":1,"type":"TICKET"};
+            }
+        }
 
         $(document).ready(function () {
 
@@ -283,14 +296,15 @@
             var productQuantity=$("#productQuantity").val();
 
             var ticket=$("#tickets").val();
+            var seatTypeArray = [];
+            var isTicketRadioChecked = $("#ticketRadio").is(":checked");
 
-
-            if(ticket==""){
+            if(isTicketRadioChecked){
+                comboType="ticket";
+                seatTypeArray = getSeatType();
+            }else{
                 ticket=0;
                 comboType="product";
-            }else{
-                comboType="ticket";
-                products.push({"productId":parseInt(ticket),"quantity":1,"type":"TICKET"});
             }
 
 
@@ -307,7 +321,7 @@
                 productQuantity:productQuantity
             };
 
-            (products.length<=0)? pageData['productIds']=null:  pageData['productIds']=JSON.stringify(products);
+            (products.length<=0)? pageData['productIds']=null:  pageData['productIds']=JSON.stringify(products.concat(seatTypeArray));
 
             $.ajax({
                 url: BASEURL+'api/admin/combo/create',

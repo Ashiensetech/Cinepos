@@ -114,7 +114,7 @@
                                             </d:when>
                                         </d:choose>
                                     </select>
-                                    <p class="help-block error" id="errorMsg_tickets"></p>
+                                    <p class="help-block error" id="errorMsg_seatTypeId"></p>
 
                                 </div>
                                 <div class="form-group">
@@ -129,6 +129,7 @@
                                             </d:when>
                                         </d:choose>
                                     </select>
+
                                     <button type="button" class="btn btn-primary" onclick="return addProductToCombo()">Add</button>
                                     <p class="help-block error" id="errorMsg_productIds"></p>
                                     <p class="help-block error custome_error" id="productMsg"></p>
@@ -177,6 +178,7 @@
                     </div>
                     <div class="col-lg-12 text-left" style="margin-top:30px;">
                         <p class="help-block" id="statusMsg"></p>
+
                         <input type="submit" id="comboBtn" class="btn btn-lg btn-primary" value="Submit" >
                     </div>
                 </form>
@@ -196,7 +198,7 @@
     var radioOption=[];
     var prodcutUnit=[];
     var comboType="ticket";
-
+    setAliasMessage("seatTypeId","No seat type found with ID : 0","Seat type required");
     function addProductToCombo() {
         var productId=$("#concessionProduct").val();
         var productQuantity=$("#productQuantity").val();
@@ -252,7 +254,7 @@
 
                 productHtml+='<li>';
                 productHtml+=data.name+' <span class="plist-price plistPrice" data-quantity="'+productQuantity+'" data-price="'+productQuantity*data.sellingPrice+'" data-proids="'+data.id+'">('+productQuantity+' X $'+data.sellingPrice+')$'+productQuantity*data.sellingPrice+'</span>'
-                productHtml+='<span class="plist-remove" data-proid="'+data.id+'">X</span>'
+                productHtml+='<span class="plist-remove" data-proid="'+data.id+'">X</span>';
                 productHtml+='</li>';
 
                 $("#addedProductList").append(productHtml);
@@ -274,7 +276,7 @@
         pListPrice=$(".plistPrice");
 
         pListPrice.each(function (index) {
-            products.push({"productId":$(this ).data('proids'),"quantity":$(this ).data('quantity'),"type":"PRODUCT"});
+            products.push({"seatTypeId":0,"productId":$(this ).data('proids'),"quantity":$(this ).data('quantity'),"type":"PRODUCT"});
 
             console.log(typeof products);
 
@@ -346,7 +348,6 @@
             radioOption[$(this).val()]=$(this).val();
             if (radioOption.hasOwnProperty('ticketRadio')){
                 $("#ticketBlock").show("slow");
-                $("#tickets").val();
             }else{
                 $("#ticketBlock").hide("slow");
             }
@@ -362,11 +363,11 @@
             for(var i=0;i<products.length;i++){
                var  product = products[i];
                 if(product.type=="TICKET"){
-                    product.productId = parseInt(ticket);
+                    product.seatTypeId = parseInt(ticket);
                     return;
                 }
             }
-           return {"productId":parseInt(ticket),"quantity":1,"type":"TICKET"};
+           return {"seatTypeId":parseInt(ticket),"productId":0,"quantity":1,"type":"TICKET"};
         }
     }
 
