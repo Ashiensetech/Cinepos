@@ -34,13 +34,17 @@ public class EditScreenValidator implements Validator {
 
         Screen screen =screenDao.getById(editScreenFrom.getId());
 
-        if(screen.getIsSeatPlanComplete() && screen.getSeats()!=null && screen.getSeats().size()>0){
+        if(screen.getIsSeatPlanComplete()){
             if(screen.getRowCount() != editScreenFrom.getRowCount()){
                 errors.rejectValue("rowCount", "Row can't be changed after seat plan is created");
             }
             if(screen.getColumnCount() != editScreenFrom.getColumnCount()){
                 errors.rejectValue("columnCount", "Column can't be changed after seat plan is created");
             }
+        }
+        int totalSeat = editScreenFrom.getRowCount()*editScreenFrom.getColumnCount();
+        if(editScreenFrom.getSeatCount() > totalSeat){
+            errors.rejectValue("seatCount", "No of seat can't be greater then multiply of  row and column");
         }
     }
     @Override

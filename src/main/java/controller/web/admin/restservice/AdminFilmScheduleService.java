@@ -1,6 +1,7 @@
 package controller.web.admin.restservice;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
 import controller.web.admin.AdminUriPreFix;
 import dao.FilmDao;
 import dao.FilmScheduleDao;
@@ -10,6 +11,8 @@ import entity.AuthCredential;
 import entity.Film;
 import entity.FilmSchedule;
 import entity.FilmTime;
+import entity.app.jsonview.film.schedule.FilmScheduleJsonView;
+import entity.app.jsonview.film.schedule.FilmTimeJsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +57,7 @@ public class AdminFilmScheduleService {
     @Autowired
     ScreenDao screenDao;
 
+    @JsonView(FilmScheduleJsonView.Basic.class)
     @RequestMapping(value = "/create-merge", method = RequestMethod.POST)
     public ResponseEntity<?> createOrMerge(Authentication authentication,
                                            @Valid CreateOrMergeForm createOrMergeForm,
@@ -150,7 +154,7 @@ public class AdminFilmScheduleService {
 
         return ResponseEntity.status(HttpStatus.OK).body(filmSchedule);
     }
-
+    @JsonView(FilmTimeJsonView.Basic.class)
     @RequestMapping(value = "/update/film-time/{filmTimeId}", method = RequestMethod.POST)
     public ResponseEntity<?> editFilmTime(Authentication authentication,
                                           @PathVariable Integer filmTimeId,
@@ -249,7 +253,7 @@ public class AdminFilmScheduleService {
 
 
 
-        return ResponseEntity.status(HttpStatus.OK).body("");
+        return ResponseEntity.status(HttpStatus.OK).body(ServiceResponse.getMsg("Successfully deleted"));
     }
 
 }

@@ -47,7 +47,7 @@
               <p class="help-block error" id="errorMsg_childPrice"></p>
             </div>
             <div class="form-group clearfix">
-              <label class="pull-left">Is Combo?</label>
+              <label class="pull-left">Is default ?</label>
               <div class="col-md-6">
                 <div class="onoffswitch">
                   <input type="checkbox" value="" name="isDefault" class="onoffswitch-checkbox" id="isDefault">

@@ -45,8 +45,10 @@ public class SeatTypeDao extends BaseDao {
             session.beginTransaction();
             if(seatType.getIsDefault()){
                 SeatType defaultSeatType = getDefaultSeatType();
-                defaultSeatType.setIsDefault(false);
-                update(defaultSeatType);
+                if(defaultSeatType!=null && !defaultSeatType.equals(seatType)){
+                    defaultSeatType.setIsDefault(false);
+                    session.update(defaultSeatType);
+                }
             }
             session.update(seatType);
             session.getTransaction().commit();

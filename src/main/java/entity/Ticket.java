@@ -42,7 +42,7 @@ public class Ticket {
     private VatSetting vat;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(name = "ticket_channels", joinColumns = {
             @JoinColumn(name = "ticket_id", nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = "channel_id",

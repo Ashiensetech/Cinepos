@@ -23,6 +23,7 @@ import validator.admin.restservice.screen.editScreen.EditScreenFrom;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -117,41 +118,43 @@ public class AdminScreenService {
         /***************** Validation  [Start] *************/
 
         /**
-         * Basic form validation
+         * Business logic validation
          * */
+        editScreenValidator.validate(editScreenFrom, result);
+
         serviceResponse.bindValidationError(result);
         if(serviceResponse.hasErrors()){
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
+        /***************** Validation  [End] *************/
 
         /**
-         * Business logic validation
-         * */
-        editScreenValidator.validate(editScreenFrom,result);
+         * Expanding or collapse  of row or/both column [ In case of row count and col count change]
+         * !!! Not tested properly !!!
+         * !!! Not all case scenario implemented !!!
+        * */
+    /*
 
-        serviceResponse.bindValidationError(result);
-
-
+        List<ScreenSeat> merged1dSeatList = new ArrayList<>();
         if(screen.getIsSeatPlanComplete() && screen.getSeats()!=null && screen.getSeats().size()>0){
             if(screen.getRowCount() != editScreenFrom.getRowCount() || screen.getColumnCount() != editScreenFrom.getColumnCount()){
                 SeatType seatType = seatTypeDao.getDefaultSeatType();
 
                 List<List<ScreenSeat>> oldSeats = ScreenHelper.singleDimensionToTwoDimensionList(screen.getSeats(), screen.getRowCount(), screen.getColumnCount());
                 List<List<ScreenSeat>> mergedSeats = ScreenHelper.mergeSeats(oldSeats, editScreenFrom.getRowCount(), editScreenFrom.getColumnCount(), seatType);
-                List<ScreenSeat> merged1dSeatList = ScreenHelper.twoDimensionListToSingleDimension(mergedSeats);
+                merged1dSeatList = ScreenHelper.twoDimensionListToSingleDimension(mergedSeats);
                 for(ScreenSeat screenSeat : merged1dSeatList){
                     screenSeat.setScreenId(screen.getId());
                 }
-                screenSeatDao.insertOrUpdate(merged1dSeatList);
 
-                screen.setSeats(merged1dSeatList);
             }
         }
 
-        if(serviceResponse.hasErrors()){
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
-        }
-        /***************** Validation  [End] *************/
+
+
+        screenSeatDao.insertOrUpdate(merged1dSeatList);
+        screen.setSeats(merged1dSeatList);
+        */
 
 
 
@@ -163,7 +166,6 @@ public class AdminScreenService {
         screen.setClosingTime(editScreenFrom.getClosingTime());
         screen.setOpeningTime(editScreenFrom.getOpeningTime());
         screen.setScreenDimension(screenDimensionDao.getById(editScreenFrom.getScreenTypeId()));
-        screen.setActive(true);
         screenDao.update(screen);
         /***************** Service  [Ends] *************/
 
@@ -206,8 +208,9 @@ public class AdminScreenService {
     public ResponseEntity<?> createOrUpdateScreenSeat(@PathVariable Integer screenId,
                                               @RequestParam(value = "seats") String seatsJsonStr,
                                               @RequestParam(value = "actionState") boolean editState){
-        //
+
         System.out.println(seatsJsonStr);
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
 
         ObjectMapper objectMapper = new ObjectMapper();
         ScreenSeat[] screenSeats = null;
@@ -215,19 +218,25 @@ public class AdminScreenService {
             screenSeats = objectMapper.readValue(seatsJsonStr, ScreenSeat[].class);
         } catch (IOException e) {
             e.printStackTrace();
+            serviceResponse.setValidationError("seats", "Invalid json format");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
+        /*
+        * If not seats send in request
+        * */
+        if(screenSeats==null || screenSeats.length == 0){
+            serviceResponse.setValidationError("seats","No screen seats received");
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
         Screen screen = screenDao.getById(screenId);
+
         if(screen==null){
-            ServiceResponse serviceResponse = ServiceResponse.getInstance();
             serviceResponse.setValidationError("screenId","No screen found");
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
-        boolean setIdToZero = true;
-        if(editState){
-            setIdToZero = false;
-        }
+
        List<ScreenSeat> screenSeatList =  ScreenHelper.arrayToListAndSetIdZero(screenSeats,false);
 
 

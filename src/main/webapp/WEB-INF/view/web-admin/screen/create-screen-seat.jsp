@@ -136,7 +136,7 @@
 <%--Developer Hidden Inputs--%>
 <input type="hidden" id="currentSeatSelected" value="0">
 <input type="hidden" id="editActionState" value="${screen.isSeatPlanComplete}" />
-<script>
+<script type="application/javascript" >
     function updateSeatInformation(){
         var currentSeatId = $("#currentSeatSelected").val();
 
@@ -169,7 +169,7 @@
     //enableDisableFormElement("createScreenForm",["input","button","select"],false);
       var postData = [];
       $(".seatInfHolder").each(function(){
-
+            console.log($(this).data("seat"));
           postData.push($(this).data("seat"));
       });
 

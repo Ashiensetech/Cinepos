@@ -2,10 +2,12 @@ package controller.web.admin.restservice;
 
 import controller.web.admin.AdminUriPreFix;
 import dao.SeatTypeDao;
+import entity.AuthCredential;
 import entity.SeatType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -85,8 +87,10 @@ public class AdminSeatTypeService {
 
 
     @RequestMapping(value = "/update/{seatTypeId}",method = RequestMethod.POST)
-    public ResponseEntity<?> updateSeatType(@Valid EditSeatTypeForm editSeatTypeForm, BindingResult result,
+    public ResponseEntity<?> updateSeatType(Authentication authentication,
+                                            @Valid EditSeatTypeForm editSeatTypeForm, BindingResult result,
                                             @PathVariable Integer seatTypeId){
+       AuthCredential authCredential = (AuthCredential) authentication.getPrincipal();
         System.out.println(editSeatTypeForm);
 
         SeatType seatType = seatTypeDao.getById(seatTypeId);
@@ -132,7 +136,7 @@ public class AdminSeatTypeService {
         seatType.setAdultPrice(editSeatTypeForm.getAdultPrice());
         seatType.setChildPrice(editSeatTypeForm.getChildPrice());
         seatType.setIsDefault(editSeatTypeForm.getIsDefault());
-//        seatType.setCreatedBy(1);
+        seatType.setCreatedBy(authCredential.getId());
         /***************** Service  [Ends] *************/
         seatTypeDao.update(seatType);
 

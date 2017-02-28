@@ -76,7 +76,7 @@ public class Screen{
 
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "screen_id",referencedColumnName = "id")
+    @JoinColumn(name = "screen_id",referencedColumnName = "id",updatable = false,insertable = false)
     @JsonView(ScreenJsonView.Details.class)
     private List<ScreenSeat> seats;
 
