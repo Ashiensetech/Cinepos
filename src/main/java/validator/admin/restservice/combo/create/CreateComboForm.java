@@ -22,10 +22,12 @@ public class CreateComboForm {
     @NotNull(message = "Combo price are required")
     private Float price;
 
-    @NotNull(message = "Start Time is required")
+    @NotNull(message = "Start date is required")
+    @NotBlank(message = "Start date is required")
     private String startDate;
 
-    @NotNull(message = "End Date is required")
+    @NotNull(message = "End date is required")
+    @NotBlank(message = "End date is required")
     private String endDate;
 
     @NotNull(message = "Combo Type is required")

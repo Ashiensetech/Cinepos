@@ -109,6 +109,29 @@ public class AdminComboService {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
+        /**
+         * Get Combo Product from form
+         * */
+        List<ComboProductDetailsForm> comboProductsListDetailsForm = createComboForm.getComboProductDetailsForm();
+
+        if(comboProductsListDetailsForm==null || comboProductsListDetailsForm.size()==0){
+            if(tmpComboType.equals(COMBO_TYP_PRODUCT)){
+                serviceResponse.setValidationError("productId", "At least one product required");
+            }else if(tmpComboType.equals(COMBO_TYP_TICKET)){
+                serviceResponse.setValidationError("seatTypeId", "Seat type required");
+            }
+        }
+
+
+        if(serviceResponse.hasErrors()){
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
+
+        /*
+        * Service started
+        * But there are validation in between
+        * */
         Combo combo=new Combo();
         combo.setComboName(createComboForm.getComboName());
         combo.setDetails(createComboForm.getDetails());
@@ -122,11 +145,6 @@ public class AdminComboService {
         comboDao.insert(combo);
 
         List<ComboDetails> comboProductArray = new ArrayList<>();
-
-        /**
-         * Get Combo Product
-         * */
-        List<ComboProductDetailsForm> comboProductsListDetailsForm = createComboForm.getComboProductDetailsForm();
 
 
         for (ComboProductDetailsForm tgtComboProductDetailsForm : comboProductsListDetailsForm){
@@ -232,6 +250,7 @@ public class AdminComboService {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
+
         String tmpComboType=null;
         switch(createComboForm.getComboType()){
             case "product":
@@ -244,10 +263,30 @@ public class AdminComboService {
                 serviceResponse.setValidationError("comboType","Unknown combo type : "+createComboForm.getComboType());
                 break;
         }
+
+        /**
+         * Get Combo Product from form
+         * */
+        List<ComboProductDetailsForm> comboProductsListDetailsForm = createComboForm.getComboProductDetailsForm();
+
+        if(comboProductsListDetailsForm==null || comboProductsListDetailsForm.size()==0){
+            if(tmpComboType.equals(COMBO_TYP_PRODUCT)){
+                serviceResponse.setValidationError("productId", "At least one product required");
+            }else if(tmpComboType.equals(COMBO_TYP_TICKET)){
+                serviceResponse.setValidationError("seatTypeId", "Seat type required");
+            }
+        }
+
+
         if(serviceResponse.hasErrors()){
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
         }
 
+
+        /*
+        * Service started
+        * But there are validation in between
+        * */
         combo.setComboName(createComboForm.getComboName());
         combo.setDetails(createComboForm.getDetails());
         combo.setPrice(createComboForm.getPrice());
@@ -256,15 +295,12 @@ public class AdminComboService {
         combo.setComboType(tmpComboType);
 
 
+        boolean hasSeatType = false;
         /**
          *  Combo products
          *  */
 
         Set<ComboDetails> comboDetailArray = new HashSet<>();
-        /**
-         * Get Combo Product
-         * */
-        List<ComboProductDetailsForm> comboProductsListDetailsForm = createComboForm.getComboProductDetailsForm();
 
         for (ComboProductDetailsForm tgtComboProductDetailsForm : comboProductsListDetailsForm){
             ComboDetails comboDetails;
@@ -299,6 +335,7 @@ public class AdminComboService {
                 if(!tmpComboType.equals(COMBO_TYP_TICKET)){
                     continue;
                 }
+                hasSeatType = true;
                 /**
                  * Setting product type to TICKET
                  * */
@@ -350,6 +387,15 @@ public class AdminComboService {
 
             comboDetailArray.add(comboDetails);
         }
+
+
+        /**
+         * Combo type "TICKET" and not seatType exist in array
+         * */
+        if(tmpComboType.equals(COMBO_TYP_TICKET) && !hasSeatType){
+            serviceResponse.setValidationError("seatTypeId","Seat type required");
+        }
+
         /**
          * If  seat type  or product is not exist
          * error occurred in iteration for json form

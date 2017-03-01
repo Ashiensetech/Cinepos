@@ -12,6 +12,7 @@ import org.springframework.validation.Validator;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,14 +33,21 @@ public class CreateComboValidator implements Validator {
         try {
             createComboForm.setFormattedStartDate(DateHelper.getStringToDate(createComboForm.getStartDate(), "MM/dd/yyyy"));
         } catch (ParseException e) {
-            errors.rejectValue("startDate", "Start Date format miss matched");
+            errors.rejectValue("startDate", "Start date format miss matched");
         }
 
         try {
             createComboForm.setFormattedEndDate(DateHelper.getStringToDate(createComboForm.getEndDate(), "MM/dd/yyyy"));
         } catch (ParseException e) {
-            errors.rejectValue("endDate", "End Date format miss matched");
+            errors.rejectValue("endDate", "End date format miss matched");
         }
+
+        if( createComboForm.getFormattedStartDate()!=null &&  createComboForm.getFormattedEndDate()!=null){
+            if(createComboForm.getFormattedStartDate().after(createComboForm.getFormattedEndDate())){
+                errors.rejectValue("endDate", "End date is past then start date");
+            }
+        }
+
 
         ObjectMapper objectMapper = new ObjectMapper();
         TypeReference<List<Integer>> tRef = new TypeReference<List<Integer>>() {};
@@ -51,39 +59,15 @@ public class CreateComboValidator implements Validator {
 
 
             if(myObjects==null){
-                errors.rejectValue("productIds", "Product cant be empty");
+                errors.rejectValue("productIds", "Product can't be empty");
+                return;
             }
-
-            List<ComboProductDetailsForm> comboProductDetailsForms = Arrays.asList(myObjects);
-
-            for (ComboProductDetailsForm tgtProduct: comboProductDetailsForms){
-                if(tgtProduct.getType()==null){
-                    errors.rejectValue("productIds", "Type missing");
-                }else if(tgtProduct.getType().equals("TICKET")){
-                    continue;
-                }
-               ConcessionProduct concessionProduct= concessionProductDao.getById(tgtProduct.getProductId());
-
-               if(concessionProduct==null){
-                   errors.rejectValue("productIds", "No product  found with id "+tgtProduct.getProductId());
-                   break;
-               }
-
-                if (tgtProduct.getQuantity() <= 0){
-                    errors.rejectValue("productQuantity", "Product quantity can't be 0");
-                    break;
-                }
-
-                createComboForm.setComboProductDetailsForm(comboProductDetailsForms);
-
-
-
-            }
-
-
-
+            createComboForm.setComboProductDetailsForm(new ArrayList<>(Arrays.asList(myObjects)));
         } catch (IOException e) {
-            errors.rejectValue("productIds", "Product json broken.Please add to list");
+            errors.rejectValue("productIds", "Broken json found");
+            return;
+        }catch (ClassCastException e){
+            errors.rejectValue("productIds", "Broken json found while casting to list form array");
             return;
         }
     }

@@ -86,17 +86,30 @@
                             <div class="col-lg-12">
                                 <div class="form-group" id="ticketBlock">
                                     <label>Seat Type</label>
-                                    <select class="form-control" id="tickets">
-                                        <option value="">Select  Seat Type</option>
+                                    <select class="form-control" id="tickets" onchange="addSeatTypeToCombo()" >
+                                        <option
+                                                 value="0"
+                                                 data-id="0"
+                                                 data-name=""
+                                                 data-price="0"
+                                                 data-quantity="0" >Select  Seat Type</option>
                                         <d:choose>
                                             <d:when test="${not empty seatTypeList}">
-                                                <d:forEach var="varseatType" items="${seatTypeList}">
-                                                    <option value="${varseatType.id}" data-subtext="${varseatType.name}">${varseatType.name}</option>
+                                                <d:forEach var="seatType" items="${seatTypeList}">
+                                                    <option value="${seatType.id}"
+                                                            data-subtext="${seatType.name}"
+
+                                                            data-id="${seatType.id}"
+                                                            data-name="${seatType.name}"
+                                                            data-price="${seatType.adultPrice}"
+                                                            data-quantity="1"
+
+                                                            >${seatType.name}</option>
                                                 </d:forEach>
                                             </d:when>
                                         </d:choose>
                                     </select>
-                                    <p class="help-block error" id="errorMsg_tickets"></p>
+                                    <p class="help-block error" id="errorMsg_seatTypeId"></p>
 
                                 </div>
                                 <div class="form-group">
@@ -113,7 +126,7 @@
 
                                     </select>
                                     <button type="button" class="btn btn-primary" onclick="return addProductToCombo()">Add</button>
-                                    <p class="help-block error" id="errorMsg_productIds"></p>
+                                    <p class="help-block error" id="errorMsg_productId"></p>
                                     <p class="help-block error custome_error" id="productMsg"></p>
                                 </div>
 
@@ -144,6 +157,7 @@
                     </div>
                     <div class="col-lg-12 text-left" style="margin-top:30px;">
                         <p class="help-block" id="statusMsg"></p>
+                        <p class="help-block error" id="errorMsg_productIds"></p>
                         <input type="submit" id="comboBtn" class="btn btn-lg btn-primary" value="Submit">
                     </div>
                 </form>
@@ -157,217 +171,98 @@
 
     <jsp:directive.include file="../layouts/footer.jsp"/>
 
-    <script type="application/javascript">
+<script src="<c:url value="/admin-resources/developer/admin/combo/combo-core.js"/>"></script>
 
-        var products = [];
-        var radioOption=[];
-        var prodcutUnit=[];
-        var comboType="ticket";
+<script type="application/javascript">
 
-        function addProductToCombo() {
-            var productId=$("#concessionProduct").val();
-            var productQuantity=$("#productQuantity").val();
-
-            if(productId=="" || productId<=0){
-                  $("#productMsg").text("Concession product are required").show();
-                  return false;
-            }else{
-                $("#productMsg").hide();
-            }
-
-            if(productQuantity=="" || productQuantity<=0){
-                $("#productMsg").text("Product quantity are required").show();
-                return false;
-            }else{
-                $("#productMsg").hide();
-            }
+    var products = [];
+    var radioOption=[];
+    var prodcutUnit=[];
+    var comboType="ticket";
 
 
-            $.ajax({
-                url: BASEURL+'api/admin/concession-product/getproductbyid/'+productId,
-                type: 'GET',
-                data: {
+
+    function submitComboData () {
+
+        var comboName=$("#comboName").val();
+        var details=$("#details").val();
+        var price=$("#price").val();
+        var startDate=$("#startDate").val();
+        var endDate=$("#endDate").val();
+        var productQuantity=$("#productQuantity").val();
+
+        var ticket=$("#tickets").val();
+        var isTicketRadioChecked = $("#ticketRadio").is(":checked");
+
+        if(isTicketRadioChecked){
+            comboType="ticket";
+        }else{
+            ticket=0;
+            comboType="product";
+        }
+
+
+        enableDisableFormElement("createComboForm",["input","button","select","textarea"],false);
+
+        var pageData={
+            comboName:comboName,
+            details:details,
+            price:price,
+            startDate:startDate,
+            endDate:endDate,
+            seatTypeId:ticket,
+            comboType:comboType,
+            productQuantity:productQuantity
+        };
+
+        pageData['productIds']= (products.length<=0)?"[]":JSON.stringify(products);
+
+        $.ajax({
+            url: BASEURL+'api/admin/combo/create',
+            type: 'POST',
+            data: pageData,
+            statusCode: {
+                401: function (response) {
+                    enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
+
+                    if(radioOption.hasOwnProperty('ticketRadio')){
+
+                        var ticket=$("#tickets").val();
+                        if(ticket==""){
+                            $("#errorMsg_tickets").text("Tickets are required").show();
+                        }else{
+                            $("#errorMsg_tickets").text("Tickets are required").hide();
+                        }
+                        //BindErrorsWithHtml("errorMsg_",response.responseJSON);
+                    }
 
                 },
-                statusCode: {
-                    401: function (response) {
-                        enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
-                        BindErrorsWithHtml("errorMsg_",response.responseJSON);
-                    },
-                    422: function (response) {
-                        enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
-                        BindErrorsWithHtml("errorMsg_",response.responseJSON);
+                422: function (response) {
+                    enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
+                    BindErrorsWithHtml("errorMsg_",response.responseJSON);
 
-                    }
-                },
-                success: function(data){
 
-                    var productHtml="";
-                    var pListPrice="";
-
-                    pListPrice=$(".plistPrice");
-
-                    var flg=false;
-
-                    if(pListPrice.length>0){
-                        pListPrice.each(function (index) {
-                            if(parseInt($(this ).data('proids'))==parseInt(productId)) {
-                                $(this).parent('li').remove();
-                            }
-                        });
-                    }
-
-                    productHtml+='<li>';
-                    productHtml+=data.name+' <span class="plist-price plistPrice" data-quantity="'+productQuantity+'" data-price="'+productQuantity*data.sellingPrice+'" data-proids="'+data.id+'">('+productQuantity+' X $'+data.sellingPrice+')$'+productQuantity*data.sellingPrice+'</span>'
-                    productHtml+='<span class="plist-remove" data-proid="'+data.id+'">X</span>';
-                    productHtml+='</li>';
-
-                    $("#addedProductList").append(productHtml);
-
-                     productListPrice();
-
-                    $('.plist-remove').click(function () {
-                        $(this).parent('li').remove();
-                        productListPrice();
-                    });
-                }
-            });
-        }
-        
-        function productListPrice() {
-
-            var price=0;
-            products=[];
-            pListPrice=$(".plistPrice");
-
-            pListPrice.each(function (index) {
-                products.push({"productId":$(this ).data('proids'),"quantity":$(this ).data('quantity'),"type":"PRODUCT"});
-
-                console.log(typeof products);
-
-                price+=parseFloat($(this ).data("price"));
-            });
-
-            $('#plistTotal').text("$"+price);
-        }
-
-        function getSeatType(){
-            var ticket=$("#tickets").val();
-
-            if(ticket!=""){
-                for(var i=0;i<products.length;i++){
-                    var  product = products[i];
-                    if(product.type=="TICKET"){
-                        product.seatTypeId = parseInt(ticket);
-                        return;
+                    if(radioOption.hasOwnProperty('ticketRadio')){
+                        var ticket=$("#tickets").val();
+                        if(ticket==""){
+                            $("#errorMsg_tickets").text("Tickets are required").show();
+                        }else{
+                            $("#errorMsg_tickets").text("Tickets are required").hide();
+                        }
                     }
                 }
-                return {"seatTypeId":parseInt(ticket),"productId":0,"quantity":1,"type":"TICKET"};
+            },
+            success: function(data){
+                $("#statusMsg").html("Combo created successfully").show();
+                setTimeout(function(){
+                    window.location = BASEURL+"admin/combo/all";
+                },2000);
             }
-        }
-
-        $(document).ready(function () {
-
-            radioOption=[];
-            radioOption["ticketRadio"]="ticketRadio";
-
-
-            $('input:radio[name=inlineRadioOptions]').click(function () {
-                radioOption=[];
-                radioOption[$(this).val()]=$(this).val();
-                    if (radioOption.hasOwnProperty('ticketRadio'))
-                        $("#ticketBlock").show("slow");
-                    else
-                        $("#ticketBlock").hide("slow");
-
-                console.log(radioOption);
-            });
-
-
         });
+        return false;
+    }
 
-        function submitComboData () {
-
-            var comboName=$("#comboName").val();
-            var details=$("#details").val();
-            var price=$("#price").val();
-            var startDate=$("#startDate").val();
-            var endDate=$("#endDate").val();
-            var productQuantity=$("#productQuantity").val();
-
-            var ticket=$("#tickets").val();
-            var seatTypeArray = [];
-            var isTicketRadioChecked = $("#ticketRadio").is(":checked");
-
-            if(isTicketRadioChecked){
-                comboType="ticket";
-                seatTypeArray = getSeatType();
-            }else{
-                ticket=0;
-                comboType="product";
-            }
-
-
-            enableDisableFormElement("createComboForm",["input","button","select","textarea"],false);
-
-            var pageData={
-                comboName:comboName,
-                details:details,
-                price:price,
-                startDate:startDate,
-                endDate:endDate,
-                seatTypeId:ticket,
-                comboType:comboType,
-                productQuantity:productQuantity
-            };
-
-            (products.length<=0)? pageData['productIds']=null:  pageData['productIds']=JSON.stringify(products.concat(seatTypeArray));
-
-            $.ajax({
-                url: BASEURL+'api/admin/combo/create',
-                type: 'POST',
-                data: pageData,
-                statusCode: {
-                    401: function (response) {
-                        enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
-
-                        if(radioOption.hasOwnProperty('ticketRadio')){
-
-                            var ticket=$("#tickets").val();
-                            if(ticket==""){
-                                $("#errorMsg_tickets").text("Tickets are required").show();
-                            }else{
-                                $("#errorMsg_tickets").text("Tickets are required").hide();
-                            }
-                            //BindErrorsWithHtml("errorMsg_",response.responseJSON);
-                        }
-
-                    },
-                    422: function (response) {
-                        enableDisableFormElement("createComboForm",["input","button","select","textarea"],true);
-                        BindErrorsWithHtml("errorMsg_",response.responseJSON);
-
-
-                        if(radioOption.hasOwnProperty('ticketRadio')){
-                            var ticket=$("#tickets").val();
-                            if(ticket==""){
-                                $("#errorMsg_tickets").text("Tickets are required").show();
-                            }else{
-                                $("#errorMsg_tickets").text("Tickets are required").hide();
-                            }
-                        }
-                    }
-                },
-                success: function(data){
-                    $("#statusMsg").html("Combo created successfully").show();
-                    setTimeout(function(){
-                        window.location = BASEURL+"admin/combo/all";
-                    },2000);
-                }
-            });
-            return false;
-        }
-    </script>
+</script>
 
     <!-- Date picker -->
 </body>
