@@ -21,7 +21,7 @@ public class ConcessionPriceShift {
 
     @Basic
     @Column(name = "price")
-    private double price;
+    private float price;
 
     @Basic
     @Column(name = "status")
@@ -62,11 +62,11 @@ public class ConcessionPriceShift {
         this.concessionProduct = concessionProduct;
     }
 
-    public double getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

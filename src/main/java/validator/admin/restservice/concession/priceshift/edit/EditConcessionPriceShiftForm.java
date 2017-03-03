@@ -49,11 +49,11 @@ public class EditConcessionPriceShiftForm {
         this.formattedEndDate = formattedEndDate;
     }
 
-    public Double getPrice() {
+    public Float getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
@@ -91,7 +91,7 @@ public class EditConcessionPriceShiftForm {
 
     @NotNull(message = "Price is required")
     @Min(value = 0, message = "The Price must be positive")
-    private Double price;
+    private Float price;
 
 //    @NotNull(message = "Status is required")
     private boolean status;

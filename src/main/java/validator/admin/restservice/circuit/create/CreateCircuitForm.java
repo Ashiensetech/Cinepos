@@ -12,7 +12,7 @@ import java.sql.Time;
 /**
  * Created by Sarwar on 1/10/2017.
  */
-public class createCircuitForm {
+public class CreateCircuitForm {
 
     private Integer Id;
 
@@ -43,16 +43,24 @@ public class createCircuitForm {
     private Integer screenNo;
 
 
-    @NotNull(message = "Booking cancellation time required")
-    private Time bookingCancellationTime;
+
 
     @NotNull(message = "The refund deduction are required")
     @DecimalMax(value = "99999.99", message = "The refund deduction can not be more than 99999.999 ")
     @DecimalMin(value = "1.00", message = "The refund deduction can not be less than 1.00 digit ")
     private Float refundDeductionPercentage;
 
+    @NotNull(message = "Booking cancellation time required")
+    @NotBlank(message = "Booking cancellation time required")
+    private String bookingCancellationTime;
+
     @NotNull(message = "Refund cancellation time required")
-    private Time refundCancellationTime;
+    @NotBlank(message = "Refund cancellation time required")
+    private String refundCancellationTime;
+
+    private Time bcTime;
+
+    private Time rcTime;
 
     public Integer getId() {
         return Id;
@@ -118,11 +126,11 @@ public class createCircuitForm {
         this.screenNo = screenNo;
     }
 
-    public Time getBookingCancellationTime() {
+    public String getBookingCancellationTime() {
         return bookingCancellationTime;
     }
 
-    public void setBookingCancellationTime(Time bookingCancellationTime) {
+    public void setBookingCancellationTime(String bookingCancellationTime) {
         this.bookingCancellationTime = bookingCancellationTime;
     }
 
@@ -134,17 +142,33 @@ public class createCircuitForm {
         this.refundDeductionPercentage = refundDeductionPercentage;
     }
 
-    public Time getRefundCancellationTime() {
+    public String getRefundCancellationTime() {
         return refundCancellationTime;
     }
 
-    public void setRefundCancellationTime(Time refundCancellationTime) {
+    public void setRefundCancellationTime(String refundCancellationTime) {
         this.refundCancellationTime = refundCancellationTime;
+    }
+
+    public Time getBcTime() {
+        return bcTime;
+    }
+
+    public void setBcTime(Time bcTime) {
+        this.bcTime = bcTime;
+    }
+
+    public Time getRcTime() {
+        return rcTime;
+    }
+
+    public void setRcTime(Time rcTime) {
+        this.rcTime = rcTime;
     }
 
     @Override
     public String toString() {
-        return "createCircuitForm{" +
+        return "CreateCircuitForm{" +
                 "Id=" + Id +
                 ", siteName='" + siteName + '\'' +
                 ", address='" + address + '\'' +
@@ -153,9 +177,11 @@ public class createCircuitForm {
                 ", webSite='" + webSite + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +
                 ", screenNo=" + screenNo +
-                ", bookingCancellationTime=" + bookingCancellationTime +
                 ", refundDeductionPercentage=" + refundDeductionPercentage +
-                ", refundCancellationTime=" + refundCancellationTime +
+                ", bookingCancellationTime='" + bookingCancellationTime + '\'' +
+                ", refundCancellationTime='" + refundCancellationTime + '\'' +
+                ", bcTime=" + bcTime +
+                ", rcTime=" + rcTime +
                 '}';
     }
 }

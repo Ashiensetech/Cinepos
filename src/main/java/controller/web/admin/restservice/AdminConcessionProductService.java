@@ -65,6 +65,7 @@ public class AdminConcessionProductService {
             concessionProduct.setIsCombo(0);
             concessionProduct.setIsPriceShift(0);
             concessionProduct.setRemotePrint(0);
+            concessionProduct.setShiftedPrice(0f);
             concessionProduct.setStatus(1);
             concessionProduct.setCreatedBy(currentLoggedInUser.getId());
 
@@ -81,10 +82,10 @@ public class AdminConcessionProductService {
             concessionProductImages.setIsBanner(1);
             concessionProductImages.setHeight(1);
             concessionProductImages.setWidth(1);
-            concessionProductImages.setCreatedBy(1);
+            concessionProductImages.setCreatedBy(currentLoggedInUser.getId());
             try {
                 String filePath = fileUtil.moveProductFileFromTemp(concessionProduct.getId(),createConcessionProductForm.getProductImageToken());
-                System.out.println(filePath);
+                concessionProductImages.setConcessionProductId(concessionProduct.getId());
                 concessionProductImages.setFilePath(filePath);
                 productImages.add(concessionProductImages);
             } catch (FileNotFoundException e) {

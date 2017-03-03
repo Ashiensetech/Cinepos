@@ -30,7 +30,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <form id="createCircuitForm">
+                    <form id="createCircuitForm" onsubmit="return submitCircutData()">
                         <input type="hidden" id="circuitId" value="${circuit.id}">
                         <d:if test="${not empty circuit.siteCode}">
                             <div class="form-group">
@@ -93,7 +93,7 @@
 
                         <br>
                         <p class="help-block" id="statusMsg"></p>
-                        <button type="button" id="circuitBtn" class="btn btn-primary">${(not empty circuit)?"EDIT":"ADD"}</button>
+                        <input type="submit" id="circuitBtn" class="btn btn-primary" value="${(not empty circuit)?"EDIT":"ADD"}">
                     </form>
                 </div>
             </div>
@@ -105,85 +105,77 @@
     <jsp:directive.include file="../layouts/footer.jsp"/>
 
     <script type="application/javascript">
-        $(document).ready(function () {
-            $('#circuitBtn').click(function () {
-                var siteName=$("#siteName").val();
-                var address=$("#address").val();
-                var city=$("#city").val();
-                var country=$("#country").val();
-                var webSite=$("#webSite").val();
-                var phoneNo=$("#phoneNo").val();
-                var screenNo=$("#screenNo").val();
-                var refundDeductionPercentage=$("#refundDeductionPercentage").val();
-                var bookingCancellationTime=$("#bookingCancellationTime").val();
-                var refundCancellationTime=$("#refundCancellationTime").val();
-                var circuitId=$("#circuitId").val();
+        function submitCircutData() {
+            var siteName=$("#siteName").val();
+            var address=$("#address").val();
+            var city=$("#city").val();
+            var country=$("#country").val();
+            var webSite=$("#webSite").val();
+            var phoneNo=$("#phoneNo").val();
+            var screenNo=$("#screenNo").val();
+            var refundDeductionPercentage=$("#refundDeductionPercentage").val();
+            var bookingCancellationTime=$("#bookingCancellationTime").val();
+            var refundCancellationTime=$("#refundCancellationTime").val();
+            var circuitId=$("#circuitId").val();
 
-                var pageData={
-                    Id:circuitId,
-                    siteName:siteName,
-                    address:address,
-                    city:city,
-                    country:country,
-                    webSite:webSite,
-                    phoneNo:phoneNo,
-                    screenNo:screenNo,
-                    refundDeductionPercentage:refundDeductionPercentage,
-                };
-
-                //alert(refundCancellationTime);
-
-
-
-//                bookingCancellationTime = (bookingCancellationTime=="")?null:bookingCancellationTime;
-//                refundCancellationTime = (refundCancellationTime=="")?null:refundCancellationTime;
-                circuitId = (circuitId=="")?null:circuitId;
-
-                if(circuitId==null){
-                    bookingCancellationTime = (bookingCancellationTime=="")?null:bookingCancellationTime+":00";
-                    refundCancellationTime = (refundCancellationTime=="")?null:refundCancellationTime+":00";
+            if(refundCancellationTime!=null && refundCancellationTime!=""){
+                var refundCancellationTimeArray = refundCancellationTime.split(":");
+                if(refundCancellationTimeArray.length>=2){
+                    refundCancellationTime = refundCancellationTimeArray[0]+":"+ refundCancellationTimeArray[1]+":00";
                 }
+            }
 
-                if(bookingCancellationTime != null){
-                    pageData['bookingCancellationTime'] = bookingCancellationTime;
+            if(bookingCancellationTime!=null && bookingCancellationTime!=""){
+                var bookingCancellationTimeArray = bookingCancellationTime.split(":");
+                if(bookingCancellationTimeArray.length>=2){
+                    bookingCancellationTime = bookingCancellationTimeArray[0]+":"+ bookingCancellationTimeArray[1]+":00";
                 }
-                if(refundCancellationTime != null) {
-                    pageData['refundCancellationTime'] = refundCancellationTime;
-                }
+            }
+
+            var pageData={
+                Id:circuitId,
+                siteName:siteName,
+                address:address,
+                city:city,
+                country:country,
+                webSite:webSite,
+                phoneNo:phoneNo,
+                screenNo:screenNo,
+                bookingCancellationTime:bookingCancellationTime,
+                refundCancellationTime:refundCancellationTime,
+                refundDeductionPercentage:refundDeductionPercentage
+            };
 
 
+            enableDisableFormElement("createCircuitForm",["input","button","select","textarea"],false);
 
 
+            $.ajax({
+                url: BASEURL+'api/admin/circuit/create',
+                type: 'POST',
+                data: pageData,
+                statusCode: {
+                    401: function (response) {
+                        console.log("unauthorized");
+                        console.log(response);
+                        enableDisableFormElement("createCircuitForm",["input","button","select","textarea"],true);
 
-                enableDisableFormElement("createCircuitForm",["input","button","select","textarea"],false);
-
-
-                $.ajax({
-                    url: BASEURL+'api/admin/circuit/create',
-                    type: 'POST',
-                    data: pageData,
-                    statusCode: {
-                        401: function (response) {
-                            console.log("unauthorized");
-                            console.log(response);
-                            enableDisableFormElement("createCircuitForm",["input","button","select","textarea"],true);
-
-                        },
-                        422: function (response) {
-                            console.log(response);
-                            enableDisableFormElement("createCircuitForm",["input","button","select","textarea"],true);
-                            BindErrorsWithHtml("errorMsg_",response.responseJSON);
-                        }
                     },
-                    success: function(data){
-                        $("#statusMsg").html(data.msg).show();
-                        setTimeout(function(){
-                            window.location = BASEURL+"admin/circuit/index";
-                        },2000);
+                    422: function (response) {
+                        console.log(response);
+                        enableDisableFormElement("createCircuitForm",["input","button","select","textarea"],true);
+                        BindErrorsWithHtml("errorMsg_",response.responseJSON);
                     }
-                });
+                },
+                success: function(data){
+                    $("#statusMsg").html(data.msg).show();
+                    setTimeout(function(){
+                        window.location = BASEURL+"admin/circuit/index";
+                    },2000);
+                }
             });
-        });
+            return false;
+        }
     </script>
 
     <!-- Date picker -->

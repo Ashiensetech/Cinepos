@@ -94,6 +94,7 @@ public class AdminConcessionPriceShiftService {
         /**
          * Setting is price shift true
          * */
+        concessionProduct.setShiftedPrice(concessionPriceShift.getPrice());
         concessionProduct.setIsPriceShift(1);
         boolean concessionProductUpdateFlag =concessionProductDao.update(concessionProduct);
 
@@ -155,11 +156,7 @@ public class AdminConcessionPriceShiftService {
         concessionPriceShift.setStartDate(editConcessionPriceShiftForm.getFormattedStartDate());
         concessionPriceShift.setEndDate(editConcessionPriceShiftForm.getFormattedEndDate());
         concessionPriceShift.setPrice(editConcessionPriceShiftForm.getPrice());
-        concessionPriceShift.setStatus(true);
-        concessionPriceShift.setCreatedBy(1);
         /***************** Service  [Ends] *************/
-
-        System.out.println(concessionPriceShift);
 
         concessionPriceShiftDao.update(concessionPriceShift);
 
@@ -174,6 +171,7 @@ public class AdminConcessionPriceShiftService {
 
 
         if(concessionPriceShift.getStatus()){
+            concessionProduct.setShiftedPrice(0f);
             concessionProduct.setIsPriceShift(0);
         }
 

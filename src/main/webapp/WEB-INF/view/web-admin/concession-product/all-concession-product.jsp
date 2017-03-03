@@ -141,13 +141,23 @@
 
                 $("#"+elementId).html(btnText);
                 $("#"+elementId).data("status",data.status);
-                $("#"+statusTd).html(statusTdText);
+
                 enableDisableFormElement(parentElementId,["input","button","select","a"],true);
                 $("#"+statusMsgElemId).html("Status updated").fadeIn(1000,function(){
                     $(this).fadeOut(1000,function(){
                         $(this).html("");
                     });
                 });
+
+                if($("#"+statusTd).length >0){
+                    $("#"+statusTd).text(statusTdText);
+                }else{
+                    $("#"+parentElementId).next().find("span.dtr-title").each(function(){
+                        if($(this).text().trim()=="Status:"){
+                            $(this).next().html(statusTdText);
+                        }
+                    });
+                }
             }
         });
         return false;

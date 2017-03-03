@@ -74,6 +74,11 @@ public class ConcessionProduct {
     @Column(name = "buying_price")
     private Float buyingPrice;
 
+    @JsonIgnore
+    @Basic
+    @Column(name = "shifted_price")
+    private Float shiftedPrice;
+
     @JsonView(ConcessionProductJsonView.Summary.class)
     @Basic
     @Column(name = "is_price_shift")
@@ -184,6 +189,14 @@ public class ConcessionProduct {
         this.buyingPrice = buyingPrice;
     }
 
+    public Float getShiftedPrice() {
+        return shiftedPrice;
+    }
+
+    public void setShiftedPrice(Float shiftedPrice) {
+        this.shiftedPrice = shiftedPrice;
+    }
+
     public int getIsPriceShift() {
         return isPriceShift;
     }
@@ -208,9 +221,9 @@ public class ConcessionProduct {
         this.createdAt = createdAt;
     }
 
-
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -232,7 +245,9 @@ public class ConcessionProduct {
             return false;
         if (sellingPrice != null ? !sellingPrice.equals(that.sellingPrice) : that.sellingPrice != null) return false;
         if (buyingPrice != null ? !buyingPrice.equals(that.buyingPrice) : that.buyingPrice != null) return false;
-        return createdAt != null ? createdAt.equals(that.createdAt) : that.createdAt == null;
+        if (shiftedPrice != null ? !shiftedPrice.equals(that.shiftedPrice) : that.shiftedPrice != null) return false;
+        return !(createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null);
+
     }
 
     @Override
@@ -249,6 +264,7 @@ public class ConcessionProduct {
         result = 31 * result + status;
         result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
         result = 31 * result + (buyingPrice != null ? buyingPrice.hashCode() : 0);
+        result = 31 * result + (shiftedPrice != null ? shiftedPrice.hashCode() : 0);
         result = 31 * result + isPriceShift;
         result = 31 * result + createdBy;
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
@@ -270,6 +286,7 @@ public class ConcessionProduct {
                 ", status=" + status +
                 ", sellingPrice=" + sellingPrice +
                 ", buyingPrice=" + buyingPrice +
+                ", shiftedPrice=" + shiftedPrice +
                 ", isPriceShift=" + isPriceShift +
                 ", createdBy=" + createdBy +
                 ", createdAt=" + createdAt +
