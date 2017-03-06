@@ -30,7 +30,7 @@ public class FilmSchedule {
     private Date date;
 
 
-    @JsonView(FilmScheduleJsonView.CompositeScreen.class)
+    @JsonView(FilmScheduleJsonView.Details.class)
     @OneToOne
     @JoinColumn(name = "screen_id",referencedColumnName = "id")
     private Screen screen;

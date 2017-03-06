@@ -2,7 +2,7 @@ package helper;
 
 import entity.ScreenSeat;
 import entity.SeatType;
-import entity.jspView.TicketSeat;
+import entity.jspview.TicketSeat;
 
 import java.util.ArrayList;
 import java.util.List;

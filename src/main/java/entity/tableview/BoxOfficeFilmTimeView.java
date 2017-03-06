@@ -1,5 +1,8 @@
 package entity.tableview;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.view.BoxOfficeFilmTimeViewJsonView;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
@@ -14,30 +17,38 @@ import java.sql.Timestamp;
 @Immutable
 @Table(name = "BOX_OFFICE_TIME_VIEW")
 public class BoxOfficeFilmTimeView {
+
+    @JsonView(BoxOfficeFilmTimeViewJsonView.Basic.class)
     @Id
     @Column(name = "id")
     private int id;
 
+    @JsonView(BoxOfficeFilmTimeViewJsonView.Basic.class)
     @Basic
     @Column(name = "film_schedule_id")
     private Integer filmScheduleId;
 
+    @JsonView(BoxOfficeFilmTimeViewJsonView.Basic.class)
     @Basic
     @Column(name = "start_time")
     private Time startTime;
 
+    @JsonView(BoxOfficeFilmTimeViewJsonView.Basic.class)
     @Basic
     @Column(name = "end_time")
     private Time endTime;
 
+    @JsonView(BoxOfficeFilmTimeViewJsonView.Summary.class)
     @Basic
     @Column(name = "status")
     private boolean status;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
 
+    @JsonView(BoxOfficeFilmTimeViewJsonView.Details.class)
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

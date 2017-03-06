@@ -3,7 +3,7 @@ package controller.web.admin.page;
 import controller.web.admin.AdminUriPreFix;
 import dao.*;
 import entity.*;
-import entity.jspView.TicketSeat;
+import entity.jspview.TicketSeat;
 import helper.ScreenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.ejb.Schedule;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -7,9 +7,7 @@ import entity.app.jsonview.screen.ScreenJsonView;
  * Created by mi on 2/14/17.
  */
 public class FilmScheduleJsonView {
-    public interface CompositeScreen extends ScreenJsonView.Basic{}
-
     public interface Basic {}
     public interface Summary extends Basic, FilmTimeJsonView.Summary {}
-    public interface Details extends  Summary,CompositeScreen{}
+    public interface Details extends  Summary,ScreenJsonView.Summary{}
 }

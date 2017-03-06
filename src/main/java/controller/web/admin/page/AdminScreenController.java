@@ -6,7 +6,6 @@ import dao.ScreenDimensionDao;
 import dao.ScreenSeatDao;
 import dao.SeatTypeDao;
 import entity.*;
-import entity.jspView.TicketSeat;
 import helper.ScreenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

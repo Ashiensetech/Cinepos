@@ -1,6 +1,8 @@
 package entity.tableview;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
+import entity.app.jsonview.view.BoxOfficeSchedulingViewJsonView;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
@@ -13,13 +15,16 @@ import javax.persistence.*;
 @Table(name = "BOX_OFFICE_SCHEDULING_VIEW")
 public class BoxOfficeSchedulingView {
 
+    @JsonView(BoxOfficeSchedulingViewJsonView.Basic.class)
     @Id
     @Column(name = "id")
     int id;
 
+    @JsonView(BoxOfficeSchedulingViewJsonView.Summary.class)
     @OneToOne
     @JoinColumn(name = "film_id",referencedColumnName = "id")
     BoxOfficeFilmView film;
+
 
     @JsonIgnore
     public int getId() {

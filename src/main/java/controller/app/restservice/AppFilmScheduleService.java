@@ -9,7 +9,11 @@ import dao.FilmTimeDao;
 import dao.ScreenDao;
 import dao.viewDao.BoxOfficeSchedulingViewDao;
 import entity.FilmSchedule;
+import entity.Screen;
 import entity.app.jsonview.film.schedule.FilmScheduleJsonView;
+import entity.app.jsonview.view.BoxOfficeSchedulingViewJsonView;
+import entity.app.jsonview.view.BoxOfficeScreenViewJsonView;
+import entity.compositive.BoxOfficeScreen;
 import entity.tableview.BoxOfficeSchedulingView;
 import helper.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import validator.admin.restservice.film.schedule.createOrMerge.CreateOrMergeVali
 
 import java.sql.Date;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -184,4 +189,96 @@ public class AppFilmScheduleService {
 
         return ResponseEntity.status(HttpStatus.OK).body(boxOfficeSchedulingView);
     }
+
+
+    @JsonView(BoxOfficeScreenViewJsonView.Summary.class)
+    @RequestMapping(value = "/get-for-box-office-all-screen", method = RequestMethod.POST)
+    public ResponseEntity<?> getForBoxOfficeOfAllScreen(@RequestParam(value = "date")String date) {
+        Date sDate = null;
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+        if(date!=null){
+            try {
+                sDate = DateHelper.getStringToDate(date,"yyyy-MM-dd");
+            } catch (ParseException e) {
+                serviceResponse.setValidationError("startDate", e.getMessage());
+            }
+        }else{
+            serviceResponse.setValidationError("startDate", "Start date required");
+        }
+
+        if(serviceResponse.hasErrors()){
+            ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+        List<Screen> screens = screenDao.getAllActivated();
+        List<BoxOfficeScreen> boxOfficeScreens = new ArrayList<>();
+        for(Screen screen : screens){
+            BoxOfficeScreen boxOfficeScreen = new BoxOfficeScreen();
+
+            boxOfficeScreen.setScreen(new Screen());
+            boxOfficeScreen.getScreen().setId(screen.getId());
+            boxOfficeScreen.getScreen().setName(screen.getName());
+            boxOfficeScreen.getScreen().setNoOfSeat(screen.getNoOfSeat());
+
+            FilmSchedule filmSchedule = filmScheduleDao.getByDate(screen.getId(), sDate);
+
+            if(filmSchedule==null){
+                boxOfficeScreens.add(boxOfficeScreen);
+               continue;
+            }
+
+            List<BoxOfficeSchedulingView> boxOfficeSchedulingView = boxOfficeSchedulingViewDao.getByScheduleId(filmSchedule.getId());
+            boxOfficeScreen.setBoxOffice(boxOfficeSchedulingView);
+            boxOfficeScreens.add(boxOfficeScreen);
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(boxOfficeScreens);
+    }
+
+    @JsonView(BoxOfficeScreenViewJsonView.Summary.class)
+    @RequestMapping(value = "/get-for-box-office-all-screen/film-time-wise", method = RequestMethod.POST)
+    public ResponseEntity<?> getScreenBoxOffice(@RequestParam(value = "date")String date) {
+        Date sDate = null;
+        ServiceResponse serviceResponse = ServiceResponse.getInstance();
+        if(date!=null){
+            try {
+                sDate = DateHelper.getStringToDate(date,"yyyy-MM-dd");
+            } catch (ParseException e) {
+                serviceResponse.setValidationError("startDate", e.getMessage());
+            }
+        }else{
+            serviceResponse.setValidationError("startDate", "Start date required");
+        }
+
+        if(serviceResponse.hasErrors()){
+            ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(serviceResponse.getFormError());
+        }
+
+
+        List<Screen> screens = screenDao.getAllActivated();
+        List<BoxOfficeScreen> boxOfficeScreens = new ArrayList<>();
+        System.out.println("SOL");
+        for(Screen screen : screens) {
+            BoxOfficeScreen boxOfficeScreen = new BoxOfficeScreen();
+            boxOfficeScreen.setScreen(new Screen());
+            boxOfficeScreen.getScreen().setId(screen.getId());
+            boxOfficeScreen.getScreen().setName(screen.getName());
+            boxOfficeScreen.getScreen().setNoOfSeat(screen.getNoOfSeat());
+
+            FilmSchedule filmSchedule = filmScheduleDao.getByDate(screen.getId(), sDate);
+
+            if(filmSchedule==null){
+                boxOfficeScreens.add(boxOfficeScreen);
+                continue;
+            }
+
+            boxOfficeScreen.setFilmSchedule(filmSchedule);
+            boxOfficeScreens.add(boxOfficeScreen);
+        }
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(boxOfficeScreens);
+    }
+
+
 }

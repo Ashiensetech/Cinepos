@@ -1,5 +1,6 @@
 package entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import entity.app.jsonview.screen.ScreenJsonView;
@@ -27,64 +28,63 @@ public class Screen{
     private int id;
 
 
-
+    @JsonView(ScreenJsonView.Basic.class)
     @Basic
     @Column(name = "name")
-    @JsonView(ScreenJsonView.Basic.class)
     private String name;
 
+    @JsonView(ScreenJsonView.Summary.class)
     @Basic
     @Column(name = "is_seat_plan_complete")
-    @JsonView(ScreenJsonView.Basic.class)
     boolean isSeatPlanComplete;
 
+    @JsonView(ScreenJsonView.Basic.class)
     @Basic
     @Column(name = "no_of_seat")
-    @JsonView(ScreenJsonView.Basic.class)
     private int noOfSeat;
 
+    @JsonView(ScreenJsonView.Summary.class)
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "screen_dimension_id",referencedColumnName = "id")
-    @JsonView(ScreenJsonView.Summary.class)
     private ScreenDimension screenDimension;
 
+    @JsonView(ScreenJsonView.Summary.class)
     @Basic
     @Column(name = "active")
-    @JsonView(ScreenJsonView.Summary.class)
     private boolean active;
 
+    @JsonView(ScreenJsonView.Summary.class)
     @Basic
     @Column(name = "row_count")
-    @JsonView(ScreenJsonView.Summary.class)
     private int rowCount;
 
-
+    @JsonView(ScreenJsonView.Summary.class)
     @Basic
     @Column(name = "column_count")
-    @JsonView(ScreenJsonView.Summary.class)
     private int columnCount;
 
+    @JsonView(ScreenJsonView.Summary.class)
     @Basic
     @Column(name = "opening_time")
-    @JsonView(ScreenJsonView.Summary.class)
     private Time openingTime;
 
+    @JsonView(ScreenJsonView.Summary.class)
     @Basic
     @Column(name = "closing_time")
-    @JsonView(ScreenJsonView.Summary.class)
     private Time closingTime;
 
 
+    @JsonView(ScreenJsonView.Details.class)
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "screen_id",referencedColumnName = "id",updatable = false,insertable = false)
-    @JsonView(ScreenJsonView.Details.class)
     private List<ScreenSeat> seats;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_by")
-    @JsonView(ScreenJsonView.Summary.class)
     private Integer createdBy;
 
+    @JsonIgnore
     @Basic
     @Column(name = "created_at")
     @JsonView(ScreenJsonView.Summary.class)

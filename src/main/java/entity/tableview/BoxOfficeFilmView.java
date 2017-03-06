@@ -1,6 +1,8 @@
 package entity.tableview;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import entity.*;
+import entity.app.jsonview.view.BoxOfficeFilmViewJsonView;
 import org.hibernate.annotations.Immutable;
 
 import javax.persistence.*;
@@ -17,13 +19,17 @@ import java.util.Set;
 @Immutable
 @Table(name = "BOX_OFFICE_FILM_VIEW")
 public class BoxOfficeFilmView {
+
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Id
     private int id;
 
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "name")
     private String name;
 
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @ManyToMany
     @JoinTable(name = "film_genre", joinColumns = {
             @JoinColumn(name = "film_id", nullable = false, updatable = false) },
@@ -31,6 +37,7 @@ public class BoxOfficeFilmView {
                     nullable = false, updatable = false) })
     private List<Genre> filmGenre;
 
+    @JsonView(BoxOfficeFilmViewJsonView.Summary.class)
     @ManyToMany
     @JoinTable(name = "film_screen_type", joinColumns = {
             @JoinColumn(name = "film_id", nullable = false, updatable = false) },
@@ -38,59 +45,64 @@ public class BoxOfficeFilmView {
                     nullable = false, updatable = false) })
     private Set<ScreenDimension> screenDimensions;
 
+    @JsonView(BoxOfficeFilmViewJsonView.Details.class)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id",referencedColumnName = "id")
     private List<FilmImage> filmImages;
 
+    @JsonView(BoxOfficeFilmViewJsonView.Details.class)
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "film_id",referencedColumnName = "id")
     private List<FilmTrailer> filmTrailers;
 
 
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @OneToMany//(fetch = FetchType.LAZY)
     @JoinColumn(name = "film_id",referencedColumnName = "id")
     List<BoxOfficeFilmTimeView> filmTimes;
 
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "rating")
     private float rating;
 
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "duration_hour")
     private float durationHour;
 
-
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "duration_min")
     private float durationMin;
 
 
-
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "status")
     private Boolean status;
 
-
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "start_date")
     private Date startDate;
 
-
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "end_date")
     private Date endDate;
 
-
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "is_price_shift")
     private boolean isPriceShift;
 
-
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "created_by")
     private Integer createdBy;
 
-
+    @JsonView(BoxOfficeFilmViewJsonView.Basic.class)
     @Basic
     @Column(name = "created_at")
     private Timestamp createdAt;

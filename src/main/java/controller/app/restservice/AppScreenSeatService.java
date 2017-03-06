@@ -3,7 +3,6 @@ package controller.app.restservice;
 import controller.app.AppUriPreFix;
 import dao.*;
 import entity.*;
-import entity.jspView.TicketSeat;
 import helper.ScreenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import utility.ServiceResponse;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by mi on 2/3/17.

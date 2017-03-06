@@ -1,4 +1,4 @@
-package entity.jspView;
+package entity.jspview;
 
 import entity.ScreenSeat;
 
